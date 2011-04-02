@@ -1,0 +1,44 @@
+                        ViVi version 5.0.000
+                             03-Apr-2011
+                    Copyright (C) 2011 by N.Tsuda
+                  mailto: ntsuda@master.email.ne.jp
+                       http://vivi.dyndns.org/
+
+
+■ 概要
+
+ViVi は vi コマンドをサポートするテキストエディタです。
+vi コマンドは、基本的に (n)vi 互換ですが、Ctrl + V 等 Windows標準キー
+バインドと矛盾するものは Windows キー割り当てを優先しています（ViVi的
+キーバインド）。
+
+
+■ ライセンス
+
+ViVi は有料のソフトウェアですが、verion 5.0.xxx だけは特別に無料で使用
+できるフリーウェアです。
+※ ver 5.1 or 6.0 以降は有料に戻ります。
+
+ソースコードは http://sourceforge.jp/projects/vivi-50-free/ からゲット
+でき、ライセンスは基本的にMITライセンスです。
+ですので、不自由なGPLと違ってソースコードを自由に再利用可能です。
+ただし、作者は不自由で使い勝手の悪いGPLが大嫌いなので、ソースコード
+をGPL系のプロジェクトで再利用することを禁止します。
+
+また、プロジェクトにはイラストファイルが含まれていますが、イラストは
+MIT ライセンスではありません。
+再利用したい場合は以下の著作権者に問い合せてください。
+http://www.pixiv.net/member.php?id=220294
+
+
+■ 謝辞
+
+素敵なイラストの利用を許諾してくださった 桃色椿 さんに感謝しています。
+
+■ SPR (Software Problem Report)
+
+凡例：● Open, ◎ Fix&Close, ○ notFix&Close, etc
+
+#SPR 状 優 Open     build Close    build  type  概要
+---- -- -- -------- ----- -------- -----  ----  ------------------------------------------------------------------
+0001 ● B  11/04/03 0.000                │ToDo│
