@@ -32,6 +32,10 @@ private:
     void readSettings();
     void writeSettings();
 
+private slots:
+	void doUnitTest();
+	//void doBenchmark();
+
 private:
 	PlainTextEdit	*m_editor;
 	QTextEdit	*output;
@@ -39,6 +43,7 @@ private:
     QMenu	*fileMenu;
     QMenu	*editMenu;
     QMenu	*viewMenu;
+    QMenu	*otherMenu;
     QAction	*unitTestAct;
     QAction	*benchmarkAct;
 };

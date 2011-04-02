@@ -26,10 +26,10 @@ void MainWindow::init()
 }
 void MainWindow::createActions()
 {
-#if 0
-    unitTestAct = new QAction(tr("&Unit Test"), this);
+    unitTestAct = new QAction(tr("&UnitTest"), this);
     unitTestAct->setStatusTip(tr("exec Unit Tests"));
     connect(unitTestAct, SIGNAL(triggered()), this, SLOT(doUnitTest()));
+#if 0
     benchmarkAct = new QAction(tr("&Benchmark"), this);
     benchmarkAct->setStatusTip(tr("benchmark Tests"));
     connect(benchmarkAct, SIGNAL(triggered()), this, SLOT(doBenchmark()));
@@ -40,11 +40,13 @@ void MainWindow::createMenus()
     fileMenu = menuBar()->addMenu(tr("&File"));
     editMenu = menuBar()->addMenu(tr("&Edit"));
     viewMenu = menuBar()->addMenu(tr("&View"));
+    otherMenu = menuBar()->addMenu(tr("&Other"));
 }
 void MainWindow::createToolBars()
 {
-    QToolBar *testToolBar = addToolBar(tr("Edit"));
-    //testToolBar->addAction(unitTestAct);
+    //QToolBar *testToolBar = addToolBar(tr("Edit"));
+    QToolBar *testToolBar = addToolBar(tr("Other"));
+    testToolBar->addAction(unitTestAct);
     //testToolBar->addAction(benchmarkAct);
 }
 void MainWindow::readSettings()
@@ -91,4 +93,8 @@ void MainWindow::createDockWindows()
     dock->setWidget(output);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
     viewMenu->addAction(dock->toggleViewAction());
+}
+//----------------------------------------------------------------------
+void MainWindow::doUnitTest()
+{
 }
