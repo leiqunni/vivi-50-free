@@ -153,6 +153,7 @@ public:
 	enum {
 		NoMove = 0,
 		Right,
+		Left,
 	};
 public:
 #if	BLOCK_HAS_SIZE
@@ -191,6 +192,7 @@ public:
 	bool	hasSelection() const { return m_position != m_anchor; }
 	bool	isNull() const { return m_document == 0; }
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
+	QString	selectedText() const;
 #if	BLOCK_HAS_SIZE
 	index_t	blockIndex() const { return m_blockIndex; }
 	index_t	blockPosition() const { return m_blockPosition; }
@@ -251,6 +253,11 @@ public:
 	index_t		blockNumber() const { return m_blockNumber; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
 	QString		text() const;
+
+	bool	operator==(const TextBlock &x) const
+	{ return m_document == x.m_document && m_blockNumber == x.m_blockNumber; }
+	bool	operator!=(const TextBlock &x) const
+	{ return !this->operator==(x); }
 
 public:
 	TextBlock	next() const;

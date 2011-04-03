@@ -1,6 +1,10 @@
 #include	<QtCore>
 #include "TextDocument.h"
 
+inline bool isUTF8FirstChar(uchar ch)
+{
+	return !(ch & 0x80) || (ch & 0x40) != 0;
+}
 //	UTF-8データの最初のバイトにより文字バイト数を計算
 size_t UTF8CharSize(uchar ch)
 {
@@ -28,6 +32,25 @@ void TextCursor::updateBlockData(uchar mode)
 	}
 }
 
+QString TextCursor::selectedText() const
+{
+	if( isNull() || !hasSelection() )
+		return QString();
+	index_t first, last;
+	if( m_anchor < m_position ) {
+		first = m_anchor;
+		last = m_position;
+	} else {
+		first = m_position;
+		last = m_anchor;
+	}
+	QByteArray ba;
+	ba.reserve(last - first);
+	while( first != last )
+		ba += (*m_document)[first++];
+	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+	return codec->toUnicode(ba);
+}
 TextBlock TextCursor::block()
 {
 	return TextBlock(m_document, m_blockIndex, m_blockPosition);
@@ -75,6 +98,21 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 			{
 				++m_blockIndex;
 				m_blockPosition = next;
+			}
+		}
+		break;
+	case Left:
+		if( n >= m_position ) {
+			m_position = 0;
+			m_blockIndex = 0;
+			m_blockPosition = 0;
+		} else {
+			while( n != 0 ) {
+				do { } while( !isUTF8FirstChar((*m_document)[--m_position]) );
+				--n;
+			}
+			while( m_blockIndex > 0 && m_blockPosition > m_position ) {
+				m_blockPosition -= m_document->blockSize(--m_blockIndex);
 			}
 		}
 		break;
