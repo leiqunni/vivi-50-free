@@ -51,10 +51,15 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	case Qt::Key_Right:
 		m_textCursor->movePosition(TextCursor::Right);
 		viewport()->update();
-		break;
+		return;
 	case Qt::Key_Left:
 		m_textCursor->movePosition(TextCursor::Left);
 		viewport()->update();
-		break;
+		return;
+	}
+	QString text = keyEvent->text();
+	if( !text.isEmpty() ) {
+		m_textCursor->insertText(text);
+		viewport()->update();
 	}
 }
