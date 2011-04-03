@@ -202,11 +202,15 @@ public:
 
 public:
 	TextBlock	block();
+	void	copyPositionToAnchor();
+	void	copyAnchorToPosition();
 	void	swapPositionAnchor();
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
 
 	void	insertText(const QString &);
+	void	deleteChar();
+	void	deletePreviousChar();
 
 protected:
 	void	updateBlockData(uchar mode = MoveAnchor);		//	m_blockIndex, m_blockPosition çXêV
@@ -347,6 +351,7 @@ public:
 
 	void	insertText(TextCursor&, const QString &);
 	void	deleteChar(TextCursor&);
+	void	deletePreviousChar(TextCursor&);
 
 	void	doUndo()
 	{

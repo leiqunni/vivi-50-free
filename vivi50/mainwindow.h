@@ -44,6 +44,19 @@ private:
     QMenu	*editMenu;
     QMenu	*viewMenu;
     QMenu	*otherMenu;
+
+	QAction *newAct;
+	QAction *openAct;
+	QAction *saveAct;
+	QAction *saveAsAct;
+	QAction *closeAllAct;
+    QAction *cutAct;
+    QAction *copyAct;
+    QAction *pasteAct;
+    QAction *undoAct;
+    QAction *redoAct;
+    QAction *aboutAct;
+
     QAction	*unitTestAct;
     QAction	*benchmarkAct;
 };

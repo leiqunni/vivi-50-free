@@ -56,6 +56,19 @@ TextBlock TextCursor::block()
 	return TextBlock(m_document, m_blockIndex, m_blockPosition);
 }
 
+void TextCursor::copyPositionToAnchor()
+{
+	m_anchor = m_position;
+	m_ancBlockIndex = m_blockIndex;
+	m_ancBlockPosition = m_blockPosition;
+}
+void TextCursor::copyAnchorToPosition()
+{
+	m_position = m_anchor;
+	m_blockIndex = m_ancBlockIndex;
+	m_blockPosition = m_ancBlockPosition;
+}
+
 void TextCursor::swapPositionAnchor()
 {
 	index_t t;
@@ -157,6 +170,16 @@ void TextCursor::insertText(const QString &text)
 	}
 	movePosition(Right, MoveAnchor, text.length());
 #endif
+}
+void TextCursor::deleteChar()
+{
+	if( isNull() ) return;
+	m_document->deleteChar(*this);
+}
+void TextCursor::deletePreviousChar()
+{
+	if( isNull() ) return;
+	m_document->deletePreviousChar(*this);
 }
 //----------------------------------------------------------------------
 void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)
@@ -636,6 +659,35 @@ void TextDocument::append(const QByteArray &utf8)
 	buildBlocks();
 }
 #endif
+void TextDocument::deleteChar(TextCursor &cur)
+{
+	if( cur.isNull() || cur.document() != this )
+		return;
+	if( !cur.hasSelection() )
+		cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor);
+	else if( cur.position() < cur.anchor() )
+		cur.swapPositionAnchor();
+	index_t first = cur.anchor();
+	index_t last = cur.position();
+	if( first == last ) return;
+	do_erase(first, last);
+	cur.copyAnchorToPosition();
+}
+void TextDocument::deletePreviousChar(TextCursor &cur)
+{
+	if( cur.isNull() || cur.document() != this )
+		return;
+	if( cur.hasSelection() ) {
+		deleteChar(cur);
+		return;
+	}
+	cur.movePosition(TextCursor::Left, TextCursor::KeepAnchor);
+	index_t first = cur.position();
+	index_t last = cur.anchor();
+	if( first == last ) return;
+	do_erase(first, last);
+	cur.copyPositionToAnchor();
+}
 void TextDocument::insertText(TextCursor &cur, const QString &text)
 {
 	if( cur.isNull() || cur.document() != this )

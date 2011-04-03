@@ -1,4 +1,14 @@
 <RCC>
-    <qresource prefix="MainWindow">
+    <qresource prefix="/vivi">
+        <file>Resources/images/ayabu-001.png</file>
+        <file>Resources/images/copy.png</file>
+        <file>Resources/images/cut.png</file>
+        <file>Resources/images/editredo.png</file>
+        <file>Resources/images/editundo.png</file>
+        <file>Resources/images/Info.png</file>
+        <file>Resources/images/new.png</file>
+        <file>Resources/images/open.png</file>
+        <file>Resources/images/paste.png</file>
+        <file>Resources/images/save.png</file>
     </qresource>
 </RCC>

@@ -56,6 +56,14 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		m_textCursor->movePosition(TextCursor::Left);
 		viewport()->update();
 		return;
+	case Qt::Key_Backspace:
+		m_textCursor->deletePreviousChar();
+		viewport()->update();
+		return;
+	case Qt::Key_Delete:
+		m_textCursor->deleteChar();
+		viewport()->update();
+		return;
 	}
 	QString text = keyEvent->text();
 	if( !text.isEmpty() ) {
