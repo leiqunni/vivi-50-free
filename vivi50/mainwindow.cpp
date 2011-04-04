@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "PlainTextEdit.h"
 
+#define	VERSION_STR			"5.0.000 Dev"
+
 MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
@@ -23,6 +25,8 @@ void MainWindow::init()
 	createToolBars();
 	createDockWindows();
     readSettings();			//	createActions() ‚ÌŒã‚ÉƒR[ƒ‹‚·‚é‚±‚Æ
+
+    statusBar()->showMessage("Ready");
 }
 void MainWindow::createActions()
 {
@@ -199,6 +203,19 @@ void MainWindow::createDockWindows()
     dock->setWidget(output);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
     viewMenu->addAction(dock->toggleViewAction());
+}
+void MainWindow::showAboutDlg()
+{
+	QMessageBox msgBox;
+	msgBox.setIconPixmap(QPixmap(":vivi/Resources/images/ayabu-001.png"));
+	msgBox.setText(tr("<div align=center><b><font size=5>ViVi</font></b> version %1</div>").arg(VERSION_STR));
+	msgBox.setInformativeText(QString("<div align=center>Copyright (C) 2011 by N.Tsuda<br>"
+								"mailto:ntsuda@master.email.ne.jp<br>"
+								"<a href=\"http://vivi.dyndns.org/?from=vivi%1\">http://vivi.dyndns.org/</a><br><br>"
+								"Powered by <a href=\"http://qt.nokia.com/\">Qt</a>"
+								"<p>illustrated by <a href=\"http://www.pixiv.net/member.php?id=220294\"><img src=\":vivi/Resources/images/momoshiki.png\"></a>"
+								"</div>").arg(VERSION_STR));
+	msgBox.exec();
 }
 //----------------------------------------------------------------------
 void MainWindow::doUnitTest()

@@ -33,6 +33,14 @@ private:
     void writeSettings();
 
 private slots:
+    //void	documentWasModified(bool = true);
+
+	//void	newFile();
+	//void	open();
+	//bool	save();
+	//bool	saveAs();
+	//void	closeAll();
+    void	showAboutDlg();
 	void doUnitTest();
 	//void doBenchmark();
 
