@@ -331,6 +331,7 @@ public:
 #endif
 	TextBlock	findBlock(index_t);
 	index_t		findBlockIndex(index_t position, index_t *pBlockPos = 0) const;
+	TextBlock	findBlockByNumber(index_t);		//	ブロック番号（0..*）からブロックを取得
 
 	void	erase(index_t, index_t);
 	void	erase(index_t, index_t, index_t, index_t);

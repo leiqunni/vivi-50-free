@@ -11,5 +11,7 @@
         <file>Resources/images/paste.png</file>
         <file>Resources/images/save.png</file>
         <file>Resources/images/momoshiki.png</file>
+        <file>Resources/images/Checkmark.png</file>
+        <file>Resources/images/Clock.png</file>
     </qresource>
 </RCC>

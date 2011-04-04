@@ -100,14 +100,12 @@ void MainWindow::createActions()
     aboutAct = new QAction(QIcon(":vivi/Resources/images/Info.png"), tr("&About ViVi"), this);
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
 
-    unitTestAct = new QAction(tr("&UnitTest"), this);
+    unitTestAct = new QAction(QIcon(":vivi/Resources/images/Checkmark.png"), tr("&UnitTest"), this);
     unitTestAct->setStatusTip(tr("exec Unit Tests"));
     connect(unitTestAct, SIGNAL(triggered()), this, SLOT(doUnitTest()));
-#if 0
-    benchmarkAct = new QAction(tr("&Benchmark"), this);
+    benchmarkAct = new QAction(QIcon(":vivi/Resources/images/Clock.png"), tr("&Benchmark"), this);
     benchmarkAct->setStatusTip(tr("benchmark Tests"));
     connect(benchmarkAct, SIGNAL(triggered()), this, SLOT(doBenchmark()));
-#endif
 }
 void MainWindow::createMenus()
 {
@@ -136,6 +134,8 @@ void MainWindow::createMenus()
 
     otherMenu = menuBar()->addMenu(tr("&Other"));
 	otherMenu->addAction(aboutAct);
+	otherMenu->addAction(unitTestAct);
+	otherMenu->addAction(benchmarkAct);
 }
 void MainWindow::createToolBars()
 {
@@ -154,10 +154,10 @@ void MainWindow::createToolBars()
 	QToolBar *otherToolBar = addToolBar(tr("Other"));
 	otherToolBar->addAction(aboutAct);
     otherToolBar->addAction(unitTestAct);
+    otherToolBar->addAction(benchmarkAct);
     //QToolBar *testToolBar = addToolBar(tr("Edit"));
     //QToolBar *testToolBar = addToolBar(tr("Other"));
     //testToolBar->addAction(unitTestAct);
-    //testToolBar->addAction(benchmarkAct);
 }
 void MainWindow::readSettings()
 {

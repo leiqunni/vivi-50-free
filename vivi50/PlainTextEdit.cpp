@@ -47,7 +47,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 #endif
 
 	int y = 0;
-	TextBlock block = m_textDocument->findBlock(verticalScrollBar()->value() / LINE_HEIGHT);
+	TextBlock block = m_textDocument->findBlockByNumber(verticalScrollBar()->value() / LINE_HEIGHT);
 	//TextBlock block = m_textDocument->firstBlock();
 	while( block.isValid() ) {
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合

@@ -1,0 +1,371 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_JP_AUTHOR	Hirohito Higashi	/h_east@pop11.odn.ne.jp/
+!_TAG_PROGRAM_JP_URL	http://hp.vector.co.jp/authors/VA025040/	//
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.7J1	//
+ASSERT	.\gap_vector.h	29;"	d
+Allocator	.\gap_vector.h	/^	typedef _A Allocator;$/;"	t	class:std::gap_vector
+BBUNDOITEM_BLOCK	.\TextDocument.h	/^	BBUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock かどうか$/;"	e	enum:__anon1
+BBUNDOITEM_CONCAT_ALL	.\TextDocument.h	/^	BBUNDOITEM_CONCAT_ALL = 0x0040,		\/\/	挿入文字列連結可能$/;"	e	enum:__anon1
+BBUNDOITEM_CONCAT_LINE	.\TextDocument.h	/^	BBUNDOITEM_CONCAT_LINE = 0x0020,	\/\/	挿入文字列連結可能$/;"	e	enum:__anon1
+BBUNDOITEM_CUR_TAIL	.\TextDocument.h	/^	BBUNDOITEM_CUR_TAIL = 0x0008,		\/\/	削除の時、カーソルが最後にあった$/;"	e	enum:__anon1
+BBUNDOITEM_DELETE	.\TextDocument.h	/^	BBUNDOITEM_DELETE = 0x0080,			\/\/	or BackSpace$/;"	e	enum:__anon1
+BBUNDOITEM_DIFF_RESTORE	.\TextDocument.h	/^	BBUNDOITEM_DIFF_RESTORE = 0x0800,		\/\/	diff で相手ファイルにあわせる$/;"	e	enum:__anon1
+BBUNDOITEM_INSTEXT	.\TextDocument.h	/^	BBUNDOITEM_INSTEXT = 0x8000,		\/\/	文字列の挿入を行った$/;"	e	enum:__anon1
+BBUNDOITEM_MADELINE	.\TextDocument.h	/^	BBUNDOITEM_MADELINE = 0x0004,$/;"	e	enum:__anon1
+BBUNDOITEM_MARK_POS	.\TextDocument.h	/^	BBUNDOITEM_MARK_POS = 0x0100,		\/\/	CUndoItemMarkPos かどうか$/;"	e	enum:__anon1
+BBUNDOITEM_REDO_MF_OFF	.\TextDocument.h	/^	BBUNDOITEM_REDO_MF_OFF = 0x0002,	\/\/	Redo でモディファイフラグがＯＮからＯＦＦに$/;"	e	enum:__anon1
+BBUNDOITEM_REDRAW	.\TextDocument.h	/^	BBUNDOITEM_REDRAW = 0x4000,			\/\/	:m の場合の様に強制的にリドローする$/;"	e	enum:__anon1
+BBUNDOITEM_REPTEXT	.\TextDocument.h	/^	BBUNDOITEM_REPTEXT = 0x1000,		\/\/	文字列の置換を行った$/;"	e	enum:__anon1
+BBUNDOITEM_SAVED	.\TextDocument.h	/^	BBUNDOITEM_SAVED = 0x0400,			\/\/	ドキュメントが保存された$/;"	e	enum:__anon1
+BBUNDOITEM_SHIFT_LEFT	.\TextDocument.h	/^	BBUNDOITEM_SHIFT_LEFT = 0x0010,$/;"	e	enum:__anon1
+BBUNDOITEM_SHIFT_RIGHT	.\TextDocument.h	/^	BBUNDOITEM_SHIFT_RIGHT = 0x0000,$/;"	e	enum:__anon1
+BBUNDOITEM_TRANSLATE	.\TextDocument.h	/^	BBUNDOITEM_TRANSLATE = 0x2000,		\/\/	コード変換の場合$/;"	e	enum:__anon1
+BBUNDOITEM_TYPE_ERASE	.\TextDocument.h	/^	BBUNDOITEM_TYPE_ERASE,$/;"	e	enum:__anon2
+BBUNDOITEM_TYPE_INSERT	.\TextDocument.h	/^	BBUNDOITEM_TYPE_INSERT,$/;"	e	enum:__anon2
+BBUNDOITEM_TYPE_REPLACE	.\TextDocument.h	/^	BBUNDOITEM_TYPE_REPLACE,$/;"	e	enum:__anon2
+BBUNDOITEM_TYPE_RESIZE	.\TextDocument.h	/^	BBUNDOITEM_TYPE_RESIZE = 1,$/;"	e	enum:__anon2
+BBUNDOITEM_UNDO_MF_OFF	.\TextDocument.h	/^	BBUNDOITEM_UNDO_MF_OFF = 0x0001,	\/\/	Undo でモディファイフラグがＯＮからＯＦＦに$/;"	e	enum:__anon1
+BLOCK_HAS_OFFSET	.\TextDocument.h	15;"	d
+BLOCK_HAS_SIZE	.\TextDocument.h	16;"	d
+GVUndoItem	.\TextDocument.h	/^	GVUndoItem()$/;"	f	struct:GVUndoItem
+GVUndoItem	.\TextDocument.h	/^	GVUndoItem(uchar type,$/;"	f	struct:GVUndoItem
+GVUndoItem	.\TextDocument.h	/^struct GVUndoItem$/;"	s
+GVUndoMgr	.\TextDocument.h	/^	GVUndoMgr() : m_current(0)$/;"	f	class:GVUndoMgr
+GVUndoMgr	.\TextDocument.h	/^class GVUndoMgr$/;"	c
+GV_USE_ITR_FACADE	.\gap_vector.h	12;"	d
+INVALID_INDEX	.\TextDocument.h	144;"	d
+KeepAnchor	.\TextDocument.h	/^		KeepAnchor,$/;"	e	enum:TextCursor::__anon3
+LINE_HEIGHT	.\PlainTextEdit.cpp	7;"	d	file:
+Left	.\TextDocument.h	/^		Left,$/;"	e	enum:TextCursor::__anon4
+MAINWINDOW_H	.\mainwindow.h	2;"	d
+MARGIN_LEFT	.\PlainTextEdit.cpp	6;"	d	file:
+MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
+MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
+MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^    class MainWindowClass: public Ui_MainWindowClass {};$/;"	c	namespace:Ui
+MoveAnchor	.\TextDocument.h	/^		MoveAnchor = 0,$/;"	e	enum:TextCursor::__anon3
+NoMove	.\TextDocument.h	/^		NoMove = 0,$/;"	e	enum:TextCursor::__anon4
+PLAINTEXTEDIT_H	.\PlainTextEdit.h	2;"	d
+PTR_ALLOCATOR	.\gap_vector.h	26;"	d
+PlainTextEdit	.\PlainTextEdit.cpp	/^PlainTextEdit::PlainTextEdit(QWidget *parent)$/;"	f	class:PlainTextEdit
+PlainTextEdit	.\PlainTextEdit.h	/^class PlainTextEdit : public QAbstractScrollArea$/;"	c
+Right	.\TextDocument.h	/^		Right,$/;"	e	enum:TextCursor::__anon4
+TEXTDOCUMENT_H	.\TextDocument.h	2;"	d
+TextBlock	.\TextDocument.h	/^	TextBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)$/;"	f	class:TextBlock
+TextBlock	.\TextDocument.h	/^	TextBlock(const TextBlock &x)$/;"	f	class:TextBlock
+TextBlock	.\TextDocument.h	/^class TextBlock$/;"	c
+TextBlockItem	.\TextDocument.h	/^	TextBlockItem(index_t index = 0) : m_index(index) {}$/;"	f	struct:TextBlockItem
+TextBlockItem	.\TextDocument.h	/^struct TextBlockItem$/;"	s
+TextCursor	.\TextDocument.h	/^	TextCursor(TextDocument *document = 0, index_t position = 0)$/;"	f	class:TextCursor
+TextCursor	.\TextDocument.h	/^	TextCursor(TextDocument *document, index_t position, index_t anchor)$/;"	f	class:TextCursor
+TextCursor	.\TextDocument.h	/^	TextCursor(TextDocument *document, index_t position, index_t anchor,$/;"	f	class:TextCursor
+TextCursor	.\TextDocument.h	/^	TextCursor(const TextCursor &x)$/;"	f	class:TextCursor
+TextCursor	.\TextDocument.h	/^class TextCursor$/;"	c
+TextDocument	.\TextDocument.cpp	/^TextDocument::TextDocument(QObject *parent)$/;"	f	class:TextDocument
+TextDocument	.\TextDocument.h	/^class TextDocument : public QObject$/;"	c
+UI_MAINWINDOW_H	.\GeneratedFiles\ui_mainwindow.h	11;"	d
+UTF8CharSize	.\TextDocument.cpp	/^size_t UTF8CharSize(uchar ch)$/;"	f
+Ui	.\GeneratedFiles\ui_mainwindow.h	/^namespace Ui {$/;"	n
+Ui_MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^class Ui_MainWindowClass$/;"	c
+VERSION_STR	.\mainwindow.cpp	5;"	d	file:
+_Destroy	.\gap_vector.h	/^	void _Destroy(pointer m_first, pointer m_last) { _Destroy_range(m_first, m_last, *_pAllocator); }$/;"	f	class:std::gap_vector
+_Destroy	.\gap_vector.h	/^	void _Destroy(pointer m_first, pointer m_last) { _Destroy_range(m_first, m_last, _allocator); }$/;"	f	class:std::gap_vector
+_Gap_Vector_Const_Iterator	.\gap_vector.h	/^	_Gap_Vector_Const_Iterator() : m_ptr(0), m_gapBegin(0), m_gapEnd(0) {}$/;"	f	class:std::_Gap_Vector_Const_Iterator
+_Gap_Vector_Const_Iterator	.\gap_vector.h	/^	_Gap_Vector_Const_Iterator(const _Gap_Vector_Const_Iterator &x)$/;"	f	class:std::_Gap_Vector_Const_Iterator
+_Gap_Vector_Const_Iterator	.\gap_vector.h	/^	_Gap_Vector_Const_Iterator(const _Gap_Vector_Iterator<Type, _A> &x)			\/\/	非コンスト → コンスト変換$/;"	f	class:std::_Gap_Vector_Const_Iterator
+_Gap_Vector_Const_Iterator	.\gap_vector.h	/^	_Gap_Vector_Const_Iterator(const_pointer ptr, const_pointer gapBegin, const_pointer gapEnd)$/;"	f	class:std::_Gap_Vector_Const_Iterator
+_Gap_Vector_Const_Iterator	.\gap_vector.h	/^class _Gap_Vector_Const_Iterator \/\/: public std::iterator<std::random_access_iterator_tag, Type>$/;"	c	namespace:std
+_Gap_Vector_Iterator	.\gap_vector.h	/^	_Gap_Vector_Iterator() : m_ptr(0), m_gapBegin(0), m_gapEnd(0) {}$/;"	f	class:std::_Gap_Vector_Iterator
+_Gap_Vector_Iterator	.\gap_vector.h	/^	_Gap_Vector_Iterator(const _Gap_Vector_Iterator &x)$/;"	f	class:std::_Gap_Vector_Iterator
+_Gap_Vector_Iterator	.\gap_vector.h	/^	_Gap_Vector_Iterator(pointer ptr, pointer gapBegin, pointer gapEnd)$/;"	f	class:std::_Gap_Vector_Iterator
+_Gap_Vector_Iterator	.\gap_vector.h	/^class _Gap_Vector_Iterator \/\/: public std::iterator<std::random_access_iterator_tag, Type>$/;"	c	namespace:std
+_allocator	.\gap_vector.h	/^	Allocator	_allocator;		\/\/	メモリアロケータ$/;"	m	class:std::gap_vector
+_pAllocator	.\gap_vector.h	/^	static Allocator	*_pAllocator;		\/\/	メモリアロケータ$/;"	m	class:std::gap_vector
+_pAllocator	.\gap_vector.h	/^template<typename Type, class _A> _A *gap_vector<Type, _A>::_pAllocator = NULL;$/;"	m	class:std::gap_vector
+aboutAct	.\mainwindow.h	/^    QAction *aboutAct;$/;"	m	class:MainWindow
+addToHeap	.\TextDocument.h	/^	index_t	addToHeap(InputIterator first, InputIterator last)$/;"	f	class:GVUndoMgr
+addToRedoHeap	.\TextDocument.h	/^	index_t	addToRedoHeap(InputIterator first, InputIterator last)$/;"	f	class:GVUndoMgr
+advance	.\gap_vector.h	/^	void	advance(int n)$/;"	f	class:std::_Gap_Vector_Const_Iterator
+advance	.\gap_vector.h	/^	void	advance(int n)$/;"	f	class:std::_Gap_Vector_Iterator
+ancBlockIndex	.\TextDocument.h	/^	index_t	ancBlockIndex() const { return m_ancBlockIndex; }$/;"	f	class:TextCursor
+ancBlockPosition	.\TextDocument.h	/^	index_t	ancBlockPosition() const { return m_ancBlockPosition; }$/;"	f	class:TextCursor
+anchor	.\TextDocument.h	/^	index_t	anchor() const { return m_anchor; }$/;"	f	class:TextCursor
+assert_valid	.\gap_vector.h	/^	void assert_valid() const$/;"	f	class:std::gap_vector
+assert_valid	.\gap_vector.h	/^	void assert_valid(const Iterator &itr) const$/;"	f	class:std::gap_vector
+assign	.\gap_vector.h	/^	void assign(InputIterator first, InputIterator last)$/;"	f	class:std::gap_vector
+assign	.\gap_vector.h	/^	void assign(value_type *first, value_type *last)$/;"	f	class:std::gap_vector
+atEnd	.\TextDocument.cpp	/^bool TextCursor::atEnd() const$/;"	f	class:TextCursor
+begin	.\TextDocument.h	/^	std::gap_vector<uchar>::iterator	begin() { return m_buffer.begin(); }$/;"	f	class:TextDocument
+begin	.\gap_vector.h	/^	const_iterator begin() const { return const_iterator(m_first != m_gapBegin ? m_first : m_gapEnd, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
+begin	.\gap_vector.h	/^	iterator begin() { return iterator(m_first != m_gapBegin ? m_first : m_gapEnd, m_gapBegin, m_gapEnd); }$/;"	f	class:std::gap_vector
+benchmarkAct	.\mainwindow.h	/^    QAction	*benchmarkAct;$/;"	m	class:MainWindow
+block	.\TextDocument.cpp	/^TextBlock TextCursor::block()$/;"	f	class:TextCursor
+blockCount	.\TextDocument.h	/^	size_t	blockCount() const { return m_blocks.size(); }$/;"	f	class:TextDocument
+blockCountChanged	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^void TextDocument::blockCountChanged()$/;"	f	class:TextDocument
+blockIndex	.\TextDocument.h	/^	index_t	blockIndex() const { return m_blockIndex; }$/;"	f	class:TextCursor
+blockNumber	.\TextDocument.h	/^	index_t		blockNumber() const { return m_blockNumber; }$/;"	f	class:TextBlock
+blockPosition	.\TextDocument.cpp	/^size_t TextDocument::blockPosition(index_t ix) const$/;"	f	class:TextDocument
+blockPosition	.\TextDocument.h	/^	index_t	blockPosition() const { return m_blockPosition; }$/;"	f	class:TextCursor
+blockPosition	.\TextDocument.h	/^	size_t	blockPosition(index_t ix) const { return m_blocks[ix].m_index; }$/;"	f	class:TextDocument
+blockSize	.\TextDocument.cpp	/^size_t TextDocument::blockSize(index_t ix) const$/;"	f	class:TextDocument
+buildBlocks	.\TextDocument.cpp	/^void TextDocument::buildBlocks()$/;"	f	class:TextDocument
+canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_current < m_items.size(); };$/;"	f	class:GVUndoMgr
+canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_undoMgr.canRedo(); };$/;"	f	class:TextDocument
+canUndo	.\TextDocument.h	/^	bool	canUndo() const { return m_current != 0; };$/;"	f	class:GVUndoMgr
+canUndo	.\TextDocument.h	/^	bool	canUndo() const { return m_undoMgr.canUndo(); };$/;"	f	class:TextDocument
+capacity	.\gap_vector.h	/^	size_type	capacity() const { return \/*!m_first ? 0 :*\/ m_last - m_first; }$/;"	f	class:std::gap_vector
+cbegin	.\gap_vector.h	/^	const_iterator cbegin() const { return const_iterator(m_first != m_gapBegin ? m_first : m_gapEnd, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
+cend	.\gap_vector.h	/^	const_iterator cend() const { return const_iterator(m_last, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
+centralWidget	.\GeneratedFiles\ui_mainwindow.h	/^    QWidget *centralWidget;$/;"	m	class:Ui_MainWindowClass
+clear	.\TextDocument.h	/^	void	clear() { init(); }$/;"	f	class:TextDocument
+clear	.\gap_vector.h	/^	void clear()$/;"	f	class:std::gap_vector
+closeAllAct	.\mainwindow.h	/^	QAction *closeAllAct;$/;"	m	class:MainWindow
+closeEvent	.\mainwindow.cpp	/^void MainWindow::closeEvent(QCloseEvent *event)$/;"	f	class:MainWindow
+const_iterator	.\gap_vector.h	/^	typedef _Gap_Vector_Const_Iterator<Type, _A> const_iterator;$/;"	t	class:std::gap_vector
+const_pointer	.\gap_vector.h	/^	typedef const Type* const_pointer;$/;"	t	class:std::_Gap_Vector_Const_Iterator
+const_pointer	.\gap_vector.h	/^	typedef const Type* const_pointer;$/;"	t	class:std::_Gap_Vector_Iterator
+const_pointer	.\gap_vector.h	/^	typedef const Type* const_pointer;$/;"	t	class:std::gap_vector
+const_reference	.\gap_vector.h	/^	typedef const Type& const_reference;$/;"	t	class:std::gap_vector
+contentsChange	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^void TextDocument::contentsChange(index_t _t1, size_t _t2, size_t _t3)$/;"	f	class:TextDocument
+copyAct	.\mainwindow.h	/^    QAction *copyAct;$/;"	m	class:MainWindow
+copyAnchorToPosition	.\TextDocument.cpp	/^void TextCursor::copyAnchorToPosition()$/;"	f	class:TextCursor
+copyPositionToAnchor	.\TextDocument.cpp	/^void TextCursor::copyPositionToAnchor()$/;"	f	class:TextCursor
+copy_data	.\gap_vector.h	/^	OutputItearator copy_data(OutputItearator dst, InputIterator src, InputIterator last)$/;"	f	class:std::gap_vector
+createActions	.\mainwindow.cpp	/^void MainWindow::createActions()$/;"	f	class:MainWindow
+createDockWindows	.\mainwindow.cpp	/^void MainWindow::createDockWindows()$/;"	f	class:MainWindow
+createMenus	.\mainwindow.cpp	/^void MainWindow::createMenus()$/;"	f	class:MainWindow
+createToolBars	.\mainwindow.cpp	/^void MainWindow::createToolBars()$/;"	f	class:MainWindow
+cuchar	.\TextDocument.h	/^typedef const unsigned char cuchar;$/;"	t
+cutAct	.\mainwindow.h	/^    QAction *cutAct;$/;"	m	class:MainWindow
+data	.\gap_vector.h	/^	const_pointer data()$/;"	f	class:std::gap_vector
+data_size	.\TextDocument.h	/^	size_t	data_size() const { return m_last - m_first; }$/;"	f	struct:GVUndoItem
+data_size2	.\TextDocument.h	/^	size_t	data_size2() const { return m_last2 - m_first; }$/;"	f	struct:GVUndoItem
+decrement	.\gap_vector.h	/^	void	decrement() { if( m_ptr == m_gapEnd ) { m_ptr = m_gapBegin; } --m_ptr; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
+decrement	.\gap_vector.h	/^	void	decrement() { if( m_ptr == m_gapEnd ) { m_ptr = m_gapBegin; } --m_ptr; }$/;"	f	class:std::_Gap_Vector_Iterator
+deleteChar	.\TextDocument.cpp	/^void TextCursor::deleteChar()$/;"	f	class:TextCursor
+deleteChar	.\TextDocument.cpp	/^void TextDocument::deleteChar(TextCursor &cur)$/;"	f	class:TextDocument
+deletePreviousChar	.\TextDocument.cpp	/^void TextCursor::deletePreviousChar()$/;"	f	class:TextCursor
+deletePreviousChar	.\TextDocument.cpp	/^void TextDocument::deletePreviousChar(TextCursor &cur)$/;"	f	class:TextDocument
+dereference	.\gap_vector.h	/^	Type &dereference() const { return *m_ptr; }$/;"	f	class:std::_Gap_Vector_Iterator
+dereference	.\gap_vector.h	/^	Type dereference() const { return *m_ptr; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
+difference_type	.\gap_vector.h	/^	typedef int difference_type;		\/\/	ギャップが無いとみなした場合のインデックス差$/;"	t	class:std::gap_vector
+distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Const_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Const_Iterator
+distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Iterator
+doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
+doRedo	.\TextDocument.cpp	/^bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
+doRedo	.\TextDocument.h	/^	void	doRedo()$/;"	f	class:TextDocument
+doRedo	.\TextDocument.h	/^	void	doRedo(index_t &pos) { m_undoMgr.doRedo(this, pos); }$/;"	f	class:TextDocument
+doUndo	.\TextDocument.cpp	/^bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
+doUndo	.\TextDocument.h	/^	void	doUndo()$/;"	f	class:TextDocument
+doUndo	.\TextDocument.h	/^	void	doUndo(index_t &pos) { m_undoMgr.doUndo(this, pos); }$/;"	f	class:TextDocument
+doUnitTest	.\mainwindow.cpp	/^void MainWindow::doUnitTest()$/;"	f	class:MainWindow
+do_erase	.\TextDocument.cpp	/^void TextDocument::do_erase(index_t first, index_t last)$/;"	f	class:TextDocument
+do_insert	.\TextDocument.cpp	/^void TextDocument::do_insert(index_t position, const QString &text)$/;"	f	class:TextDocument
+do_replace	.\TextDocument.cpp	/^void TextDocument::do_replace(index_t first, index_t last, const QString &text)$/;"	f	class:TextDocument
+document	.\TextDocument.h	/^	TextDocument	*document() const { return m_document; }$/;"	f	class:TextCursor
+editMenu	.\mainwindow.h	/^    QMenu	*editMenu;$/;"	m	class:MainWindow
+empty	.\gap_vector.h	/^	bool	empty() const { return !m_first || m_first == m_gapBegin && m_gapEnd == m_last; }$/;"	f	class:std::gap_vector
+end	.\TextDocument.h	/^	std::gap_vector<uchar>::iterator	end() { return m_buffer.end(); }$/;"	f	class:TextDocument
+end	.\gap_vector.h	/^	const_iterator end() const { return const_iterator(m_last, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
+end	.\gap_vector.h	/^	iterator end() { return iterator(m_last, m_gapBegin, m_gapEnd); }$/;"	f	class:std::gap_vector
+equal	.\gap_vector.h	/^	bool	equal(const _Gap_Vector_Const_Iterator &rhs) const { return m_ptr == rhs.m_ptr; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
+equal	.\gap_vector.h	/^	bool	equal(const _Gap_Vector_Iterator &rhs) const { return m_ptr == rhs.m_ptr; }$/;"	f	class:std::_Gap_Vector_Iterator
+erase	.\TextDocument.cpp	/^void TextDocument::erase(index_t first, index_t blockIndex, index_t blockPosition, index_t last)$/;"	f	class:TextDocument
+erase	.\TextDocument.cpp	/^void TextDocument::erase(index_t first, index_t last)$/;"	f	class:TextDocument
+erase	.\gap_vector.h	/^	iterator erase(const iterator &first, const iterator &last)$/;"	f	class:std::gap_vector
+erase	.\gap_vector.h	/^	iterator erase(const iterator &itr)$/;"	f	class:std::gap_vector
+erase	.\gap_vector.h	/^	void erase(index_type first, index_type last)$/;"	f	class:std::gap_vector
+erase	.\gap_vector.h	/^	void erase(index_type ix)$/;"	f	class:std::gap_vector
+expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector
+fileMenu	.\mainwindow.h	/^    QMenu	*fileMenu;$/;"	m	class:MainWindow
+find	.\TextDocument.cpp	/^TextCursor TextDocument::find(const QString &text, index_t position)$/;"	f	class:TextDocument
+findBlock	.\TextDocument.cpp	/^TextBlock TextDocument::findBlock(index_t position)$/;"	f	class:TextDocument
+findBlockByNumber	.\TextDocument.cpp	/^TextBlock TextDocument::findBlockByNumber(index_t blockIndex)$/;"	f	class:TextDocument
+findBlockIndex	.\TextDocument.cpp	/^index_t	TextDocument::findBlockIndex(index_t first, index_t last,		\/\/	検索範囲 m_blocks index$/;"	f	class:TextDocument
+findBlockIndex	.\TextDocument.cpp	/^index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const$/;"	f	class:TextDocument
+firstBlock	.\TextDocument.h	/^	TextBlock	firstBlock() { return TextBlock(this, 0); }$/;"	f	class:TextDocument
+firstBlock	.\TextDocument.h	/^	TextBlock	firstBlock() { return TextBlock(this, 0, 0); }$/;"	f	class:TextDocument
+gap_vector	.\gap_vector.h	/^	gap_vector() : m_first(0), m_gapBegin(0), m_gapEnd(0), m_last(0)$/;"	f	class:std::gap_vector
+gap_vector	.\gap_vector.h	/^	gap_vector(const gap_vector &x) : m_first(0), m_gapBegin(0), m_gapEnd(0), m_last(0)$/;"	f	class:std::gap_vector
+gap_vector	.\gap_vector.h	/^	gap_vector(size_type n, value_type v = Type())$/;"	f	class:std::gap_vector
+gap_vector	.\gap_vector.h	/^class gap_vector$/;"	c	namespace:std
+get	.\gap_vector.h	/^	const_pointer get() const { return (const_pointer)m_ptr; }$/;"	f	class:std::_Gap_Vector_Iterator
+get	.\gap_vector.h	/^	const_pointer get() const { return m_ptr; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
+get	.\gap_vector.h	/^	pointer get() { return m_ptr; }$/;"	f	class:std::_Gap_Vector_Iterator
+getStaticMetaObject	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^const QMetaObject &PlainTextEdit::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:PlainTextEdit
+getStaticMetaObject	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^const QMetaObject &TextDocument::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:TextDocument
+getStaticMetaObject	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^const QMetaObject &MainWindow::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:MainWindow
+get_first	.\gap_vector.h	/^	const_pointer get_first() const { return m_first; }$/;"	f	class:std::gap_vector
+get_gapBegin	.\gap_vector.h	/^	const_pointer get_gapBegin() const { return m_gapBegin; }$/;"	f	class:std::gap_vector
+get_gapEnd	.\gap_vector.h	/^	const_pointer get_gapEnd() const { return m_gapEnd; }$/;"	f	class:std::gap_vector
+get_index	.\gap_vector.h	/^	size_t	get_index(const Iterator &itr) const		\/\/	ギャップが無い場合のインデックスを返す$/;"	f	class:std::gap_vector
+get_last	.\gap_vector.h	/^	const_pointer get_last() const { return m_last; }$/;"	f	class:std::gap_vector
+get_pointer	.\gap_vector.h	/^	const_pointer	get_pointer(size_type n) const$/;"	f	class:std::gap_vector
+get_pointer	.\gap_vector.h	/^	pointer	get_pointer(size_type n)$/;"	f	class:std::gap_vector
+get_raw_index_of_gap	.\gap_vector.h	/^	size_t get_raw_index_of_gap() const { return m_gapBegin - m_first; }$/;"	f	class:std::gap_vector
+hasSelection	.\TextDocument.h	/^	bool	hasSelection() const { return m_position != m_anchor; }$/;"	f	class:TextCursor
+increment	.\gap_vector.h	/^	void	increment() { if( ++m_ptr == m_gapBegin ) m_ptr = m_gapEnd; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
+increment	.\gap_vector.h	/^	void	increment() { if( ++m_ptr == m_gapBegin ) m_ptr = m_gapEnd; }$/;"	f	class:std::_Gap_Vector_Iterator
+index_t	.\gap_vector.h	/^typedef size_t index_t;$/;"	t
+index_type	.\gap_vector.h	/^	typedef uint index_type;			\/\/	バッファインデックス [0, size()]$/;"	t	class:std::gap_vector
+init	.\mainwindow.cpp	/^void MainWindow::init()$/;"	f	class:MainWindow
+init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
+insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t ix, cuchar *first, cuchar *last)$/;"	f	class:TextDocument
+insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t ix, index_t blockIndex, index_t blockPosition,$/;"	f	class:TextDocument
+insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t position, const QString &text)$/;"	f	class:TextDocument
+insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t position, index_t blockIndex, index_t blockPosition, const QString &text)$/;"	f	class:TextDocument
+insert	.\gap_vector.h	/^	iterator insert(const iterator &itr, InputIterator first, InputIterator last)$/;"	f	class:std::gap_vector
+insert	.\gap_vector.h	/^	iterator insert(const iterator &itr, Type ch)$/;"	f	class:std::gap_vector
+insert	.\gap_vector.h	/^	iterator insert(size_t ix, InputIterator first, InputIterator last)$/;"	f	class:std::gap_vector
+insert	.\gap_vector.h	/^	void insert(index_type ix, Type ch)$/;"	f	class:std::gap_vector
+insertText	.\TextDocument.cpp	/^void TextCursor::insertText(const QString &text)$/;"	f	class:TextCursor
+insertText	.\TextDocument.cpp	/^void TextDocument::insertText(TextCursor &cur, const QString &text)$/;"	f	class:TextDocument
+isEmpty	.\TextDocument.h	/^	bool	isEmpty() const { return m_buffer.empty(); }$/;"	f	class:TextDocument
+isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
+isNull	.\TextDocument.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:TextCursor
+isUTF8FirstChar	.\TextDocument.cpp	/^inline bool isUTF8FirstChar(uchar ch)$/;"	f
+isValid	.\TextDocument.h	/^	bool		isValid() const { return m_blockNumber != INVALID_INDEX; }$/;"	f	class:TextBlock
+iterator	.\gap_vector.h	/^	typedef _Gap_Vector_Iterator<Type, _A> iterator;$/;"	t	class:std::gap_vector
+keyPressEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )$/;"	f	class:PlainTextEdit
+lastBlock	.\TextDocument.h	/^	TextBlock	lastBlock() { return TextBlock(this, blockCount() - 1); }$/;"	f	class:TextDocument
+lastBlock	.\TextDocument.h	/^	TextBlock	lastBlock()$/;"	f	class:TextDocument
+length	.\TextDocument.h	/^	uint		length() const { return size(); }$/;"	f	class:TextBlock
+m_ancBlockIndex	.\TextDocument.h	/^	index_t		m_ancBlockIndex;		\/\/	ブロックインデックス$/;"	m	class:TextCursor
+m_ancBlockPosition	.\TextDocument.h	/^	index_t		m_ancBlockPosition;		\/\/	ブロック先頭位置$/;"	m	class:TextCursor
+m_anchor	.\TextDocument.h	/^	index_t			m_anchor;		\/\/	アンカー位置$/;"	m	class:TextCursor
+m_beforeSave	.\TextDocument.h	/^	bool	m_beforeSave:1;		\/\/	保存前の undo\/redo item$/;"	m	struct:GVUndoItem
+m_blockIndex	.\TextDocument.h	/^	index_t		m_blockIndex;			\/\/	ブロックインデックス$/;"	m	class:TextCursor
+m_blockNumber	.\TextDocument.h	/^	index_t			m_blockNumber;		\/\/	ブロック配列インデックス 0..*$/;"	m	class:TextBlock
+m_blockPosition	.\TextDocument.h	/^	index_t			m_blockPosition;$/;"	m	class:TextBlock
+m_blockPosition	.\TextDocument.h	/^	index_t		m_blockPosition;		\/\/	ブロック先頭位置$/;"	m	class:TextCursor
+m_blocks	.\TextDocument.h	/^	mutable std::gap_vector<TextBlockItem>	m_blocks;		\/\/	ブロック配列$/;"	m	class:TextDocument
+m_buffer	.\TextDocument.h	/^	mutable std::gap_vector<uchar>	m_buffer;$/;"	m	class:TextDocument
+m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	オブジェクトを次に入れる位置（0..*）$/;"	m	class:GVUndoMgr
+m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextBlock
+m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextCursor
+m_editor	.\mainwindow.h	/^	PlainTextEdit	*m_editor;$/;"	m	class:MainWindow
+m_first	.\TextDocument.h	/^	const index_t	m_first;$/;"	m	struct:GVUndoItem
+m_first	.\gap_vector.h	/^	pointer	m_first;		\/\/   ↓first   ↓gapBegi n   ↓gapEnd        ↓m_last$/;"	m	class:std::gap_vector
+m_flags	.\TextDocument.h	/^	short	m_flags;$/;"	m	struct:GVUndoItem
+m_gapBegin	.\gap_vector.h	/^	const_pointer m_gapBegin;$/;"	m	class:std::_Gap_Vector_Const_Iterator
+m_gapBegin	.\gap_vector.h	/^	pointer	m_gapBegin;		\/\/	┌────┬──────┬───────┐  $/;"	m	class:std::gap_vector
+m_gapBegin	.\gap_vector.h	/^	pointer m_gapBegin;$/;"	m	class:std::_Gap_Vector_Iterator
+m_gapEnd	.\gap_vector.h	/^	const_pointer m_gapEnd;$/;"	m	class:std::_Gap_Vector_Const_Iterator
+m_gapEnd	.\gap_vector.h	/^	pointer	m_gapEnd;		\/\/  │  data  │    gap     │     data     │$/;"	m	class:std::gap_vector
+m_gapEnd	.\gap_vector.h	/^	pointer m_gapEnd;$/;"	m	class:std::_Gap_Vector_Iterator
+m_heap	.\TextDocument.h	/^	std::vector<uchar>	m_heap;			\/\/	undo のための文字列を格納するヒープ$/;"	m	class:GVUndoMgr
+m_hp_ix	.\TextDocument.h	/^	index_t	m_hp_ix;$/;"	m	struct:GVUndoItem
+m_index	.\TextDocument.h	/^	index_t		m_index;		\/\/	ブロック先頭文字のバッファ内インデックス$/;"	m	struct:TextBlockItem
+m_items	.\TextDocument.h	/^	std::vector<GVUndoItem*>	m_items;$/;"	m	class:GVUndoMgr
+m_last	.\TextDocument.h	/^	index_t	m_last;				\/\/	挿入・削除・置換前範囲$/;"	m	struct:GVUndoItem
+m_last	.\gap_vector.h	/^	pointer	m_last;			\/\/  └────┴──────┴───────┘$/;"	m	class:std::gap_vector
+m_last2	.\TextDocument.h	/^	index_t	m_last2;			\/\/	置換後の範囲$/;"	m	struct:GVUndoItem
+m_pool_undoItem	.\TextDocument.h	/^	boost::object_pool<GVUndoItem>	m_pool_undoItem;$/;"	m	class:TextDocument
+m_position	.\TextDocument.h	/^	index_t			m_position;		\/\/	カーソル位置$/;"	m	class:TextCursor
+m_ptr	.\gap_vector.h	/^	const_pointer m_ptr;$/;"	m	class:std::_Gap_Vector_Const_Iterator
+m_ptr	.\gap_vector.h	/^	pointer m_ptr;$/;"	m	class:std::_Gap_Vector_Iterator
+m_redoHeap	.\TextDocument.h	/^	std::vector<uchar>	m_redoHeap;		\/\/	redo のための文字列を格納するヒープ$/;"	m	class:GVUndoMgr
+m_rhp_ix	.\TextDocument.h	/^	index_t	m_rhp_ix;			\/\/	redo 用ヒープインデックス$/;"	m	struct:GVUndoItem
+m_textCursor	.\PlainTextEdit.h	/^	TextCursor		*m_textCursor;		\/\/	暫定的、本当はビュー用カーソルを利用する$/;"	m	class:PlainTextEdit
+m_textDocument	.\PlainTextEdit.h	/^	TextDocument	*m_textDocument;$/;"	m	class:PlainTextEdit
+m_type	.\TextDocument.h	/^	const uchar	m_type;$/;"	m	struct:GVUndoItem
+m_undoMgr	.\TextDocument.h	/^	GVUndoMgr	m_undoMgr;$/;"	m	class:TextDocument
+main	.\main.cpp	/^int main(int argc, char *argv[])$/;"	f
+mainToolBar	.\GeneratedFiles\ui_mainwindow.h	/^    QToolBar *mainToolBar;$/;"	m	class:Ui_MainWindowClass
+menuBar	.\GeneratedFiles\ui_mainwindow.h	/^    QMenuBar *menuBar;$/;"	m	class:Ui_MainWindowClass
+metaObject	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^const QMetaObject *PlainTextEdit::metaObject() const$/;"	f	class:PlainTextEdit
+metaObject	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^const QMetaObject *TextDocument::metaObject() const$/;"	f	class:TextDocument
+metaObject	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^const QMetaObject *MainWindow::metaObject() const$/;"	f	class:MainWindow
+movePosition	.\TextDocument.cpp	/^bool TextCursor::movePosition(uchar move, uchar mode, uint n)$/;"	f	class:TextCursor
+move_data	.\gap_vector.h	/^	void move_data(pointer dst, pointer src, int sz)$/;"	f	class:std::gap_vector
+move_data_backward	.\gap_vector.h	/^	void move_data_backward(pointer dst, pointer src, int sz)$/;"	f	class:std::gap_vector
+move_gap	.\gap_vector.h	/^	void	move_gap(const Iterator &itr)$/;"	f	class:std::gap_vector
+move_gap	.\gap_vector.h	/^	void	move_gap(size_type ix)$/;"	f	class:std::gap_vector
+move_gap_to_tail	.\gap_vector.h	/^	void	move_gap_to_tail()	\/\/	ギャップを末尾に移動$/;"	f	class:std::gap_vector
+newAct	.\mainwindow.h	/^	QAction *newAct;$/;"	m	class:MainWindow
+next	.\TextDocument.cpp	/^TextBlock TextBlock::next() const$/;"	f	class:TextBlock
+onBlockCountChanged	.\PlainTextEdit.cpp	/^void PlainTextEdit::onBlockCountChanged()$/;"	f	class:PlainTextEdit
+openAct	.\mainwindow.h	/^	QAction *openAct;$/;"	m	class:MainWindow
+operator !=	.\TextDocument.h	/^	bool	operator!=(const TextBlock &x) const$/;"	f	class:TextBlock
+operator =	.\gap_vector.h	/^	gap_vector &operator=(const gap_vector &x)$/;"	f	class:std::gap_vector
+operator ==	.\TextDocument.h	/^	bool	operator==(const TextBlock &x) const$/;"	f	class:TextBlock
+operator []	.\TextDocument.h	/^	uchar	operator[](index_t ix) const { return m_buffer[ix]; }$/;"	f	class:TextDocument
+operator []	.\gap_vector.h	/^	const_reference operator[](size_type n) const { return *get_pointer(n); }$/;"	f	class:std::gap_vector
+operator []	.\gap_vector.h	/^	reference operator[](size_type n) { return *get_pointer(n); }$/;"	f	class:std::gap_vector
+otherMenu	.\mainwindow.h	/^    QMenu	*otherMenu;$/;"	m	class:MainWindow
+output	.\mainwindow.h	/^	QTextEdit	*output;$/;"	m	class:MainWindow
+paintEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::paintEvent(QPaintEvent * event)$/;"	f	class:PlainTextEdit
+paste	.\PlainTextEdit.cpp	/^void PlainTextEdit::paste()$/;"	f	class:PlainTextEdit
+pasteAct	.\mainwindow.h	/^    QAction *pasteAct;$/;"	m	class:MainWindow
+pointer	.\gap_vector.h	/^	typedef Type* pointer;$/;"	t	class:std::_Gap_Vector_Iterator
+pointer	.\gap_vector.h	/^	typedef Type* pointer;$/;"	t	class:std::gap_vector
+position	.\TextDocument.cpp	/^index_t TextBlock::position() const$/;"	f	class:TextBlock
+position	.\TextDocument.h	/^	index_t	position() const { return m_position; }$/;"	f	class:TextCursor
+push_back	.\TextDocument.cpp	/^void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)$/;"	f	class:GVUndoMgr
+push_back	.\gap_vector.h	/^	void push_back(Type v)$/;"	f	class:std::gap_vector
+qCleanupResources_mainwindow	.\GeneratedFiles\qrc_mainwindow.cpp	/^int QT_MANGLE_NAMESPACE(qCleanupResources_mainwindow)()$/;"	f
+qInitResources_mainwindow	.\GeneratedFiles\qrc_mainwindow.cpp	/^int QT_MANGLE_NAMESPACE(qInitResources_mainwindow)()$/;"	f
+qt_meta_data_MainWindow	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^static const uint qt_meta_data_MainWindow[] = {$/;"	v	file:
+qt_meta_data_PlainTextEdit	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^static const uint qt_meta_data_PlainTextEdit[] = {$/;"	v	file:
+qt_meta_data_TextDocument	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^static const uint qt_meta_data_TextDocument[] = {$/;"	v	file:
+qt_meta_stringdata_MainWindow	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^static const char qt_meta_stringdata_MainWindow[] = {$/;"	v	file:
+qt_meta_stringdata_PlainTextEdit	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^static const char qt_meta_stringdata_PlainTextEdit[] = {$/;"	v	file:
+qt_meta_stringdata_TextDocument	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^static const char qt_meta_stringdata_TextDocument[] = {$/;"	v	file:
+qt_metacall	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^int PlainTextEdit::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:PlainTextEdit
+qt_metacall	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^int TextDocument::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:TextDocument
+qt_metacall	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)$/;"	f	class:MainWindow
+qt_metacast	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^void *PlainTextEdit::qt_metacast(const char *_clname)$/;"	f	class:PlainTextEdit
+qt_metacast	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^void *TextDocument::qt_metacast(const char *_clname)$/;"	f	class:TextDocument
+qt_metacast	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^void *MainWindow::qt_metacast(const char *_clname)$/;"	f	class:MainWindow
+qt_resource_data	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned char qt_resource_data[] = {$/;"	v	file:
+qt_resource_name	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned char qt_resource_name[] = {$/;"	v	file:
+qt_resource_struct	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned char qt_resource_struct[] = {$/;"	v	file:
+readSettings	.\mainwindow.cpp	/^void MainWindow::readSettings()$/;"	f	class:MainWindow
+redo	.\PlainTextEdit.cpp	/^void PlainTextEdit::redo()$/;"	f	class:PlainTextEdit
+redoAct	.\mainwindow.h	/^    QAction *redoAct;$/;"	m	class:MainWindow
+reference	.\gap_vector.h	/^	typedef Type& reference;$/;"	t	class:std::gap_vector
+reserve	.\gap_vector.h	/^	void reserve(size_type n)$/;"	f	class:std::gap_vector
+resize	.\gap_vector.h	/^	void resize(size_type n, value_type v = value_type())$/;"	f	class:std::gap_vector
+retranslateUi	.\GeneratedFiles\ui_mainwindow.h	/^    void retranslateUi(QMainWindow *MainWindowClass)$/;"	f	class:Ui_MainWindowClass
+saveAct	.\mainwindow.h	/^	QAction *saveAct;$/;"	m	class:MainWindow
+saveAsAct	.\mainwindow.h	/^	QAction *saveAsAct;$/;"	m	class:MainWindow
+selectedText	.\TextDocument.cpp	/^QString TextCursor::selectedText() const$/;"	f	class:TextCursor
+setPlainText	.\TextDocument.cpp	/^void TextDocument::setPlainText(const QString &text)$/;"	f	class:TextDocument
+setPosition	.\TextDocument.cpp	/^void TextCursor::setPosition(index_t position, uchar mode)$/;"	f	class:TextCursor
+setupUi	.\GeneratedFiles\ui_mainwindow.h	/^    void setupUi(QMainWindow *MainWindowClass)$/;"	f	class:Ui_MainWindowClass
+showAboutDlg	.\mainwindow.cpp	/^void MainWindow::showAboutDlg()$/;"	f	class:MainWindow
+size	.\TextDocument.cpp	/^uint TextBlock::size() const$/;"	f	class:TextBlock
+size	.\TextDocument.h	/^	size_t	size() const { return m_buffer.size(); }$/;"	f	class:TextDocument
+size	.\gap_vector.h	/^	size_type	size() const { return !m_first ? 0 : (m_gapBegin - m_first) + (m_last - m_gapEnd); }$/;"	f	class:std::gap_vector
+size_type	.\gap_vector.h	/^	typedef uint size_type;$/;"	t	class:std::gap_vector
+staticMetaObject	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^const QMetaObject PlainTextEdit::staticMetaObject = {$/;"	m	class:PlainTextEdit	file:
+staticMetaObject	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^const QMetaObject TextDocument::staticMetaObject = {$/;"	m	class:TextDocument	file:
+staticMetaObject	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^const QMetaObject MainWindow::staticMetaObject = {$/;"	m	class:MainWindow	file:
+statusBar	.\GeneratedFiles\ui_mainwindow.h	/^    QStatusBar *statusBar;$/;"	m	class:Ui_MainWindowClass
+std	.\gap_vector.h	/^namespace std {$/;"	n
+swapPositionAnchor	.\TextDocument.cpp	/^void TextCursor::swapPositionAnchor()$/;"	f	class:TextCursor
+text	.\TextDocument.cpp	/^QString TextBlock::text() const$/;"	f	class:TextBlock
+toPlainText	.\TextDocument.cpp	/^QString TextDocument::toPlainText() const$/;"	f	class:TextDocument
+uchar	.\TextDocument.h	/^typedef unsigned char uchar;$/;"	t
+uint	.\gap_vector.h	/^typedef unsigned int uint;$/;"	t
+undo	.\PlainTextEdit.cpp	/^void PlainTextEdit::undo()$/;"	f	class:PlainTextEdit
+undoAct	.\mainwindow.h	/^    QAction *undoAct;$/;"	m	class:MainWindow
+unitTestAct	.\mainwindow.h	/^    QAction	*unitTestAct;$/;"	m	class:MainWindow
+updateBlockData	.\TextDocument.cpp	/^void TextCursor::updateBlockData(uchar mode)$/;"	f	class:TextCursor
+updateBlocksAtErase	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtErase(index_t first, index_t blockIndex, index_t blockPosition, index_t last)$/;"	f	class:TextDocument
+updateBlocksAtErase	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtErase(index_t first, index_t last)$/;"	f	class:TextDocument
+updateBlocksAtInsert	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtInsert(index_t first, index_t blockIndex, index_t blockPosition, size_t sz)$/;"	f	class:TextDocument
+updateBlocksAtInsert	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtInsert(index_t first, size_t sz)$/;"	f	class:TextDocument
+value_type	.\gap_vector.h	/^	typedef Type value_type;$/;"	t	class:std::gap_vector
+viewMenu	.\mainwindow.h	/^    QMenu	*viewMenu;$/;"	m	class:MainWindow
+writeSettings	.\mainwindow.cpp	/^void MainWindow::writeSettings()$/;"	f	class:MainWindow
+~GVUndoMgr	.\TextDocument.h	/^	~GVUndoMgr()$/;"	f	class:GVUndoMgr
+~MainWindow	.\mainwindow.cpp	/^MainWindow::~MainWindow()$/;"	f	class:MainWindow
+~PlainTextEdit	.\PlainTextEdit.cpp	/^PlainTextEdit::~PlainTextEdit()$/;"	f	class:PlainTextEdit
+~TextBlock	.\TextDocument.h	/^	~TextBlock() {}$/;"	f	class:TextBlock
+~TextCursor	.\TextDocument.h	/^	~TextCursor() {}$/;"	f	class:TextCursor
+~TextDocument	.\TextDocument.cpp	/^TextDocument::~TextDocument()$/;"	f	class:TextDocument
+~gap_vector	.\gap_vector.h	/^	~gap_vector()$/;"	f	class:std::gap_vector

@@ -447,6 +447,21 @@ TextBlock TextDocument::findBlock(index_t position)
 	return TextBlock(this, ix, blockPosition);
 #endif
 }
+TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
+{
+	index_t blockPosition = 0;
+	index_t ix = 0;
+	if( blockIndex <= blockCount() / 2 ) {
+		while( ix < blockIndex )
+			blockPosition += m_blocks[ix++].m_size;
+	} else {
+		blockPosition = size();
+		index_t ix = blockCount();
+		while( ix > blockIndex )
+			blockPosition -= m_blocks[--ix].m_size;
+	}
+	return TextBlock(this, ix, blockPosition);
+}
 
 void TextDocument::buildBlocks()
 {
