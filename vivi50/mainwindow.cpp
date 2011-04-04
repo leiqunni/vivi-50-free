@@ -85,7 +85,7 @@ void MainWindow::createActions()
 	undoAct = new QAction(QIcon(":vivi/Resources/images/editundo.png"), tr("&Undo"), this);
     undoAct->setShortcuts(QKeySequence::Undo);
     undoAct->setStatusTip(tr("undo edit commande"));
-	undoAct->setEnabled(false);
+	//undoAct->setEnabled(false);
     connect(undoAct, SIGNAL(triggered()), m_editor, SLOT(undo()));
     connect(m_editor, SIGNAL(undoAvailable(bool)), undoAct, SLOT(setEnabled(bool)));
 
@@ -93,7 +93,7 @@ void MainWindow::createActions()
     redoAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
     //redoAct->setShortcuts(QKeySequence::Redo);
     redoAct->setStatusTip(tr("redo edit commande"));
-	redoAct->setEnabled(false);
+	//redoAct->setEnabled(false);
     connect(redoAct, SIGNAL(triggered()), m_editor, SLOT(redo()));
     connect(m_editor, SIGNAL(redoAvailable(bool)), redoAct, SLOT(setEnabled(bool)));
 

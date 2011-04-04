@@ -14,6 +14,11 @@ public:
 	PlainTextEdit(QWidget *parent = 0);
 	~PlainTextEdit();
 
+public slots:
+	void	paste();
+	void	undo();
+	void	redo();
+
 protected:
 	void	paintEvent(QPaintEvent * event);
     void	keyPressEvent ( QKeyEvent * keyEvent );

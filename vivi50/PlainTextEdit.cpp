@@ -71,3 +71,22 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		viewport()->update();
 	}
 }
+void PlainTextEdit::paste()
+{
+	QClipboard *clipboard = QApplication::clipboard();
+	QString text = clipboard->text();
+	if( !text.isEmpty() ) {
+		m_textCursor->insertText(text);
+		viewport()->update();
+	}
+}
+void PlainTextEdit::undo()
+{
+	m_textDocument->doUndo();
+	viewport()->update();
+}
+void PlainTextEdit::redo()
+{
+	m_textDocument->doRedo();
+	viewport()->update();
+}

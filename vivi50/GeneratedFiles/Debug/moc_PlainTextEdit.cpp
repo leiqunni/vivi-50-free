@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'PlainTextEdit.h'
 **
-** Created: Sun Apr 3 14:50:38 2011
+** Created: Mon Apr 4 09:35:50 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,18 +23,23 @@ static const uint qt_meta_data_PlainTextEdit[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
+ // slots: signature, parameters, type, tag, flags
+      15,   14,   14,   14, 0x0a,
+      23,   14,   14,   14, 0x0a,
+      30,   14,   14,   14, 0x0a,
+
        0        // eod
 };
 
 static const char qt_meta_stringdata_PlainTextEdit[] = {
-    "PlainTextEdit\0"
+    "PlainTextEdit\0\0paste()\0undo()\0redo()\0"
 };
 
 const QMetaObject PlainTextEdit::staticMetaObject = {
@@ -64,6 +69,15 @@ int PlainTextEdit::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     _id = QAbstractScrollArea::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: paste(); break;
+        case 1: undo(); break;
+        case 2: redo(); break;
+        default: ;
+        }
+        _id -= 3;
+    }
     return _id;
 }
 QT_END_MOC_NAMESPACE
