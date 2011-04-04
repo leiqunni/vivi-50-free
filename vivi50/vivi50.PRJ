@@ -10,15 +10,21 @@ extList = cpp,h
 todoKeyWord = todo,undone
 memFileColumnWd = 320
 [symbols]
+#define MARGIN_LEFT 4
+#define INVALID_INDEX 0
+#define BLOCK_HAS_OFFSET 0
+#define LINE_HEIGHT 20
+#define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
   gap_vector.h	(19.8962,208.319)
   main.cpp	(-115.72,-260.379)
-  mainwindow.cpp	(-194.52,-144.279)
-  mainwindow.h	(-194.52,-177.279)
-  PlainTextEdit.cpp	(-124.881,-11.8074)
+* mainwindow.cpp	(-194.52,-144.279)
+* mainwindow.h	(-194.52,-177.279)
+* PlainTextEdit.cpp	(-124.881,-11.8074)
   PlainTextEdit.h	(-124.881,-44.8074)
-  TextDocument.cpp	(-51.0554,119.525)
-  TextDocument.h	(-51.0554,86.5252)
+* TextDocument.cpp	(-51.0554,119.525)
+* TextDocument.h	(-51.0554,86.5252)
   C:/user/vivi5.0/arc/vivi50_jp.txt	(-179.72,-338.379)
 [ToDo]
+  "TextDocument.cpp" 188 'M: ' '' undone 不要なヒープの解放
