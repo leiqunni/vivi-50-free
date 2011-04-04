@@ -353,6 +353,8 @@ public:
 	void	deleteChar(TextCursor&);
 	void	deletePreviousChar(TextCursor&);
 
+	void	doUndo(index_t &pos) { m_undoMgr.doUndo(this, pos); }
+	void	doRedo(index_t &pos) { m_undoMgr.doRedo(this, pos); }
 	void	doUndo()
 	{
 		uint ix;

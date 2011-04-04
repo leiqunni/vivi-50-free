@@ -208,12 +208,14 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 	case BBUNDOITEM_TYPE_ERASE: {
 		cuchar *heap = &m_heap[ptr->m_hp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
+		pos = ptr->m_first + ptr->data_size();
 		break;
 	}
 	case BBUNDOITEM_TYPE_INSERT:
 		if( ptr->m_rhp_ix == 0 )
 			ptr->m_rhp_ix = addToRedoHeap(bb->begin() + ptr->m_first, bb->begin() + ptr->m_last);
 		bb->erase(ptr->m_first, ptr->m_last);
+		pos = ptr->m_first;
 		break;
 	case BBUNDOITEM_TYPE_REPLACE: {
 		if( ptr->m_rhp_ix == 0 )
@@ -221,6 +223,7 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 		bb->erase(ptr->m_first, ptr->m_last2);
 		cuchar *heap = &m_heap[ptr->m_hp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
+		pos = ptr->m_first + ptr->data_size();
 		break;
 	}
 	}
@@ -241,16 +244,19 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
 	switch( ptr->m_type ) {
 	case BBUNDOITEM_TYPE_ERASE:
 		bb->erase(ptr->m_first, ptr->m_last);
+		pos = ptr->m_first;
 		break;
 	case BBUNDOITEM_TYPE_INSERT: {
 		cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
+		pos = ptr->m_first + ptr->data_size();
 		break;
 	}
 	case BBUNDOITEM_TYPE_REPLACE: {
 		bb->erase(ptr->m_first, ptr->m_last);
 		cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size2());
+		pos = ptr->m_first + ptr->data_size();
 		break;
 	}
 	}

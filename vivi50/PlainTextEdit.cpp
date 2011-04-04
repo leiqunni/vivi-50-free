@@ -82,11 +82,15 @@ void PlainTextEdit::paste()
 }
 void PlainTextEdit::undo()
 {
-	m_textDocument->doUndo();
+	index_t pos = 0;
+	m_textDocument->doUndo(pos);
+	m_textCursor->setPosition(pos);
 	viewport()->update();
 }
 void PlainTextEdit::redo()
 {
-	m_textDocument->doRedo();
+	index_t pos = 0;
+	m_textDocument->doRedo(pos);
+	m_textCursor->setPosition(pos);
 	viewport()->update();
 }
