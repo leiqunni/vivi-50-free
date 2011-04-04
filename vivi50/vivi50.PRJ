@@ -1,0 +1,24 @@
+[settings]
+actTabIndex = 2
+autoOpen = 0
+dispTreeAllFiles = 0
+autoUpdateTags = 1
+autoUpdateDefineList = 1
+autoLoadVizInfo = 0
+viewModule = 1
+extList = cpp,h
+todoKeyWord = todo,undone
+memFileColumnWd = 320
+[symbols]
+[globalMarks]
+[files]
+  gap_vector.h	(19.8962,208.319)
+  main.cpp	(-115.72,-260.379)
+  mainwindow.cpp	(-194.52,-144.279)
+  mainwindow.h	(-194.52,-177.279)
+  PlainTextEdit.cpp	(-124.881,-11.8074)
+  PlainTextEdit.h	(-124.881,-44.8074)
+  TextDocument.cpp	(-51.0554,119.525)
+  TextDocument.h	(-51.0554,86.5252)
+  C:/user/vivi5.0/arc/vivi50_jp.txt	(-179.72,-338.379)
+[ToDo]
