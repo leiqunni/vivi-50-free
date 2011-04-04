@@ -377,6 +377,7 @@ public:
 
 signals:
 	void contentsChange ( index_t position, size_t charsRemoved, size_t charsAdded );
+	void blockCountChanged();
 
 protected:
 	void	buildBlocks();

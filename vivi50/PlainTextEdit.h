@@ -22,6 +22,10 @@ public slots:
 protected:
 	void	paintEvent(QPaintEvent * event);
     void	keyPressEvent ( QKeyEvent * keyEvent );
+    //void	resizeEvent ( QResizeEvent * event );
+
+protected slots:
+	void	onBlockCountChanged();
 
 private:
 	TextDocument	*m_textDocument;

@@ -1,14 +1,17 @@
 #include <QtGui>
 #include "PlainTextEdit.h"
 #include	"TextDocument.h"
+#include	<QDebug>
 
 #define		MARGIN_LEFT		4
+#define		LINE_HEIGHT		20
 
 PlainTextEdit::PlainTextEdit(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
 	m_textDocument = new TextDocument();
 	m_textCursor = new TextCursor(m_textDocument);
+	connect(m_textDocument, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
 
 	m_textDocument->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
 }
@@ -18,8 +21,23 @@ PlainTextEdit::~PlainTextEdit()
 	delete m_textDocument;
 	delete m_textCursor;
 }
+void PlainTextEdit::onBlockCountChanged()
+{
+	QSize areaSize = viewport()->size();
+	//QSize  widgetSize = widget->size();
+
+	verticalScrollBar()->setPageStep(m_textDocument->blockCount() * LINE_HEIGHT);
+	verticalScrollBar()->setSingleStep(LINE_HEIGHT);
+	//horizontalScrollBar()->setPageStep(widgetSize.width());
+	verticalScrollBar()->setRange(0, m_textDocument->blockCount() * LINE_HEIGHT - areaSize.height());
+	//horizontalScrollBar()->setRange(0, widgetSize.width() - areaSize.width());
+	//updateWidgetPosition();
+}
+
 void PlainTextEdit::paintEvent(QPaintEvent * event)
 {
+	qDebug() << verticalScrollBar()->value();
+
 	QWidget *vp = viewport();
 	QRect r = vp->rect();
 	QPainter painter(vp);
@@ -29,7 +47,8 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 #endif
 
 	int y = 0;
-	TextBlock block = m_textDocument->firstBlock();
+	TextBlock block = m_textDocument->findBlock(verticalScrollBar()->value() / LINE_HEIGHT);
+	//TextBlock block = m_textDocument->firstBlock();
 	while( block.isValid() ) {
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
 			TextCursor cur(m_textDocument);
@@ -42,7 +61,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		const QString text = block.text();
 		painter.drawText(MARGIN_LEFT, y + 16, text);
 		block = block.next();
-		y += 20;
+		y += LINE_HEIGHT;
 	}
 }
 void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )

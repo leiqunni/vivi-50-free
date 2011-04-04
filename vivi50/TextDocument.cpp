@@ -332,6 +332,7 @@ void TextDocument::init()
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(TextBlockItem(0));
+	emit blockCountChanged();
 }
 size_t TextDocument::blockSize(index_t ix) const
 {
@@ -480,9 +481,11 @@ void TextDocument::buildBlocks()
 	//if( ix != offset )
 		m_blocks.push_back(TextBlockItem(ix - offset));		//	EOF 行
 #endif
+	emit blockCountChanged();
 }
 void TextDocument::updateBlocksAtInsert(index_t first, index_t blockIndex, index_t blockPosition, size_t sz)
 {
+	bool bcChanged = false;
 	index_t offset = first - blockPosition;		//	挿入位置から行頭までの文字バイト数
 	index_t last = first + sz;
 	uchar ch = 0;
@@ -500,12 +503,15 @@ void TextDocument::updateBlocksAtInsert(index_t first, index_t blockIndex, index
 		} else
 			continue;
 		m_blocks.insert(blockIndex, TextBlockItem(first - blockPosition));
+		bcChanged = true;
 		++blockIndex;
 		//offset = 0;
 		blockPosition = first;
 	}
 	if( ch != '\n' && ch != '\n' )	//	最後の挿入文字が改行で無い場合
 		m_blocks[blockIndex].m_size += (last - blockPosition) - offset;
+	if( bcChanged )
+		emit blockCountChanged();
 }
 void TextDocument::updateBlocksAtInsert(index_t first, size_t sz)
 {
@@ -566,8 +572,10 @@ void TextDocument::updateBlocksAtErase(index_t first, index_t blockIndex, index_
 		blockPosition = first;
 		++bixLast;
 	}
-	if( bixLast != blockIndex )
+	if( bixLast != blockIndex ) {
 		m_blocks.erase(blockIndex, bixLast);
+		emit blockCountChanged();
+	}
 	m_blocks[blockIndex].m_size += offset - (last - blockPosition);
 	//size_t t = m_blocks[blockIndex].m_size;	//	for debug
 }
