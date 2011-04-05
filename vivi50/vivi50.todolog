@@ -2,5 +2,8 @@
 # 2011/04/05 07:47:32
 # 2011/04/05 08:42:51
 + 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
+# 2011/04/05 14:58:16
++ 2011/04/05 "PlainTextEdit.cpp" R:   undone カーソル位置座標計算はどこかにまとめる
 # latest
+2011/04/05 "PlainTextEdit.cpp" R:   undone カーソル位置座標計算はどこかにまとめる
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放

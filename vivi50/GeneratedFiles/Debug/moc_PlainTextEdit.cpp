@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'PlainTextEdit.h'
 **
-** Created: Tue Apr 5 14:08:12 2011
+** Created: Tue Apr 5 14:53:01 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!

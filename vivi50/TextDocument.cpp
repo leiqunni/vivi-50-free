@@ -151,6 +151,14 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 			}
 		}
 		break;
+	case Up:
+		if( !m_blockIndex ) return false;
+		m_position = m_blockPosition -= m_document->blockSize(--m_blockIndex);
+		break;
+	case Down:
+		if( m_blockIndex >= m_document->blockCount() - 1 ) return false;
+		m_position = m_blockPosition += m_document->blockSize(m_blockIndex++);
+		break;
 	default:
 		return false;
 	}

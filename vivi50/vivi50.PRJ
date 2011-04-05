@@ -30,4 +30,5 @@ memFileColumnWd = 320
   unit_test.cpp	(-307.896,237.49)
   unit_test.h	(-307.896,204.49)
 [ToDo]
-  "TextDocument.cpp" 210 'M: ' '' undone 不要なヒープの解放
+  "PlainTextEdit.cpp" 83 'R: ' '' undone カーソル位置座標計算はどこかにまとめる
+  "TextDocument.cpp" 218 'M: ' '' undone 不要なヒープの解放

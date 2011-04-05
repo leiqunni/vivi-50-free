@@ -176,6 +176,8 @@ public:
 		NoMove = 0,
 		Right,
 		Left,
+		Up,
+		Down,
 	};
 public:
 #if	BLOCK_HAS_SIZE

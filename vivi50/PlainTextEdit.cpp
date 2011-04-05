@@ -31,16 +31,16 @@
 PlainTextEdit::PlainTextEdit(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
-	m_textDocument = new TextDocument();
-	m_textCursor = new TextCursor(m_textDocument);
-	connect(m_textDocument, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
+	m_document = new TextDocument();
+	m_textCursor = new TextCursor(m_document);
+	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
 
-	m_textDocument->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
+	m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
 }
 
 PlainTextEdit::~PlainTextEdit()
 {
-	delete m_textDocument;
+	delete m_document;
 	delete m_textCursor;
 }
 void PlainTextEdit::onBlockCountChanged()
@@ -49,10 +49,10 @@ void PlainTextEdit::onBlockCountChanged()
 	QSize areaSize = viewport()->size();
 	//QSize  widgetSize = widget->size();
 
-	verticalScrollBar()->setPageStep(m_textDocument->blockCount() * fm.lineSpacing());
+	verticalScrollBar()->setPageStep(m_document->blockCount() * fm.lineSpacing());
 	verticalScrollBar()->setSingleStep(fm.lineSpacing());
 	//horizontalScrollBar()->setPageStep(widgetSize.width());
-	verticalScrollBar()->setRange(0, m_textDocument->blockCount() * fm.lineSpacing() - areaSize.height());
+	verticalScrollBar()->setRange(0, m_document->blockCount() * fm.lineSpacing() - areaSize.height());
 	//horizontalScrollBar()->setRange(0, widgetSize.width() - areaSize.width());
 	//updateWidgetPosition();
 }
@@ -70,11 +70,11 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
 
 	int y = 0;
-	TextBlock block = m_textDocument->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
-	//TextBlock block = m_textDocument->firstBlock();
+	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
+	//TextBlock block = m_document->firstBlock();
 	while( y < vr.height() && block.isValid() ) {
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
-			//TextCursor cur(m_textDocument);
+			//TextCursor cur(m_document);
 			//cur.setPosition(block.position());
 			//cur.setPosition(m_textCursor->position(), TextCursor::KeepAnchor);
 			//const QString text = cur.selectedText();
@@ -122,7 +122,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 TextBlock PlainTextEdit::firstVisibleBlock()
 {
 	QFontMetrics fm = fontMetrics();
-	return m_textDocument->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
+	return m_document->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
 }
 void PlainTextEdit::ensureCursorVisible()
 {
@@ -134,10 +134,37 @@ void PlainTextEdit::ensureCursorVisible()
 		viewport()->update();
 		return;
 	}
+	QRect vr = viewport()->rect();
+	const int nLines = vr.height() / fm.lineSpacing();
+	const int t = curBlock.blockNumber() - fvBlock.blockNumber() - nLines;
+	if( t < 0 ) return;		//	画面内
+	index_t bn;
+	if( t < 4 )
+		bn = fvBlock.blockNumber() + t + 1;
+	else
+		bn = curBlock.blockNumber();
+	verticalScrollBar()->setValue(fm.lineSpacing() * bn);
+	viewport()->update();
 }
 void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 {
+	Qt::KeyboardModifiers mod = keyEvent->modifiers();
+	const bool ctrl = (mod & Qt::ControlModifier) != 0;
 	switch( keyEvent->key() ) {
+	case Qt::Key_Home:
+		if( ctrl ) {
+			m_textCursor->setPosition(0);
+			ensureCursorVisible();
+			viewport()->update();
+		}
+		return;
+	case Qt::Key_End:
+		if( ctrl ) {
+			m_textCursor->setPosition(m_document->size());
+			ensureCursorVisible();
+			viewport()->update();
+		}
+		return;
 	case Qt::Key_Right:
 		m_textCursor->movePosition(TextCursor::Right);
 		ensureCursorVisible();
@@ -145,6 +172,16 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		return;
 	case Qt::Key_Left:
 		m_textCursor->movePosition(TextCursor::Left);
+		ensureCursorVisible();
+		viewport()->update();
+		return;
+	case Qt::Key_Up:
+		m_textCursor->movePosition(TextCursor::Up);
+		ensureCursorVisible();
+		viewport()->update();
+		return;
+	case Qt::Key_Down:
+		m_textCursor->movePosition(TextCursor::Down);
 		ensureCursorVisible();
 		viewport()->update();
 		return;
@@ -176,14 +213,14 @@ void PlainTextEdit::paste()
 void PlainTextEdit::undo()
 {
 	index_t pos = 0;
-	m_textDocument->doUndo(pos);
+	m_document->doUndo(pos);
 	m_textCursor->setPosition(pos);
 	viewport()->update();
 }
 void PlainTextEdit::redo()
 {
 	index_t pos = 0;
-	m_textDocument->doRedo(pos);
+	m_document->doRedo(pos);
 	m_textCursor->setPosition(pos);
 	viewport()->update();
 }
