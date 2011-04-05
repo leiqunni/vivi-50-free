@@ -80,6 +80,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 			//const QString text = cur.selectedText();
 			//QRect t = fm.boundingRect(text);
 			//painter.fillRect(QRect(t.width() + MARGIN_LEFT, y+2, 2, 14), Qt::red);
+			//	undone R カーソル位置座標計算はどこかにまとめる
 			const QString text = block.text();
 			const index_t offset = qMin(m_textCursor->position() - block.position(),
 										(index_t)text.length());
@@ -118,19 +119,38 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		y += fm.lineSpacing();
 	}
 }
+TextBlock PlainTextEdit::firstVisibleBlock()
+{
+	QFontMetrics fm = fontMetrics();
+	return m_textDocument->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
+}
+void PlainTextEdit::ensureCursorVisible()
+{
+	QFontMetrics fm = fontMetrics();
+	TextBlock fvBlock = firstVisibleBlock();
+	TextBlock curBlock = m_textCursor->block();
+	if( curBlock.blockNumber() < fvBlock.blockNumber() ) {
+		verticalScrollBar()->setValue(fm.lineSpacing() * curBlock.blockNumber());
+		viewport()->update();
+		return;
+	}
+}
 void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 {
 	switch( keyEvent->key() ) {
 	case Qt::Key_Right:
 		m_textCursor->movePosition(TextCursor::Right);
+		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Left:
 		m_textCursor->movePosition(TextCursor::Left);
+		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Backspace:
 		m_textCursor->deletePreviousChar();
+		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Delete:

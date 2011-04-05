@@ -169,6 +169,7 @@ empty	.\gap_vector.h	/^	bool	empty() const { return !m_first || m_first == m_gap
 end	.\TextDocument.h	/^	std::gap_vector<uchar>::iterator	end() { return m_buffer.end(); }$/;"	f	class:TextDocument
 end	.\gap_vector.h	/^	const_iterator end() const { return const_iterator(m_last, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
 end	.\gap_vector.h	/^	iterator end() { return iterator(m_last, m_gapBegin, m_gapEnd); }$/;"	f	class:std::gap_vector
+ensureCursorVisible	.\PlainTextEdit.cpp	/^void PlainTextEdit::ensureCursorVisible()$/;"	f	class:PlainTextEdit
 equal	.\gap_vector.h	/^	bool	equal(const _Gap_Vector_Const_Iterator &rhs) const { return m_ptr == rhs.m_ptr; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
 equal	.\gap_vector.h	/^	bool	equal(const _Gap_Vector_Iterator &rhs) const { return m_ptr == rhs.m_ptr; }$/;"	f	class:std::_Gap_Vector_Iterator
 erase	.\TextDocument.cpp	/^void TextDocument::erase(index_t first, index_t blockIndex, index_t blockPosition, index_t last)$/;"	f	class:TextDocument
@@ -186,6 +187,7 @@ findBlockIndex	.\TextDocument.cpp	/^index_t	TextDocument::findBlockIndex(index_t
 findBlockIndex	.\TextDocument.cpp	/^index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const$/;"	f	class:TextDocument
 firstBlock	.\TextDocument.h	/^	TextBlock	firstBlock() { return TextBlock(this, 0); }$/;"	f	class:TextDocument
 firstBlock	.\TextDocument.h	/^	TextBlock	firstBlock() { return TextBlock(this, 0, 0); }$/;"	f	class:TextDocument
+firstVisibleBlock	.\PlainTextEdit.cpp	/^TextBlock PlainTextEdit::firstVisibleBlock()$/;"	f	class:PlainTextEdit
 gap_vector	.\gap_vector.h	/^	gap_vector() : m_first(0), m_gapBegin(0), m_gapEnd(0), m_last(0)$/;"	f	class:std::gap_vector
 gap_vector	.\gap_vector.h	/^	gap_vector(const gap_vector &x) : m_first(0), m_gapBegin(0), m_gapEnd(0), m_last(0)$/;"	f	class:std::gap_vector
 gap_vector	.\gap_vector.h	/^	gap_vector(size_type n, value_type v = Type())$/;"	f	class:std::gap_vector

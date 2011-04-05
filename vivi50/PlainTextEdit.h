@@ -27,6 +27,7 @@
 
 class TextDocument;
 class TextCursor;
+class TextBlock;
 
 class PlainTextEdit : public QAbstractScrollArea
 {
@@ -45,6 +46,9 @@ protected:
 	void	paintEvent(QPaintEvent * event);
     void	keyPressEvent ( QKeyEvent * keyEvent );
     //void	resizeEvent ( QResizeEvent * event );
+
+    TextBlock	firstVisibleBlock();
+    void	ensureCursorVisible();
 
 protected slots:
 	void	onBlockCountChanged();
