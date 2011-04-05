@@ -17,14 +17,17 @@ memFileColumnWd = 320
 #define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
-  gap_vector.h	(19.8962,208.319)
-  main.cpp	(-115.72,-260.379)
-* mainwindow.cpp	(-194.52,-144.279)
-* mainwindow.h	(-194.52,-177.279)
-* PlainTextEdit.cpp	(-124.881,-11.8074)
-  PlainTextEdit.h	(-124.881,-44.8074)
-* TextDocument.cpp	(-51.0554,119.525)
-* TextDocument.h	(-51.0554,86.5252)
-  C:/user/vivi5.0/arc/vivi50_jp.txt	(-179.72,-338.379)
+  gap_vector.h	(-42.9018,454.118)
+* main.cpp	(-259.503,-105.974)
+* mainwindow.cpp	(-223.012,61.2214)
+* mainwindow.h	(-223.012,28.2214)
+* PlainTextEdit.cpp	(17.1717,189.662)
+* PlainTextEdit.h	(17.1717,156.662)
+* TextDocument.cpp	(-123.356,331.455)
+* TextDocument.h	(-123.356,298.455)
+  C:/user/vivi5.0/arc/vivi50_jp.txt	(174.497,66.0264)
+  mainwindowBench.cpp	(-223.012,94.2214)
+  unit_test.cpp	(-307.896,237.49)
+  unit_test.h	(-307.896,204.49)
 [ToDo]
-  "TextDocument.cpp" 188 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 210 'M: ' '' undone 不要なヒープの解放

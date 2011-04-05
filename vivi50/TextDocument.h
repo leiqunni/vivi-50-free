@@ -411,6 +411,8 @@ private:
 private:
 	mutable std::gap_vector<uchar>	m_buffer;
 	mutable std::gap_vector<TextBlockItem>	m_blocks;		//	ブロック配列
+	index_t		m_blockIndex;		//	カレントブロック情報
+	index_t		m_blockPosition;	//	カレントブロック情報
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ
 	GVUndoMgr	m_undoMgr;
 	boost::object_pool<GVUndoItem>	m_pool_undoItem;

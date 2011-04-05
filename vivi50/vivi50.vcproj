@@ -170,6 +170,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\mainwindowBench.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mainwindowTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PlainTextEdit.cpp"
 				>
 			</File>

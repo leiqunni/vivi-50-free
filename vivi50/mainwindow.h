@@ -65,7 +65,7 @@ private slots:
 	//void	closeAll();
     void	showAboutDlg();
 	void doUnitTest();
-	//void doBenchmark();
+	void doBenchmark();
 
 private:
 	PlainTextEdit	*m_editor;

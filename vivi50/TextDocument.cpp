@@ -354,6 +354,7 @@ void TextDocument::init()
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(TextBlockItem(0));
+	m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
 }
 size_t TextDocument::blockSize(index_t ix) const
@@ -473,15 +474,55 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
 {
 	index_t blockPosition = 0;
 	index_t ix = 0;
-	if( blockIndex <= blockCount() / 2 ) {
-		while( ix < blockIndex )
-			blockPosition += m_blocks[ix++].m_size;
+	if( m_blockIndex == 0 ) {		//	キャッシュが無い場合
+		if( blockIndex <= blockCount() / 2 ) {
+			while( ix < blockIndex )
+				blockPosition += m_blocks[ix++].m_size;
+		} else {	//	中央より後ろの場合
+			blockPosition = size();
+			index_t ix = blockCount();
+			while( ix > blockIndex )
+				blockPosition -= m_blocks[--ix].m_size;
+		}
 	} else {
-		blockPosition = size();
-		index_t ix = blockCount();
-		while( ix > blockIndex )
-			blockPosition -= m_blocks[--ix].m_size;
+		if( blockIndex == m_blockIndex )
+			return TextBlock(this, m_blockIndex, m_blockPosition);
+		if( blockIndex < m_blockIndex ) {
+#if 0	//	逆方向シーケンシャルアクセス頻度は低いのでコメントアウトしておく
+			if( blockIndex == m_blockIndex - 1 ) {
+				m_blockPosition -= m_blocks[--m_blockIndex].m_size;
+				return TextBlock(this, m_blockIndex, m_blockPosition);
+			}
+#endif
+			if( blockIndex <= m_blockIndex / 2 ) {
+				while( ix < blockIndex )
+					blockPosition += m_blocks[ix++].m_size;
+			} else {	//	中央より後ろの場合
+				blockPosition = m_blockPosition;
+				ix = m_blockIndex;
+				while( ix > blockIndex )
+					blockPosition -= m_blocks[--ix].m_size;
+			}
+		} else {	//	m_blockIndex < blockIndex < m_blocks.size() の場合
+			if( blockIndex == m_blockIndex + 1 ) {
+				m_blockPosition += m_blocks[m_blockIndex++].m_size;
+				return TextBlock(this, m_blockIndex, m_blockPosition);
+			}
+			if( blockIndex <= m_blockIndex + (m_blocks.size() - m_blockIndex) / 2 ) {
+				blockPosition = m_blockPosition;
+				ix = m_blockIndex;
+				while( ix < blockIndex )
+					blockPosition += m_blocks[ix++].m_size;
+			} else {	//	中央より後ろの場合
+				blockPosition = m_blockPosition;
+				ix = m_blockIndex;
+				while( ix > blockIndex )
+					blockPosition -= m_blocks[--ix].m_size;
+			}
+		}
 	}
+	m_blockIndex = ix;
+	m_blockPosition = blockPosition;
 	return TextBlock(this, ix, blockPosition);
 }
 
