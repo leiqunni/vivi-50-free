@@ -44,6 +44,7 @@ public slots:
 
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);
+	bool	event ( QEvent * event );
 	void	paintEvent(QPaintEvent * event);
     void	keyPressEvent ( QKeyEvent * keyEvent );
     void	resizeEvent ( QResizeEvent * event );

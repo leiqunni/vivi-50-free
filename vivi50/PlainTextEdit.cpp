@@ -162,6 +162,19 @@ void PlainTextEdit::ensureCursorVisible()
 	verticalScrollBar()->setValue(/*fm.lineSpacing() **/ bn);
 	viewport()->update();
 }
+
+bool PlainTextEdit::event ( QEvent * event )
+{
+	if( event->type() == QEvent::KeyPress ) {
+		QKeyEvent *k = static_cast<QKeyEvent *>(event);
+		if( k->key() == Qt::Key_Tab /*|| k->key() == Qt::Key_Backtab*/ ) {
+			m_textCursor->insertText(QString("\t"));
+			viewport()->update();
+			return true;
+		}
+	}
+	return QAbstractScrollArea::event(event);
+}
 void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 {
 	Qt::KeyboardModifiers mod = keyEvent->modifiers();
@@ -209,6 +222,9 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	case Qt::Key_Delete:
 		m_textCursor->deleteChar();
 		viewport()->update();
+		return;
+	case Qt::Key_Escape:
+		//	‚Æ‚è‚ ‚¦‚¸–³Ž‹
 		return;
 	}
 	QString text = keyEvent->text();
