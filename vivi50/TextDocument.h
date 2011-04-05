@@ -40,6 +40,18 @@ typedef const unsigned char cuchar;
 class TextDocument;
 class TextBlock;
 
+//----------------------------------------------------------------------
+struct TextBlockCache
+{
+public:
+	index_t		m_index;
+	index_t		m_position;
+public:
+	TextBlockCache(index_t index = 0, index_t position = 0)
+		: m_index(index), m_position(position)
+		{}
+};
+//----------------------------------------------------------------------
 //	undo/redo 文字列の格納にヒープを用い、undoItem クラスは継承をやめ、type でディスパッチする
 //#define		UNDOMGR_USE_HEAP			1
 
@@ -186,13 +198,20 @@ public:
 		{ updateBlockData(); }
 	TextCursor(TextDocument *document, index_t position, index_t anchor)
 		: m_document(document), m_position(position), m_anchor(anchor)
-		, m_blockIndex(0), m_blockPosition(0)
+		//, m_blockIndex(0), m_blockPosition(0)
 		{ updateBlockData(); }
+	TextCursor(TextDocument *document, index_t position, index_t anchor,
+				TextBlockCache cursorBlock)
+		: m_document(document), m_position(position), m_anchor(anchor)
+		, m_block(cursorBlock)
+		{}
+#if 0
 	TextCursor(TextDocument *document, index_t position, index_t anchor,
 				index_t blockIx, index_t blockPosition)
 		: m_document(document), m_position(position), m_anchor(anchor)
 		, m_blockIndex(blockIx), m_blockPosition(blockPosition)
 		{}
+#endif
 #else
 	TextCursor(TextDocument *document = 0, index_t position = 0)
 		: m_document(document), m_position(position), m_anchor(position)
@@ -204,7 +223,8 @@ public:
 	TextCursor(const TextCursor &x)
 		: m_document(x.m_document), m_position(x.m_position), m_anchor(x.m_anchor)
 #if	BLOCK_HAS_SIZE
-		, m_blockIndex(x.m_blockIndex), m_blockPosition(x.m_blockPosition)
+		, m_block(x.m_block), m_anchorBlock(x.m_anchorBlock)
+		//, m_blockIndex(x.m_blockIndex), m_blockPosition(x.m_blockPosition)
 #endif
 		{}
 	~TextCursor() {}
@@ -218,10 +238,12 @@ public:
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
 	QString	selectedText() const;
 #if	BLOCK_HAS_SIZE
-	index_t	blockIndex() const { return m_blockIndex; }
-	index_t	blockPosition() const { return m_blockPosition; }
-	index_t	ancBlockIndex() const { return m_ancBlockIndex; }
-	index_t	ancBlockPosition() const { return m_ancBlockPosition; }
+	TextBlockCache cursorBlock() const { return m_block; }
+	TextBlockCache anchorBlock() const { return m_anchorBlock; }
+	index_t	blockIndex() const { return m_block.m_index; }
+	index_t	blockPosition() const { return m_block.m_position; }
+	index_t	ancBlockIndex() const { return m_anchorBlock.m_index; }
+	index_t	ancBlockPosition() const { return m_anchorBlock.m_position; }
 #endif
 
 public:
@@ -244,10 +266,14 @@ private:
 	index_t			m_position;		//	カーソル位置
 	index_t			m_anchor;		//	アンカー位置
 #if	BLOCK_HAS_SIZE
+	TextBlockCache	m_block;
+	TextBlockCache	m_anchorBlock;
+#if 0
 	index_t		m_blockIndex;			//	ブロックインデックス
 	index_t		m_blockPosition;		//	ブロック先頭位置
 	index_t		m_ancBlockIndex;		//	ブロックインデックス
 	index_t		m_ancBlockPosition;		//	ブロック先頭位置
+#endif
 #endif
 };
 
@@ -259,7 +285,10 @@ public:
 	//	: m_document(document), m_blockNumber(blockNumber)
 	//	{}
 	TextBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)
-		: m_document(document), m_blockNumber(blockNumber), m_blockPosition(blockPosition)
+		: m_document(document), m_block(TextBlockCache(blockNumber, blockPosition))
+		{}
+	TextBlock(TextDocument *document, TextBlockCache block)
+		: m_document(document), m_block(block)
 		{}
 #else
 	TextBlock(TextDocument *document, index_t blockNumber)
@@ -267,9 +296,11 @@ public:
 		{}
 #endif
 	TextBlock(const TextBlock &x)
-		: m_document(x.m_document), m_blockNumber(x.m_blockNumber)
+		: m_document(x.m_document)
 #if	BLOCK_HAS_SIZE
-		, m_blockPosition(x.m_blockPosition)
+		, m_block(x.m_block)
+		//, m_blockNumber(x.m_blockNumber)
+		//, m_blockPosition(x.m_blockPosition)
 #endif
 		{}
 	~TextBlock() {}
@@ -277,13 +308,13 @@ public:
 public:
 	uint		size() const;		//	改行を含めたコード長
 	uint		length() const { return size(); }
-	bool		isValid() const { return m_blockNumber != INVALID_INDEX; }
-	index_t		blockNumber() const { return m_blockNumber; }
+	bool		isValid() const { return blockNumber() != INVALID_INDEX; }
+	index_t		blockNumber() const { return m_block.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
 	QString		text() const;
 
 	bool	operator==(const TextBlock &x) const
-	{ return m_document == x.m_document && m_blockNumber == x.m_blockNumber; }
+	{ return m_document == x.m_document && blockNumber() == x.blockNumber(); }
 	bool	operator!=(const TextBlock &x) const
 	{ return !this->operator==(x); }
 
@@ -292,9 +323,10 @@ public:
 
 private:
 	TextDocument	*m_document;
-	index_t			m_blockNumber;		//	ブロック配列インデックス 0..*
 #if	BLOCK_HAS_SIZE
-	index_t			m_blockPosition;
+	TextBlockCache	m_block;
+	//index_t			m_blockNumber;		//	ブロック配列インデックス 0..*
+	//index_t			m_blockPosition;
 #endif
 };
 
@@ -356,6 +388,7 @@ public:
 	TextBlock	findBlock(index_t);
 	index_t		findBlockIndex(index_t position, index_t *pBlockPos = 0) const;
 	TextBlock	findBlockByNumber(index_t);		//	ブロック番号（0..*）からブロックを取得
+	TextBlock	findBlockByNumberRaw(index_t);		//	ブロック番号（0..*）からブロックを取得
 
 	void	erase(index_t, index_t);
 	void	erase(index_t, index_t, index_t, index_t);
@@ -413,8 +446,9 @@ private:
 private:
 	mutable std::gap_vector<uchar>	m_buffer;
 	mutable std::gap_vector<TextBlockItem>	m_blocks;		//	ブロック配列
-	index_t		m_blockIndex;		//	カレントブロック情報
-	index_t		m_blockPosition;	//	カレントブロック情報
+	TextBlockCache	m_block;			//	カレントブロック情報
+	//index_t		m_blockIndex;		//	カレントブロック情報
+	//index_t		m_blockPosition;	//	カレントブロック情報
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ
 	GVUndoMgr	m_undoMgr;
 	boost::object_pool<GVUndoItem>	m_pool_undoItem;

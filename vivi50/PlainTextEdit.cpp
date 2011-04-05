@@ -35,6 +35,10 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 	m_textCursor = new TextCursor(m_document);
 	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
 
+	m_lineNumberWidth = fontMetrics().width('8') * 6;
+	m_lineNumberAreaWidth = fontMetrics().width('8') * 8;
+	setViewportMargins(m_lineNumberAreaWidth, 0, 0, 0);
+
 	m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
 }
 
@@ -49,10 +53,10 @@ void PlainTextEdit::onBlockCountChanged()
 	QSize areaSize = viewport()->size();
 	//QSize  widgetSize = widget->size();
 
-	verticalScrollBar()->setPageStep(m_document->blockCount() * fm.lineSpacing());
-	verticalScrollBar()->setSingleStep(fm.lineSpacing());
+	verticalScrollBar()->setPageStep(m_document->blockCount() /** fm.lineSpacing()*/);
+	verticalScrollBar()->setSingleStep(1 /*fm.lineSpacing()*/);
 	//horizontalScrollBar()->setPageStep(widgetSize.width());
-	verticalScrollBar()->setRange(0, m_document->blockCount() * fm.lineSpacing() - areaSize.height());
+	verticalScrollBar()->setRange(0, m_document->blockCount() /** fm.lineSpacing()*/ - areaSize.height() / fm.lineSpacing());
 	//horizontalScrollBar()->setRange(0, widgetSize.width() - areaSize.width());
 	//updateWidgetPosition();
 }
@@ -69,8 +73,9 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
 
+	index_t lastBlockNumber = m_document->lastBlock().blockNumber();
 	int y = 0;
-	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
+	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	//TextBlock block = m_document->firstBlock();
 	while( y < vr.height() && block.isValid() ) {
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
@@ -102,7 +107,8 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		const QString text = block.text();
 		//painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
 		int x = 0;
-		for(int ix = 0; ix < text.length(); ) {
+		int ix = 0;
+		while( ix < text.length() ) {
 			if( text[ix] == '\t' ) {
 				++ix;
 				x = (x / tabWidth + 1) * tabWidth;
@@ -115,26 +121,31 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 				x += fm.boundingRect(buf).width();
 			}
 		}
+		if( block.blockNumber() == lastBlockNumber ) {
+			painter.setPen(Qt::blue);
+			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), "[EOF]");
+			break;
+		}
 		block = block.next();
 		y += fm.lineSpacing();
 	}
 }
 TextBlock PlainTextEdit::firstVisibleBlock()
 {
-	QFontMetrics fm = fontMetrics();
-	return m_document->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
+	//QFontMetrics fm = fontMetrics();
+	return m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 }
 void PlainTextEdit::ensureCursorVisible()
 {
-	QFontMetrics fm = fontMetrics();
 	TextBlock fvBlock = firstVisibleBlock();
 	TextBlock curBlock = m_textCursor->block();
 	if( curBlock.blockNumber() < fvBlock.blockNumber() ) {
-		verticalScrollBar()->setValue(fm.lineSpacing() * curBlock.blockNumber());
+		verticalScrollBar()->setValue(/*fm.lineSpacing() **/ curBlock.blockNumber());
 		viewport()->update();
 		return;
 	}
 	QRect vr = viewport()->rect();
+	QFontMetrics fm = fontMetrics();
 	const int nLines = vr.height() / fm.lineSpacing();
 	const int t = curBlock.blockNumber() - fvBlock.blockNumber() - nLines;
 	if( t < 0 ) return;		//	画面内
@@ -143,7 +154,7 @@ void PlainTextEdit::ensureCursorVisible()
 		bn = fvBlock.blockNumber() + t + 1;
 	else
 		bn = curBlock.blockNumber();
-	verticalScrollBar()->setValue(fm.lineSpacing() * bn);
+	verticalScrollBar()->setValue(/*fm.lineSpacing() **/ bn);
 	viewport()->update();
 }
 void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )

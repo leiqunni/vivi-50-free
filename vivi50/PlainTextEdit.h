@@ -56,6 +56,8 @@ protected slots:
 private:
 	TextDocument	*m_document;
 	TextCursor		*m_textCursor;		//	暫定的、本当はビュー用カーソルを利用する
+	int		m_lineNumberAreaWidth;
+	int		m_lineNumberWidth;
 };
 
 #endif // PLAINTEXTEDIT_H

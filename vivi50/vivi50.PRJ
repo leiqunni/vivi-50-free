@@ -17,18 +17,19 @@ memFileColumnWd = 320
 #define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
-  gap_vector.h	(-42.9018,454.118)
-* main.cpp	(-259.503,-105.974)
-* mainwindow.cpp	(-223.012,61.2214)
-* mainwindow.h	(-223.012,28.2214)
-* PlainTextEdit.cpp	(17.1717,189.662)
-* PlainTextEdit.h	(17.1717,156.662)
-* TextDocument.cpp	(-123.356,331.455)
-* TextDocument.h	(-123.356,298.455)
-  C:/user/vivi5.0/arc/vivi50_jp.txt	(-37.5031,-56.9736)
-  mainwindowBench.cpp	(-223.012,94.2214)
-  unit_test.cpp	(-307.896,237.49)
-  unit_test.h	(-307.896,204.49)
+  gap_vector.h	(47,324)
+* main.cpp	(-153,-353)
+* mainwindow.cpp	(120,-227)
+* mainwindow.h	(120,-260)
+* PlainTextEdit.cpp	(-174,-23)
+* PlainTextEdit.h	(-174,-56)
+* TextDocument.cpp	(3,164)
+* TextDocument.h	(3,131)
+  C:/user/vivi5.0/arc/vivi50_jp.txt	(79,-446)
+  mainwindowBench.cpp	(120,-194)
+  unit_test.cpp	(284,61)
+  unit_test.h	(284,28)
+* mainwindowTest.cpp	(120,-161)
 [ToDo]
-  "PlainTextEdit.cpp" 83 'R: ' '' undone カーソル位置座標計算はどこかにまとめる
-  "TextDocument.cpp" 218 'M: ' '' undone 不要なヒープの解放
+  "PlainTextEdit.cpp" 87 'R: ' '' undone カーソル位置座標計算はどこかにまとめる
+  "TextDocument.cpp" 226 'M: ' '' undone 不要なヒープの解放

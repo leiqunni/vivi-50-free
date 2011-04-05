@@ -43,13 +43,15 @@ size_t UTF8CharSize(uchar ch)
 #if	BLOCK_HAS_SIZE
 void TextCursor::updateBlockData(uchar mode)
 {
-	if( !m_document )
-		m_blockIndex = m_blockPosition = m_ancBlockIndex = m_ancBlockPosition = 0;
-	else {
-		m_blockIndex = m_document->findBlockIndex(m_position, &m_blockPosition);
+	if( !m_document ) {
+		m_block = TextBlockCache(0, 0);
+		//m_blockIndex = m_blockPosition = m_ancBlockIndex = m_ancBlockPosition = 0;
+	} else {
+		m_block.m_index = m_document->findBlockIndex(m_position, &m_block.m_position);
 		if( mode == MoveAnchor ) {
-			m_ancBlockIndex = m_blockIndex;
-			m_ancBlockPosition = m_blockPosition;
+			m_anchorBlock = m_block;
+			//m_ancBlockIndex = m_blockIndex;
+			//m_ancBlockPosition = m_blockPosition;
 		}
 	}
 }
@@ -75,28 +77,32 @@ QString TextCursor::selectedText() const
 }
 TextBlock TextCursor::block()
 {
-	return TextBlock(m_document, m_blockIndex, m_blockPosition);
+	return TextBlock(m_document, m_block);
 }
 
 void TextCursor::copyPositionToAnchor()
 {
 	m_anchor = m_position;
-	m_ancBlockIndex = m_blockIndex;
-	m_ancBlockPosition = m_blockPosition;
+	m_anchorBlock = m_block;
+	//m_ancBlockIndex = m_blockIndex;
+	//m_ancBlockPosition = m_blockPosition;
 }
 void TextCursor::copyAnchorToPosition()
 {
 	m_position = m_anchor;
-	m_blockIndex = m_ancBlockIndex;
-	m_blockPosition = m_ancBlockPosition;
+	m_block = m_anchorBlock;
+	//m_blockIndex = m_ancBlockIndex;
+	//m_blockPosition = m_ancBlockPosition;
 }
 
 void TextCursor::swapPositionAnchor()
 {
 	index_t t;
 	t = m_position; m_position = m_anchor; m_anchor = t;
-	t = m_blockIndex; m_blockIndex = m_ancBlockIndex; m_ancBlockIndex = t;
-	t = m_blockPosition; m_blockPosition = m_ancBlockPosition; m_ancBlockPosition = t;
+	TextBlockCache b;
+	b = m_block; m_block = m_anchorBlock; m_anchorBlock = b;
+	//t = m_blockIndex; m_blockIndex = m_ancBlockIndex; m_ancBlockIndex = t;
+	//t = m_blockPosition; m_blockPosition = m_ancBlockPosition; m_ancBlockPosition = t;
 }
 
 void TextCursor::setPosition(index_t position, uchar mode)
@@ -106,8 +112,9 @@ void TextCursor::setPosition(index_t position, uchar mode)
 	updateBlockData(KeepAnchor);
 	if( mode == MoveAnchor ) {
 		m_anchor = m_position;
-		m_ancBlockIndex = m_blockIndex;
-		m_ancBlockPosition = m_blockPosition;
+		m_anchorBlock = m_block;
+		//m_ancBlockIndex = m_blockIndex;
+		//m_ancBlockPosition = m_blockPosition;
 	}
 }
 bool TextCursor::movePosition(uchar move, uchar mode, uint n)
@@ -128,44 +135,45 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 			//m_position += n;
 			index_t next;
 			index_t bixLimit = m_document->blockCount() - 1;
-			while( m_blockIndex < bixLimit && 
-				m_position >= (next = m_blockPosition + m_document->blockSize(m_blockIndex)) )
+			while( m_block.m_index < bixLimit && 
+				m_position >= (next = m_block.m_position + m_document->blockSize(m_block.m_index)) )
 			{
-				++m_blockIndex;
-				m_blockPosition = next;
+				++m_block.m_index;
+				m_block.m_position = next;
 			}
 		}
 		break;
 	case Left:
 		if( n >= m_position ) {
 			m_position = 0;
-			m_blockIndex = 0;
-			m_blockPosition = 0;
+			m_block.m_index = 0;
+			m_block.m_position = 0;
 		} else {
 			while( n != 0 ) {
 				do { } while( !isUTF8FirstChar((*m_document)[--m_position]) );
 				--n;
 			}
-			while( m_blockIndex > 0 && m_blockPosition > m_position ) {
-				m_blockPosition -= m_document->blockSize(--m_blockIndex);
+			while( m_block.m_index > 0 && m_block.m_position > m_position ) {
+				m_block.m_position -= m_document->blockSize(--m_block.m_index);
 			}
 		}
 		break;
 	case Up:
-		if( !m_blockIndex ) return false;
-		m_position = m_blockPosition -= m_document->blockSize(--m_blockIndex);
+		if( !m_block.m_index ) return false;
+		m_position = m_block.m_position -= m_document->blockSize(--m_block.m_index);
 		break;
 	case Down:
-		if( m_blockIndex >= m_document->blockCount() - 1 ) return false;
-		m_position = m_blockPosition += m_document->blockSize(m_blockIndex++);
+		if( m_block.m_index >= m_document->blockCount() - 1 ) return false;
+		m_position = m_block.m_position += m_document->blockSize(m_block.m_index++);
 		break;
 	default:
 		return false;
 	}
 	if( mode == MoveAnchor ) {
 		m_anchor = m_position;
-		m_ancBlockIndex = m_blockIndex;
-		m_ancBlockPosition = m_blockPosition;
+		m_anchorBlock = m_block;
+		//m_ancBlockIndex = m_block.m_index;
+		//m_ancBlockPosition = m_block.m_position;
 	}
 	return true;
 }
@@ -300,7 +308,7 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
 uint TextBlock::size() const
 {
 #if 1
-	return m_document->blockSize(m_blockNumber);
+	return m_document->blockSize(m_block.m_index);
 #else
 	if( !isValid() ) return 0;
 	if( m_index == m_document->blockCount() - 1 )		//	最後のブロック
@@ -312,7 +320,7 @@ uint TextBlock::size() const
 index_t TextBlock::position() const
 {
 #if BLOCK_HAS_SIZE
-	return isValid() ? m_blockPosition : 0;
+	return isValid() ? m_block.m_position : 0;
 #else
 	return isValid() ? m_document->blockPosition(m_blockNumber) : 0;
 #endif
@@ -333,8 +341,8 @@ TextBlock TextBlock::next() const
 {
 	if( !isValid() ) return *this;
 #if BLOCK_HAS_SIZE
-	index_t blockPosition = m_blockPosition + m_document->blockSize(m_blockNumber);
-	int ix = m_blockNumber + 1;
+	index_t blockPosition = m_block.m_position + m_document->blockSize(m_block.m_index);
+	int ix = m_block.m_index + 1;
 	if( ix >= m_document->blockCount() )
 		ix = INVALID_INDEX;
 	return TextBlock(m_document, ix, blockPosition);
@@ -362,7 +370,8 @@ void TextDocument::init()
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(TextBlockItem(0));
-	m_blockIndex = m_blockPosition = 0;
+	m_block = TextBlockCache(0, 0);
+	//m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
 }
 size_t TextDocument::blockSize(index_t ix) const
@@ -478,11 +487,31 @@ TextBlock TextDocument::findBlock(index_t position)
 	return TextBlock(this, ix, blockPosition);
 #endif
 }
-TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
+TextBlock TextDocument::findBlockByNumberRaw(index_t blockIndex)
 {
 	index_t blockPosition = 0;
 	index_t ix = 0;
-	if( m_blockIndex == 0 ) {		//	キャッシュが無い場合
+	if( blockIndex <= blockCount() / 2 ) {
+		while( ix < blockIndex )
+			blockPosition += m_blocks[ix++].m_size;
+	} else {	//	中央より後ろの場合
+		blockPosition = size();
+		index_t ix = blockCount();
+		while( ix > blockIndex )
+			blockPosition -= m_blocks[--ix].m_size;
+	}
+	return TextBlock(this, ix, blockPosition);
+}
+TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
+{
+	if( blockIndex >= blockCount() - 1 ) {
+		m_block.m_index = blockCount() - 1;
+		m_block.m_position = size() - blockSize(m_block.m_index);
+		return TextBlock(this, m_block);
+	}
+	index_t blockPosition = 0;
+	index_t ix = 0;
+	if( m_block.m_index == 0 ) {		//	キャッシュが無い場合
 		if( blockIndex <= blockCount() / 2 ) {
 			while( ix < blockIndex )
 				blockPosition += m_blocks[ix++].m_size;
@@ -493,44 +522,44 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
 				blockPosition -= m_blocks[--ix].m_size;
 		}
 	} else {
-		if( blockIndex == m_blockIndex )
-			return TextBlock(this, m_blockIndex, m_blockPosition);
-		if( blockIndex < m_blockIndex ) {
+		if( blockIndex == m_block.m_index )
+			return TextBlock(this, m_block.m_index, m_block.m_position);
+		if( blockIndex < m_block.m_index ) {
 #if 0	//	逆方向シーケンシャルアクセス頻度は低いのでコメントアウトしておく
 			if( blockIndex == m_blockIndex - 1 ) {
 				m_blockPosition -= m_blocks[--m_blockIndex].m_size;
 				return TextBlock(this, m_blockIndex, m_blockPosition);
 			}
 #endif
-			if( blockIndex <= m_blockIndex / 2 ) {
+			if( blockIndex <= m_block.m_index / 2 ) {
 				while( ix < blockIndex )
 					blockPosition += m_blocks[ix++].m_size;
 			} else {	//	中央より後ろの場合
-				blockPosition = m_blockPosition;
-				ix = m_blockIndex;
+				blockPosition = m_block.m_position;
+				ix = m_block.m_index;
 				while( ix > blockIndex )
 					blockPosition -= m_blocks[--ix].m_size;
 			}
-		} else {	//	m_blockIndex < blockIndex < m_blocks.size() の場合
-			if( blockIndex == m_blockIndex + 1 ) {
-				m_blockPosition += m_blocks[m_blockIndex++].m_size;
-				return TextBlock(this, m_blockIndex, m_blockPosition);
+		} else {	//	m_block.m_index < blockIndex < m_blocks.size() の場合
+			if( blockIndex == m_block.m_index + 1 ) {
+				m_block.m_position += m_blocks[m_block.m_index++].m_size;
+				return TextBlock(this, m_block);
 			}
-			if( blockIndex <= m_blockIndex + (m_blocks.size() - m_blockIndex) / 2 ) {
-				blockPosition = m_blockPosition;
-				ix = m_blockIndex;
+			if( blockIndex <= m_block.m_index + (m_blocks.size() - m_block.m_index) / 2 ) {
+				blockPosition = m_block.m_position;
+				ix = m_block.m_index;
 				while( ix < blockIndex )
 					blockPosition += m_blocks[ix++].m_size;
 			} else {	//	中央より後ろの場合
-				blockPosition = m_blockPosition;
-				ix = m_blockIndex;
+				blockPosition = m_block.m_position;
+				ix = m_block.m_index;
 				while( ix > blockIndex )
 					blockPosition -= m_blocks[--ix].m_size;
 			}
 		}
 	}
-	m_blockIndex = ix;
-	m_blockPosition = blockPosition;
+	m_block.m_index = ix;
+	m_block.m_position = blockPosition;
 	return TextBlock(this, ix, blockPosition);
 }
 

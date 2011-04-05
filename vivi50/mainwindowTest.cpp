@@ -421,4 +421,20 @@ void test_TextDocument()
 			ut.test_equal(i, block.blockNumber());
 		}
 	}
+	if( 1 ) {		//	findBlockByNumber() テスト、編集操作後
+		TextDocument doc;
+		TextCursor cur(&doc);		//	先頭位置
+		const QString text("123456789\n");
+		const int nLines = 100;
+		for(int i = 0; i < nLines; ++i)
+			cur.insertText(text);
+		TextBlock block = doc.findBlockByNumber(50);
+		ut.test_equal(50*10, block.position());
+		ut.test_equal(50, block.blockNumber());
+		cur.setPosition(0);
+		cur.insertText(text);		//	先頭に1行・10バイト挿入
+		block = doc.findBlockByNumber(50);
+		ut.test_equal(50*10, block.position());
+		ut.test_equal(50, block.blockNumber());
+	}
 }
