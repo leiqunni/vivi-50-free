@@ -58,20 +58,16 @@ void PlainTextEdit::onBlockCountChanged()
 
 void PlainTextEdit::paintEvent(QPaintEvent * event)
 {
-	qDebug() << verticalScrollBar()->value();
+	//qDebug() << verticalScrollBar()->value();
 
 	QWidget *vp = viewport();
-	QRect r = vp->rect();
+	QRect vr = vp->rect();
 	QPainter painter(vp);
-#if 0
-	painter.drawLine(0, 0, r.width(), r.height());
-	painter.drawLine(0, r.height(), r.width(), 0);
-#endif
 
 	int y = 0;
 	TextBlock block = m_textDocument->findBlockByNumber(verticalScrollBar()->value() / LINE_HEIGHT);
 	//TextBlock block = m_textDocument->firstBlock();
-	while( block.isValid() ) {
+	while( y < vr.height() && block.isValid() ) {
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
 			TextCursor cur(m_textDocument);
 			cur.setPosition(block.position());
