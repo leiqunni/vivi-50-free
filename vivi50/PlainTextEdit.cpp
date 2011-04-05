@@ -133,6 +133,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		block = block.next();
 		y += fm.lineSpacing();
 	}
+	m_lineNumberArea->update();
 }
 TextBlock PlainTextEdit::firstVisibleBlock()
 {
