@@ -66,21 +66,54 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 	QPainter painter(vp);
 
 	QFontMetrics fm = fontMetrics();
+	const int spaceWidth = fm.width(QChar(' '));
+	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
 
 	int y = 0;
 	TextBlock block = m_textDocument->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
 	//TextBlock block = m_textDocument->firstBlock();
 	while( y < vr.height() && block.isValid() ) {
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
-			TextCursor cur(m_textDocument);
-			cur.setPosition(block.position());
-			cur.setPosition(m_textCursor->position(), TextCursor::KeepAnchor);
-			const QString text = cur.selectedText();
-			QRect t = painter.fontMetrics().boundingRect(text);
-			painter.fillRect(QRect(t.width() + MARGIN_LEFT, y+2, 2, 14), Qt::red);
+			//TextCursor cur(m_textDocument);
+			//cur.setPosition(block.position());
+			//cur.setPosition(m_textCursor->position(), TextCursor::KeepAnchor);
+			//const QString text = cur.selectedText();
+			//QRect t = fm.boundingRect(text);
+			//painter.fillRect(QRect(t.width() + MARGIN_LEFT, y+2, 2, 14), Qt::red);
+			const QString text = block.text();
+			const index_t offset = qMin(m_textCursor->position() - block.position(),
+										(index_t)text.length());
+			int x = 0;
+			for(int ix = 0; ix < offset; ) {
+				if( text[ix] == '\t' ) {
+					++ix;
+					x = (x / tabWidth + 1) * tabWidth;
+				} else {
+					int first = ix;
+					while( ix < offset && text[ix] != '\t' )
+						++ix;
+					const QString buf = text.mid(first, ix - first);
+					x += fm.boundingRect(buf).width();
+				}
+			}
+			painter.fillRect(QRect(x + MARGIN_LEFT, y+2, 2, fm.height()), Qt::red);
 		}
 		const QString text = block.text();
-		painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
+		//painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
+		int x = 0;
+		for(int ix = 0; ix < text.length(); ) {
+			if( text[ix] == '\t' ) {
+				++ix;
+				x = (x / tabWidth + 1) * tabWidth;
+			} else {
+				int first = ix;
+				while( ix < text.length() && text[ix] != '\t' )
+					++ix;
+				const QString buf = text.mid(first, ix - first);
+				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), buf);
+				x += fm.boundingRect(buf).width();
+			}
+		}
 		block = block.next();
 		y += fm.lineSpacing();
 	}
