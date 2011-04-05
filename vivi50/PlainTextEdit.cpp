@@ -38,6 +38,8 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 	m_lineNumberWidth = fontMetrics().width('8') * 6;
 	m_lineNumberAreaWidth = fontMetrics().width('8') * 8;
 	setViewportMargins(m_lineNumberAreaWidth, 0, 0, 0);
+	m_lineNumberArea = new QWidget(this);
+	m_lineNumberArea->installEventFilter(this);
 
 	m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
 }
@@ -59,6 +61,8 @@ void PlainTextEdit::onBlockCountChanged()
 	verticalScrollBar()->setRange(0, m_document->blockCount() /** fm.lineSpacing()*/ - areaSize.height() / fm.lineSpacing());
 	//horizontalScrollBar()->setRange(0, widgetSize.width() - areaSize.width());
 	//updateWidgetPosition();
+
+	m_lineNumberArea->update();
 }
 
 void PlainTextEdit::paintEvent(QPaintEvent * event)
@@ -234,4 +238,54 @@ void PlainTextEdit::redo()
 	m_document->doRedo(pos);
 	m_textCursor->setPosition(pos);
 	viewport()->update();
+}
+void PlainTextEdit::resizeEvent(QResizeEvent *event)
+{
+	QAbstractScrollArea::resizeEvent(event);
+	updateLineNumberAreaSize();
+}
+void PlainTextEdit::updateLineNumberAreaSize()
+{
+	//QRect r = contentsRect();
+	QRect r = rect();
+	m_lineNumberArea->setGeometry(QRect(r.left(), r.top(), m_lineNumberAreaWidth, r.height()));
+}
+bool PlainTextEdit::eventFilter(QObject *obj, QEvent *event)
+{
+	if( obj == m_lineNumberArea && event->type() == QEvent::Paint ) {
+		drawLineNumbers();
+		return true;
+	}
+	return false;
+}
+void PlainTextEdit::drawLineNumbers()
+{
+	//qDebug() << "drawLineNumbers()";
+	QPainter painter(m_lineNumberArea);
+	painter.setPen(Qt::black);
+	QRect ar = m_lineNumberArea->rect();
+	painter.fillRect(ar, Qt::lightGray);
+	//const int ht = fontMetrics().height();
+	//QTextCursor cur = textCursor();
+	TextBlock block = firstVisibleBlock();
+    int lineNumber = block.blockNumber() + 1;
+	QFontMetrics fm = fontMetrics();
+    int y = 0;
+	while( block.isValid() && y < ar.height() ) {
+		QString number = QString::number(lineNumber);
+		painter.drawText(0, y, m_lineNumberWidth, fm.height(), Qt::AlignRight, number);
+#if 0
+		cur.setPosition(block.position());
+		QRect r = cursorRect(cur);
+		int y = r.bottom();
+	    //const int y = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
+	    //if( y >= ar.bottom() ) break;
+		QString number = QString::number(lineNumber);
+		painter.drawText(0, r.top(), m_lineNumberWidth, r.height(), Qt::AlignRight, number);
+	    if( y >= ar.bottom() ) break;
+#endif
+		++lineNumber;
+		block = block.next();
+		y += fm.lineSpacing();
+	}
 }
