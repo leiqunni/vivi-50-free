@@ -26,7 +26,7 @@
 #include	<QDebug>
 
 #define		MARGIN_LEFT		4
-#define		LINE_HEIGHT		20
+//#define		LINE_HEIGHT		20
 
 PlainTextEdit::PlainTextEdit(QWidget *parent)
 	: QAbstractScrollArea(parent)
@@ -45,13 +45,14 @@ PlainTextEdit::~PlainTextEdit()
 }
 void PlainTextEdit::onBlockCountChanged()
 {
+	QFontMetrics fm = fontMetrics();
 	QSize areaSize = viewport()->size();
 	//QSize  widgetSize = widget->size();
 
-	verticalScrollBar()->setPageStep(m_textDocument->blockCount() * LINE_HEIGHT);
-	verticalScrollBar()->setSingleStep(LINE_HEIGHT);
+	verticalScrollBar()->setPageStep(m_textDocument->blockCount() * fm.lineSpacing());
+	verticalScrollBar()->setSingleStep(fm.lineSpacing());
 	//horizontalScrollBar()->setPageStep(widgetSize.width());
-	verticalScrollBar()->setRange(0, m_textDocument->blockCount() * LINE_HEIGHT - areaSize.height());
+	verticalScrollBar()->setRange(0, m_textDocument->blockCount() * fm.lineSpacing() - areaSize.height());
 	//horizontalScrollBar()->setRange(0, widgetSize.width() - areaSize.width());
 	//updateWidgetPosition();
 }
@@ -64,8 +65,10 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 	QRect vr = vp->rect();
 	QPainter painter(vp);
 
+	QFontMetrics fm = fontMetrics();
+
 	int y = 0;
-	TextBlock block = m_textDocument->findBlockByNumber(verticalScrollBar()->value() / LINE_HEIGHT);
+	TextBlock block = m_textDocument->findBlockByNumber(verticalScrollBar()->value() / fm.lineSpacing());
 	//TextBlock block = m_textDocument->firstBlock();
 	while( y < vr.height() && block.isValid() ) {
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
@@ -77,9 +80,9 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 			painter.fillRect(QRect(t.width() + MARGIN_LEFT, y+2, 2, 14), Qt::red);
 		}
 		const QString text = block.text();
-		painter.drawText(MARGIN_LEFT, y + 16, text);
+		painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
 		block = block.next();
-		y += LINE_HEIGHT;
+		y += fm.lineSpacing();
 	}
 }
 void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )

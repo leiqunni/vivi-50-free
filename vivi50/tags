@@ -39,7 +39,6 @@ GVUndoMgr	.\TextDocument.h	/^class GVUndoMgr$/;"	c
 GV_USE_ITR_FACADE	.\gap_vector.h	12;"	d
 INVALID_INDEX	.\TextDocument.h	166;"	d
 KeepAnchor	.\TextDocument.h	/^		KeepAnchor,$/;"	e	enum:TextCursor::__anon3
-LINE_HEIGHT	.\PlainTextEdit.cpp	29;"	d	file:
 Left	.\TextDocument.h	/^		Left,$/;"	e	enum:TextCursor::__anon4
 MAINWINDOW_H	.\mainwindow.h	24;"	d
 MARGIN_LEFT	.\PlainTextEdit.cpp	28;"	d	file:
