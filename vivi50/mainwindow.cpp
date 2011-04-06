@@ -36,6 +36,13 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 	pMainWindow = this;
 	init();
 }
+MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)
+	: QMainWindow(parent, flags)
+{
+	init();
+	if( !fileName.isEmpty() )
+		loadFile(fileName);
+}
 
 MainWindow::~MainWindow()
 {
@@ -44,6 +51,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
+	m_isUntitled = true;
+	m_isModified = false;
 	m_editor = new PlainTextEdit;
 	setCentralWidget(m_editor);
 
@@ -297,7 +306,6 @@ void MainWindow::open(const QString &fileName)
 		{
 			loadFile(fileName);
 		} else {
-#if 0
 			MainWindow *other = new MainWindow(fileName);
 			if( other->m_isUntitled ) {
 				delete other;
@@ -305,7 +313,6 @@ void MainWindow::open(const QString &fileName)
 			}
 			other->move(x() + 40, y() + 40);
 			other->show();
-#endif
 		}
 	}
 }

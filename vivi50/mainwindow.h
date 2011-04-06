@@ -37,6 +37,7 @@ class MainWindow : public QMainWindow
 
 public:
 	MainWindow(QWidget *parent = 0, Qt::WFlags flags = 0);
+    MainWindow(const QString &fileName, QWidget *parent = 0, Qt::WFlags flags = 0);
 	~MainWindow();
 
 public:

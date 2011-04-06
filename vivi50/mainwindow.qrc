@@ -13,5 +13,6 @@
         <file>Resources/images/momoshiki.png</file>
         <file>Resources/images/Checkmark.png</file>
         <file>Resources/images/Clock.png</file>
+        <file>Resources/images/stopwatch.png</file>
     </qresource>
 </RCC>
