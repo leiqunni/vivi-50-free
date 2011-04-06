@@ -78,6 +78,7 @@ private slots:
     void	openRecentFile();
 	void	doJump(int lineNum);
     void	showAboutDlg();
+	void	showMessage(const QString & text);
 	void doUnitTest();
 	void doBenchmark();
 

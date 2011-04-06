@@ -55,6 +55,7 @@ protected:
 	void	paintEvent(QPaintEvent * event);
     void	keyPressEvent ( QKeyEvent * keyEvent );
 	void	wheelEvent ( QWheelEvent * event );
+    void	focusInEvent ( QFocusEvent * event );
     void	resizeEvent ( QResizeEvent * event );
 	void	updateLineNumberAreaSize();
 	void	drawLineNumbers();
@@ -65,6 +66,9 @@ protected:
 
 protected slots:
 	void	onBlockCountChanged();
+
+signals:
+	void	showMessage(const QString &);
 
 private:
 	TextDocument	*m_document;

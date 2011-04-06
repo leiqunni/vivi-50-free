@@ -35,5 +35,5 @@ memFileColumnWd = 320
   charEncoding.cpp	(369,-63)
   charEncoding.h	(369,-96)
 [ToDo]
-  "PlainTextEdit.cpp" 100 'R: ' '' undone カーソル位置座標計算はどこかにまとめる
+  "PlainTextEdit.cpp" 104 'R: ' '' undone カーソル位置座標計算はどこかにまとめる
   "TextDocument.cpp" 226 'M: ' '' undone 不要なヒープの解放

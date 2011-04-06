@@ -72,6 +72,16 @@ void PlainTextEdit::onBlockCountChanged()
 
 	m_lineNumberArea->update();
 }
+void PlainTextEdit::focusInEvent ( QFocusEvent * event )
+{
+	QAbstractScrollArea::focusInEvent( event );
+	const QString fullPath = document()->fullPath();
+	if( !fullPath.isEmpty() ) {
+		QDir dir(fullPath);
+		dir.cdUp();
+		QDir::setCurrent(dir.path());
+	}
+}
 
 void PlainTextEdit::paintEvent(QPaintEvent * event)
 {
@@ -232,7 +242,7 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		viewport()->update();
 		return;
 	case Qt::Key_Escape:
-		//	‚Æ‚è‚ ‚¦‚¸–³Ž‹
+		emit showMessage( QDir::currentPath() );
 		return;
 	}
 	QString text = keyEvent->text();

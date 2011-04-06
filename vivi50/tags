@@ -174,8 +174,8 @@ dereference	.\gap_vector.h	/^	Type dereference() const { return *m_ptr; }$/;"	f	
 difference_type	.\gap_vector.h	/^	typedef int difference_type;		\/\/	ギャップが無いとみなした場合のインデックス差$/;"	t	class:std::gap_vector
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Const_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Const_Iterator
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Iterator
-doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doJump	.\PlainTextEdit.cpp	/^void PlainTextEdit::doJump(int lineNum)$/;"	f	class:PlainTextEdit
+doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
 doRedo	.\TextDocument.h	/^	void	doRedo()$/;"	f	class:TextDocument
 doRedo	.\TextDocument.h	/^	void	doRedo(index_t &pos) { m_undoMgr.doRedo(this, pos); }$/;"	f	class:TextDocument
@@ -218,6 +218,8 @@ findMainWindow	.\mainwindow.cpp	/^MainWindow *MainWindow::findMainWindow(const Q
 firstBlock	.\TextDocument.h	/^	TextBlock	firstBlock() { return TextBlock(this, 0); }$/;"	f	class:TextDocument
 firstBlock	.\TextDocument.h	/^	TextBlock	firstBlock() { return TextBlock(this, 0, 0); }$/;"	f	class:TextDocument
 firstVisibleBlock	.\PlainTextEdit.cpp	/^TextBlock PlainTextEdit::firstVisibleBlock()$/;"	f	class:PlainTextEdit
+focusInEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::focusInEvent ( QFocusEvent * event )$/;"	f	class:PlainTextEdit
+fullPath	.\TextDocument.h	/^	const QString fullPath() const { return m_fullPath; }$/;"	f	class:TextDocument
 g_total_fail_count	.\unit_test.cpp	/^uint g_total_fail_count = 0;$/;"	v
 g_total_test_count	.\unit_test.cpp	/^uint g_total_test_count = 0;$/;"	v
 g_ut_output	.\unit_test.cpp	/^OutputFunc g_ut_output = &ut_output;$/;"	v
@@ -287,6 +289,7 @@ m_fileName	.\unit_test.h	/^	QString		m_fileName;$/;"	m	struct:SFailedInfo
 m_first	.\TextDocument.h	/^	const index_t	m_first;$/;"	m	struct:GVUndoItem
 m_first	.\gap_vector.h	/^	pointer	m_first;		\/\/   ↓first   ↓gapBegi n   ↓gapEnd        ↓m_last$/;"	m	class:std::gap_vector
 m_flags	.\TextDocument.h	/^	short	m_flags;$/;"	m	struct:GVUndoItem
+m_fullPath	.\TextDocument.h	/^	QString	m_fullPath;$/;"	m	class:TextDocument
 m_gapBegin	.\gap_vector.h	/^	const_pointer m_gapBegin;$/;"	m	class:std::_Gap_Vector_Const_Iterator
 m_gapBegin	.\gap_vector.h	/^	pointer	m_gapBegin;		\/\/	┌────┬──────┬───────┐  $/;"	m	class:std::gap_vector
 m_gapBegin	.\gap_vector.h	/^	pointer m_gapBegin;$/;"	m	class:std::_Gap_Vector_Iterator
@@ -400,11 +403,13 @@ setCharEncodeing	.\TextDocument.h	/^	void	setCharEncodeing(uchar ce) { m_charEnc
 setCurrentFile	.\mainwindow.cpp	/^void MainWindow::setCurrentFile(const QString &fileName)$/;"	f	class:MainWindow
 setFontFamily	.\PlainTextEdit.cpp	/^void PlainTextEdit::setFontFamily(const QString &name)$/;"	f	class:PlainTextEdit
 setFontPointSize	.\PlainTextEdit.cpp	/^void PlainTextEdit::setFontPointSize(int sz)$/;"	f	class:PlainTextEdit
+setFullPath	.\TextDocument.h	/^	void	setFullPath(const QString &fullPath) { m_fullPath = fullPath; }$/;"	f	class:TextDocument
 setPlainText	.\TextDocument.cpp	/^void TextDocument::setPlainText(const QString &text)$/;"	f	class:TextDocument
 setPosition	.\TextDocument.cpp	/^void TextCursor::setPosition(index_t position, uchar mode)$/;"	f	class:TextCursor
 setWithBOM	.\TextDocument.h	/^	void	setWithBOM(bool b) { m_withBOM = b; }$/;"	f	class:TextDocument
 setupUi	.\GeneratedFiles\ui_mainwindow.h	/^    void setupUi(QMainWindow *MainWindowClass)$/;"	f	class:Ui_MainWindowClass
 showAboutDlg	.\mainwindow.cpp	/^void MainWindow::showAboutDlg()$/;"	f	class:MainWindow
+showMessage	.\mainwindow.cpp	/^void MainWindow::showMessage(const QString & text)$/;"	f	class:MainWindow
 size	.\TextDocument.h	/^	size_t	size() const { return m_buffer.size(); }$/;"	f	class:TextDocument
 size	.\TextDocument.cpp	/^uint TextBlock::size() const$/;"	f	class:TextBlock
 size	.\gap_vector.h	/^	size_type	size() const { return !m_first ? 0 : (m_gapBegin - m_first) + (m_last - m_gapEnd); }$/;"	f	class:std::gap_vector

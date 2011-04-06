@@ -56,6 +56,8 @@ void MainWindow::init()
 	m_editor = new PlainTextEdit;
 	setCentralWidget(m_editor);
 
+	connect(m_editor, SIGNAL(showMessage(const QString &)), this, SLOT(showMessage(const QString &)));
+
 	createActions();
 	createMenus();
 	createToolBars();
@@ -308,6 +310,7 @@ void MainWindow::setCurrentFile(const QString &fileName)
         m_curFile.clear();
         updateCurFile();
     } else {
+    	m_editor->document()->setFullPath(fileName);
         m_curFile = QFileInfo(fileName).canonicalFilePath();
     }
     setWindowModified(false);
@@ -352,9 +355,10 @@ void MainWindow::open(const QString &fileName)
 }
 void MainWindow::open()
 {
+	const QString dir = QDir::currentPath();
 	QString fileName = QFileDialog::getOpenFileName(this,
 										tr("Select one or more files to open"),
-										"",
+										dir,
 										"*.*");
 	//setDefaultSuffix("svg");
 	if( !fileName.isEmpty()) {
@@ -394,6 +398,15 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
 
 	setCurrentFile(fileName);
 	statusBar()->showMessage(tr("File loaded"), 2000);
+}
+void MainWindow::showMessage(const QString & text)
+{
+	//qDebug() << "MainWindow::showMessage()";
+	//if( m_viEngine->mode() != CMDLINE ) {
+		//m_cmdLineEdit->hide();
+		//qDebug() << "text = " << text;
+		statusBar()->showMessage(text);
+	//}
 }
 void MainWindow::showAboutDlg()
 {

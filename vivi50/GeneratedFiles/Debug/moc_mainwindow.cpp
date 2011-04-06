@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Wed Apr 6 12:41:46 2011
+** Created: Wed Apr 6 14:27:30 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,8 +37,9 @@ static const uint qt_meta_data_MainWindow[] = {
       43,   11,   11,   11, 0x08,
       68,   60,   11,   11, 0x08,
       80,   11,   11,   11, 0x08,
-      95,   11,   11,   11, 0x08,
-     108,   11,   11,   11, 0x08,
+     100,   95,   11,   11, 0x08,
+     121,   11,   11,   11, 0x08,
+     134,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -46,7 +47,8 @@ static const uint qt_meta_data_MainWindow[] = {
 static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0newFile()\0open()\0open(QString)\0"
     "openRecentFile()\0lineNum\0doJump(int)\0"
-    "showAboutDlg()\0doUnitTest()\0doBenchmark()\0"
+    "showAboutDlg()\0text\0showMessage(QString)\0"
+    "doUnitTest()\0doBenchmark()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -84,11 +86,12 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: openRecentFile(); break;
         case 4: doJump((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 5: showAboutDlg(); break;
-        case 6: doUnitTest(); break;
-        case 7: doBenchmark(); break;
+        case 6: showMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 7: doUnitTest(); break;
+        case 8: doBenchmark(); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

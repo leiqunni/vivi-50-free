@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'PlainTextEdit.h'
 **
-** Created: Wed Apr 6 10:25:23 2011
+** Created: Wed Apr 6 14:27:29 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,29 +23,33 @@ static const uint qt_meta_data_PlainTextEdit[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      15,   14,   14,   14, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      15,   14,   14,   14, 0x0a,
-      23,   14,   14,   14, 0x0a,
-      30,   14,   14,   14, 0x0a,
-      37,   14,   14,   14, 0x0a,
-      59,   14,   14,   14, 0x0a,
-      82,   14,   14,   14, 0x0a,
-     103,   14,   14,   14, 0x09,
+      36,   14,   14,   14, 0x0a,
+      44,   14,   14,   14, 0x0a,
+      51,   14,   14,   14, 0x0a,
+      58,   14,   14,   14, 0x0a,
+      80,   14,   14,   14, 0x0a,
+     103,   14,   14,   14, 0x0a,
+     124,   14,   14,   14, 0x09,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_PlainTextEdit[] = {
-    "PlainTextEdit\0\0paste()\0undo()\0redo()\0"
-    "setFontPointSize(int)\0setFontFamily(QString)\0"
-    "makeFontBigger(bool)\0onBlockCountChanged()\0"
+    "PlainTextEdit\0\0showMessage(QString)\0"
+    "paste()\0undo()\0redo()\0setFontPointSize(int)\0"
+    "setFontFamily(QString)\0makeFontBigger(bool)\0"
+    "onBlockCountChanged()\0"
 };
 
 const QMetaObject PlainTextEdit::staticMetaObject = {
@@ -77,17 +81,25 @@ int PlainTextEdit::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: paste(); break;
-        case 1: undo(); break;
-        case 2: redo(); break;
-        case 3: setFontPointSize((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 4: setFontFamily((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: makeFontBigger((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 6: onBlockCountChanged(); break;
+        case 0: showMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 1: paste(); break;
+        case 2: undo(); break;
+        case 3: redo(); break;
+        case 4: setFontPointSize((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: setFontFamily((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 6: makeFontBigger((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 7: onBlockCountChanged(); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
+}
+
+// SIGNAL 0
+void PlainTextEdit::showMessage(const QString & _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE

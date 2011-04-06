@@ -353,6 +353,7 @@ public:
 	~TextDocument();
 
 public:
+	const QString fullPath() const { return m_fullPath; }
 	bool	isEmpty() const { return m_buffer.empty(); }
 	size_t	size() const { return m_buffer.size(); }
 	size_t	blockCount() const { return m_blocks.size(); }
@@ -373,6 +374,8 @@ public:
 public:
 	void	init();
 	void	clear() { init(); }
+
+	void	setFullPath(const QString &fullPath) { m_fullPath = fullPath; }
 
 #if BLOCK_HAS_SIZE
 	TextBlock	firstBlock() { return TextBlock(this, 0, 0); }
@@ -446,6 +449,7 @@ private:
 	index_t	findBlockIndex(index_t first, index_t last, index_t val) const;
 
 private:
+	QString	m_fullPath;
 	uchar	m_charEncoding;
 	bool	m_withBOM;
 	mutable std::gap_vector<uchar>	m_buffer;
