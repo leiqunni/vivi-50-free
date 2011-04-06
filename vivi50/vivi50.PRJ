@@ -15,23 +15,25 @@ memFileColumnWd = 320
 #define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define GV_USE_ITR_FACADE 1
 #define BLOCK_HAS_SIZE 1
+#define GV_USE_ITR_FACADE 1
 [globalMarks]
 [files]
-* gap_vector.h	(47,324)
-* main.cpp	(-153,-353)
-* mainwindow.cpp	(120,-227)
+  gap_vector.h	(47,324)
+  main.cpp	(-153,-353)
+* mainwindow.cpp	(120,-226)
 * mainwindow.h	(120,-260)
-* PlainTextEdit.cpp	(-174,-23)
-* PlainTextEdit.h	(-174,-56)
+  PlainTextEdit.cpp	(-174,-23)
+  PlainTextEdit.h	(-174,-56)
   TextDocument.cpp	(3,164)
-* TextDocument.h	(3,131)
+  TextDocument.h	(3,131)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(37,-367)
-* mainwindowBench.cpp	(120,-194)
-* unit_test.cpp	(284,61)
-* unit_test.h	(284,28)
-* mainwindowTest.cpp	(120,-161)
+  mainwindowBench.cpp	(120,-194)
+  unit_test.cpp	(284,61)
+  unit_test.h	(284,28)
+  mainwindowTest.cpp	(120,-161)
+  charEncoding.cpp	(369,-63)
+  charEncoding.h	(369,-96)
 [ToDo]
   "PlainTextEdit.cpp" 92 'R: ' '' undone カーソル位置座標計算はどこかにまとめる
   "TextDocument.cpp" 226 'M: ' '' undone 不要なヒープの解放

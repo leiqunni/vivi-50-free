@@ -52,6 +52,8 @@ protected:
 	bool	saveFile(const QString &fileName, bool = true);
 	void	loadFile(const QString &fileName, int lineNum = 1);
     void	setCurrentFile(const QString &fileName);
+    void	updateRecentFileActions();
+    QString strippedName(const QString &fullFileName);
 
 private:
     void init();
@@ -73,7 +75,7 @@ private slots:
 	//void	closeAll();
 	void	open(const QString &);
 	//void	save(const QString &);
-    //void	openRecentFile();
+    void	openRecentFile();
 	void	doJump(int lineNum);
     void	showAboutDlg();
 	void doUnitTest();
@@ -105,6 +107,10 @@ private:
 
     QAction	*unitTestAct;
     QAction	*benchmarkAct;
+
+    QAction *separatorMRUAct;
+    enum { MaxRecentFiles = 10 };
+    QAction *recentFileActs[MaxRecentFiles];
 };
 
 #endif // MAINWINDOW_H

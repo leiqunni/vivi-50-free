@@ -49,6 +49,7 @@ MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^    class MainWindowClass: public Ui_MainWindowClass {};$/;"	c	namespace:Ui
+MaxRecentFiles	.\mainwindow.h	/^    enum { MaxRecentFiles = 10 };$/;"	e	enum:MainWindow::__anon1
 MoveAnchor	.\TextDocument.h	/^		MoveAnchor = 0,$/;"	e	enum:TextCursor::__anon3
 NoMove	.\TextDocument.h	/^		NoMove = 0,$/;"	e	enum:TextCursor::__anon4
 OutputFunc	.\unit_test.h	/^typedef void (*OutputFunc)(const QString &);$/;"	t
@@ -173,8 +174,8 @@ dereference	.\gap_vector.h	/^	Type dereference() const { return *m_ptr; }$/;"	f	
 difference_type	.\gap_vector.h	/^	typedef int difference_type;		\/\/	ギャップが無いとみなした場合のインデックス差$/;"	t	class:std::gap_vector
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Const_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Const_Iterator
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Iterator
-doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doJump	.\PlainTextEdit.cpp	/^void PlainTextEdit::doJump(int lineNum)$/;"	f	class:PlainTextEdit
+doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
 doRedo	.\TextDocument.h	/^	void	doRedo()$/;"	f	class:TextDocument
 doRedo	.\TextDocument.h	/^	void	doRedo(index_t &pos) { m_undoMgr.doRedo(this, pos); }$/;"	f	class:TextDocument
@@ -186,8 +187,8 @@ doUnitTest	.\mainwindowTest.cpp	/^void MainWindow::doUnitTest()$/;"	f	class:Main
 do_erase	.\TextDocument.cpp	/^void TextDocument::do_erase(index_t first, index_t last)$/;"	f	class:TextDocument
 do_insert	.\TextDocument.cpp	/^void TextDocument::do_insert(index_t position, const QString &text)$/;"	f	class:TextDocument
 do_replace	.\TextDocument.cpp	/^void TextDocument::do_replace(index_t first, index_t last, const QString &text)$/;"	f	class:TextDocument
-document	.\TextDocument.h	/^	TextDocument	*document() const { return m_document; }$/;"	f	class:TextCursor
 document	.\PlainTextEdit.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:PlainTextEdit
+document	.\TextDocument.h	/^	TextDocument	*document() const { return m_document; }$/;"	f	class:TextCursor
 drawLineNumbers	.\PlainTextEdit.cpp	/^void PlainTextEdit::drawLineNumbers()$/;"	f	class:PlainTextEdit
 editMenu	.\mainwindow.h	/^    QMenu	*editMenu;$/;"	m	class:MainWindow
 empty	.\gap_vector.h	/^	bool	empty() const { return !m_first || m_first == m_gapBegin && m_gapEnd == m_last; }$/;"	f	class:std::gap_vector
@@ -277,9 +278,9 @@ m_buffer	.\TextDocument.h	/^	mutable std::gap_vector<uchar>	m_buffer;$/;"	m	clas
 m_charEncoding	.\TextDocument.h	/^	uchar	m_charEncoding;$/;"	m	class:TextDocument
 m_curFile	.\mainwindow.h	/^	QString	m_curFile;$/;"	m	class:MainWindow
 m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	オブジェクトを次に入れる位置（0..*）$/;"	m	class:GVUndoMgr
+m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextBlock
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextCursor
-m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_editor	.\mainwindow.h	/^	PlainTextEdit	*m_editor;$/;"	m	class:MainWindow
 m_failCount	.\unit_test.h	/^	int		m_failCount;		\/\/	失敗回数$/;"	m	class:CUnitTest
 m_fileName	.\unit_test.h	/^	QString		m_fileName;$/;"	m	struct:SFailedInfo
@@ -323,6 +324,7 @@ m_unitName	.\unit_test.h	/^	QString	m_unitName;$/;"	m	class:CUnitTest
 m_withBOM	.\TextDocument.h	/^	bool	m_withBOM;$/;"	m	class:TextDocument
 main	.\main.cpp	/^int main(int argc, char *argv[])$/;"	f
 mainToolBar	.\GeneratedFiles\ui_mainwindow.h	/^    QToolBar *mainToolBar;$/;"	m	class:Ui_MainWindowClass
+makeFontBigger	.\PlainTextEdit.cpp	/^void PlainTextEdit::makeFontBigger(bool bigger)$/;"	f	class:PlainTextEdit
 menuBar	.\GeneratedFiles\ui_mainwindow.h	/^    QMenuBar *menuBar;$/;"	m	class:Ui_MainWindowClass
 metaObject	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^const QMetaObject *PlainTextEdit::metaObject() const$/;"	f	class:PlainTextEdit
 metaObject	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^const QMetaObject *TextDocument::metaObject() const$/;"	f	class:TextDocument
@@ -338,9 +340,11 @@ n_test	.\unit_test.cpp	/^	size_t n_test = 0;			\/\/	トータルテスト回数$/;"	v
 newAct	.\mainwindow.h	/^	QAction *newAct;$/;"	m	class:MainWindow
 next	.\TextDocument.cpp	/^TextBlock TextBlock::next() const$/;"	f	class:TextBlock
 onBlockCountChanged	.\PlainTextEdit.cpp	/^void PlainTextEdit::onBlockCountChanged()$/;"	f	class:PlainTextEdit
+onFontChanged	.\PlainTextEdit.cpp	/^void PlainTextEdit::onFontChanged()$/;"	f	class:PlainTextEdit
 open	.\mainwindow.cpp	/^void MainWindow::open()$/;"	f	class:MainWindow
 open	.\mainwindow.cpp	/^void MainWindow::open(const QString &fileName)$/;"	f	class:MainWindow
 openAct	.\mainwindow.h	/^	QAction *openAct;$/;"	m	class:MainWindow
+openRecentFile	.\mainwindow.cpp	/^void MainWindow::openRecentFile()$/;"	f	class:MainWindow
 operator !=	.\TextDocument.h	/^	bool	operator!=(const TextBlock &x) const$/;"	f	class:TextBlock
 operator =	.\unit_test.h	/^	const SFailedInfo &operator=(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
 operator =	.\gap_vector.h	/^	gap_vector &operator=(const gap_vector &x)$/;"	f	class:std::gap_vector
@@ -379,6 +383,7 @@ qt_resource_data	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned cha
 qt_resource_name	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned char qt_resource_name[] = {$/;"	v	file:
 qt_resource_struct	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned char qt_resource_struct[] = {$/;"	v	file:
 readSettings	.\mainwindow.cpp	/^void MainWindow::readSettings()$/;"	f	class:MainWindow
+recentFileActs	.\mainwindow.h	/^    QAction *recentFileActs[MaxRecentFiles];$/;"	m	class:MainWindow
 redo	.\PlainTextEdit.cpp	/^void PlainTextEdit::redo()$/;"	f	class:PlainTextEdit
 redoAct	.\mainwindow.h	/^    QAction *redoAct;$/;"	m	class:MainWindow
 reference	.\gap_vector.h	/^	typedef Type& reference;$/;"	t	class:std::gap_vector
@@ -389,8 +394,11 @@ retranslateUi	.\GeneratedFiles\ui_mainwindow.h	/^    void retranslateUi(QMainWin
 saveAct	.\mainwindow.h	/^	QAction *saveAct;$/;"	m	class:MainWindow
 saveAsAct	.\mainwindow.h	/^	QAction *saveAsAct;$/;"	m	class:MainWindow
 selectedText	.\TextDocument.cpp	/^QString TextCursor::selectedText() const$/;"	f	class:TextCursor
+separatorMRUAct	.\mainwindow.h	/^    QAction *separatorMRUAct;$/;"	m	class:MainWindow
 setCharEncodeing	.\TextDocument.h	/^	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }$/;"	f	class:TextDocument
 setCurrentFile	.\mainwindow.cpp	/^void MainWindow::setCurrentFile(const QString &fileName)$/;"	f	class:MainWindow
+setFontFamily	.\PlainTextEdit.cpp	/^void PlainTextEdit::setFontFamily(const QString &name)$/;"	f	class:PlainTextEdit
+setFontPointSize	.\PlainTextEdit.cpp	/^void PlainTextEdit::setFontPointSize(int sz)$/;"	f	class:PlainTextEdit
 setPlainText	.\TextDocument.cpp	/^void TextDocument::setPlainText(const QString &text)$/;"	f	class:TextDocument
 setPosition	.\TextDocument.cpp	/^void TextCursor::setPosition(index_t position, uchar mode)$/;"	f	class:TextCursor
 setWithBOM	.\TextDocument.h	/^	void	setWithBOM(bool b) { m_withBOM = b; }$/;"	f	class:TextDocument
@@ -405,6 +413,7 @@ staticMetaObject	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^const QMetaObject
 staticMetaObject	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^const QMetaObject MainWindow::staticMetaObject = {$/;"	m	class:MainWindow	file:
 statusBar	.\GeneratedFiles\ui_mainwindow.h	/^    QStatusBar *statusBar;$/;"	m	class:Ui_MainWindowClass
 std	.\gap_vector.h	/^namespace std {$/;"	n
+strippedName	.\mainwindow.cpp	/^QString MainWindow::strippedName(const QString &fullFileName)$/;"	f	class:MainWindow
 swapPositionAnchor	.\TextDocument.cpp	/^void TextCursor::swapPositionAnchor()$/;"	f	class:TextCursor
 test	.\unit_test.h	46;"	d
 test_TextDocument	.\mainwindowTest.cpp	/^void test_TextDocument()$/;"	f
@@ -426,11 +435,13 @@ updateBlocksAtInsert	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtInser
 updateBlocksAtInsert	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtInsert(index_t first, size_t sz)$/;"	f	class:TextDocument
 updateCurFile	.\mainwindow.cpp	/^void MainWindow::updateCurFile()$/;"	f	class:MainWindow
 updateLineNumberAreaSize	.\PlainTextEdit.cpp	/^void PlainTextEdit::updateLineNumberAreaSize()$/;"	f	class:PlainTextEdit
+updateRecentFileActions	.\mainwindow.cpp	/^void MainWindow::updateRecentFileActions()$/;"	f	class:MainWindow
 updateWindowTitle	.\mainwindow.cpp	/^void MainWindow::updateWindowTitle()$/;"	f	class:MainWindow
 ut_output	.\unit_test.cpp	/^void ut_output(const QString &mess)$/;"	f
 ut_set_output	.\unit_test.cpp	/^void ut_set_output(OutputFunc f)$/;"	f
 value_type	.\gap_vector.h	/^	typedef Type value_type;$/;"	t	class:std::gap_vector
 viewMenu	.\mainwindow.h	/^    QMenu	*viewMenu;$/;"	m	class:MainWindow
+wheelEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::wheelEvent ( QWheelEvent * event )$/;"	f	class:PlainTextEdit
 writeSettings	.\mainwindow.cpp	/^void MainWindow::writeSettings()$/;"	f	class:MainWindow
 ~CUnitTest	.\unit_test.cpp	/^CUnitTest::~CUnitTest(void)$/;"	f	class:CUnitTest
 ~GVUndoMgr	.\TextDocument.h	/^	~GVUndoMgr()$/;"	f	class:GVUndoMgr

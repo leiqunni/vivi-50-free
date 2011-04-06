@@ -45,15 +45,20 @@ public slots:
 	void	paste();
 	void	undo();
 	void	redo();
+	void	setFontPointSize(int);
+	void	setFontFamily(const QString &);
+	void	makeFontBigger(bool);
 
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);
 	bool	event ( QEvent * event );
 	void	paintEvent(QPaintEvent * event);
     void	keyPressEvent ( QKeyEvent * keyEvent );
+	void	wheelEvent ( QWheelEvent * event );
     void	resizeEvent ( QResizeEvent * event );
 	void	updateLineNumberAreaSize();
 	void	drawLineNumbers();
+	void	onFontChanged();
 
     TextBlock	firstVisibleBlock();
     void	ensureCursorVisible();

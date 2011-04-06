@@ -93,7 +93,7 @@ void MainWindow::createActions()
 	closeAllAct->setStatusTip(tr("Close all documents"));
 	connect(closeAllAct, SIGNAL(triggered()), this, SLOT(closeAllViews()));
 
-#if 0
+#if 1
     //	RecentFilesMenu のための初期化
     for (int i = 0; i < MaxRecentFiles; ++i) {
         recentFileActs[i] = new QAction(this);
@@ -149,7 +149,7 @@ void MainWindow::createMenus()
 	fileMenu->addAction(newAct);
 	fileMenu->addAction(openAct);
 	fileMenu->addAction(saveAct);
-#if 0
+#if 1
     separatorMRUAct = fileMenu->addSeparator();
     //	RecentFilesMenu アイテム追加
     for (int i = 0; i < MaxRecentFiles; ++i)
@@ -240,6 +240,34 @@ void MainWindow::doOutput(const QString &text)
 	output->setTextCursor(cur);
 	output->viewport()->repaint();		//	強制再描画
 }
+//	settings から RecentFile 情報を取り出し、recentFileActs に設定
+void MainWindow::updateRecentFileActions()
+{
+    QSettings settings;
+    QStringList files = settings.value("recentFileList").toStringList();
+    int numRecentFiles = qMin(files.size(), (int)MaxRecentFiles);
+    for (int i = 0; i < numRecentFiles; ++i) {
+        QString text = tr("&%1 %2").arg((i + 1) % 10).arg(strippedName(files[i]));
+        recentFileActs[i]->setText(text);
+        recentFileActs[i]->setStatusTip(files[i]);
+        recentFileActs[i]->setData(files[i]);
+        recentFileActs[i]->setVisible(true);
+    }
+    for (int j = numRecentFiles; j < MaxRecentFiles; ++j)
+        recentFileActs[j]->setVisible(false);
+
+    separatorMRUAct->setVisible(numRecentFiles > 0);
+}
+QString MainWindow::strippedName(const QString &fullFileName)
+{
+    return QFileInfo(fullFileName).fileName();
+}
+void MainWindow::openRecentFile()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+        loadFile(action->data().toString());
+}
 void MainWindow::doJump(int lineNum)
 {
 	if( lineNum && m_editor != 0 )
@@ -285,7 +313,7 @@ void MainWindow::setCurrentFile(const QString &fileName)
     setWindowModified(false);
     updateWindowTitle();
 
-#if 0
+#if 1
     QSettings settings;
     QStringList files = settings.value("recentFileList").toStringList();
     files.removeAll(fileName);

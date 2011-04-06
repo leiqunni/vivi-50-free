@@ -31,15 +31,15 @@
 PlainTextEdit::PlainTextEdit(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
+
 	m_document = new TextDocument();
 	m_textCursor = new TextCursor(m_document);
 	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
 
-	m_lineNumberWidth = fontMetrics().width('8') * 6;
-	m_lineNumberAreaWidth = fontMetrics().width('8') * 8;
-	setViewportMargins(m_lineNumberAreaWidth, 0, 0, 0);
 	m_lineNumberArea = new QWidget(this);
 	m_lineNumberArea->installEventFilter(this);
+	setFontPointSize(11);
+	//onFontChanged();
 
 	//m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
 }
@@ -48,6 +48,14 @@ PlainTextEdit::~PlainTextEdit()
 {
 	delete m_document;
 	delete m_textCursor;
+}
+void PlainTextEdit::onFontChanged()
+{
+	//setTabStopWidth(fontMetrics().width('>') * 4);		//	tab 4
+	m_lineNumberWidth = fontMetrics().width('8') * 6;
+	m_lineNumberAreaWidth = fontMetrics().width('8') * 8;
+	setViewportMargins(m_lineNumberAreaWidth, 0, 0, 0);
+	updateLineNumberAreaSize();
 }
 void PlainTextEdit::onBlockCountChanged()
 {
@@ -232,6 +240,38 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		m_textCursor->insertText(text);
 		viewport()->update();
 	}
+}
+void PlainTextEdit::wheelEvent ( QWheelEvent * event )
+{
+	Qt::KeyboardModifiers mod = event->modifiers ();
+	if( (mod & Qt::ControlModifier) != 0 ) {
+		makeFontBigger(event->delta() > 0);
+	} else
+		QAbstractScrollArea::wheelEvent(event);
+}
+void PlainTextEdit::makeFontBigger(bool bigger)
+{
+	int sz = font().pointSize();
+	if( bigger )
+		++sz;
+	else if( !--sz ) return;
+	setFontPointSize(sz);
+}
+void PlainTextEdit::setFontPointSize(int sz)
+{
+	QFont ft = font();
+	ft.setPointSize(sz);
+	setFont(ft);
+	onFontChanged();
+	//emit showMessage(QString(tr("fontSize:%1").arg(sz)));
+}
+void PlainTextEdit::setFontFamily(const QString &name)
+{
+	QFont ft = font();
+	ft.setFamily(name);
+	setFont(ft);
+	onFontChanged();
+	//emit showMessage(QString(tr("fontSize:%1").arg(sz)));
 }
 void PlainTextEdit::paste()
 {
