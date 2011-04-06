@@ -68,7 +68,7 @@ private:
 private slots:
     //void	documentWasModified(bool = true);
 
-	//void	newFile();
+	void	newFile();
 	void	open();
 	//bool	save();
 	//bool	saveAs();

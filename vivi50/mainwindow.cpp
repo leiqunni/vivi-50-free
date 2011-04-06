@@ -324,6 +324,12 @@ void MainWindow::setCurrentFile(const QString &fileName)
     updateRecentFileActions();
 #endif
 }
+void MainWindow::newFile()
+{
+	MainWindow *other = new MainWindow;
+	other->move(x() + 40, y() + 40);
+	other->show();
+}
 void MainWindow::open(const QString &fileName)
 {
 	if( fileName.isEmpty() )
