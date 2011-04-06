@@ -357,7 +357,7 @@ void MainWindow::open()
 {
 	const QString dir = QDir::currentPath();
 	QString fileName = QFileDialog::getOpenFileName(this,
-										tr("Select one or more files to open"),
+										tr("Open File"),
 										dir,
 										"*.*");
 	//setDefaultSuffix("svg");

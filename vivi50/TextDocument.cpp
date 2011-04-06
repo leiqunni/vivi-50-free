@@ -395,24 +395,6 @@ QString TextDocument::toPlainText() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
-#if BLOCK_HAS_OFFSET
-index_t	TextDocument::findBlockIndex(index_t first, index_t last,		//	検索範囲 m_blocks index
-										index_t val) const				//	検索インデックス
-{
-	if( val < blockPosition(first) ) return INVALID_INDEX;
-	while( first < last ) {
-		uint sz = last - first;
-		if( sz == 1 )
-			return first;
-		index_t bix = first + sz / 2;		//	中央インデックス
-		if( val >= blockPosition(bix) )
-			first = bix;
-		else
-			last = bix;
-	}
-	return INVALID_INDEX;
-}
-#elif	BLOCK_HAS_SIZE
 /**
 
 	┌─────┐
@@ -462,7 +444,6 @@ index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const
 		return ix;
 	}
 }
-#endif
 
 #if		BLOCK_HAS_SIZE
 size_t TextDocument::blockPosition(index_t ix) const
@@ -476,16 +457,10 @@ size_t TextDocument::blockPosition(index_t ix) const
 
 TextBlock TextDocument::findBlock(index_t position)
 {
-#if BLOCK_HAS_OFFSET
-	if( position > size() ) return TextBlock(this, INVALID_INDEX);
-	const index_t ix = findBlockIndex(0, blockCount(), position);
-	return TextBlock(this, ix);
-#elif	BLOCK_HAS_SIZE
 	if( position > size() ) return TextBlock(this, INVALID_INDEX, 0);
 	index_t blockPosition;
 	const index_t ix = findBlockIndex(position, &blockPosition);
 	return TextBlock(this, ix, blockPosition);
-#endif
 }
 TextBlock TextDocument::findBlockByNumberRaw(index_t blockIndex)
 {
@@ -566,19 +541,6 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
 void TextDocument::buildBlocks()
 {
 	m_blocks.clear();
-#if	BLOCK_HAS_OFFSET
-	m_blocks.push_back(TextBlockItem(0));
-	for(uint ix = 0; ix < m_buffer.size();) {
-		uchar ch = m_buffer[ix++];
-		if( ch == '\n' )
-			m_blocks.push_back(TextBlockItem(ix));
-		else if( ch == '\r' ) {
-			if( ix < m_buffer.size() && m_buffer[ix] == '\n' )
-				++ix;
-			m_blocks.push_back(TextBlockItem(ix));
-		}
-	}
-#elif	BLOCK_HAS_SIZE
 	index_t offset = 0;
 	index_t ix = 0;
 	while( ix < m_buffer.size() ) {
@@ -595,7 +557,6 @@ void TextDocument::buildBlocks()
 	}
 	//if( ix != offset )
 		m_blocks.push_back(TextBlockItem(ix - offset));		//	EOF 行
-#endif
 	emit blockCountChanged();
 }
 void TextDocument::updateBlocksAtInsert(index_t first, index_t blockIndex, index_t blockPosition, size_t sz)
@@ -630,38 +591,9 @@ void TextDocument::updateBlocksAtInsert(index_t first, index_t blockIndex, index
 }
 void TextDocument::updateBlocksAtInsert(index_t first, size_t sz)
 {
-#if BLOCK_HAS_OFFSET
-	index_t bix = findBlockIndex(0, blockCount(), first);
-	index_t blockPos = blockPosition(bix);
-	//index_t first = position;
-	index_t last = first + sz;
-	uchar ch = 0;
-	while( first < last ) {
-		ch = m_buffer[first++];
-		if( ch == '\n' ) {
-		} else if( ch == '\r' ) {
-			const bool isNextLF = first < size() && m_buffer[first] == '\n';
-			if( first == last ) {	//	最後の挿入文字が \r の場合
-				if( isNextLF ) break;	//	次が \n ならば行を作成しない
-			} else {
-				if( isNextLF )
-					++first;
-			}
-		} else
-			continue;
-		m_blocks.insert(bix, TextBlockItem(blockPos));
-		++bix;
-		blockPos = first;
-	}
-	if( ch != '\n' && ch != '\n' )	//	最後の挿入文字が改行で無い場合
-		m_blocks[bix++].m_index = blockPos;		//	途中に改行があって、最後に改行が無い場合の処理
-	while( bix < blockCount() )
-		m_blocks[bix++].m_index += sz;
-#elif BLOCK_HAS_SIZE
 	index_t blockPos = 0;
 	index_t bix = findBlockIndex(first, &blockPos);
 	updateBlocksAtInsert(first, bix, blockPos, sz);
-#endif
 }
 //	erase 処理が行われる直前にコールされ、
 //	m_blocks を更新
@@ -696,35 +628,9 @@ void TextDocument::updateBlocksAtErase(index_t first, index_t blockIndex, index_
 }
 void TextDocument::updateBlocksAtErase(index_t first, index_t last)
 {
-#if BLOCK_HAS_OFFSET
-	size_t sz = last - first;
-	index_t bix = findBlockIndex(0, blockCount(), first);
-	index_t bixLast = bix;
-	uchar ch = 0;
-	while( first < last ) {
-		ch = m_buffer[first++];
-		if( ch == '\n' ) {
-		} else if( ch == '\r' ) {
-			const bool isNextLF = first < size() && m_buffer[first] == '\n';
-			if( first == last ) {	//	最後の挿入文字が \r の場合
-				if( isNextLF ) break;	//	次が \n ならば行を削除しない
-			} else {
-				if( isNextLF )
-					++first;
-			}
-		} else
-			continue;
-		++bixLast;
-	}
-	if( bixLast != bix )
-		m_blocks.erase(bix + 1, bixLast + 1);
-	while( ++bix < blockCount() )
-		m_blocks[bix].m_index -= sz;
-#elif	BLOCK_HAS_SIZE
 	index_t blockPosition = 0;
 	index_t blockIndex = findBlockIndex(first, &blockPosition);
 	updateBlocksAtErase(first, blockIndex, blockPosition, last);
-#endif
 }
 
 void TextDocument::erase(index_t first, index_t last)

@@ -34,7 +34,7 @@ typedef const unsigned char cuchar;
 
 //typedef std::gap_vector<uchar> GV_utf8;
 
-#define		BLOCK_HAS_OFFSET	0
+//#define		BLOCK_HAS_OFFSET	0
 #define		BLOCK_HAS_SIZE		1
 
 class TextDocument;
@@ -290,10 +290,6 @@ public:
 	TextBlock(TextDocument *document, TextBlockData block)
 		: m_document(document), m_block(block)
 		{}
-#else
-	TextBlock(TextDocument *document, index_t blockNumber)
-		: m_document(document), m_blockNumber(blockNumber)
-		{}
 #endif
 	TextBlock(const TextBlock &x)
 		: m_document(x.m_document)
@@ -331,18 +327,15 @@ private:
 };
 
 //----------------------------------------------------------------------
+#if 1
+//	現状はブロックサイズのみだが、近未来に フラグ類を追加する
 struct TextBlockItem
 {
-#if	BLOCK_HAS_OFFSET
-	index_t		m_index;		//	ブロック先頭文字のバッファ内インデックス
-public:
-	TextBlockItem(index_t index = 0) : m_index(index) {}
-#elif	BLOCK_HAS_SIZE
 	size_t		m_size;		//	ブロック内文字サイズ
 public:
 	TextBlockItem(size_t size = 0) : m_size(size) {}
-#endif
 };
+#endif
 //----------------------------------------------------------------------
 class TextDocument : public QObject
 {
@@ -357,11 +350,7 @@ public:
 	bool	isEmpty() const { return m_buffer.empty(); }
 	size_t	size() const { return m_buffer.size(); }
 	size_t	blockCount() const { return m_blocks.size(); }
-#if	BLOCK_HAS_OFFSET
-	size_t	blockPosition(index_t ix) const { return m_blocks[ix].m_index; }
-#elif	BLOCK_HAS_SIZE
 	size_t	blockPosition(index_t ix) const;
-#endif
 	size_t	blockSize(index_t ix) const;
 	uchar	operator[](index_t ix) const { return m_buffer[ix]; }
 	QString	toPlainText() const;
@@ -453,6 +442,7 @@ private:
 	uchar	m_charEncoding;
 	bool	m_withBOM;
 	mutable std::gap_vector<uchar>	m_buffer;
+	//mutable std::gap_vector<size_t>	m_blocks;		//	ブロックサイズ配列
 	mutable std::gap_vector<TextBlockItem>	m_blocks;		//	ブロック配列
 	TextBlockData	m_block;			//	カレントブロック情報
 	//index_t		m_blockIndex;		//	カレントブロック情報
