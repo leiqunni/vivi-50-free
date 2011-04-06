@@ -44,12 +44,13 @@ size_t UTF8CharSize(uchar ch)
 void TextCursor::updateBlockData(uchar mode)
 {
 	if( !m_document ) {
-		m_block = TextBlockData(0, 0);
+		m_blockData = TextBlockData(0, 0);
 		//m_blockIndex = m_blockPosition = m_ancBlockIndex = m_ancBlockPosition = 0;
 	} else {
-		m_block.m_index = m_document->findBlockIndex(m_position, &m_block.m_position);
+		//m_block.m_index = m_document->findBlockIndex(m_position, &m_block.m_position);
+		m_blockData = m_document->findBlockData(m_position);
 		if( mode == MoveAnchor ) {
-			m_anchorBlock = m_block;
+			m_anchorBlockData = m_blockData;
 			//m_ancBlockIndex = m_blockIndex;
 			//m_ancBlockPosition = m_blockPosition;
 		}
@@ -77,20 +78,20 @@ QString TextCursor::selectedText() const
 }
 TextBlock TextCursor::block()
 {
-	return TextBlock(m_document, m_block);
+	return TextBlock(m_document, m_blockData);
 }
 
 void TextCursor::copyPositionToAnchor()
 {
 	m_anchor = m_position;
-	m_anchorBlock = m_block;
+	m_anchorBlockData = m_blockData;
 	//m_ancBlockIndex = m_blockIndex;
 	//m_ancBlockPosition = m_blockPosition;
 }
 void TextCursor::copyAnchorToPosition()
 {
 	m_position = m_anchor;
-	m_block = m_anchorBlock;
+	m_blockData = m_anchorBlockData;
 	//m_blockIndex = m_ancBlockIndex;
 	//m_blockPosition = m_ancBlockPosition;
 }
@@ -100,7 +101,7 @@ void TextCursor::swapPositionAnchor()
 	index_t t;
 	t = m_position; m_position = m_anchor; m_anchor = t;
 	TextBlockData b;
-	b = m_block; m_block = m_anchorBlock; m_anchorBlock = b;
+	b = m_blockData; m_blockData = m_anchorBlockData; m_anchorBlockData = b;
 	//t = m_blockIndex; m_blockIndex = m_ancBlockIndex; m_ancBlockIndex = t;
 	//t = m_blockPosition; m_blockPosition = m_ancBlockPosition; m_ancBlockPosition = t;
 }
@@ -112,7 +113,7 @@ void TextCursor::setPosition(index_t position, uchar mode)
 	updateBlockData(KeepAnchor);
 	if( mode == MoveAnchor ) {
 		m_anchor = m_position;
-		m_anchorBlock = m_block;
+		m_anchorBlockData = m_blockData;
 		//m_ancBlockIndex = m_blockIndex;
 		//m_ancBlockPosition = m_blockPosition;
 	}
@@ -135,43 +136,43 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 			//m_position += n;
 			index_t next;
 			index_t bixLimit = m_document->blockCount() - 1;
-			while( m_block.m_index < bixLimit && 
-				m_position >= (next = m_block.m_position + m_document->blockSize(m_block.m_index)) )
+			while( m_blockData.m_index < bixLimit && 
+				m_position >= (next = m_blockData.m_position + m_document->blockSize(m_blockData.m_index)) )
 			{
-				++m_block.m_index;
-				m_block.m_position = next;
+				++m_blockData.m_index;
+				m_blockData.m_position = next;
 			}
 		}
 		break;
 	case Left:
 		if( n >= m_position ) {
 			m_position = 0;
-			m_block.m_index = 0;
-			m_block.m_position = 0;
+			m_blockData.m_index = 0;
+			m_blockData.m_position = 0;
 		} else {
 			while( n != 0 ) {
 				do { } while( !isUTF8FirstChar((*m_document)[--m_position]) );
 				--n;
 			}
-			while( m_block.m_index > 0 && m_block.m_position > m_position ) {
-				m_block.m_position -= m_document->blockSize(--m_block.m_index);
+			while( m_blockData.m_index > 0 && m_blockData.m_position > m_position ) {
+				m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
 			}
 		}
 		break;
 	case Up:
-		if( !m_block.m_index ) return false;
-		m_position = m_block.m_position -= m_document->blockSize(--m_block.m_index);
+		if( !m_blockData.m_index ) return false;
+		m_position = m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
 		break;
 	case Down:
-		if( m_block.m_index >= m_document->blockCount() - 1 ) return false;
-		m_position = m_block.m_position += m_document->blockSize(m_block.m_index++);
+		if( m_blockData.m_index >= m_document->blockCount() - 1 ) return false;
+		m_position = m_blockData.m_position += m_document->blockSize(m_blockData.m_index++);
 		break;
 	default:
 		return false;
 	}
 	if( mode == MoveAnchor ) {
 		m_anchor = m_position;
-		m_anchorBlock = m_block;
+		m_anchorBlockData = m_blockData;
 		//m_ancBlockIndex = m_block.m_index;
 		//m_ancBlockPosition = m_block.m_position;
 	}
@@ -443,6 +444,11 @@ TextBlockData TextDocument::findBlockData(index_t position) const
 }
 index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const
 {
+	TextBlockData d = findBlockData(position);
+	if( pBlockPos != 0 )
+		*pBlockPos = d.position();
+	return d.index();
+#if 0
 	if( m_blocks.size() == 1 ) {
 		if( pBlockPos != 0 )
 			*pBlockPos = 0;
@@ -507,6 +513,7 @@ index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const
 	if( pBlockPos != 0 )
 		*pBlockPos = blockPos;
 	return ix;
+#endif
 }
 
 #if		BLOCK_HAS_SIZE
@@ -523,8 +530,9 @@ TextBlock TextDocument::findBlock(index_t position)
 {
 	if( position > size() ) return TextBlock(this, INVALID_INDEX, 0);
 	index_t blockPosition;
-	const index_t ix = findBlockIndex(position, &blockPosition);
-	return TextBlock(this, ix, blockPosition);
+	//const index_t ix = findBlockIndex(position, &blockPosition);
+	TextBlockData d = findBlockData(position);
+	return TextBlock(this, d);
 }
 TextBlock TextDocument::findBlockByNumberRaw(index_t blockIndex)
 {
@@ -623,10 +631,12 @@ void TextDocument::buildBlocks()
 		m_blocks.push_back(TextBlockItem(ix - offset));		//	EOF 行
 	emit blockCountChanged();
 }
-void TextDocument::updateBlocksAtInsert(index_t first, index_t blockIndex, index_t blockPosition, size_t sz)
+void TextDocument::updateBlocksAtInsert(index_t first,
+						TextBlockData d, /*index_t blockIndex, index_t blockPosition,*/
+						size_t sz)
 {
 	bool bcChanged = false;
-	index_t offset = first - blockPosition;		//	挿入位置から行頭までの文字バイト数
+	index_t offset = first - d.position();		//	挿入位置から行頭までの文字バイト数
 	index_t last = first + sz;
 	uchar ch = 0;
 	while( first < last ) {
@@ -642,30 +652,35 @@ void TextDocument::updateBlocksAtInsert(index_t first, index_t blockIndex, index
 			}
 		} else
 			continue;
-		m_blocks.insert(blockIndex, TextBlockItem(first - blockPosition));
+		m_blocks.insert(d.index(), TextBlockItem(first - d.position()));
 		bcChanged = true;
-		++blockIndex;
+		++d.m_index;
 		//offset = 0;
-		blockPosition = first;
+		d.m_position = first;
 	}
 	if( ch != '\n' && ch != '\n' )	//	最後の挿入文字が改行で無い場合
-		m_blocks[blockIndex].m_size += (last - blockPosition) - offset;
+		m_blocks[d.index()].m_size += (last - d.position()) - offset;
 	if( bcChanged )
 		emit blockCountChanged();
 }
+#if 0
 void TextDocument::updateBlocksAtInsert(index_t first, size_t sz)
 {
-	index_t blockPos = 0;
-	index_t bix = findBlockIndex(first, &blockPos);
+	//index_t blockPos = 0;
+	//index_t bix = findBlockIndex(first, &blockPos);
+	TextBlockData d = findBlockData(first);
 	updateBlocksAtInsert(first, bix, blockPos, sz);
 }
+#endif
 //	erase 処理が行われる直前にコールされ、
 //	m_blocks を更新
-void TextDocument::updateBlocksAtErase(index_t first, index_t blockIndex, index_t blockPosition, index_t last)
+void TextDocument::updateBlocksAtErase(index_t first,
+					TextBlockData d, /*index_t blockIndex, index_t blockPosition,*/
+					index_t last)
 {
 	size_t sz = last - first;
-	index_t bixLast = blockIndex;
-	index_t offset = first - blockPosition;		//	削除位置から行頭までの文字バイト数
+	index_t bixLast = d.index();
+	index_t offset = first - d.position();		//	削除位置から行頭までの文字バイト数
 	uchar ch = 0;
 	while( first < last ) {
 		ch = m_buffer[first++];
@@ -680,36 +695,38 @@ void TextDocument::updateBlocksAtErase(index_t first, index_t blockIndex, index_
 			}
 		} else
 			continue;
-		blockPosition = first;
+		d.m_position = first;
 		++bixLast;
 	}
-	if( bixLast != blockIndex ) {
-		m_blocks.erase(blockIndex, bixLast);
+	if( bixLast != d.index() ) {
+		m_blocks.erase(d.index(), bixLast);
 		emit blockCountChanged();
 	}
-	m_blocks[blockIndex].m_size += offset - (last - blockPosition);
+	m_blocks[d.index()].m_size += offset - (last - d.position());
 	//size_t t = m_blocks[blockIndex].m_size;	//	for debug
 }
+#if 0
 void TextDocument::updateBlocksAtErase(index_t first, index_t last)
 {
 	index_t blockPosition = 0;
 	index_t blockIndex = findBlockIndex(first, &blockPosition);
 	updateBlocksAtErase(first, blockIndex, blockPosition, last);
 }
+#endif
 
 void TextDocument::erase(index_t first, index_t last)
 {
 	if( last > size() ) last = size();
-	updateBlocksAtErase(first, last);
+	updateBlocksAtErase(first, findBlockData(first), last);
 	m_buffer.erase(first, last);
 }
-void TextDocument::erase(index_t first, index_t blockIndex, index_t blockPosition, index_t last)
+void TextDocument::erase(index_t first, TextBlockData d, index_t last)
 {
 	if( last > size() ) last = size();
-	updateBlocksAtErase(first, blockIndex, blockPosition, last);
+	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
 }
-void TextDocument::insert(index_t position, index_t blockIndex, index_t blockPosition, const QString &text)
+void TextDocument::insert(index_t position, TextBlockData d, const QString &text)
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(text);
@@ -717,25 +734,25 @@ void TextDocument::insert(index_t position, index_t blockIndex, index_t blockPos
 	const uchar *ptr = (const uchar *)(ba.data());
 	if( position > m_buffer.size() ) position = m_buffer.size();
 	m_buffer.insert(position, ptr, ptr + sz);
-	updateBlocksAtInsert(position, blockIndex, blockPosition, sz);
+	updateBlocksAtInsert(position, d, sz);
 }
 void TextDocument::insert(index_t position, const QString &text)
 {
-	index_t blockPosition = 0;
-	index_t blockIndex = findBlockIndex(position, &blockPosition);
-	insert(position, blockIndex, blockPosition, text);
+	//index_t blockPosition = 0;
+	//index_t blockIndex = findBlockIndex(position, &blockPosition);
+	insert(position, findBlockData(position), text);
 }
-void TextDocument::insert(index_t ix, index_t blockIndex, index_t blockPosition,
+void TextDocument::insert(index_t ix, TextBlockData d,
 							cuchar *first, cuchar *last)
 {
 	m_buffer.insert(ix, first, last);
-	updateBlocksAtInsert(ix, blockIndex, blockPosition, last - first);
+	updateBlocksAtInsert(ix, d, last - first);
 }
 void TextDocument::insert(index_t ix, cuchar *first, cuchar *last)
 {
-	index_t blockPosition = 0;
-	index_t blockIndex = findBlockIndex(ix, &blockPosition);
-	insert(ix, blockIndex, blockPosition, first, last);
+	//index_t blockPosition = 0;
+	//index_t blockIndex = findBlockIndex(ix, &blockPosition);
+	insert(ix, findBlockData(ix), first, last);
 }
 
 void TextDocument::setPlainText(const QString &text)
@@ -800,7 +817,7 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 	//index_t hp_ix = m_undoMgr.addToHeap(ptr, ptr + sz);		//	undone P データはundo時に格納すべき
 	if( position == cur.anchor() ) {
 		m_buffer.insert(position, ptr, ptr + sz);
-		updateBlocksAtInsert(position, cur.blockIndex(), cur.blockPosition(), sz);
+		updateBlocksAtInsert(position, cur.blockData(), sz);
 		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_INSERT, position, position + sz, 0);
 		m_undoMgr.push_back(undoItem);
 		emit contentsChange(position, 0, sz);
@@ -809,12 +826,12 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 			cur.swapPositionAnchor();
 		const index_t first = cur.position();
 		const index_t last = cur.anchor();
-		const index_t blockIndex = cur.blockIndex();
-		const index_t blockPosition = cur.blockPosition();
+		//const index_t blockIndex = cur.blockIndex();
+		//const index_t blockPosition = cur.blockPosition();
 		const index_t hp_ix = m_undoMgr.addToHeap(m_buffer.begin() + first, m_buffer.begin() + last);
-		erase(first, blockIndex, blockPosition, last);
+		erase(first, cur.blockData(), last);
 		m_buffer.insert(first, ptr, ptr + sz);
-		updateBlocksAtInsert(first, blockIndex, blockPosition, sz);
+		updateBlocksAtInsert(first, cur.blockData(), sz);
 		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_REPLACE,
 										first, last, hp_ix, first + sz);
 		m_undoMgr.push_back(undoItem);
@@ -830,8 +847,9 @@ void TextDocument::do_insert(index_t position, const QString &text)
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	//index_t hp_ix = m_undoMgr.addToHeap(ptr, ptr + sz);		//	undone P データはundo時に格納すべき
+	TextBlockData d = findBlockData(position);		//	編集によりキャッシュが無効になる前に取得しておく
 	m_buffer.insert(position, ptr, ptr + sz);
-	updateBlocksAtInsert(position, sz);
+	updateBlocksAtInsert(position, d, sz);
 	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_INSERT, position, position + sz, 0);
 	m_undoMgr.push_back(undoItem);
 	emit contentsChange(position, 0, sz);
@@ -856,9 +874,10 @@ void TextDocument::do_replace(index_t first, index_t last, const QString &text)
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	const index_t hp_ix = m_undoMgr.addToHeap(m_buffer.begin() + first, m_buffer.begin() + last);
+	TextBlockData d = findBlockData(first);
 	erase(first, last);
 	m_buffer.insert(first, ptr, ptr + sz);
-	updateBlocksAtInsert(first, sz);
+	updateBlocksAtInsert(first, d, sz);
 	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_REPLACE,
 									first, last, hp_ix, first + sz);
 	m_undoMgr.push_back(undoItem);

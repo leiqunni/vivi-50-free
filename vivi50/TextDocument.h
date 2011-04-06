@@ -205,9 +205,9 @@ public:
 		//, m_blockIndex(0), m_blockPosition(0)
 		{ updateBlockData(); }
 	TextCursor(TextDocument *document, index_t position, index_t anchor,
-				TextBlockData cursorBlock)
+				TextBlockData blockData)
 		: m_document(document), m_position(position), m_anchor(anchor)
-		, m_block(cursorBlock)
+		, m_blockData(blockData)
 		{}
 #if 0
 	TextCursor(TextDocument *document, index_t position, index_t anchor,
@@ -227,7 +227,7 @@ public:
 	TextCursor(const TextCursor &x)
 		: m_document(x.m_document), m_position(x.m_position), m_anchor(x.m_anchor)
 #if	BLOCK_HAS_SIZE
-		, m_block(x.m_block), m_anchorBlock(x.m_anchorBlock)
+		, m_blockData(x.m_blockData), m_anchorBlockData(x.m_anchorBlockData)
 		//, m_blockIndex(x.m_blockIndex), m_blockPosition(x.m_blockPosition)
 #endif
 		{}
@@ -242,12 +242,12 @@ public:
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
 	QString	selectedText() const;
 #if	BLOCK_HAS_SIZE
-	TextBlockData cursorBlock() const { return m_block; }
-	TextBlockData anchorBlock() const { return m_anchorBlock; }
-	index_t	blockIndex() const { return m_block.m_index; }
-	index_t	blockPosition() const { return m_block.m_position; }
-	index_t	ancBlockIndex() const { return m_anchorBlock.m_index; }
-	index_t	ancBlockPosition() const { return m_anchorBlock.m_position; }
+	TextBlockData blockData() const { return m_blockData; }
+	TextBlockData anchorBlock() const { return m_anchorBlockData; }
+	index_t	blockIndex() const { return m_blockData.m_index; }
+	index_t	blockPosition() const { return m_blockData.m_position; }
+	index_t	ancBlockIndex() const { return m_anchorBlockData.m_index; }
+	index_t	ancBlockPosition() const { return m_anchorBlockData.m_position; }
 #endif
 
 public:
@@ -270,8 +270,8 @@ private:
 	index_t			m_position;		//	カーソル位置
 	index_t			m_anchor;		//	アンカー位置
 #if	BLOCK_HAS_SIZE
-	TextBlockData	m_block;
-	TextBlockData	m_anchorBlock;
+	TextBlockData	m_blockData;
+	TextBlockData	m_anchorBlockData;
 #if 0
 	index_t		m_blockIndex;			//	ブロックインデックス
 	index_t		m_blockPosition;		//	ブロック先頭位置
@@ -393,17 +393,17 @@ public:
 	TextBlock	findBlockByNumberRaw(index_t);		//	ブロック番号（0..*）からブロックを取得
 
 	void	erase(index_t, index_t);
-	void	erase(index_t, index_t, index_t, index_t);
+	void	erase(index_t, TextBlockData, index_t);
 	void	insert(index_t, const QString &);
 	void	insert(index_t ix, cuchar *first, cuchar *last);
-	void	insert(index_t, index_t, index_t, const QString &);
-	void	insert(index_t ix, index_t, index_t, cuchar *first, cuchar *last);
+	void	insert(index_t, TextBlockData, const QString &);
+	void	insert(index_t ix, TextBlockData, cuchar *first, cuchar *last);
 	void	setPlainText(const QString &);
 	//void	append(const QByteArray &);		//	UTF-8 配列
-	void	updateBlocksAtInsert(index_t, size_t);
-	void	updateBlocksAtInsert(index_t, index_t, index_t, size_t);
-	void	updateBlocksAtErase(index_t, index_t);
-	void	updateBlocksAtErase(index_t, index_t, index_t, index_t);
+	//void	updateBlocksAtInsert(index_t, size_t);
+	void	updateBlocksAtInsert(index_t, TextBlockData, size_t);
+	//void	updateBlocksAtErase(index_t, index_t);
+	void	updateBlocksAtErase(index_t, TextBlockData, index_t);
 
 	void	do_insert(index_t, const QString &);	//	undo/redo 対応版
 	void	do_erase(index_t, index_t);				//	undo/redo 対応版
