@@ -50,6 +50,10 @@ public:
 	TextBlockData(index_t index = 0, index_t position = 0)
 		: m_index(index), m_position(position)
 		{}
+
+public:
+	index_t index() const { return m_index; }
+	index_t position() const { return m_position; }
 };
 //----------------------------------------------------------------------
 //	undo/redo 文字列の格納にヒープを用い、undoItem クラスは継承をやめ、type でディスパッチする
@@ -356,6 +360,12 @@ public:
 	QString	toPlainText() const;
 	bool	isMatch(index_t, cuchar *, cuchar *) const;		//	単純比較関数
 
+	TextBlockData	findBlockData(index_t position) const;
+	TextBlockData	nextBlockData(TextBlockData d) const
+	{ return TextBlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
+	TextBlockData	prevBlockData(TextBlockData d) const
+	{ return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size); }
+
 public:
 	bool	canUndo() const { return m_undoMgr.canUndo(); };
 	bool	canRedo() const { return m_undoMgr.canRedo(); };
@@ -450,6 +460,8 @@ private:
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ
 	GVUndoMgr	m_undoMgr;
 	boost::object_pool<GVUndoItem>	m_pool_undoItem;
+
+	friend void test_TextDocument();
 };
 
 #endif // TEXTDOCUMENT_H

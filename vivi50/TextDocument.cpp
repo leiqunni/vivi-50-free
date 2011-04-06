@@ -395,23 +395,52 @@ QString TextDocument::toPlainText() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
-/**
-
-	┌─────┐
-    │          │
-    ├─────┤
-    │          │
-    ├─────┤
-    │          │
-    ├─────┤
-    │    ：    │
-    ├─────┤
-    │          │
-    ├─────┤
-    │          │
-    └─────┘
-
-*/
+TextBlockData TextDocument::findBlockData(index_t position) const
+{
+	if( m_blocks.size() == 1 )
+		return TextBlockData(0, 0);
+	TextBlockData data(0, 0), next;
+	if( m_block.m_index == 0 ) {		//	キャッシュが無い場合
+		if( position <= size() / 2 ) {
+			while( data.m_index < m_blocks.size() - 1 &&
+					position >= (next = nextBlockData(data)).position() )
+				data = next;
+		} else {
+			data = TextBlockData(m_blocks.size(), size());
+			do {
+				data = prevBlockData(data);
+			} while( data.position() > position );
+		}
+	} else {
+		if( position < m_block.position() ) {
+			if( position <= m_block.position() / 2 ) {
+				while( data.m_index < m_block.index() - 1 &&
+						position >= (next = nextBlockData(data)).position() )
+					data = next;
+			} else {
+				data = m_block;
+				do {
+					data = prevBlockData(data);
+				} while( data.position() > position );
+			}
+		} else {
+			next = nextBlockData(m_block);
+			if( m_block.position() <= position && position < next.position() )
+				return m_block;
+			if( position <= m_block.position() + (size() - m_block.position()) / 2 ) {
+				while( data.m_index < m_blocks.size() - 1 &&
+						position >= (next = nextBlockData(data)).position() )
+					data = next;
+			} else {
+				data = TextBlockData(m_blocks.size(), size());
+				do {
+					data = prevBlockData(data);
+				} while( data.position() > position );
+			}
+		}
+	}
+	return data;
+}
 index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const
 {
 	if( m_blocks.size() == 1 ) {
@@ -419,30 +448,65 @@ index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const
 			*pBlockPos = 0;
 		return 0;
 	}
-	if( position <= size() / 2 ) {
-		int ix = 0;
-		index_t blockPos = 0;
-		while( ix < m_blocks.size() && position != 0 && position >= m_blocks[ix].m_size ) {
-			blockPos += m_blocks[ix].m_size;
-			position -= m_blocks[ix].m_size;
-			++ix;
+	int ix = 0;
+	index_t blockPos = 0;
+	if( m_block.m_index == 0 ) {		//	キャッシュが無い場合
+		if( position <= size() / 2 ) {
+			while( ix < m_blocks.size() && position != 0 && position >= m_blocks[ix].m_size ) {
+				blockPos += m_blocks[ix].m_size;
+				position -= m_blocks[ix].m_size;
+				++ix;
+			}
+			if( pBlockPos != 0 )
+				*pBlockPos = blockPos;
+			return ix;
+		} else {
+			int revPos = (int)(size() - position);
+			int ix = m_blocks.size() - 1;
+			index_t blockPos = size() - m_blocks[ix].m_size;
+			while( ix > 0 && revPos > 0 /*&& revPos > m_blocks[ix-1].m_size*/ ) {
+				--ix;
+				blockPos -= m_blocks[ix].m_size;
+				revPos -= m_blocks[ix].m_size;
+			}
+			if( pBlockPos != 0 )
+				*pBlockPos = blockPos;
+			return ix;
 		}
-		if( pBlockPos != 0 )
-			*pBlockPos = blockPos;
-		return ix;
-	} else {
-		int revPos = (int)(size() - position);
-		int ix = m_blocks.size() - 1;
-		index_t blockPos = size() - m_blocks[ix].m_size;
-		while( ix > 0 && revPos > 0 /*&& revPos > m_blocks[ix-1].m_size*/ ) {
-			--ix;
-			blockPos -= m_blocks[ix].m_size;
-			revPos -= m_blocks[ix].m_size;
-		}
-		if( pBlockPos != 0 )
-			*pBlockPos = blockPos;
-		return ix;
 	}
+	if( m_block.m_position <= position &&
+		position < m_block.m_position + blockSize(m_block.m_index) )
+	{
+		ix = m_block.m_index;
+		blockPos = m_block.m_position;
+	} else if( position < m_block.m_position ) {
+		//	キャッシュブロックより前の場合
+		if( position <= m_block.m_position / 2 ) {
+			size_t rest = position;
+			while( ix < m_block.m_index && rest != 0 && rest >= m_blocks[ix].m_size ) {
+				blockPos += m_blocks[ix].m_size;
+				rest -= m_blocks[ix].m_size;
+				++ix;
+			}
+		} else {
+			int rest = (int)(m_block.m_position - position);
+			int ix = m_block.m_index - 1;
+			index_t blockPos = m_block.m_position - m_blocks[ix].m_size;
+			while( ix > m_block.m_index && rest > 0 /*&& revPos > m_blocks[ix-1].m_size*/ ) {
+				--ix;
+				blockPos -= m_blocks[ix].m_size;
+				rest -= m_blocks[ix].m_size;
+			}
+		}
+	} else {
+		//	キャッシュブロックより後ろの場合
+		if( position <= m_block.m_position + (size() - m_block.m_position) / 2 ) {
+		} else {
+		}
+	}
+	if( pBlockPos != 0 )
+		*pBlockPos = blockPos;
+	return ix;
 }
 
 #if		BLOCK_HAS_SIZE

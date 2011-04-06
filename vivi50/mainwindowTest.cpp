@@ -437,4 +437,45 @@ void test_TextDocument()
 		ut.test_equal(50*10, block.position());
 		ut.test_equal(50, block.blockNumber());
 	}
+	if( 1 ) {		//	findBlockData() テスト、キャッシュが中央にある場合
+		TextDocument doc;
+		TextCursor cur(&doc);		//	先頭位置
+		const QString text("123456789\n");		//	10byte テキスト
+		const int nLines = 30;
+		for(int i = 0; i < nLines; ++i)
+			cur.insertText(text);
+		doc.m_block.m_index = 0;	//	キャッシュ無し
+		for(int i = 0; i <= nLines; ++i) {
+			TextBlockData d = doc.findBlockData(i*10);
+			ut.test_equal(i, d.m_index);
+			ut.test_equal(i*10, d.m_position);
+		}
+		TextBlock block = doc.findBlockByNumber(15);
+		doc.m_block.m_index = block.blockNumber();		//	キャッシュ有り
+		doc.m_block.m_position = block.position();
+		for(int i = 0; i <= nLines; ++i) {
+			TextBlockData d = doc.findBlockData(i*10);
+			ut.test_equal(i, d.m_index);
+			ut.test_equal(i*10, d.m_position);
+		}
+	}
+	if( 0 ) {		//	findBlockIndex() テスト、キャッシュが中央にある場合
+		TextDocument doc;
+		TextCursor cur(&doc);		//	先頭位置
+		const QString text("123456789\n");		//	10byte テキスト
+		const int nLines = 100;
+		for(int i = 0; i < nLines; ++i)
+			cur.insertText(text);
+		TextBlock block = doc.findBlockByNumber(50);
+		doc.m_block.m_index = block.blockNumber();
+		doc.m_block.m_position = block.position();
+		index_t blockPos;
+		index_t ix = doc.findBlockIndex(26*10, &blockPos);
+		for(int i = 0; i <= nLines; ++i) {
+			index_t blockPos;
+			index_t ix = doc.findBlockIndex(i*10, &blockPos);
+			ut.test_equal(i, ix);
+			ut.test_equal(i*10, blockPos);
+		}
+	}
 }
