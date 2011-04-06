@@ -23,7 +23,7 @@ memFileColumnWd = 320
   main.cpp	(-153,-353)
   mainwindow.cpp	(120,-227)
   mainwindow.h	(120,-260)
-  PlainTextEdit.cpp	(-174,-23)
+* PlainTextEdit.cpp	(-174,-23)
   PlainTextEdit.h	(-174,-56)
 * TextDocument.cpp	(3,164)
 * TextDocument.h	(3,131)

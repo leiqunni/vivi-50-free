@@ -251,6 +251,7 @@ public:
 #endif
 
 public:
+	void	clearSelection() { copyPositionToAnchor(); }
 	TextBlock	block();
 	void	copyPositionToAnchor();
 	void	copyAnchorToPosition();

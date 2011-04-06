@@ -197,38 +197,40 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 {
 	Qt::KeyboardModifiers mod = keyEvent->modifiers();
 	const bool ctrl = (mod & Qt::ControlModifier) != 0;
+	const bool shift = (mod & Qt::ShiftModifier) != 0;
+	const uchar mvMode = shift ? TextCursor::KeepAnchor : TextCursor::MoveAnchor;
 	switch( keyEvent->key() ) {
 	case Qt::Key_Home:
 		if( ctrl ) {
-			m_textCursor->setPosition(0);
+			m_textCursor->setPosition(0, mvMode);
 			ensureCursorVisible();
 			viewport()->update();
 		}
 		return;
 	case Qt::Key_End:
 		if( ctrl ) {
-			m_textCursor->setPosition(m_document->size());
+			m_textCursor->setPosition(m_document->size(), mvMode);
 			ensureCursorVisible();
 			viewport()->update();
 		}
 		return;
 	case Qt::Key_Right:
-		m_textCursor->movePosition(TextCursor::Right);
+		m_textCursor->movePosition(TextCursor::Right, mvMode);
 		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Left:
-		m_textCursor->movePosition(TextCursor::Left);
+		m_textCursor->movePosition(TextCursor::Left, mvMode);
 		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Up:
-		m_textCursor->movePosition(TextCursor::Up);
+		m_textCursor->movePosition(TextCursor::Up, mvMode);
 		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Down:
-		m_textCursor->movePosition(TextCursor::Down);
+		m_textCursor->movePosition(TextCursor::Down, mvMode);
 		ensureCursorVisible();
 		viewport()->update();
 		return;
@@ -242,6 +244,8 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		viewport()->update();
 		return;
 	case Qt::Key_Escape:
+		m_textCursor->clearSelection();
+		viewport()->update();
 		emit showMessage( QDir::currentPath() );
 		return;
 	}
