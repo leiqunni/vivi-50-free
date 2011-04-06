@@ -41,7 +41,7 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 	m_lineNumberArea = new QWidget(this);
 	m_lineNumberArea->installEventFilter(this);
 
-	m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
+	//m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
 }
 
 PlainTextEdit::~PlainTextEdit()
@@ -305,4 +305,12 @@ void PlainTextEdit::drawLineNumbers()
 		block = block.next();
 		y += fm.lineSpacing();
 	}
+}
+void PlainTextEdit::doJump(int lineNum)
+{
+#if 0
+	ViCursor cur = viCursor();
+	if( cur.movePosition(ViMoveOperation::JumpLine, QTextCursor::MoveAnchor, lineNum) )
+		setViCursor(cur);
+#endif
 }

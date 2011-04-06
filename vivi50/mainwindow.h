@@ -44,6 +44,13 @@ public:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    MainWindow	*findMainWindow(const QString &fileName);
+    void	updateWindowTitle();
+    void	updateCurFile();
+	bool	maybeSave();
+	bool	saveFile(const QString &fileName, bool = true);
+	void	loadFile(const QString &fileName, int lineNum = 1);
+    void	setCurrentFile(const QString &fileName);
 
 private:
     void init();
@@ -59,10 +66,14 @@ private slots:
     //void	documentWasModified(bool = true);
 
 	//void	newFile();
-	//void	open();
+	void	open();
 	//bool	save();
 	//bool	saveAs();
 	//void	closeAll();
+	void	open(const QString &);
+	//void	save(const QString &);
+    //void	openRecentFile();
+	void	doJump(int lineNum);
     void	showAboutDlg();
 	void doUnitTest();
 	void doBenchmark();
@@ -70,6 +81,9 @@ private slots:
 private:
 	PlainTextEdit	*m_editor;
 	QTextEdit	*output;
+	QString	m_curFile;
+	bool	m_isUntitled;
+	bool	m_isModified;
 
     QMenu	*fileMenu;
     QMenu	*editMenu;

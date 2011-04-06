@@ -44,7 +44,7 @@ size_t UTF8CharSize(uchar ch)
 void TextCursor::updateBlockData(uchar mode)
 {
 	if( !m_document ) {
-		m_block = TextBlockCache(0, 0);
+		m_block = TextBlockData(0, 0);
 		//m_blockIndex = m_blockPosition = m_ancBlockIndex = m_ancBlockPosition = 0;
 	} else {
 		m_block.m_index = m_document->findBlockIndex(m_position, &m_block.m_position);
@@ -99,7 +99,7 @@ void TextCursor::swapPositionAnchor()
 {
 	index_t t;
 	t = m_position; m_position = m_anchor; m_anchor = t;
-	TextBlockCache b;
+	TextBlockData b;
 	b = m_block; m_block = m_anchorBlock; m_anchorBlock = b;
 	//t = m_blockIndex; m_blockIndex = m_ancBlockIndex; m_ancBlockIndex = t;
 	//t = m_blockPosition; m_blockPosition = m_ancBlockPosition; m_ancBlockPosition = t;
@@ -370,7 +370,7 @@ void TextDocument::init()
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(TextBlockItem(0));
-	m_block = TextBlockCache(0, 0);
+	m_block = TextBlockData(0, 0);
 	//m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
 }

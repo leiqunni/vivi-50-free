@@ -23,6 +23,8 @@
 #include <QtGui>
 #include "mainwindow.h"
 #include "PlainTextEdit.h"
+#include "TextDocument.h"
+#include "charEncoding.h"
 
 #define	VERSION_STR			"5.0.000 Dev"
 
@@ -184,6 +186,16 @@ void MainWindow::createToolBars()
     //QToolBar *testToolBar = addToolBar(tr("Other"));
     //testToolBar->addAction(unitTestAct);
 }
+void MainWindow::createDockWindows()
+{
+    QDockWidget *dock = new QDockWidget(tr("Output"), this);
+    dock->setAllowedAreas(Qt::AllDockWidgetAreas);
+    output = new QTextEdit(dock);
+    output->setReadOnly(true);
+    dock->setWidget(output);
+    addDockWidget(Qt::BottomDockWidgetArea, dock);
+    viewMenu->addAction(dock->toggleViewAction());
+}
 void MainWindow::readSettings()
 {
     QSettings settings;
@@ -219,15 +231,128 @@ void MainWindow::doOutput(const QString &text)
 	output->setTextCursor(cur);
 	output->viewport()->repaint();		//	‹­§Ä•`‰æ
 }
-void MainWindow::createDockWindows()
+void MainWindow::doJump(int lineNum)
 {
-    QDockWidget *dock = new QDockWidget(tr("Output"), this);
-    dock->setAllowedAreas(Qt::AllDockWidgetAreas);
-    output = new QTextEdit(dock);
-    output->setReadOnly(true);
-    dock->setWidget(output);
-    addDockWidget(Qt::BottomDockWidgetArea, dock);
-    viewMenu->addAction(dock->toggleViewAction());
+	if( lineNum && m_editor != 0 )
+		m_editor->doJump(lineNum);
+}
+MainWindow *MainWindow::findMainWindow(const QString &fileName)
+{
+    QString canonicalFilePath = QFileInfo(fileName).canonicalFilePath();
+
+    foreach( QWidget *widget, qApp->topLevelWidgets() ) {
+        MainWindow *mainWin = qobject_cast<MainWindow *>(widget);
+        if( mainWin && mainWin->m_curFile == canonicalFilePath )
+            return mainWin;
+    }
+    return 0;
+}
+void MainWindow::updateCurFile()
+{
+    static int sequenceNumber = 0;
+    if( m_curFile.isEmpty() )
+        m_curFile = tr("document%1.txt").arg(++sequenceNumber);
+}
+void MainWindow::updateWindowTitle()
+{
+	updateCurFile();
+	QString title = m_curFile;
+	if( isWindowModified() )
+		title += "*";
+	title += " - qvi ";
+	title += VERSION_STR;
+    setWindowTitle(title);
+}
+void MainWindow::setCurrentFile(const QString &fileName)
+{
+
+    m_isUntitled = fileName.isEmpty();
+    if( m_isUntitled ) {
+        m_curFile.clear();
+        updateCurFile();
+    } else {
+        m_curFile = QFileInfo(fileName).canonicalFilePath();
+    }
+    setWindowModified(false);
+    updateWindowTitle();
+
+#if 0
+    QSettings settings;
+    QStringList files = settings.value("recentFileList").toStringList();
+    files.removeAll(fileName);
+    files.prepend(fileName);
+    while (files.size() > MaxRecentFiles)
+        files.removeLast();
+    settings.setValue("recentFileList", files);
+    updateRecentFileActions();
+#endif
+}
+void MainWindow::open(const QString &fileName)
+{
+	if( fileName.isEmpty() )
+		open();
+	else {
+		if( m_isUntitled && m_editor->document()->isEmpty()
+				&& !isWindowModified() )
+		{
+			loadFile(fileName);
+		} else {
+#if 0
+			MainWindow *other = new MainWindow(fileName);
+			if( other->m_isUntitled ) {
+				delete other;
+				return;
+			}
+			other->move(x() + 40, y() + 40);
+			other->show();
+#endif
+		}
+	}
+}
+void MainWindow::open()
+{
+	QString fileName = QFileDialog::getOpenFileName(this,
+										tr("Select one or more files to open"),
+										"",
+										"*.*");
+	//setDefaultSuffix("svg");
+	if( !fileName.isEmpty()) {
+		open(fileName);
+		//loadFile(fileName);
+	}
+}
+void MainWindow::loadFile(const QString &fileName, int lineNum)
+{
+    MainWindow *existing = findMainWindow(fileName);
+    if( existing ) {
+    	if( lineNum ) existing->doJump(lineNum);
+        existing->show();
+        existing->raise();
+        existing->activateWindow();
+        return;
+    }
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+    QString buffer;
+    QString errorString;
+    uchar ce;
+    bool withBOM;
+	if( !::loadFile(fileName, buffer, errorString, &ce, &withBOM) ) {
+		QMessageBox::warning(this, tr("qvi"),
+							 tr("Cannot read file %1:\n%2.")
+							 .arg(fileName)
+							 .arg(errorString));
+		QApplication::restoreOverrideCursor();
+		return;
+    }
+	m_editor->document()->setPlainText(buffer);
+	m_editor->document()->setCharEncodeing(ce);
+	m_editor->document()->setWithBOM(withBOM);
+	QApplication::restoreOverrideCursor();
+	m_editor->doJump(lineNum);
+
+	setCurrentFile(fileName);
+	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 void MainWindow::showAboutDlg()
 {

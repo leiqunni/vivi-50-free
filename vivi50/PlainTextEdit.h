@@ -37,6 +37,10 @@ public:
 	PlainTextEdit(QWidget *parent = 0);
 	~PlainTextEdit();
 
+public:
+	TextDocument	*document() { return m_document; }
+	void	doJump(int lineNum);
+
 public slots:
 	void	paste();
 	void	undo();

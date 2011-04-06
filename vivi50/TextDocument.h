@@ -41,13 +41,13 @@ class TextDocument;
 class TextBlock;
 
 //----------------------------------------------------------------------
-struct TextBlockCache
+struct TextBlockData
 {
 public:
 	index_t		m_index;
 	index_t		m_position;
 public:
-	TextBlockCache(index_t index = 0, index_t position = 0)
+	TextBlockData(index_t index = 0, index_t position = 0)
 		: m_index(index), m_position(position)
 		{}
 };
@@ -201,7 +201,7 @@ public:
 		//, m_blockIndex(0), m_blockPosition(0)
 		{ updateBlockData(); }
 	TextCursor(TextDocument *document, index_t position, index_t anchor,
-				TextBlockCache cursorBlock)
+				TextBlockData cursorBlock)
 		: m_document(document), m_position(position), m_anchor(anchor)
 		, m_block(cursorBlock)
 		{}
@@ -238,8 +238,8 @@ public:
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
 	QString	selectedText() const;
 #if	BLOCK_HAS_SIZE
-	TextBlockCache cursorBlock() const { return m_block; }
-	TextBlockCache anchorBlock() const { return m_anchorBlock; }
+	TextBlockData cursorBlock() const { return m_block; }
+	TextBlockData anchorBlock() const { return m_anchorBlock; }
 	index_t	blockIndex() const { return m_block.m_index; }
 	index_t	blockPosition() const { return m_block.m_position; }
 	index_t	ancBlockIndex() const { return m_anchorBlock.m_index; }
@@ -266,8 +266,8 @@ private:
 	index_t			m_position;		//	カーソル位置
 	index_t			m_anchor;		//	アンカー位置
 #if	BLOCK_HAS_SIZE
-	TextBlockCache	m_block;
-	TextBlockCache	m_anchorBlock;
+	TextBlockData	m_block;
+	TextBlockData	m_anchorBlock;
 #if 0
 	index_t		m_blockIndex;			//	ブロックインデックス
 	index_t		m_blockPosition;		//	ブロック先頭位置
@@ -285,9 +285,9 @@ public:
 	//	: m_document(document), m_blockNumber(blockNumber)
 	//	{}
 	TextBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)
-		: m_document(document), m_block(TextBlockCache(blockNumber, blockPosition))
+		: m_document(document), m_block(TextBlockData(blockNumber, blockPosition))
 		{}
-	TextBlock(TextDocument *document, TextBlockCache block)
+	TextBlock(TextDocument *document, TextBlockData block)
 		: m_document(document), m_block(block)
 		{}
 #else
@@ -324,7 +324,7 @@ public:
 private:
 	TextDocument	*m_document;
 #if	BLOCK_HAS_SIZE
-	TextBlockCache	m_block;
+	TextBlockData	m_block;
 	//index_t			m_blockNumber;		//	ブロック配列インデックス 0..*
 	//index_t			m_blockPosition;
 #endif
@@ -425,6 +425,8 @@ public:
 	}
 
 	TextCursor	find(const QString &, index_t = 0);
+	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }
+	void	setWithBOM(bool b) { m_withBOM = b; }
 
 public:
 	std::gap_vector<uchar>::iterator	begin() { return m_buffer.begin(); }
@@ -444,9 +446,11 @@ private:
 	index_t	findBlockIndex(index_t first, index_t last, index_t val) const;
 
 private:
+	uchar	m_charEncoding;
+	bool	m_withBOM;
 	mutable std::gap_vector<uchar>	m_buffer;
 	mutable std::gap_vector<TextBlockItem>	m_blocks;		//	ブロック配列
-	TextBlockCache	m_block;			//	カレントブロック情報
+	TextBlockData	m_block;			//	カレントブロック情報
 	//index_t		m_blockIndex;		//	カレントブロック情報
 	//index_t		m_blockPosition;	//	カレントブロック情報
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ
