@@ -23,6 +23,7 @@
 #include <QtGui>
 #include "PlainTextEdit.h"
 #include	"TextDocument.h"
+#include	<math.h>
 #include	<QDebug>
 
 #define		MARGIN_LEFT		4
@@ -31,6 +32,7 @@
 PlainTextEdit::PlainTextEdit(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
+	//m_lineNumberWidth = 6;
 
 	m_document = new TextDocument();
 	m_textCursor = new TextCursor(m_document);
@@ -49,24 +51,46 @@ PlainTextEdit::~PlainTextEdit()
 	delete m_document;
 	delete m_textCursor;
 }
+
+int PlainTextEdit::lineNumberLength() const
+{
+	const size_t bc = m_document->blockCount();
+	if( bc < 10000 ) return 6;
+	return (int)log10( (double)bc ) + 2;
+}
+
+/*
+		垂直スクロールバー情報を更新する必要があるのは、以下の３つの場合
+			[1] ブロックカウントが変化した場合
+			[2] フォントサイズが変化した場合
+			[3] ウィンドウサイズが変化した場合
+*/
 void PlainTextEdit::onFontChanged()
 {
 	//setTabStopWidth(fontMetrics().width('>') * 4);		//	tab 4
-	m_lineNumberWidth = fontMetrics().width('8') * 6;
-	m_lineNumberAreaWidth = fontMetrics().width('8') * 8;
+	const int len = lineNumberLength();
+	m_lineNumberWidth = fontMetrics().width('8') * len;
+	m_lineNumberAreaWidth = fontMetrics().width('8') * (len + 2);
 	setViewportMargins(m_lineNumberAreaWidth, 0, 0, 0);
 	updateLineNumberAreaSize();
+	updateScrollBarData();
 }
 void PlainTextEdit::onBlockCountChanged()
+{
+	//updateScrollBarData();
+	onFontChanged();
+}
+
+void PlainTextEdit::updateScrollBarData()
 {
 	QFontMetrics fm = fontMetrics();
 	QSize areaSize = viewport()->size();
 	//QSize  widgetSize = widget->size();
 
-	verticalScrollBar()->setPageStep(m_document->blockCount() /** fm.lineSpacing()*/);
-	verticalScrollBar()->setSingleStep(1 /*fm.lineSpacing()*/);
+	verticalScrollBar()->setPageStep(m_document->blockCount());
+	verticalScrollBar()->setSingleStep(1);
+	verticalScrollBar()->setRange(0, m_document->blockCount() - areaSize.height() / fm.lineSpacing());
 	//horizontalScrollBar()->setPageStep(widgetSize.width());
-	verticalScrollBar()->setRange(0, m_document->blockCount() /** fm.lineSpacing()*/ - areaSize.height() / fm.lineSpacing());
 	//horizontalScrollBar()->setRange(0, widgetSize.width() - areaSize.width());
 	//updateWidgetPosition();
 
@@ -317,6 +341,13 @@ void PlainTextEdit::setFontFamily(const QString &name)
 	onFontChanged();
 	//emit showMessage(QString(tr("fontSize:%1").arg(sz)));
 }
+void PlainTextEdit::selectAll()
+{
+	m_textCursor->movePosition(TextCursor::StartOfDocument);
+	m_textCursor->movePosition(TextCursor::EndOfDocument, TextCursor::KeepAnchor);
+	ensureCursorVisible();
+	viewport()->update();
+}
 void PlainTextEdit::copy()
 {
 	if( !m_textCursor->hasSelection() ) return;
@@ -338,6 +369,7 @@ void PlainTextEdit::paste()
 	QString text = clipboard->text();
 	if( !text.isEmpty() ) {
 		m_textCursor->insertText(text);
+		ensureCursorVisible();
 		viewport()->update();
 	}
 }
@@ -359,11 +391,13 @@ void PlainTextEdit::resizeEvent(QResizeEvent *event)
 {
 	QAbstractScrollArea::resizeEvent(event);
 	updateLineNumberAreaSize();
-	onBlockCountChanged();
+	//onBlockCountChanged();
+	updateScrollBarData();
 }
 void PlainTextEdit::updateLineNumberAreaSize()
 {
 	//QRect r = contentsRect();
+	size_t bc = m_document->blockCount();
 	QRect r = rect();
 	m_lineNumberArea->setGeometry(QRect(r.left(), r.top(), m_lineNumberAreaWidth, r.height()));
 }

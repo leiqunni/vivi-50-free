@@ -105,6 +105,11 @@ void MainWindow::createActions()
     }
 #endif
 
+    selectAllAct = new QAction(tr("Select&All"), this);
+    selectAllAct->setShortcuts(QKeySequence::SelectAll);
+    selectAllAct->setStatusTip(tr("Select All text"));
+    connect(selectAllAct, SIGNAL(triggered()), m_editor, SLOT(selectAll()));
+
     cutAct = new QAction(QIcon(":vivi/Resources/images/cut.png"), tr("Cu&t"), this);
     cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setStatusTip(tr("Cut the current selection's contents to the clipboard"));
@@ -167,6 +172,7 @@ void MainWindow::createMenus()
 	editMenu->addAction(cutAct);
 	editMenu->addAction(copyAct);
 	editMenu->addAction(pasteAct);
+	editMenu->addAction(selectAllAct);
 
     viewMenu = menuBar()->addMenu(tr("&View"));
 

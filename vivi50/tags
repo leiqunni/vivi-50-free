@@ -45,7 +45,7 @@ INVALID_INDEX	.\TextDocument.h	182;"	d
 KeepAnchor	.\TextDocument.h	/^		KeepAnchor,$/;"	e	enum:TextCursor::__anon3
 Left	.\TextDocument.h	/^		Left,$/;"	e	enum:TextCursor::__anon4
 MAINWINDOW_H	.\mainwindow.h	24;"	d
-MARGIN_LEFT	.\PlainTextEdit.cpp	28;"	d	file:
+MARGIN_LEFT	.\PlainTextEdit.cpp	29;"	d	file:
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
@@ -193,8 +193,8 @@ doUnitTest	.\mainwindowTest.cpp	/^void MainWindow::doUnitTest()$/;"	f	class:Main
 do_erase	.\TextDocument.cpp	/^void TextDocument::do_erase(index_t first, index_t last)$/;"	f	class:TextDocument
 do_insert	.\TextDocument.cpp	/^void TextDocument::do_insert(index_t position, const QString &text)$/;"	f	class:TextDocument
 do_replace	.\TextDocument.cpp	/^void TextDocument::do_replace(index_t first, index_t last, const QString &text)$/;"	f	class:TextDocument
-document	.\TextDocument.h	/^	TextDocument	*document() const { return m_document; }$/;"	f	class:TextCursor
 document	.\PlainTextEdit.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:PlainTextEdit
+document	.\TextDocument.h	/^	TextDocument	*document() const { return m_document; }$/;"	f	class:TextCursor
 drawLineNumbers	.\PlainTextEdit.cpp	/^void PlainTextEdit::drawLineNumbers()$/;"	f	class:PlainTextEdit
 editMenu	.\mainwindow.h	/^    QMenu	*editMenu;$/;"	m	class:MainWindow
 empty	.\gap_vector.h	/^	bool	empty() const { return !m_first || m_first == m_gapBegin && m_gapEnd == m_last; }$/;"	f	class:std::gap_vector
@@ -255,8 +255,8 @@ index	.\TextDocument.h	/^	index_t index() const { return m_index; }$/;"	f	struct
 index_t	.\PlainTextEdit.h	/^typedef size_t index_t;$/;"	t
 index_t	.\gap_vector.h	/^typedef size_t index_t;$/;"	t
 index_type	.\gap_vector.h	/^	typedef uint index_type;			\/\/	バッファインデックス [0, size()]$/;"	t	class:std::gap_vector
-init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
 init	.\mainwindow.cpp	/^void MainWindow::init()$/;"	f	class:MainWindow
+init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
 insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t ix, TextBlockData d,$/;"	f	class:TextDocument
 insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t ix, cuchar *first, cuchar *last)$/;"	f	class:TextDocument
 insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t position, TextBlockData d, const QString &text)$/;"	f	class:TextDocument
@@ -277,6 +277,7 @@ keyPressEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::keyPressEvent ( QKeyEven
 lastBlock	.\TextDocument.h	/^	TextBlock	lastBlock() { return TextBlock(this, blockCount() - 1); }$/;"	f	class:TextDocument
 lastBlock	.\TextDocument.h	/^	TextBlock	lastBlock()$/;"	f	class:TextDocument
 length	.\TextDocument.h	/^	uint		length() const { return size(); }$/;"	f	class:TextBlock
+lineNumberLength	.\PlainTextEdit.cpp	/^int PlainTextEdit::lineNumberLength() const$/;"	f	class:PlainTextEdit
 loadFile	.\mainwindow.cpp	/^void MainWindow::loadFile(const QString &fileName, int lineNum)$/;"	f	class:MainWindow
 m_anchor	.\TextDocument.h	/^	index_t			m_anchor;		\/\/	アンカー位置$/;"	m	class:TextCursor
 m_anchorBlockData	.\TextDocument.h	/^	TextBlockData	m_anchorBlockData;$/;"	m	class:TextCursor
@@ -289,9 +290,9 @@ m_charEncoding	.\TextDocument.h	/^	uchar	m_charEncoding;$/;"	m	class:TextDocumen
 m_curFile	.\mainwindow.h	/^	QString	m_curFile;$/;"	m	class:MainWindow
 m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	オブジェクトを次に入れる位置（0..*）$/;"	m	class:GVUndoMgr
 m_data	.\TextDocument.h	/^	TextBlockData	m_data;$/;"	m	class:TextBlock
+m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextBlock
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextCursor
-m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_editor	.\mainwindow.h	/^	PlainTextEdit	*m_editor;$/;"	m	class:MainWindow
 m_failCount	.\unit_test.h	/^	int		m_failCount;		\/\/	失敗回数$/;"	m	class:CUnitTest
 m_fileName	.\unit_test.h	/^	QString		m_fileName;$/;"	m	struct:SFailedInfo
@@ -411,6 +412,8 @@ resizeEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::resizeEvent(QResizeEvent *
 retranslateUi	.\GeneratedFiles\ui_mainwindow.h	/^    void retranslateUi(QMainWindow *MainWindowClass)$/;"	f	class:Ui_MainWindowClass
 saveAct	.\mainwindow.h	/^	QAction *saveAct;$/;"	m	class:MainWindow
 saveAsAct	.\mainwindow.h	/^	QAction *saveAsAct;$/;"	m	class:MainWindow
+selectAll	.\PlainTextEdit.cpp	/^void PlainTextEdit::selectAll()$/;"	f	class:PlainTextEdit
+selectAllAct	.\mainwindow.h	/^    QAction *selectAllAct;$/;"	m	class:MainWindow
 selectedText	.\TextDocument.cpp	/^QString TextCursor::selectedText() const$/;"	f	class:TextCursor
 separatorMRUAct	.\mainwindow.h	/^    QAction *separatorMRUAct;$/;"	m	class:MainWindow
 setCharEncodeing	.\TextDocument.h	/^	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }$/;"	f	class:TextDocument
@@ -454,6 +457,7 @@ updateBlocksAtInsert	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtInser
 updateCurFile	.\mainwindow.cpp	/^void MainWindow::updateCurFile()$/;"	f	class:MainWindow
 updateLineNumberAreaSize	.\PlainTextEdit.cpp	/^void PlainTextEdit::updateLineNumberAreaSize()$/;"	f	class:PlainTextEdit
 updateRecentFileActions	.\mainwindow.cpp	/^void MainWindow::updateRecentFileActions()$/;"	f	class:MainWindow
+updateScrollBarData	.\PlainTextEdit.cpp	/^void PlainTextEdit::updateScrollBarData()$/;"	f	class:PlainTextEdit
 updateWindowTitle	.\mainwindow.cpp	/^void MainWindow::updateWindowTitle()$/;"	f	class:MainWindow
 ut_output	.\unit_test.cpp	/^void ut_output(const QString &mess)$/;"	f
 ut_set_output	.\unit_test.cpp	/^void ut_set_output(OutputFunc f)$/;"	f

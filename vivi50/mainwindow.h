@@ -99,6 +99,7 @@ private:
 	QAction *saveAct;
 	QAction *saveAsAct;
 	QAction *closeAllAct;
+    QAction *selectAllAct;
     QAction *cutAct;
     QAction *copyAct;
     QAction *pasteAct;

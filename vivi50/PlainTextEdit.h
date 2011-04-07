@@ -49,6 +49,7 @@ public slots:
 	void	paste();
 	void	undo();
 	void	redo();
+	void	selectAll();
 	void	setFontPointSize(int);
 	void	setFontFamily(const QString &);
 	void	makeFontBigger(bool);
@@ -65,11 +66,13 @@ protected:
     void	focusInEvent ( QFocusEvent * event );
     void	resizeEvent ( QResizeEvent * event );
 	void	updateLineNumberAreaSize();
+	void	updateScrollBarData();
 	void	drawLineNumbers();
 	void	onFontChanged();
 
     TextBlock	firstVisibleBlock();
     void	ensureCursorVisible();
+	int		lineNumberLength() const;			//	ç≈ëÂçsî‘çÜåÖêî
 
 protected slots:
 	void	onBlockCountChanged();
@@ -83,6 +86,7 @@ private:
 	QWidget	*m_lineNumberArea;
 	int		m_lineNumberAreaWidth;
 	int		m_lineNumberWidth;
+	//int		m_lineNumberNDigits;		//	åÖêî
 };
 
 #endif // PLAINTEXTEDIT_H
