@@ -21,7 +21,7 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(47,324)
   main.cpp	(-153,-353)
-  mainwindow.cpp	(120,-227)
+* mainwindow.cpp	(120,-227)
   mainwindow.h	(120,-260)
 * PlainTextEdit.cpp	(-174,-23)
 * PlainTextEdit.h	(-174,-56)
@@ -35,4 +35,6 @@ memFileColumnWd = 320
   charEncoding.cpp	(369,-63)
   charEncoding.h	(369,-96)
 [ToDo]
-  "TextDocument.cpp" 227 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 164 'B: ' '' undone 暫定コード
+  "TextDocument.cpp" 169 'B: ' '' undone 暫定コード
+  "TextDocument.cpp" 254 'M: ' '' undone 不要なヒープの解放

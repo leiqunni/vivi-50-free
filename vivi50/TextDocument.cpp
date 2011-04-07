@@ -185,6 +185,14 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 			}
 		}
 		break;
+	case StartOfDocument:
+		m_position = 0;
+		m_blockData = TextBlockData(0, 0);
+		break;
+	case EndOfDocument:
+		m_position = m_document->size();
+		m_blockData = m_document->prevBlockData(TextBlockData(m_document->blockCount(), m_document->size()));
+		break;
 	default:
 		return false;
 	}
@@ -582,7 +590,7 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
 				blockPosition += m_blocks[ix++].m_size;
 		} else {	//	’†‰›‚æ‚èŒã‚ë‚Ìê‡
 			blockPosition = size();
-			index_t ix = blockCount();
+			ix = blockCount();
 			while( ix > blockIndex )
 				blockPosition -= m_blocks[--ix].m_size;
 		}

@@ -220,43 +220,32 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	const bool ctrl = (mod & Qt::ControlModifier) != 0;
 	const bool shift = (mod & Qt::ShiftModifier) != 0;
 	const uchar mvMode = shift ? TextCursor::KeepAnchor : TextCursor::MoveAnchor;
+	uchar move = 0;
 	switch( keyEvent->key() ) {
 	case Qt::Key_Home:
 		if( ctrl )
-			m_textCursor->setPosition(0, mvMode);
+			move = TextCursor::StartOfDocument;
 		else
-			m_textCursor->movePosition(TextCursor::StartOfBlock, mvMode);
-		ensureCursorVisible();
-		viewport()->update();
-		return;
+			move = TextCursor::StartOfBlock;
+		break;;
 	case Qt::Key_End:
 		if( ctrl )
-			m_textCursor->setPosition(m_document->size(), mvMode);
+			move = TextCursor::EndOfDocument;
 		else
-			m_textCursor->movePosition(TextCursor::EndOfBlock, mvMode);
-		ensureCursorVisible();
-		viewport()->update();
-		return;
+			move = TextCursor::EndOfBlock;
+		break;
 	case Qt::Key_Right:
-		m_textCursor->movePosition(TextCursor::Right, mvMode);
-		ensureCursorVisible();
-		viewport()->update();
-		return;
+		move = TextCursor::Right;
+		break;
 	case Qt::Key_Left:
-		m_textCursor->movePosition(TextCursor::Left, mvMode);
-		ensureCursorVisible();
-		viewport()->update();
-		return;
+		move = TextCursor::Left;
+		break;
 	case Qt::Key_Up:
-		m_textCursor->movePosition(TextCursor::Up, mvMode);
-		ensureCursorVisible();
-		viewport()->update();
-		return;
+		move = TextCursor::Up;
+		break;
 	case Qt::Key_Down:
-		m_textCursor->movePosition(TextCursor::Down, mvMode);
-		ensureCursorVisible();
-		viewport()->update();
-		return;
+		move = TextCursor::Down;
+		break;
 	case Qt::Key_Backspace:
 		m_textCursor->deletePreviousChar();
 		ensureCursorVisible();
@@ -269,7 +258,17 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	case Qt::Key_Escape:
 		m_textCursor->clearSelection();
 		viewport()->update();
-		emit showMessage( QDir::currentPath() );
+		emit showMessage( QString("%1 cur=(%2 %3 %4)")
+							.arg(QDir::currentPath())
+							.arg(m_textCursor->position())
+							.arg(m_textCursor->blockData().index())
+							.arg(m_textCursor->blockData().position()) );
+		return;
+	}
+	if( move != 0 ) {
+		m_textCursor->movePosition(move, mvMode);
+		ensureCursorVisible();
+		viewport()->update();
 		return;
 	}
 	QString text = keyEvent->text();

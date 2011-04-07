@@ -196,6 +196,8 @@ public:
 		Down,
 		StartOfBlock,
 		EndOfBlock,
+		StartOfDocument,
+		EndOfDocument,
 	};
 public:
 #if	BLOCK_HAS_SIZE

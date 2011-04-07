@@ -34,6 +34,7 @@ CUnitTest	.\unit_test.cpp	/^CUnitTest::CUnitTest(cchar *unitName \/*, CVOStream 
 CUnitTest	.\unit_test.h	/^class CUnitTest$/;"	c
 Down	.\TextDocument.h	/^		Down,$/;"	e	enum:TextCursor::__anon4
 EndOfBlock	.\TextDocument.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon4
+EndOfDocument	.\TextDocument.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon4
 GVUndoItem	.\TextDocument.h	/^	GVUndoItem()$/;"	f	struct:GVUndoItem
 GVUndoItem	.\TextDocument.h	/^	GVUndoItem(uchar type,$/;"	f	struct:GVUndoItem
 GVUndoItem	.\TextDocument.h	/^struct GVUndoItem$/;"	s
@@ -62,6 +63,7 @@ SFailedInfo	.\unit_test.h	/^	SFailedInfo(const QString &fileName, int lineNum, Q
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
 SFailedInfo	.\unit_test.h	/^struct SFailedInfo$/;"	s
 StartOfBlock	.\TextDocument.h	/^		StartOfBlock,$/;"	e	enum:TextCursor::__anon4
+StartOfDocument	.\TextDocument.h	/^		StartOfDocument,$/;"	e	enum:TextCursor::__anon4
 TEXTDOCUMENT_H	.\TextDocument.h	24;"	d
 TextBlock	.\TextDocument.h	/^	TextBlock(TextDocument *document, TextBlockData block)$/;"	f	class:TextBlock
 TextBlock	.\TextDocument.h	/^	TextBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)$/;"	f	class:TextBlock
