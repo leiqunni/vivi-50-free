@@ -222,18 +222,20 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	const uchar mvMode = shift ? TextCursor::KeepAnchor : TextCursor::MoveAnchor;
 	switch( keyEvent->key() ) {
 	case Qt::Key_Home:
-		if( ctrl ) {
+		if( ctrl )
 			m_textCursor->setPosition(0, mvMode);
-			ensureCursorVisible();
-			viewport()->update();
-		}
+		else
+			m_textCursor->movePosition(TextCursor::StartOfBlock, mvMode);
+		ensureCursorVisible();
+		viewport()->update();
 		return;
 	case Qt::Key_End:
-		if( ctrl ) {
+		if( ctrl )
 			m_textCursor->setPosition(m_document->size(), mvMode);
-			ensureCursorVisible();
-			viewport()->update();
-		}
+		else
+			m_textCursor->movePosition(TextCursor::EndOfBlock, mvMode);
+		ensureCursorVisible();
+		viewport()->update();
 		return;
 	case Qt::Key_Right:
 		m_textCursor->movePosition(TextCursor::Right, mvMode);

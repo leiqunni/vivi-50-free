@@ -33,6 +33,7 @@ BLOCK_HAS_SIZE	.\TextDocument.h	38;"	d
 CUnitTest	.\unit_test.cpp	/^CUnitTest::CUnitTest(cchar *unitName \/*, CVOStream *out*\/)$/;"	f	class:CUnitTest
 CUnitTest	.\unit_test.h	/^class CUnitTest$/;"	c
 Down	.\TextDocument.h	/^		Down,$/;"	e	enum:TextCursor::__anon4
+EndOfBlock	.\TextDocument.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon4
 GVUndoItem	.\TextDocument.h	/^	GVUndoItem()$/;"	f	struct:GVUndoItem
 GVUndoItem	.\TextDocument.h	/^	GVUndoItem(uchar type,$/;"	f	struct:GVUndoItem
 GVUndoItem	.\TextDocument.h	/^struct GVUndoItem$/;"	s
@@ -60,6 +61,7 @@ Right	.\TextDocument.h	/^		Right,$/;"	e	enum:TextCursor::__anon4
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const QString &fileName, int lineNum, QString mess="")$/;"	f	struct:SFailedInfo
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
 SFailedInfo	.\unit_test.h	/^struct SFailedInfo$/;"	s
+StartOfBlock	.\TextDocument.h	/^		StartOfBlock,$/;"	e	enum:TextCursor::__anon4
 TEXTDOCUMENT_H	.\TextDocument.h	24;"	d
 TextBlock	.\TextDocument.h	/^	TextBlock(TextDocument *document, TextBlockData block)$/;"	f	class:TextBlock
 TextBlock	.\TextDocument.h	/^	TextBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)$/;"	f	class:TextBlock
@@ -74,8 +76,8 @@ TextCursor	.\TextDocument.h	/^	TextCursor(TextDocument *document, index_t positi
 TextCursor	.\TextDocument.h	/^	TextCursor(TextDocument *document, index_t position, index_t anchor,$/;"	f	class:TextCursor
 TextCursor	.\TextDocument.h	/^	TextCursor(const TextCursor &x)$/;"	f	class:TextCursor
 TextCursor	.\TextDocument.h	/^class TextCursor$/;"	c
-TextDocument	.\TextDocument.h	/^class TextDocument : public QObject$/;"	c
 TextDocument	.\TextDocument.cpp	/^TextDocument::TextDocument(QObject *parent)$/;"	f	class:TextDocument
+TextDocument	.\TextDocument.h	/^class TextDocument : public QObject$/;"	c
 UI_MAINWINDOW_H	.\GeneratedFiles\ui_mainwindow.h	11;"	d
 UTF8CharSize	.\TextDocument.cpp	/^size_t UTF8CharSize(uchar ch)$/;"	f
 Ui	.\GeneratedFiles\ui_mainwindow.h	/^namespace Ui {$/;"	n
@@ -125,8 +127,8 @@ blockCountChanged	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^void TextDocumen
 blockData	.\TextDocument.h	/^	TextBlockData blockData() const { return m_blockData; }$/;"	f	class:TextCursor
 blockIndex	.\TextDocument.h	/^	index_t	blockIndex() const { return m_blockData.m_index; }$/;"	f	class:TextCursor
 blockNumber	.\TextDocument.h	/^	index_t		blockNumber() const { return m_block.m_index; }$/;"	f	class:TextBlock
-blockPosition	.\TextDocument.h	/^	index_t	blockPosition() const { return m_blockData.m_position; }$/;"	f	class:TextCursor
 blockPosition	.\TextDocument.cpp	/^size_t TextDocument::blockPosition(index_t ix) const$/;"	f	class:TextDocument
+blockPosition	.\TextDocument.h	/^	index_t	blockPosition() const { return m_blockData.m_position; }$/;"	f	class:TextCursor
 blockSize	.\TextDocument.cpp	/^size_t TextDocument::blockSize(index_t ix) const$/;"	f	class:TextDocument
 buildBlocks	.\TextDocument.cpp	/^void TextDocument::buildBlocks()$/;"	f	class:TextDocument
 canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_current < m_items.size(); };$/;"	f	class:GVUndoMgr
@@ -178,18 +180,18 @@ distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Iterator &x) co
 doJump	.\PlainTextEdit.cpp	/^void PlainTextEdit::doJump(int lineNum)$/;"	f	class:PlainTextEdit
 doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
+doRedo	.\TextDocument.cpp	/^bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
 doRedo	.\TextDocument.h	/^	void	doRedo()$/;"	f	class:TextDocument
 doRedo	.\TextDocument.h	/^	void	doRedo(index_t &pos) { m_undoMgr.doRedo(this, pos); }$/;"	f	class:TextDocument
-doRedo	.\TextDocument.cpp	/^bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
+doUndo	.\TextDocument.cpp	/^bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
 doUndo	.\TextDocument.h	/^	void	doUndo()$/;"	f	class:TextDocument
 doUndo	.\TextDocument.h	/^	void	doUndo(index_t &pos) { m_undoMgr.doUndo(this, pos); }$/;"	f	class:TextDocument
-doUndo	.\TextDocument.cpp	/^bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
 doUnitTest	.\mainwindowTest.cpp	/^void MainWindow::doUnitTest()$/;"	f	class:MainWindow
 do_erase	.\TextDocument.cpp	/^void TextDocument::do_erase(index_t first, index_t last)$/;"	f	class:TextDocument
 do_insert	.\TextDocument.cpp	/^void TextDocument::do_insert(index_t position, const QString &text)$/;"	f	class:TextDocument
 do_replace	.\TextDocument.cpp	/^void TextDocument::do_replace(index_t first, index_t last, const QString &text)$/;"	f	class:TextDocument
-document	.\PlainTextEdit.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:PlainTextEdit
 document	.\TextDocument.h	/^	TextDocument	*document() const { return m_document; }$/;"	f	class:TextCursor
+document	.\PlainTextEdit.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:PlainTextEdit
 drawLineNumbers	.\PlainTextEdit.cpp	/^void PlainTextEdit::drawLineNumbers()$/;"	f	class:PlainTextEdit
 editMenu	.\mainwindow.h	/^    QMenu	*editMenu;$/;"	m	class:MainWindow
 empty	.\gap_vector.h	/^	bool	empty() const { return !m_first || m_first == m_gapBegin && m_gapEnd == m_last; }$/;"	f	class:std::gap_vector
@@ -284,9 +286,9 @@ m_buffer	.\TextDocument.h	/^	mutable std::gap_vector<uchar>	m_buffer;$/;"	m	clas
 m_charEncoding	.\TextDocument.h	/^	uchar	m_charEncoding;$/;"	m	class:TextDocument
 m_curFile	.\mainwindow.h	/^	QString	m_curFile;$/;"	m	class:MainWindow
 m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	オブジェクトを次に入れる位置（0..*）$/;"	m	class:GVUndoMgr
-m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextBlock
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextCursor
+m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_editor	.\mainwindow.h	/^	PlainTextEdit	*m_editor;$/;"	m	class:MainWindow
 m_failCount	.\unit_test.h	/^	int		m_failCount;		\/\/	失敗回数$/;"	m	class:CUnitTest
 m_fileName	.\unit_test.h	/^	QString		m_fileName;$/;"	m	struct:SFailedInfo
@@ -370,9 +372,9 @@ paste	.\PlainTextEdit.cpp	/^void PlainTextEdit::paste()$/;"	f	class:PlainTextEdi
 pasteAct	.\mainwindow.h	/^    QAction *pasteAct;$/;"	m	class:MainWindow
 pointer	.\gap_vector.h	/^	typedef Type* pointer;$/;"	t	class:std::_Gap_Vector_Iterator
 pointer	.\gap_vector.h	/^	typedef Type* pointer;$/;"	t	class:std::gap_vector
+position	.\TextDocument.cpp	/^index_t TextBlock::position() const$/;"	f	class:TextBlock
 position	.\TextDocument.h	/^	index_t	position() const { return m_position; }$/;"	f	class:TextCursor
 position	.\TextDocument.h	/^	index_t position() const { return m_position; }$/;"	f	struct:TextBlockData
-position	.\TextDocument.cpp	/^index_t TextBlock::position() const$/;"	f	class:TextBlock
 prevBlockData	.\TextDocument.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextDocument
 push_back	.\TextDocument.cpp	/^void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)$/;"	f	class:GVUndoMgr
 push_back	.\gap_vector.h	/^	void push_back(Type v)$/;"	f	class:std::gap_vector
@@ -418,8 +420,8 @@ setWithBOM	.\TextDocument.h	/^	void	setWithBOM(bool b) { m_withBOM = b; }$/;"	f	
 setupUi	.\GeneratedFiles\ui_mainwindow.h	/^    void setupUi(QMainWindow *MainWindowClass)$/;"	f	class:Ui_MainWindowClass
 showAboutDlg	.\mainwindow.cpp	/^void MainWindow::showAboutDlg()$/;"	f	class:MainWindow
 showMessage	.\mainwindow.cpp	/^void MainWindow::showMessage(const QString & text)$/;"	f	class:MainWindow
-size	.\TextDocument.h	/^	size_t	size() const { return m_buffer.size(); }$/;"	f	class:TextDocument
 size	.\TextDocument.cpp	/^uint TextBlock::size() const$/;"	f	class:TextBlock
+size	.\TextDocument.h	/^	size_t	size() const { return m_buffer.size(); }$/;"	f	class:TextDocument
 size	.\gap_vector.h	/^	size_type	size() const { return !m_first ? 0 : (m_gapBegin - m_first) + (m_last - m_gapEnd); }$/;"	f	class:std::gap_vector
 size_type	.\gap_vector.h	/^	typedef uint size_type;$/;"	t	class:std::gap_vector
 staticMetaObject	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^const QMetaObject PlainTextEdit::staticMetaObject = {$/;"	m	class:PlainTextEdit	file:

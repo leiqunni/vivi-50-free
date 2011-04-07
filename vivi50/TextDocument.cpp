@@ -161,11 +161,29 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 		break;
 	case Up:
 		if( !m_blockData.m_index ) return false;
+		//	undone B 暫定コード
 		m_position = m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
 		break;
 	case Down:
 		if( m_blockData.m_index >= m_document->blockCount() - 1 ) return false;
+		//	undone B 暫定コード
 		m_position = m_blockData.m_position += m_document->blockSize(m_blockData.m_index++);
+		break;
+	case StartOfBlock:
+		m_position = m_blockData.position();
+		break;
+	case EndOfBlock:		//	改行位置に移動
+		m_position = m_blockData.position() + m_document->blockSize(m_blockData.index());
+		if( m_position > m_blockData.position() ) {
+			uchar uch = (*m_document)[m_position - 1];
+			if( uch == '\r' )
+				--m_position;
+			else if( uch == '\n' ) {
+				--m_position;
+				if( m_position > m_blockData.position() && (*m_document)[m_position - 1] == '\r' )
+					--m_position;
+			}
+		}
 		break;
 	default:
 		return false;

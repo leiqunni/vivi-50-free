@@ -194,6 +194,8 @@ public:
 		Left,
 		Up,
 		Down,
+		StartOfBlock,
+		EndOfBlock,
 	};
 public:
 #if	BLOCK_HAS_SIZE
