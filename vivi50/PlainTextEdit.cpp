@@ -85,6 +85,7 @@ void PlainTextEdit::focusInEvent ( QFocusEvent * event )
 
 int PlainTextEdit::offsetToX(const QString &text, index_t offset) const
 {
+	offset = qMin(offset, (index_t)text.length());
 	const QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
@@ -116,19 +117,37 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
 
+	index_t selFirst = 0, selLast = 0;	//	選択範囲、first < last
+	if( m_textCursor->hasSelection() ) {
+		if( m_textCursor->position() < m_textCursor->anchor() ) {
+			selFirst = m_textCursor->position();
+			selLast = m_textCursor->anchor();
+		} else {
+			selFirst = m_textCursor->anchor();
+			selLast = m_textCursor->position();
+		}
+	}
 	index_t lastBlockNumber = m_document->lastBlock().blockNumber();
 	int y = 0;
 	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	//TextBlock block = m_document->firstBlock();
 	while( y < vr.height() && block.isValid() ) {
+		const QString text = block.text();
+		index_t nextBlockPosition = block.position() + m_document->blockSize(block.index());
+		if( m_textCursor->hasSelection() &&
+			selFirst < nextBlockPosition && selLast > block.position() )
+		{
+			//	block が選択範囲内にある場合
+			int x1 = offsetToX(text, qMax(block.position(), selFirst) - block.position());
+			int x2 = offsetToX(text, qMin(nextBlockPosition, selLast) - block.position());
+			painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
+		}
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
-			const QString text = block.text();
 			const index_t offset = qMin(m_textCursor->position() - block.position(),
 										(index_t)text.length());
 			int x = offsetToX(text, offset);
-			painter.fillRect(QRect(x + MARGIN_LEFT, y+2, 2, fm.height()), Qt::red);
+			painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::red);
 		}
-		const QString text = block.text();
 		//painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
 		int x = 0;
 		int ix = 0;

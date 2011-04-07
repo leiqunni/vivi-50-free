@@ -310,6 +310,7 @@ public:
 	uint		size() const;		//	改行を含めたコード長
 	uint		length() const { return size(); }
 	bool		isValid() const { return blockNumber() != INVALID_INDEX; }
+	index_t		index() const { return m_block.m_index; }
 	index_t		blockNumber() const { return m_block.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
 	QString		text() const;

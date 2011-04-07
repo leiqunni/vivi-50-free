@@ -24,7 +24,7 @@ memFileColumnWd = 320
   mainwindow.cpp	(120,-227)
   mainwindow.h	(120,-260)
 * PlainTextEdit.cpp	(-174,-23)
-  PlainTextEdit.h	(-174,-56)
+* PlainTextEdit.h	(-174,-56)
 * TextDocument.cpp	(3,164)
 * TextDocument.h	(3,131)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(37,-367)
@@ -35,5 +35,4 @@ memFileColumnWd = 320
   charEncoding.cpp	(369,-63)
   charEncoding.h	(369,-96)
 [ToDo]
-  "PlainTextEdit.cpp" 110 'R: ' '' undone カーソル位置座標計算はどこかにまとめる
   "TextDocument.cpp" 227 'M: ' '' undone 不要なヒープの解放
