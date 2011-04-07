@@ -54,7 +54,7 @@ public slots:
 	void	makeFontBigger(bool);
 
 protected:
-	int		offsetToX(const QString &, index_t) const;
+	int		offsetToX(const QString &, int) const;		//	‘æ‚Qˆø”‚Í•¶š”
 
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);

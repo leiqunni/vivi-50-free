@@ -83,20 +83,24 @@ void PlainTextEdit::focusInEvent ( QFocusEvent * event )
 	}
 }
 
-int PlainTextEdit::offsetToX(const QString &text, index_t offset) const
+int PlainTextEdit::offsetToX(const QString &text, int offset) const
 {
-	offset = qMin(offset, (index_t)text.length());
+	offset = qMin(offset, text.length());
 	const QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
 	int x = 0;
 	for(int ix = 0; ix < offset; ) {
-		if( text[ix] == '\t' ) {
+		if( text[ix] == ' ' ) {
+			//	boundingRect(text)：text の最後が空白の場合に期待する値を返さないため
+			++ix;
+			x += spaceWidth;
+		} else if( text[ix] == '\t' ) {
 			++ix;
 			x = (x / tabWidth + 1) * tabWidth;
 		} else {
 			int first = ix;
-			while( ix < offset && text[ix] != '\t' )
+			while( ix < offset && text[ix] != '\t' && text[ix] != ' ' )
 				++ix;
 			const QString buf = text.mid(first, ix - first);
 			x += fm.boundingRect(buf).width();
@@ -138,13 +142,13 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 			selFirst < nextBlockPosition && selLast > block.position() )
 		{
 			//	block が選択範囲内にある場合
-			int x1 = offsetToX(text, qMax(block.position(), selFirst) - block.position());
-			int x2 = offsetToX(text, qMin(nextBlockPosition, selLast) - block.position());
+			int x1 = offsetToX(text, block.charsCount(qMax(block.position(), selFirst)));
+			int x2 = offsetToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
 			painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
 		}
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
-			const index_t offset = qMin(m_textCursor->position() - block.position(),
-										(index_t)text.length());
+			const int offset = qMin(block.charsCount(m_textCursor->position()),
+										text.length());
 			int x = offsetToX(text, offset);
 			painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::red);
 		}
@@ -166,6 +170,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		}
 		if( block.blockNumber() == lastBlockNumber ) {
 			painter.setPen(Qt::blue);
+			const int x = offsetToX(text, text.length());
 			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), "[EOF]");
 			break;
 		}

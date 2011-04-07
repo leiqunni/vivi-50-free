@@ -37,4 +37,4 @@ memFileColumnWd = 320
 [ToDo]
   "TextDocument.cpp" 164 'B: ' '' undone 暫定コード
   "TextDocument.cpp" 169 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 254 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 253 'M: ' '' undone 不要なヒープの解放

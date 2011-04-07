@@ -241,6 +241,7 @@ public:
 	TextDocument	*document() const { return m_document; }
 	index_t	position() const { return m_position; }
 	index_t	anchor() const { return m_anchor; }
+	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
 	bool	hasSelection() const { return m_position != m_anchor; }
 	bool	isNull() const { return m_document == 0; }
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
@@ -294,18 +295,16 @@ public:
 	//	: m_document(document), m_blockNumber(blockNumber)
 	//	{}
 	TextBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)
-		: m_document(document), m_block(TextBlockData(blockNumber, blockPosition))
+		: m_document(document), m_data(TextBlockData(blockNumber, blockPosition))
 		{}
 	TextBlock(TextDocument *document, TextBlockData block)
-		: m_document(document), m_block(block)
+		: m_document(document), m_data(block)
 		{}
 #endif
 	TextBlock(const TextBlock &x)
 		: m_document(x.m_document)
 #if	BLOCK_HAS_SIZE
-		, m_block(x.m_block)
-		//, m_blockNumber(x.m_blockNumber)
-		//, m_blockPosition(x.m_blockPosition)
+		, m_data(x.m_data)
 #endif
 		{}
 	~TextBlock() {}
@@ -314,10 +313,11 @@ public:
 	uint		size() const;		//	改行を含めたコード長
 	uint		length() const { return size(); }
 	bool		isValid() const { return blockNumber() != INVALID_INDEX; }
-	index_t		index() const { return m_block.m_index; }
-	index_t		blockNumber() const { return m_block.m_index; }
+	index_t		index() const { return m_data.m_index; }
+	index_t		blockNumber() const { return m_data.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
 	QString		text() const;
+	int			charsCount(index_t) const;		//	行頭から指定位置までの文字数を返す
 
 	bool	operator==(const TextBlock &x) const
 	{ return m_document == x.m_document && blockNumber() == x.blockNumber(); }
@@ -330,7 +330,7 @@ public:
 private:
 	TextDocument	*m_document;
 #if	BLOCK_HAS_SIZE
-	TextBlockData	m_block;
+	TextBlockData	m_data;
 	//index_t			m_blockNumber;		//	ブロック配列インデックス 0..*
 	//index_t			m_blockPosition;
 #endif

@@ -76,6 +76,17 @@ QString TextCursor::selectedText() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
+int TextCursor::prevCharsCount() const
+{
+	if( isNull() ) return 0;
+	int cnt = 0;
+	index_t ix = m_blockData.index();
+	while( ix < m_position ) {
+		++cnt;
+		ix += UTF8CharSize((*m_document)[ix]);
+	}
+	return cnt;
+}
 TextBlock TextCursor::block()
 {
 	return TextBlock(m_document, m_blockData);
@@ -335,7 +346,7 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
 uint TextBlock::size() const
 {
 #if 1
-	return m_document->blockSize(m_block.m_index);
+	return m_document->blockSize(m_data.m_index);
 #else
 	if( !isValid() ) return 0;
 	if( m_index == m_document->blockCount() - 1 )		//	ÅŒã‚ÌƒuƒƒbƒN
@@ -347,10 +358,26 @@ uint TextBlock::size() const
 index_t TextBlock::position() const
 {
 #if BLOCK_HAS_SIZE
-	return isValid() ? m_block.m_position : 0;
+	return isValid() ? m_data.m_position : 0;
 #else
 	return isValid() ? m_document->blockPosition(m_blockNumber) : 0;
 #endif
+}
+
+int TextBlock::charsCount(index_t position) const
+{
+	if( !isValid() || position <= m_data.position() ||
+		position > m_data.position() + m_document->blockSize(m_data.index()) )
+	{
+		return 0;
+	}
+	int cnt = 0;
+	int ix = m_data.position();
+	while( ix < position ) {
+		++cnt;
+		ix += UTF8CharSize((*m_document)[ix]);
+	}
+	return cnt;
 }
 	
 QString TextBlock::text() const
@@ -368,8 +395,8 @@ TextBlock TextBlock::next() const
 {
 	if( !isValid() ) return *this;
 #if BLOCK_HAS_SIZE
-	index_t blockPosition = m_block.m_position + m_document->blockSize(m_block.m_index);
-	int ix = m_block.m_index + 1;
+	index_t blockPosition = m_data.m_position + m_document->blockSize(m_data.m_index);
+	int ix = m_data.m_index + 1;
 	if( ix >= m_document->blockCount() )
 		ix = INVALID_INDEX;
 	return TextBlock(m_document, ix, blockPosition);
