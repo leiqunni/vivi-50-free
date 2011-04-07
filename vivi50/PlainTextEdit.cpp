@@ -87,7 +87,7 @@ void PlainTextEdit::updateScrollBarData()
 	QSize areaSize = viewport()->size();
 	//QSize  widgetSize = widget->size();
 
-	verticalScrollBar()->setPageStep(m_document->blockCount());
+	verticalScrollBar()->setPageStep(areaSize.height() / fm.lineSpacing());
 	verticalScrollBar()->setSingleStep(1);
 	verticalScrollBar()->setRange(0, m_document->blockCount() - areaSize.height() / fm.lineSpacing());
 	//horizontalScrollBar()->setPageStep(widgetSize.width());
