@@ -44,6 +44,8 @@ public:
 	void	doJump(int lineNum);
 
 public slots:
+	void	copy();
+	void	cut();
 	void	paste();
 	void	undo();
 	void	redo();

@@ -308,6 +308,21 @@ void PlainTextEdit::setFontFamily(const QString &name)
 	onFontChanged();
 	//emit showMessage(QString(tr("fontSize:%1").arg(sz)));
 }
+void PlainTextEdit::copy()
+{
+	if( !m_textCursor->hasSelection() ) return;
+	const QString text = m_textCursor->selectedText();
+	if( text.isEmpty() ) return;
+	QClipboard *clipboard = QApplication::clipboard();
+	clipboard->setText(text);
+}
+void PlainTextEdit::cut()
+{
+	if( !m_textCursor->hasSelection() ) return;
+	copy();
+	m_textCursor->deleteChar();
+	viewport()->update();
+}
 void PlainTextEdit::paste()
 {
 	QClipboard *clipboard = QApplication::clipboard();
