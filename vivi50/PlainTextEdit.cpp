@@ -180,14 +180,17 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		int x = 0;
 		int ix = 0;
 		while( ix < text.length() ) {
-			if( text[ix] == '\t' ) {
+			if( text[ix] == ' ' ) {
+				x += spaceWidth;
+				++ix;
+			} else if( text[ix] == '\t' ) {
 				painter.setPen(Qt::lightGray);
 				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), ">");
 				++ix;
 				x = (x / tabWidth + 1) * tabWidth;
 			} else {
 				int first = ix;
-				while( ix < text.length() && text[ix] != '\t' )
+				while( ix < text.length() && text[ix] != ' ' && text[ix] != '\t' )
 					++ix;
 				const QString buf = text.mid(first, ix - first);
 				painter.setPen(Qt::black);
@@ -378,6 +381,7 @@ void PlainTextEdit::undo()
 	index_t pos = 0;
 	m_document->doUndo(pos);
 	m_textCursor->setPosition(pos);
+	ensureCursorVisible();
 	viewport()->update();
 }
 void PlainTextEdit::redo()
@@ -385,6 +389,7 @@ void PlainTextEdit::redo()
 	index_t pos = 0;
 	m_document->doRedo(pos);
 	m_textCursor->setPosition(pos);
+	ensureCursorVisible();
 	viewport()->update();
 }
 void PlainTextEdit::resizeEvent(QResizeEvent *event)

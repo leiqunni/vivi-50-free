@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'PlainTextEdit.h'
 **
-** Created: Thu Apr 7 18:33:55 2011
+** Created: Thu Apr 7 20:00:38 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_PlainTextEdit[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -40,9 +40,10 @@ static const uint qt_meta_data_PlainTextEdit[] = {
       57,   14,   14,   14, 0x0a,
       64,   14,   14,   14, 0x0a,
       71,   14,   14,   14, 0x0a,
-      93,   14,   14,   14, 0x0a,
-     116,   14,   14,   14, 0x0a,
-     137,   14,   14,   14, 0x09,
+      83,   14,   14,   14, 0x0a,
+     105,   14,   14,   14, 0x0a,
+     128,   14,   14,   14, 0x0a,
+     149,   14,   14,   14, 0x09,
 
        0        // eod
 };
@@ -50,8 +51,9 @@ static const uint qt_meta_data_PlainTextEdit[] = {
 static const char qt_meta_stringdata_PlainTextEdit[] = {
     "PlainTextEdit\0\0showMessage(QString)\0"
     "copy()\0cut()\0paste()\0undo()\0redo()\0"
-    "setFontPointSize(int)\0setFontFamily(QString)\0"
-    "makeFontBigger(bool)\0onBlockCountChanged()\0"
+    "selectAll()\0setFontPointSize(int)\0"
+    "setFontFamily(QString)\0makeFontBigger(bool)\0"
+    "onBlockCountChanged()\0"
 };
 
 const QMetaObject PlainTextEdit::staticMetaObject = {
@@ -89,13 +91,14 @@ int PlainTextEdit::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: paste(); break;
         case 4: undo(); break;
         case 5: redo(); break;
-        case 6: setFontPointSize((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 7: setFontFamily((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 8: makeFontBigger((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 9: onBlockCountChanged(); break;
+        case 6: selectAll(); break;
+        case 7: setFontPointSize((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: setFontFamily((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 9: makeFontBigger((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 10: onBlockCountChanged(); break;
         default: ;
         }
-        _id -= 10;
+        _id -= 11;
     }
     return _id;
 }
