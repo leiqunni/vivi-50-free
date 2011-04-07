@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Wed Apr 6 09:11:34 2011
+** Created: Thu Apr 7 15:37:55 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,18 +32,22 @@ static const uint qt_meta_data_MainWindow[] = {
 
  // slots: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x08,
-      19,   11,   11,   11, 0x08,
-      41,   33,   11,   11, 0x08,
-      53,   11,   11,   11, 0x08,
-      68,   11,   11,   11, 0x08,
-      81,   11,   11,   11, 0x08,
+      22,   11,   11,   11, 0x08,
+      29,   11,   11,   11, 0x08,
+      43,   11,   11,   11, 0x08,
+      68,   60,   11,   11, 0x08,
+      80,   11,   11,   11, 0x08,
+     100,   95,   11,   11, 0x08,
+     121,   11,   11,   11, 0x08,
+     134,   11,   11,   11, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
-    "MainWindow\0\0open()\0open(QString)\0"
-    "lineNum\0doJump(int)\0showAboutDlg()\0"
+    "MainWindow\0\0newFile()\0open()\0open(QString)\0"
+    "openRecentFile()\0lineNum\0doJump(int)\0"
+    "showAboutDlg()\0text\0showMessage(QString)\0"
     "doUnitTest()\0doBenchmark()\0"
 };
 
@@ -76,15 +80,18 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: open(); break;
-        case 1: open((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 2: doJump((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: showAboutDlg(); break;
-        case 4: doUnitTest(); break;
-        case 5: doBenchmark(); break;
+        case 0: newFile(); break;
+        case 1: open(); break;
+        case 2: open((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 3: openRecentFile(); break;
+        case 4: doJump((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: showAboutDlg(); break;
+        case 6: showMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 7: doUnitTest(); break;
+        case 8: doBenchmark(); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 9;
     }
     return _id;
 }

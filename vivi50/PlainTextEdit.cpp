@@ -157,6 +157,8 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		int ix = 0;
 		while( ix < text.length() ) {
 			if( text[ix] == '\t' ) {
+				painter.setPen(Qt::lightGray);
+				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), ">");
 				++ix;
 				x = (x / tabWidth + 1) * tabWidth;
 			} else {
@@ -164,6 +166,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 				while( ix < text.length() && text[ix] != '\t' )
 					++ix;
 				const QString buf = text.mid(first, ix - first);
+				painter.setPen(Qt::black);
 				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), buf);
 				x += fm.boundingRect(buf).width();
 			}
@@ -356,6 +359,7 @@ void PlainTextEdit::resizeEvent(QResizeEvent *event)
 {
 	QAbstractScrollArea::resizeEvent(event);
 	updateLineNumberAreaSize();
+	onBlockCountChanged();
 }
 void PlainTextEdit::updateLineNumberAreaSize()
 {

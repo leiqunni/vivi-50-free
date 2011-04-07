@@ -35,6 +35,6 @@ memFileColumnWd = 320
   charEncoding.cpp	(369,-63)
   charEncoding.h	(369,-96)
 [ToDo]
-  "TextDocument.cpp" 164 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 169 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 253 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 175 'B: ' '' undone 暫定コード
+  "TextDocument.cpp" 180 'B: ' '' undone 暫定コード
+  "TextDocument.cpp" 264 'M: ' '' undone 不要なヒープの解放
