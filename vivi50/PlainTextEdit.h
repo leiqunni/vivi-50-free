@@ -29,6 +29,8 @@ class TextDocument;
 class TextCursor;
 class TextBlock;
 
+typedef size_t index_t;
+
 class PlainTextEdit : public QAbstractScrollArea
 {
 	Q_OBJECT
@@ -48,6 +50,9 @@ public slots:
 	void	setFontPointSize(int);
 	void	setFontFamily(const QString &);
 	void	makeFontBigger(bool);
+
+protected:
+	int		offsetToX(const QString &, index_t) const;
 
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);

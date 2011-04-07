@@ -83,6 +83,27 @@ void PlainTextEdit::focusInEvent ( QFocusEvent * event )
 	}
 }
 
+int PlainTextEdit::offsetToX(const QString &text, index_t offset) const
+{
+	const QFontMetrics fm = fontMetrics();
+	const int spaceWidth = fm.width(QChar(' '));
+	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
+	int x = 0;
+	for(int ix = 0; ix < offset; ) {
+		if( text[ix] == '\t' ) {
+			++ix;
+			x = (x / tabWidth + 1) * tabWidth;
+		} else {
+			int first = ix;
+			while( ix < offset && text[ix] != '\t' )
+				++ix;
+			const QString buf = text.mid(first, ix - first);
+			x += fm.boundingRect(buf).width();
+		}
+	}
+	return x;
+}
+
 void PlainTextEdit::paintEvent(QPaintEvent * event)
 {
 	//qDebug() << verticalScrollBar()->value();
@@ -101,29 +122,10 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 	//TextBlock block = m_document->firstBlock();
 	while( y < vr.height() && block.isValid() ) {
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
-			//TextCursor cur(m_document);
-			//cur.setPosition(block.position());
-			//cur.setPosition(m_textCursor->position(), TextCursor::KeepAnchor);
-			//const QString text = cur.selectedText();
-			//QRect t = fm.boundingRect(text);
-			//painter.fillRect(QRect(t.width() + MARGIN_LEFT, y+2, 2, 14), Qt::red);
-			//	undone R カーソル位置座標計算はどこかにまとめる
 			const QString text = block.text();
 			const index_t offset = qMin(m_textCursor->position() - block.position(),
 										(index_t)text.length());
-			int x = 0;
-			for(int ix = 0; ix < offset; ) {
-				if( text[ix] == '\t' ) {
-					++ix;
-					x = (x / tabWidth + 1) * tabWidth;
-				} else {
-					int first = ix;
-					while( ix < offset && text[ix] != '\t' )
-						++ix;
-					const QString buf = text.mid(first, ix - first);
-					x += fm.boundingRect(buf).width();
-				}
-			}
+			int x = offsetToX(text, offset);
 			painter.fillRect(QRect(x + MARGIN_LEFT, y+2, 2, fm.height()), Qt::red);
 		}
 		const QString text = block.text();
