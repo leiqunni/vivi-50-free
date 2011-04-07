@@ -365,6 +365,8 @@ public:
 	uchar	operator[](index_t ix) const { return m_buffer[ix]; }
 	QString	toPlainText() const;
 	bool	isMatch(index_t, cuchar *, cuchar *) const;		//	íPèÉî‰ärä÷êî
+	uchar	charEncoding() const { return m_charEncoding; }
+	bool	withBOM() const { return m_withBOM; }
 
 	TextBlockData	findBlockData(index_t position) const;
 	TextBlockData	nextBlockData(TextBlockData d) const

@@ -51,10 +51,22 @@ PlainTextEdit::~PlainTextEdit()
 	delete m_document;
 	delete m_textCursor;
 }
+uchar PlainTextEdit::charEncoding() const
+{
+	return document()->charEncoding();
+}
+bool PlainTextEdit::withBOM() const
+{
+	return document()->withBOM();
+}
+QString PlainTextEdit::toPlainText() const
+{
+	return document()->toPlainText();
+}
 
 int PlainTextEdit::lineNumberLength() const
 {
-	const size_t bc = m_document->blockCount();
+	const size_t bc = document()->blockCount();
 	if( bc < 10000 ) return 6;
 	return (int)log10( (double)bc ) + 2;
 }
@@ -89,7 +101,7 @@ void PlainTextEdit::updateScrollBarData()
 
 	verticalScrollBar()->setPageStep(areaSize.height() / fm.lineSpacing());
 	verticalScrollBar()->setSingleStep(1);
-	verticalScrollBar()->setRange(0, m_document->blockCount() - areaSize.height() / fm.lineSpacing());
+	verticalScrollBar()->setRange(0, document()->blockCount() - areaSize.height() / fm.lineSpacing());
 	//horizontalScrollBar()->setPageStep(widgetSize.width());
 	//horizontalScrollBar()->setRange(0, widgetSize.width() - areaSize.width());
 	//updateWidgetPosition();

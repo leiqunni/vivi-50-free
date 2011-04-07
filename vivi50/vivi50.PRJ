@@ -15,14 +15,14 @@ memFileColumnWd = 320
 #define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define GV_USE_ITR_FACADE 1
 #define BLOCK_HAS_SIZE 1
+#define GV_USE_ITR_FACADE 1
 [globalMarks]
 [files]
   gap_vector.h	(47,324)
   main.cpp	(-153,-353)
 * mainwindow.cpp	(120,-227)
-  mainwindow.h	(120,-260)
+* mainwindow.h	(120,-260)
 * PlainTextEdit.cpp	(-174,-23)
 * PlainTextEdit.h	(-174,-56)
 * TextDocument.cpp	(3,164)

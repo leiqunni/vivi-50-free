@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Thu Apr 7 19:01:42 2011
+** Created: Fri Apr 8 08:22:37 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,22 +33,27 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x08,
       22,   11,   11,   11, 0x08,
-      29,   11,   11,   11, 0x08,
-      43,   11,   11,   11, 0x08,
-      68,   60,   11,   11, 0x08,
-      80,   11,   11,   11, 0x08,
-     100,   95,   11,   11, 0x08,
-     121,   11,   11,   11, 0x08,
-     134,   11,   11,   11, 0x08,
+      34,   11,   29,   11, 0x08,
+      41,   11,   29,   11, 0x08,
+      50,   11,   11,   11, 0x08,
+      64,   11,   11,   11, 0x08,
+      78,   11,   11,   11, 0x08,
+     103,   95,   11,   11, 0x08,
+     115,   11,   11,   11, 0x08,
+     135,  130,   11,   11, 0x08,
+     156,   11,   11,   11, 0x08,
+     169,   11,   11,   11, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
-    "MainWindow\0\0newFile()\0open()\0open(QString)\0"
-    "openRecentFile()\0lineNum\0doJump(int)\0"
-    "showAboutDlg()\0text\0showMessage(QString)\0"
-    "doUnitTest()\0doBenchmark()\0"
+    "MainWindow\0\0newFile()\0open()\0bool\0"
+    "save()\0saveAs()\0open(QString)\0"
+    "save(QString)\0openRecentFile()\0lineNum\0"
+    "doJump(int)\0showAboutDlg()\0text\0"
+    "showMessage(QString)\0doUnitTest()\0"
+    "doBenchmark()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -82,16 +87,21 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: newFile(); break;
         case 1: open(); break;
-        case 2: open((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 3: openRecentFile(); break;
-        case 4: doJump((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 5: showAboutDlg(); break;
-        case 6: showMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 7: doUnitTest(); break;
-        case 8: doBenchmark(); break;
+        case 2: { bool _r = save();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 3: { bool _r = saveAs();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 4: open((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 5: save((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 6: openRecentFile(); break;
+        case 7: doJump((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: showAboutDlg(); break;
+        case 9: showMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 10: doUnitTest(); break;
+        case 11: doBenchmark(); break;
         default: ;
         }
-        _id -= 9;
+        _id -= 12;
     }
     return _id;
 }

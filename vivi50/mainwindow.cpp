@@ -227,12 +227,28 @@ void MainWindow::writeSettings()
     settings.setValue("pos", pos());
     settings.setValue("size", size());
 }
+bool MainWindow::maybeSave()
+{
+	if( isWindowModified()) {
+		QMessageBox::StandardButton ret;
+		ret = QMessageBox::warning(this, tr("qvi"),
+					 tr("The document has been modified.\n"
+						"Do you want to save your changes?"),
+					 QMessageBox::Save | QMessageBox::Discard
+			 | QMessageBox::Cancel);
+		if( ret == QMessageBox::Save )
+			return save();
+		else if( ret == QMessageBox::Cancel )
+			return false;
+	}
+	return true;
+}
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-#if 1
+#if 0
     writeSettings();
 #else
-    if (maybeSave()) {
+    if( maybeSave() ) {
         writeSettings();
         event->accept();
     } else {
@@ -359,6 +375,75 @@ void MainWindow::open(const QString &fileName)
 		}
 	}
 }
+bool MainWindow::save()
+{
+	if( m_isUntitled ) {
+		return saveAs();
+	} else {
+		return saveFile(m_curFile);
+	}
+}
+bool MainWindow::saveAs()
+{
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"), m_curFile, "*.*");
+
+	if( fileName.isEmpty() )
+		return false;
+
+	return saveFile(fileName);
+}
+void MainWindow::save(const QString &fileName)
+{
+	if( fileName.isEmpty() )
+		save();
+	else {
+		saveFile(fileName, false);
+	}
+}
+bool MainWindow::saveFile(const QString &fileName, bool replace)
+{
+	QFile file(fileName);
+	if( !file.open(QFile::WriteOnly /*| QFile::Text*/) ) {
+		QMessageBox::warning(this, tr("qvi"),
+							 tr("Cannot write file %1:\n%2.")
+							 .arg(fileName)
+							 .arg(file.errorString()));
+		return false;
+	}
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	QTextCodec *codec = 0;
+	switch( m_editor->charEncoding() ) {
+	case CharEncoding::UTF8:
+		if( m_editor->withBOM() )
+			file.write((cchar*)UTF8_BOM, UTF8_BOM_LENGTH);
+		codec = QTextCodec::codecForName("UTF-8");
+		break;
+	case CharEncoding::UTF16_LE:
+		if( m_editor->withBOM() )
+			file.write((cchar*)UTF16LE_BOM, UTF16_BOM_LENGTH);
+		codec = QTextCodec::codecForName("UTF-16LE");
+		break;
+	case CharEncoding::UTF16_BE:
+		if( m_editor->withBOM() )
+			file.write((cchar*)UTF16BE_BOM, UTF16_BOM_LENGTH);
+		codec = QTextCodec::codecForName("UTF-16BE");
+		break;
+	case CharEncoding::EUC:
+		codec = QTextCodec::codecForName("EUC-JP");
+		break;
+	case CharEncoding::UNKNOWN:
+	default:
+		codec = QTextCodec::codecForName("Shift-JIS");
+	}
+	QByteArray ba = codec->fromUnicode(m_editor->toPlainText());
+	file.write(ba);
+	QApplication::restoreOverrideCursor();
+
+	if( replace )
+		setCurrentFile(fileName);
+	statusBar()->showMessage(tr("File saved"), 2000);
+	return true;
+}
 void MainWindow::open()
 {
 	const QString dir = QDir::currentPath();
@@ -401,6 +486,7 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
 	m_editor->document()->setWithBOM(withBOM);
 	QApplication::restoreOverrideCursor();
 	m_editor->doJump(lineNum);
+	m_editor->viewport()->update();
 
 	setCurrentFile(fileName);
 	statusBar()->showMessage(tr("File loaded"), 2000);

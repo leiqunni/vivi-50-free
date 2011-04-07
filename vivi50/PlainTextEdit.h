@@ -41,7 +41,13 @@ public:
 
 public:
 	TextDocument	*document() { return m_document; }
+	const TextDocument	*document() const { return m_document; }
 	void	doJump(int lineNum);
+
+public:
+	uchar	charEncoding() const;
+	bool	withBOM() const;
+	QString	toPlainText() const;
 
 public slots:
 	void	copy();

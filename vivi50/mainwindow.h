@@ -70,11 +70,11 @@ private slots:
 
 	void	newFile();
 	void	open();
-	//bool	save();
-	//bool	saveAs();
+	bool	save();
+	bool	saveAs();
 	//void	closeAll();
 	void	open(const QString &);
-	//void	save(const QString &);
+	void	save(const QString &);
     void	openRecentFile();
 	void	doJump(int lineNum);
     void	showAboutDlg();
