@@ -32,6 +32,7 @@
 PlainTextEdit::PlainTextEdit(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
+	m_toDeleteIMEPreeditText = false;
 	//m_lineNumberWidth = 6;
 
 	m_document = new TextDocument();
@@ -275,9 +276,25 @@ bool PlainTextEdit::event ( QEvent * event )
 }
 void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
 {
-	const QString &text = event->commitString ();
+	qDebug() << "*** inputMethodEvent " << event;
+	if( m_toDeleteIMEPreeditText ) {
+		qDebug() << "doUndo.";
+		m_document->doUndo();
+		m_toDeleteIMEPreeditText = false;
+	}
+	const QString &text = event->commitString();
 	if( !text.isEmpty() ) {
+		qDebug() << "  insert commitString " << text;
 		m_textCursor->insertText(text);
+		viewport()->update();
+	}
+	const QString &peText = event->preeditString();
+	if( !peText.isEmpty() ) {
+		qDebug() << "  start = " << event->replacementStart () <<
+					", len = " << event->replacementLength ();
+		qDebug() << "  insertText " << peText;
+		m_textCursor->insertText(peText);
+		m_toDeleteIMEPreeditText = true;
 		viewport()->update();
 	}
 	QAbstractScrollArea::inputMethodEvent( event );

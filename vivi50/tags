@@ -339,6 +339,7 @@ m_rhp_ix	.\TextDocument.h	/^	index_t	m_rhp_ix;			\/\/	redo 用ヒープインデックス$
 m_size	.\TextDocument.h	/^	size_t		m_size;		\/\/	ブロック内文字サイズ$/;"	m	struct:TextBlockItem
 m_testCount	.\unit_test.h	/^	int		m_testCount;		\/\/	テスト回数$/;"	m	class:CUnitTest
 m_textCursor	.\PlainTextEdit.h	/^	TextCursor		*m_textCursor;		\/\/	暫定的、本当はビュー用カーソルを利用する$/;"	m	class:PlainTextEdit
+m_toDeleteIMEPreeditText	.\PlainTextEdit.h	/^	bool	m_toDeleteIMEPreeditText;$/;"	m	class:PlainTextEdit
 m_type	.\TextDocument.h	/^	const uchar	m_type;$/;"	m	struct:GVUndoItem
 m_undoMgr	.\TextDocument.h	/^	GVUndoMgr	m_undoMgr;$/;"	m	class:TextDocument
 m_unitName	.\unit_test.h	/^	QString	m_unitName;$/;"	m	class:CUnitTest
