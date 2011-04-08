@@ -278,8 +278,17 @@ void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
 {
 	qDebug() << "*** inputMethodEvent " << event;
 	if( m_toDeleteIMEPreeditText ) {
-		qDebug() << "doUndo.";
-		m_document->doUndo();
+		qDebug() << "  doUndo.";
+		if( event->preeditString() == QString("‚©‚Ž") )
+			qDebug() << "  ‚©‚Ž";
+		undo();
+#if 0
+		index_t position;
+		m_document->doUndo(position);
+		m_textCursor->setPosition(pos);
+		ensureCursorVisible();
+		viewport()->update();
+#endif
 		m_toDeleteIMEPreeditText = false;
 	}
 	const QString &text = event->commitString();

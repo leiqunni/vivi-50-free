@@ -424,6 +424,7 @@ public:
 
 	void	doUndo(index_t &pos) { m_undoMgr.doUndo(this, pos); }
 	void	doRedo(index_t &pos) { m_undoMgr.doRedo(this, pos); }
+#if 0
 	void	doUndo()
 	{
 		uint ix;
@@ -434,6 +435,7 @@ public:
 		uint ix;
 		m_undoMgr.doRedo(this, ix);
 	}
+#endif
 
 	TextCursor	find(const QString &, index_t = 0);
 	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }

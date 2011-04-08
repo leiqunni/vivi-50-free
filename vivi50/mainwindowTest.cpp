@@ -238,9 +238,10 @@ void test_TextDocument()
 		TextDocument doc;
 		doc.do_insert(0, "123\n");
 		ut.test_equal(QString("123\n"), doc.toPlainText());
-		doc.doUndo();
+		index_t position;
+		doc.doUndo(position);
 		ut.test_equal(QString(""), doc.toPlainText());
-		doc.doRedo();
+		doc.doRedo(position);
 		ut.test_equal(QString("123\n"), doc.toPlainText());
 	}
 	if( 1 ) {		//	undo/redo ‘Î‰ž do_replace() ƒeƒXƒg
@@ -250,10 +251,11 @@ void test_TextDocument()
 		doc.do_replace(0, 1, "XYZ");
 		ut.test_equal(6, doc.firstBlock().size());
 		ut.test_equal(QString("XYZ23\n"), doc.firstBlock().text());
-		doc.doUndo();
+		index_t position;
+		doc.doUndo(position);
 		ut.test_equal(4, doc.firstBlock().size());
 		ut.test_equal(QString("123\n"), doc.firstBlock().text());
-		doc.doRedo();
+		doc.doRedo(position);
 		ut.test_equal(6, doc.firstBlock().size());
 		ut.test_equal(QString("XYZ23\n"), doc.firstBlock().text());
 
@@ -283,11 +285,12 @@ void test_TextDocument()
 		ut.test_equal(4, cur.position());
 		ut.test_equal(8, doc.firstBlock().size());
 		ut.test_equal(QString("0XYZ123\n"), doc.firstBlock().text());
-		doc.doUndo();
+		index_t position;
+		doc.doUndo(position);
 		//ut.test_equal(4, cur.position());
 		ut.test_equal(5, doc.firstBlock().size());
 		ut.test_equal(QString("0123\n"), doc.firstBlock().text());
-		doc.doRedo();
+		doc.doRedo(position);
 		ut.test_equal(4, cur.position());
 		ut.test_equal(8, doc.firstBlock().size());
 		ut.test_equal(QString("0XYZ123\n"), doc.firstBlock().text());
@@ -298,11 +301,11 @@ void test_TextDocument()
 		ut.test_equal(2, cur.position());
 		ut.test_equal(6, doc.firstBlock().size());
 		ut.test_equal(QString("07123\n"), doc.firstBlock().text());
-		doc.doUndo();
+		doc.doUndo(position);
 		//ut.test_equal(4, cur.position());
 		ut.test_equal(8, doc.firstBlock().size());
 		ut.test_equal(QString("0XYZ123\n"), doc.firstBlock().text());
-		doc.doRedo();
+		doc.doRedo(position);
 		ut.test_equal(2, cur.position());
 		ut.test_equal(6, doc.firstBlock().size());
 		ut.test_equal(QString("07123\n"), doc.firstBlock().text());
