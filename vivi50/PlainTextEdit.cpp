@@ -35,6 +35,7 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 	m_mouseCaptured = false;
 	m_toDeleteIMEPreeditText = false;
 	//m_lineNumberWidth = 6;
+	viewport()->setCursor(Qt::IBeamCursor);
 
 	m_document = new TextDocument();
 	m_textCursor = new TextCursor(m_document);

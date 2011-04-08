@@ -31,10 +31,10 @@ memFileColumnWd = 320
   mainwindowBench.cpp	(120,-194)
   unit_test.cpp	(284,61)
   unit_test.h	(284,28)
-  mainwindowTest.cpp	(120,-161)
+* mainwindowTest.cpp	(120,-161)
   charEncoding.cpp	(369,-63)
   charEncoding.h	(369,-96)
 [ToDo]
-  "TextDocument.cpp" 283 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 288 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 378 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 311 'B: ' '' undone 暫定コード
+  "TextDocument.cpp" 316 'B: ' '' undone 暫定コード
+  "TextDocument.cpp" 406 'M: ' '' undone 不要なヒープの解放
