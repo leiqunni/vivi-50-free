@@ -157,6 +157,7 @@ void MainWindow::createMenus()
 	fileMenu->addAction(newAct);
 	fileMenu->addAction(openAct);
 	fileMenu->addAction(saveAct);
+	fileMenu->addAction(saveAsAct);
 #if 1
     separatorMRUAct = fileMenu->addSeparator();
     //	RecentFilesMenu ƒAƒCƒeƒ€’Ç‰Á
