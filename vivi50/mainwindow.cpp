@@ -57,6 +57,7 @@ void MainWindow::init()
 	setCentralWidget(m_editor);
 
 	connect(m_editor, SIGNAL(showMessage(const QString &)), this, SLOT(showMessage(const QString &)));
+    connect(m_editor->document(), SIGNAL(contentsChanged()), this, SLOT(documentWasModified()));
 
 	createActions();
 	createMenus();
@@ -490,6 +491,11 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
 
 	setCurrentFile(fileName);
 	statusBar()->showMessage(tr("File loaded"), 2000);
+}
+void MainWindow::documentWasModified()
+{
+    setWindowModified(m_editor->document()->isModified());
+    updateWindowTitle();
 }
 void MainWindow::showMessage(const QString & text)
 {

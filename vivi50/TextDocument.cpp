@@ -421,6 +421,7 @@ TextDocument::~TextDocument()
 
 void TextDocument::init()
 {
+	m_modified = false;
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(TextBlockItem(0));
@@ -841,6 +842,9 @@ void TextDocument::deleteChar(TextCursor &cur)
 	if( first == last ) return;
 	do_erase(first, last);
 	cur.copyAnchorToPosition();
+	m_modified = true;
+	emit contentsChange(first, last - first, 0);
+	emit contentsChanged();
 }
 void TextDocument::deletePreviousChar(TextCursor &cur)
 {
@@ -856,6 +860,9 @@ void TextDocument::deletePreviousChar(TextCursor &cur)
 	if( first == last ) return;
 	do_erase(first, last);
 	cur.copyPositionToAnchor();
+	m_modified = true;
+	emit contentsChange(first, last - first, 0);
+	emit contentsChanged();
 }
 void TextDocument::insertText(TextCursor &cur, const QString &text)
 {
@@ -868,12 +875,12 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	//index_t hp_ix = m_undoMgr.addToHeap(ptr, ptr + sz);		//	undone P ÉfÅ[É^ÇÕundoéûÇ…äiî[Ç∑Ç◊Ç´
+	size_t delSz = 0;
 	if( position == cur.anchor() ) {
 		m_buffer.insert(position, ptr, ptr + sz);
 		updateBlocksAtInsert(position, cur.blockData(), sz);
 		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_INSERT, position, position + sz, 0);
 		m_undoMgr.push_back(undoItem);
-		emit contentsChange(position, 0, sz);
 	} else {
 		if( cur.anchor() < position )
 			cur.swapPositionAnchor();
@@ -888,9 +895,12 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_REPLACE,
 										first, last, hp_ix, first + sz);
 		m_undoMgr.push_back(undoItem);
-		emit contentsChange(first, last - first, sz);
+		delSz = last - first;
 	}
 	cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
+	m_modified = true;
+	emit contentsChange(position, delSz, sz);
+	emit contentsChanged();
 }
 void TextDocument::do_insert(index_t position, const QString &text)
 {
@@ -905,7 +915,9 @@ void TextDocument::do_insert(index_t position, const QString &text)
 	updateBlocksAtInsert(position, d, sz);
 	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_INSERT, position, position + sz, 0);
 	m_undoMgr.push_back(undoItem);
+	m_modified = true;
 	emit contentsChange(position, 0, sz);
+	emit contentsChanged();
 }
 void TextDocument::do_erase(index_t first, index_t last)
 {

@@ -357,6 +357,7 @@ public:
 
 public:
 	const QString fullPath() const { return m_fullPath; }
+	bool	isModified() const { return m_modified; }
 	bool	isEmpty() const { return m_buffer.empty(); }
 	size_t	size() const { return m_buffer.size(); }
 	size_t	blockCount() const { return m_blocks.size(); }
@@ -446,7 +447,8 @@ public:
 	//void	do_unitTest();		//	単体テスト
 
 signals:
-	void contentsChange ( index_t position, size_t charsRemoved, size_t charsAdded );
+	void contentsChange( index_t position, size_t charsRemoved, size_t charsAdded );
+	void contentsChanged();
 	void blockCountChanged();
 
 protected:
@@ -459,6 +461,7 @@ private:
 	QString	m_fullPath;
 	uchar	m_charEncoding;
 	bool	m_withBOM;
+	bool	m_modified;
 	mutable std::gap_vector<uchar>	m_buffer;
 	//mutable std::gap_vector<size_t>	m_blocks;		//	ブロックサイズ配列
 	mutable std::gap_vector<TextBlockItem>	m_blocks;		//	ブロック配列

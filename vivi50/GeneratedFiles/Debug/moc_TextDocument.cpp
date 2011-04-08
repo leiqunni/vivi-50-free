@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'TextDocument.h'
 **
-** Created: Fri Apr 8 08:30:08 2011
+** Created: Fri Apr 8 09:11:21 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,16 +23,17 @@ static const uint qt_meta_data_TextDocument[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       3,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       47,   14,   13,   13, 0x05,
       85,   13,   13,   13, 0x05,
+     103,   13,   13,   13, 0x05,
 
        0        // eod
 };
@@ -40,7 +41,7 @@ static const uint qt_meta_data_TextDocument[] = {
 static const char qt_meta_stringdata_TextDocument[] = {
     "TextDocument\0\0position,charsRemoved,charsAdded\0"
     "contentsChange(index_t,size_t,size_t)\0"
-    "blockCountChanged()\0"
+    "contentsChanged()\0blockCountChanged()\0"
 };
 
 const QMetaObject TextDocument::staticMetaObject = {
@@ -73,10 +74,11 @@ int TextDocument::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: contentsChange((*reinterpret_cast< index_t(*)>(_a[1])),(*reinterpret_cast< size_t(*)>(_a[2])),(*reinterpret_cast< size_t(*)>(_a[3]))); break;
-        case 1: blockCountChanged(); break;
+        case 1: contentsChanged(); break;
+        case 2: blockCountChanged(); break;
         default: ;
         }
-        _id -= 2;
+        _id -= 3;
     }
     return _id;
 }
@@ -89,8 +91,14 @@ void TextDocument::contentsChange(index_t _t1, size_t _t2, size_t _t3)
 }
 
 // SIGNAL 1
-void TextDocument::blockCountChanged()
+void TextDocument::contentsChanged()
 {
     QMetaObject::activate(this, &staticMetaObject, 1, 0);
+}
+
+// SIGNAL 2
+void TextDocument::blockCountChanged()
+{
+    QMetaObject::activate(this, &staticMetaObject, 2, 0);
 }
 QT_END_MOC_NAMESPACE

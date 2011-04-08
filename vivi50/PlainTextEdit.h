@@ -40,14 +40,15 @@ public:
 	~PlainTextEdit();
 
 public:
-	TextDocument	*document() { return m_document; }
-	const TextDocument	*document() const { return m_document; }
-	void	doJump(int lineNum);
-
-public:
 	uchar	charEncoding() const;
 	bool	withBOM() const;
+	bool	isModified() const;
 	QString	toPlainText() const;
+	const TextDocument	*document() const { return m_document; }
+
+public:
+	TextDocument	*document() { return m_document; }
+	void	doJump(int lineNum);
 
 public slots:
 	void	copy();

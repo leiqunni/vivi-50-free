@@ -63,6 +63,10 @@ QString PlainTextEdit::toPlainText() const
 {
 	return document()->toPlainText();
 }
+bool PlainTextEdit::isModified() const
+{
+	return document()->isModified();
+}
 
 int PlainTextEdit::lineNumberLength() const
 {

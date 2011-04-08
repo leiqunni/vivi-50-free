@@ -66,8 +66,7 @@ private:
     void writeSettings();
 
 private slots:
-    //void	documentWasModified(bool = true);
-
+    void	documentWasModified();
 	void	newFile();
 	void	open();
 	bool	save();
