@@ -179,6 +179,8 @@ uchar getCharType(QChar ch)
 //----------------------------------------------------------------------
 bool gotoNextWord(TextCursor &cur, int n = 1, bool cdy = false);
 bool gotoPrevWord(TextCursor &cur, int n = 1);
+bool gotoStartOfWord(TextCursor &cur);
+bool gotoEndOfWord(TextCursor &cur);
 inline bool isTabOrSpace(const QChar ch)
 {
 	return ch == '\t' || ch == ' ';
@@ -210,7 +212,7 @@ bool gotoNextWord(TextCursor &cur, int n, bool cdy)
 					break;
 				TextBlock nb = block.next();
 				if( !nb.isValid() ) {
-					cur.setPosition(pos, block.data());
+					cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
 					return true;
 				}
 				block = nb;
@@ -223,7 +225,7 @@ bool gotoNextWord(TextCursor &cur, int n, bool cdy)
 			}
 		}
 	}
-	cur.setPosition(pos, block.data());
+	cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
 	return true;
 }
 bool gotoPrevWord(TextCursor &cur, int n)
@@ -240,7 +242,7 @@ bool gotoPrevWord(TextCursor &cur, int n)
 			if( !ix ) {
 				TextBlock pb = block.prev();
 				if( !pb.isValid() ) {
-					cur.setPosition(pos, block.data());
+					cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
 					return true;
 				}
 				block = pb;
@@ -262,7 +264,47 @@ bool gotoPrevWord(TextCursor &cur, int n)
 			}
 		}
 	}
-	cur.setPosition(pos, block.data());
+	cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
+	return true;
+}
+bool gotoStartOfWord(TextCursor &cur)
+{
+	const TextDocument *doc = cur.document();
+	TextBlock block = cur.block();
+	QString text = block.text();
+	int pos = cur.position();
+	int ix = cur.prevCharsCount();
+	//	ひとつ前の文字が同じタイプ and 空白類になるまで or 行頭まで読み飛ばす
+	if( ix > 0 && !isTabOrSpace(text[ix-1]) ) {
+		uchar cat = getCharType(text[--ix]);
+		do { } while( !isUTF8FirstChar((*doc)[--pos]) );
+		while( ix > 0 && !isTabOrSpace(text[ix-1]) && getCharType(text[ix-1]) == cat ) {
+			--ix;
+			do { } while( !isUTF8FirstChar((*doc)[--pos]) );
+		}
+	}
+	cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
+	return true;
+}
+bool gotoEndOfWord(TextCursor &cur)
+{
+	const TextDocument *doc = cur.document();
+	TextBlock block = cur.block();
+	//int blockPos = block.position();
+	QString text = block.text();
+	int pos = cur.position();
+	int ix = cur.prevCharsCount();
+	//	同タイプ文字を読み飛ばす
+	if( ix < text.length() && !isTabOrSpace(text[ix]) ) {
+		uchar cat = getCharType(text[ix++]);
+		pos += UTF8CharSize((*doc)[pos]);
+		//QChar::Category cat = text[ix++].category();
+		while( ix < text.length() && !isTabOrSpace(text[ix]) && getCharType(text[ix]) == cat ) {
+			++ix;
+			pos += UTF8CharSize((*doc)[pos]);
+		}
+	}
+	cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
 	return true;
 }
 bool TextCursor::movePosition(uchar move, uchar mode, uint n)
@@ -315,6 +357,12 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 		if( m_blockData.m_index >= m_document->blockCount() - 1 ) return false;
 		//	undone B 暫定コード
 		m_position = m_blockData.m_position += m_document->blockSize(m_blockData.m_index++);
+		break;
+	case StartOfWord:
+		gotoStartOfWord(*this);
+		break;
+	case EndOfWord:
+		gotoEndOfWord(*this);
 		break;
 	case NextWord:
 		gotoNextWord(*this);

@@ -594,3 +594,9 @@ void PlainTextEdit::mouseMoveEvent ( QMouseEvent * event )
 		viewport()->update();
 	}
 }
+void PlainTextEdit::mouseDoubleClickEvent ( QMouseEvent * event )
+{
+	m_textCursor->movePosition(TextCursor::StartOfWord);
+	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
+	viewport()->update();
+}

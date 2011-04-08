@@ -28,6 +28,7 @@ CUnitTest	.\unit_test.h	/^class CUnitTest$/;"	c
 Down	.\TextDocument.h	/^		Down,$/;"	e	enum:TextCursor::__anon5
 EndOfBlock	.\TextDocument.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon5
 EndOfDocument	.\TextDocument.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon5
+EndOfWord	.\TextDocument.h	/^		EndOfWord,$/;"	e	enum:TextCursor::__anon5
 GVUNDOITEM_BLOCK	.\TextDocument.h	/^	GVUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock ‚©‚Ç‚¤‚©$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_ALL	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_ALL = 0x0040,		\/\/	‘}“ü•¶Žš—ñ˜AŒ‹‰Â”\$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_LINE	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_LINE = 0x0020,	\/\/	‘}“ü•¶Žš—ñ˜AŒ‹‰Â”\$/;"	e	enum:__anon2
@@ -80,6 +81,7 @@ SFailedInfo	.\unit_test.h	/^	SFailedInfo(const SFailedInfo &src)$/;"	f	struct:SF
 SFailedInfo	.\unit_test.h	/^struct SFailedInfo$/;"	s
 StartOfBlock	.\TextDocument.h	/^		StartOfBlock,$/;"	e	enum:TextCursor::__anon5
 StartOfDocument	.\TextDocument.h	/^		StartOfDocument,$/;"	e	enum:TextCursor::__anon5
+StartOfWord	.\TextDocument.h	/^		StartOfWord,$/;"	e	enum:TextCursor::__anon5
 TEXTDOCUMENT_H	.\TextDocument.h	24;"	d
 TextBlock	.\TextDocument.h	/^	TextBlock(TextDocument *document, TextBlockData block)$/;"	f	class:TextBlock
 TextBlock	.\TextDocument.h	/^	TextBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)$/;"	f	class:TextBlock
@@ -158,8 +160,8 @@ cbegin	.\gap_vector.h	/^	const_iterator cbegin() const { return const_iterator(m
 cchar	.\unit_test.h	/^typedef const char cchar;$/;"	t
 cend	.\gap_vector.h	/^	const_iterator cend() const { return const_iterator(m_last, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
 centralWidget	.\GeneratedFiles\ui_mainwindow.h	/^    QWidget *centralWidget;$/;"	m	class:Ui_MainWindowClass
-charEncoding	.\TextDocument.h	/^	uchar	charEncoding() const { return m_charEncoding; }$/;"	f	class:TextDocument
 charEncoding	.\PlainTextEdit.cpp	/^uchar PlainTextEdit::charEncoding() const$/;"	f	class:PlainTextEdit
+charEncoding	.\TextDocument.h	/^	uchar	charEncoding() const { return m_charEncoding; }$/;"	f	class:TextDocument
 charsCount	.\TextDocument.cpp	/^int TextBlock::charsCount(index_t position) const$/;"	f	class:TextBlock
 clear	.\TextDocument.h	/^	void	clear() { init(); }$/;"	f	class:TextDocument
 clear	.\gap_vector.h	/^	void clear()$/;"	f	class:std::gap_vector
@@ -268,8 +270,10 @@ get_last	.\gap_vector.h	/^	const_pointer get_last() const { return m_last; }$/;"
 get_pointer	.\gap_vector.h	/^	const_pointer	get_pointer(size_type n) const$/;"	f	class:std::gap_vector
 get_pointer	.\gap_vector.h	/^	pointer	get_pointer(size_type n)$/;"	f	class:std::gap_vector
 get_raw_index_of_gap	.\gap_vector.h	/^	size_t get_raw_index_of_gap() const { return m_gapBegin - m_first; }$/;"	f	class:std::gap_vector
+gotoEndOfWord	.\TextDocument.cpp	/^bool gotoEndOfWord(TextCursor &cur)$/;"	f
 gotoNextWord	.\TextDocument.cpp	/^bool gotoNextWord(TextCursor &cur, int n, bool cdy)$/;"	f
 gotoPrevWord	.\TextDocument.cpp	/^bool gotoPrevWord(TextCursor &cur, int n)$/;"	f
+gotoStartOfWord	.\TextDocument.cpp	/^bool gotoStartOfWord(TextCursor &cur)$/;"	f
 hasSelection	.\TextDocument.h	/^	bool	hasSelection() const { return m_position != m_anchor; }$/;"	f	class:TextCursor
 increment	.\gap_vector.h	/^	void	increment() { if( ++m_ptr == m_gapBegin ) m_ptr = m_gapEnd; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
 increment	.\gap_vector.h	/^	void	increment() { if( ++m_ptr == m_gapBegin ) m_ptr = m_gapEnd; }$/;"	f	class:std::_Gap_Vector_Iterator
@@ -293,8 +297,8 @@ insertText	.\TextDocument.cpp	/^void TextCursor::insertText(const QString &text)
 insertText	.\TextDocument.cpp	/^void TextDocument::insertText(TextCursor &cur, const QString &text)$/;"	f	class:TextDocument
 isEmpty	.\TextDocument.h	/^	bool	isEmpty() const { return m_buffer.empty(); }$/;"	f	class:TextDocument
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
-isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
 isModified	.\PlainTextEdit.cpp	/^bool PlainTextEdit::isModified() const$/;"	f	class:PlainTextEdit
+isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
 isNull	.\TextDocument.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:TextCursor
 isTabOrSpace	.\TextDocument.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isUTF8FirstChar	.\TextDocument.cpp	/^inline bool isUTF8FirstChar(uchar ch)$/;"	f
@@ -373,6 +377,7 @@ menuBar	.\GeneratedFiles\ui_mainwindow.h	/^    QMenuBar *menuBar;$/;"	m	class:Ui
 metaObject	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^const QMetaObject *PlainTextEdit::metaObject() const$/;"	f	class:PlainTextEdit
 metaObject	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^const QMetaObject *TextDocument::metaObject() const$/;"	f	class:TextDocument
 metaObject	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^const QMetaObject *MainWindow::metaObject() const$/;"	f	class:MainWindow
+mouseDoubleClickEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::mouseDoubleClickEvent ( QMouseEvent * event )$/;"	f	class:PlainTextEdit
 mouseMoveEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::mouseMoveEvent ( QMouseEvent * event )$/;"	f	class:PlainTextEdit
 mousePressEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::mousePressEvent ( QMouseEvent * event )$/;"	f	class:PlainTextEdit
 mouseReleaseEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::mouseReleaseEvent ( QMouseEvent * event )$/;"	f	class:PlainTextEdit
@@ -507,8 +512,8 @@ ut_set_output	.\unit_test.cpp	/^void ut_set_output(OutputFunc f)$/;"	f
 value_type	.\gap_vector.h	/^	typedef Type value_type;$/;"	t	class:std::gap_vector
 viewMenu	.\mainwindow.h	/^    QMenu	*viewMenu;$/;"	m	class:MainWindow
 wheelEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::wheelEvent ( QWheelEvent * event )$/;"	f	class:PlainTextEdit
-withBOM	.\TextDocument.h	/^	bool	withBOM() const { return m_withBOM; }$/;"	f	class:TextDocument
 withBOM	.\PlainTextEdit.cpp	/^bool PlainTextEdit::withBOM() const$/;"	f	class:PlainTextEdit
+withBOM	.\TextDocument.h	/^	bool	withBOM() const { return m_withBOM; }$/;"	f	class:TextDocument
 withBOM	.\PlainTextEdit.h	/^	bool	withBOM() const { return m_document->withBOM(); }$/;"	f	class:PlainTextEdit
 withBOM	.\PlainTextEdit.h	/^	bool	withBOM() const { return document()->withBOM(); }$/;"	f	class:PlainTextEdit
 writeSettings	.\mainwindow.cpp	/^void MainWindow::writeSettings()$/;"	f	class:MainWindow

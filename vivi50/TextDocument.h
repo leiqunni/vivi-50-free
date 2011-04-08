@@ -212,6 +212,8 @@ public:
 		Left,
 		Up,
 		Down,
+		StartOfWord,
+		EndOfWord,
 		NextWord,
 		PrevWord,
 		StartOfBlock,
