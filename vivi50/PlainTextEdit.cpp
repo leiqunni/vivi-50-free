@@ -41,6 +41,7 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 	m_lineNumberArea = new QWidget(this);
 	m_lineNumberArea->installEventFilter(this);
 	setFontPointSize(11);
+	setAttribute(Qt::WA_InputMethodEnabled);
 	//onFontChanged();
 
 	//m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
@@ -263,7 +264,23 @@ bool PlainTextEdit::event ( QEvent * event )
 			return true;
 		}
 	}
+#if 0
+	if( event->type() == QEvent::InputMethod ) {
+		QInputMethodEvent *k = static_cast<QInputMethodEvent *>(event);
+		inputMethodEvent(k);
+		return true;
+	}
+#endif
 	return QAbstractScrollArea::event(event);
+}
+void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
+{
+	const QString &text = event->commitString ();
+	if( !text.isEmpty() ) {
+		m_textCursor->insertText(text);
+		viewport()->update();
+	}
+	QAbstractScrollArea::inputMethodEvent( event );
 }
 void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 {

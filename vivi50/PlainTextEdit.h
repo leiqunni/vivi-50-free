@@ -69,6 +69,7 @@ protected:
 	bool	event ( QEvent * event );
 	void	paintEvent(QPaintEvent * event);
     void	keyPressEvent ( QKeyEvent * keyEvent );
+    void	inputMethodEvent ( QInputMethodEvent * event );
 	void	wheelEvent ( QWheelEvent * event );
     void	focusInEvent ( QFocusEvent * event );
     void	resizeEvent ( QResizeEvent * event );
