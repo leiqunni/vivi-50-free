@@ -395,11 +395,18 @@ TextBlock TextBlock::next() const
 {
 	if( !isValid() ) return *this;
 #if BLOCK_HAS_SIZE
+#if 1
+	TextBlockData d = m_document->nextBlockData(m_data);
+	if( d.index() >= m_document->blockCount() )
+		d.m_index = INVALID_INDEX;
+	return TextBlock(m_document, d);
+#else
 	index_t blockPosition = m_data.m_position + m_document->blockSize(m_data.m_index);
 	int ix = m_data.m_index + 1;
 	if( ix >= m_document->blockCount() )
 		ix = INVALID_INDEX;
 	return TextBlock(m_document, ix, blockPosition);
+#endif
 #else
 	int ix = m_blockNumber + 1;
 	if( ix >= m_document->blockCount() )

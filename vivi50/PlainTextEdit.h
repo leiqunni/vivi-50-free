@@ -63,6 +63,8 @@ public slots:
 
 protected:
 	int		offsetToX(const QString &, int) const;		//	‘æ‚Qˆø”‚Í•¶š”
+	int		xToOffset(const QString &, int) const;		//	
+	TextBlock	yToTextBlock(int) const;
 
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);
@@ -73,6 +75,9 @@ protected:
 	void	wheelEvent ( QWheelEvent * event );
     void	focusInEvent ( QFocusEvent * event );
     void	resizeEvent ( QResizeEvent * event );
+    void	mousePressEvent ( QMouseEvent * event );
+    void	mouseReleaseEvent ( QMouseEvent * event );
+    void	mouseMoveEvent ( QMouseEvent * event );
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
 	void	drawLineNumbers();

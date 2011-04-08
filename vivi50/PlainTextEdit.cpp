@@ -125,6 +125,28 @@ void PlainTextEdit::focusInEvent ( QFocusEvent * event )
 	}
 }
 
+int PlainTextEdit::xToOffset(const QString &text, int x) const
+{
+	const QFontMetrics fm = fontMetrics();
+	const int spaceWidth = fm.width(QChar(' '));
+	const int tabWidth = spaceWidth * 4;		//	‚Æ‚è‚ ‚¦‚¸‹ó”’4•¶Žš•ª‚ÉŒÅ’è
+	const int limit = qMin(spaceWidth/8, 4);
+	int width = 0;
+	int ix = 0;
+	while( ix < text.length() ) {
+		QChar qch = text[ix];
+		if( qch == '\r' || qch == '\n' ) break;
+		if( qch == '\t' ) {
+			width = (width / tabWidth + 1) * tabWidth;
+		} else {
+			width += fm.width(qch);
+		}
+		if( x <= width - limit )	//	
+			break;
+		++ix;
+	}
+	return ix;
+}
 int PlainTextEdit::offsetToX(const QString &text, int offset) const
 {
 	offset = qMin(offset, text.length());
@@ -141,16 +163,37 @@ int PlainTextEdit::offsetToX(const QString &text, int offset) const
 			++ix;
 			x = (x / tabWidth + 1) * tabWidth;
 		} else {
+#if 0
+			x += fm.width(text[ix++]);
+#else
 			int first = ix;
 			while( ix < offset && text[ix] != '\t' && text[ix] != ' ' )
 				++ix;
 			const QString buf = text.mid(first, ix - first);
-			x += fm.boundingRect(buf).width();
+			x += fm.width(buf);
+#endif
 		}
 	}
 	return x;
 }
 
+TextBlock PlainTextEdit::yToTextBlock(int py) const
+{
+	QWidget *vp = viewport();
+	QRect vr = vp->rect();
+	QFontMetrics fm = fontMetrics();
+
+	int y = 0;
+	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
+	while( y < vr.height() && block.isValid() ) {
+		const int nextY = y + fm.lineSpacing();
+		if( py < nextY )
+			break;
+		y = nextY;
+		block = block.next();
+	}
+	return block;
+}
 void PlainTextEdit::paintEvent(QPaintEvent * event)
 {
 	//qDebug() << verticalScrollBar()->value();
@@ -213,7 +256,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 				const QString buf = text.mid(first, ix - first);
 				painter.setPen(Qt::black);
 				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), buf);
-				x += fm.boundingRect(buf).width();
+				x += fm.width(buf);
 			}
 		}
 		if( block.blockNumber() == lastBlockNumber ) {
@@ -276,11 +319,11 @@ bool PlainTextEdit::event ( QEvent * event )
 }
 void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
 {
-	qDebug() << "*** inputMethodEvent " << event;
+	//qDebug() << "*** inputMethodEvent " << event;
 	if( m_toDeleteIMEPreeditText ) {
-		qDebug() << "  doUndo.";
-		if( event->preeditString() == QString("‚©‚Ž") )
-			qDebug() << "  ‚©‚Ž";
+		//qDebug() << "  doUndo.";
+		//if( event->preeditString() == QString("‚©‚Ž") )
+		//	qDebug() << "  ‚©‚Ž";
 		undo();
 #if 0
 		index_t position;
@@ -293,15 +336,15 @@ void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
 	}
 	const QString &text = event->commitString();
 	if( !text.isEmpty() ) {
-		qDebug() << "  insert commitString " << text;
+		//qDebug() << "  insert commitString " << text;
 		m_textCursor->insertText(text);
 		viewport()->update();
 	}
 	const QString &peText = event->preeditString();
 	if( !peText.isEmpty() ) {
-		qDebug() << "  start = " << event->replacementStart () <<
-					", len = " << event->replacementLength ();
-		qDebug() << "  insertText " << peText;
+		//qDebug() << "  start = " << event->replacementStart () <<
+		//			", len = " << event->replacementLength ();
+		//qDebug() << "  insertText " << peText;
 		m_textCursor->insertText(peText);
 		m_toDeleteIMEPreeditText = true;
 		viewport()->update();
@@ -511,4 +554,23 @@ void PlainTextEdit::doJump(int lineNum)
 	if( cur.movePosition(ViMoveOperation::JumpLine, QTextCursor::MoveAnchor, lineNum) )
 		setViCursor(cur);
 #endif
+}
+void PlainTextEdit::mousePressEvent ( QMouseEvent * event )
+{
+	TextBlock block = yToTextBlock(event->y());
+	if( !block.isValid() )
+		block = document()->lastBlock();
+	//qDebug() << "block index = " << block.index();
+	int offset = xToOffset(block.text(), event->x());
+	//qDebug() << "offset = " << offset;
+	m_textCursor->setPosition(block.position());
+	if( offset != 0 )
+		m_textCursor->movePosition(TextCursor::Right, TextCursor::MoveAnchor, offset);
+	viewport()->update();
+}
+void PlainTextEdit::mouseReleaseEvent ( QMouseEvent * event )
+{
+}
+void PlainTextEdit::mouseMoveEvent ( QMouseEvent * event )
+{
 }
