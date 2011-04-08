@@ -32,6 +32,7 @@
 PlainTextEdit::PlainTextEdit(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
+	m_mouseCaptured = false;
 	m_toDeleteIMEPreeditText = false;
 	//m_lineNumberWidth = 6;
 
@@ -567,10 +568,22 @@ void PlainTextEdit::mousePressEvent ( QMouseEvent * event )
 	if( offset != 0 )
 		m_textCursor->movePosition(TextCursor::Right, TextCursor::MoveAnchor, offset);
 	viewport()->update();
+	m_mouseCaptured = true;
 }
 void PlainTextEdit::mouseReleaseEvent ( QMouseEvent * event )
 {
+	m_mouseCaptured = false;
 }
 void PlainTextEdit::mouseMoveEvent ( QMouseEvent * event )
 {
+	if( m_mouseCaptured ) {
+		TextBlock block = yToTextBlock(event->y());
+		if( !block.isValid() )
+			block = document()->lastBlock();
+		int offset = xToOffset(block.text(), event->x());
+		m_textCursor->setPosition(block.position(), TextCursor::KeepAnchor);
+		if( offset != 0 )
+			m_textCursor->movePosition(TextCursor::Right, TextCursor::KeepAnchor, offset);
+		viewport()->update();
+	}
 }

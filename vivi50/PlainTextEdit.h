@@ -94,6 +94,7 @@ signals:
 	void	showMessage(const QString &);
 
 private:
+	bool	m_mouseCaptured;
 	bool	m_toDeleteIMEPreeditText;
 	TextDocument	*m_document;
 	TextCursor		*m_textCursor;		//	暫定的、本当はビュー用カーソルを利用する

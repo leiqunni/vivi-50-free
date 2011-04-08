@@ -193,9 +193,9 @@ doUnitTest	.\mainwindowTest.cpp	/^void MainWindow::doUnitTest()$/;"	f	class:Main
 do_erase	.\TextDocument.cpp	/^void TextDocument::do_erase(index_t first, index_t last)$/;"	f	class:TextDocument
 do_insert	.\TextDocument.cpp	/^void TextDocument::do_insert(index_t position, const QString &text)$/;"	f	class:TextDocument
 do_replace	.\TextDocument.cpp	/^void TextDocument::do_replace(index_t first, index_t last, const QString &text)$/;"	f	class:TextDocument
-document	.\TextDocument.h	/^	TextDocument	*document() const { return m_document; }$/;"	f	class:TextCursor
 document	.\PlainTextEdit.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:PlainTextEdit
 document	.\PlainTextEdit.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:PlainTextEdit
+document	.\TextDocument.h	/^	TextDocument	*document() const { return m_document; }$/;"	f	class:TextCursor
 documentWasModified	.\mainwindow.cpp	/^void MainWindow::documentWasModified()$/;"	f	class:MainWindow
 drawLineNumbers	.\PlainTextEdit.cpp	/^void PlainTextEdit::drawLineNumbers()$/;"	f	class:PlainTextEdit
 editMenu	.\mainwindow.h	/^    QMenu	*editMenu;$/;"	m	class:MainWindow
@@ -295,9 +295,9 @@ m_charEncoding	.\TextDocument.h	/^	uchar	m_charEncoding;$/;"	m	class:TextDocumen
 m_curFile	.\mainwindow.h	/^	QString	m_curFile;$/;"	m	class:MainWindow
 m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	オブジェクトを次に入れる位置（0..*）$/;"	m	class:GVUndoMgr
 m_data	.\TextDocument.h	/^	TextBlockData	m_data;$/;"	m	class:TextBlock
+m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextBlock
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextCursor
-m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_editor	.\mainwindow.h	/^	PlainTextEdit	*m_editor;$/;"	m	class:MainWindow
 m_failCount	.\unit_test.h	/^	int		m_failCount;		\/\/	失敗回数$/;"	m	class:CUnitTest
 m_fileName	.\unit_test.h	/^	QString		m_fileName;$/;"	m	struct:SFailedInfo
@@ -327,6 +327,7 @@ m_lineNumberWidth	.\PlainTextEdit.h	/^	int		m_lineNumberWidth;$/;"	m	class:Plain
 m_logs	.\unit_test.h	/^	std::vector<SFailedInfo>	m_logs;$/;"	m	class:CUnitTest
 m_message	.\unit_test.h	/^	QString		m_message;$/;"	m	struct:SFailedInfo
 m_modified	.\TextDocument.h	/^	bool	m_modified;$/;"	m	class:TextDocument
+m_mouseCaptured	.\PlainTextEdit.h	/^	bool	m_mouseCaptured;$/;"	m	class:PlainTextEdit
 m_pool_undoItem	.\TextDocument.h	/^	boost::object_pool<GVUndoItem>	m_pool_undoItem;$/;"	m	class:TextDocument
 m_position	.\TextDocument.h	/^	index_t			m_position;		\/\/	カーソル位置$/;"	m	class:TextCursor
 m_position	.\TextDocument.h	/^	index_t		m_position;$/;"	m	struct:TextBlockData
