@@ -78,30 +78,30 @@ public:
 //#define		UNDOMGR_USE_HEAP			1
 
 enum {
-	BBUNDOITEM_UNDO_MF_OFF = 0x0001,	//	Undo でモディファイフラグがＯＮからＯＦＦに
-	BBUNDOITEM_REDO_MF_OFF = 0x0002,	//	Redo でモディファイフラグがＯＮからＯＦＦに
-	BBUNDOITEM_MADELINE = 0x0004,
-	BBUNDOITEM_CUR_TAIL = 0x0008,		//	削除の時、カーソルが最後にあった
-	BBUNDOITEM_SHIFT_LEFT = 0x0010,
-	BBUNDOITEM_SHIFT_RIGHT = 0x0000,
-	BBUNDOITEM_CONCAT_LINE = 0x0020,	//	挿入文字列連結可能
-	BBUNDOITEM_CONCAT_ALL = 0x0040,		//	挿入文字列連結可能
-	BBUNDOITEM_DELETE = 0x0080,			//	or BackSpace
-	BBUNDOITEM_MARK_POS = 0x0100,		//	CUndoItemMarkPos かどうか
-	BBUNDOITEM_BLOCK = 0x0200,			//	CUndoItemBlock かどうか
-	BBUNDOITEM_SAVED = 0x0400,			//	ドキュメントが保存された
-	BBUNDOITEM_DIFF_RESTORE = 0x0800,		//	diff で相手ファイルにあわせる
-	BBUNDOITEM_REPTEXT = 0x1000,		//	文字列の置換を行った
-	BBUNDOITEM_TRANSLATE = 0x2000,		//	コード変換の場合
-	BBUNDOITEM_REDRAW = 0x4000,			//	:m の場合の様に強制的にリドローする
-	BBUNDOITEM_INSTEXT = 0x8000,		//	文字列の挿入を行った
+	GVUNDOITEM_UNDO_MF_OFF = 0x0001,	//	Undo でモディファイフラグがＯＮからＯＦＦに
+	GVUNDOITEM_REDO_MF_OFF = 0x0002,	//	Redo でモディファイフラグがＯＮからＯＦＦに
+	GVUNDOITEM_MADELINE = 0x0004,
+	GVUNDOITEM_CUR_TAIL = 0x0008,		//	削除の時、カーソルが最後にあった
+	GVUNDOITEM_SHIFT_LEFT = 0x0010,
+	GVUNDOITEM_SHIFT_RIGHT = 0x0000,
+	GVUNDOITEM_CONCAT_LINE = 0x0020,	//	挿入文字列連結可能
+	GVUNDOITEM_CONCAT_ALL = 0x0040,		//	挿入文字列連結可能
+	GVUNDOITEM_DELETE = 0x0080,			//	or BackSpace
+	GVUNDOITEM_MARK_POS = 0x0100,		//	CUndoItemMarkPos かどうか
+	GVUNDOITEM_BLOCK = 0x0200,			//	CUndoItemBlock かどうか
+	GVUNDOITEM_SAVED = 0x0400,			//	ドキュメントが保存された
+	GVUNDOITEM_DIFF_RESTORE = 0x0800,		//	diff で相手ファイルにあわせる
+	GVUNDOITEM_REPTEXT = 0x1000,		//	文字列の置換を行った
+	GVUNDOITEM_TRANSLATE = 0x2000,		//	コード変換の場合
+	GVUNDOITEM_REDRAW = 0x4000,			//	:m の場合の様に強制的にリドローする
+	GVUNDOITEM_INSTEXT = 0x8000,		//	文字列の挿入を行った
 };
 
 enum {
-	BBUNDOITEM_TYPE_RESIZE = 1,
-	BBUNDOITEM_TYPE_INSERT,
-	BBUNDOITEM_TYPE_ERASE,
-	BBUNDOITEM_TYPE_REPLACE,
+	GVUNDOITEM_TYPE_RESIZE = 1,
+	GVUNDOITEM_TYPE_INSERT,
+	GVUNDOITEM_TYPE_ERASE,
+	GVUNDOITEM_TYPE_REPLACE,
 };
 
 
@@ -412,6 +412,7 @@ public:
 	void	init();
 	void	clear() { init(); }
 
+	void	setModified(bool b) { m_modified = b; }
 	void	setFullPath(const QString &fullPath) { m_fullPath = fullPath; }
 
 #if BLOCK_HAS_SIZE
@@ -451,8 +452,8 @@ public:
 	void	deleteChar(TextCursor&);
 	void	deletePreviousChar(TextCursor&);
 
-	void	doUndo(index_t &pos) { m_undoMgr.doUndo(this, pos); }
-	void	doRedo(index_t &pos) { m_undoMgr.doRedo(this, pos); }
+	void	doUndo(index_t &pos); //{ m_undoMgr.doUndo(this, pos); }
+	void	doRedo(index_t &pos); //{ m_undoMgr.doRedo(this, pos); }
 #if 0
 	void	doUndo()
 	{

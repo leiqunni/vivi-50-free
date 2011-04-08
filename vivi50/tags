@@ -8,27 +8,6 @@
 !_TAG_PROGRAM_VERSION	5.7J1	//
 ASSERT	.\gap_vector.h	42;"	d
 Allocator	.\gap_vector.h	/^	typedef _A Allocator;$/;"	t	class:std::gap_vector
-BBUNDOITEM_BLOCK	.\TextDocument.h	/^	BBUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock かどうか$/;"	e	enum:__anon2
-BBUNDOITEM_CONCAT_ALL	.\TextDocument.h	/^	BBUNDOITEM_CONCAT_ALL = 0x0040,		\/\/	挿入文字列連結可能$/;"	e	enum:__anon2
-BBUNDOITEM_CONCAT_LINE	.\TextDocument.h	/^	BBUNDOITEM_CONCAT_LINE = 0x0020,	\/\/	挿入文字列連結可能$/;"	e	enum:__anon2
-BBUNDOITEM_CUR_TAIL	.\TextDocument.h	/^	BBUNDOITEM_CUR_TAIL = 0x0008,		\/\/	削除の時、カーソルが最後にあった$/;"	e	enum:__anon2
-BBUNDOITEM_DELETE	.\TextDocument.h	/^	BBUNDOITEM_DELETE = 0x0080,			\/\/	or BackSpace$/;"	e	enum:__anon2
-BBUNDOITEM_DIFF_RESTORE	.\TextDocument.h	/^	BBUNDOITEM_DIFF_RESTORE = 0x0800,		\/\/	diff で相手ファイルにあわせる$/;"	e	enum:__anon2
-BBUNDOITEM_INSTEXT	.\TextDocument.h	/^	BBUNDOITEM_INSTEXT = 0x8000,		\/\/	文字列の挿入を行った$/;"	e	enum:__anon2
-BBUNDOITEM_MADELINE	.\TextDocument.h	/^	BBUNDOITEM_MADELINE = 0x0004,$/;"	e	enum:__anon2
-BBUNDOITEM_MARK_POS	.\TextDocument.h	/^	BBUNDOITEM_MARK_POS = 0x0100,		\/\/	CUndoItemMarkPos かどうか$/;"	e	enum:__anon2
-BBUNDOITEM_REDO_MF_OFF	.\TextDocument.h	/^	BBUNDOITEM_REDO_MF_OFF = 0x0002,	\/\/	Redo でモディファイフラグがＯＮからＯＦＦに$/;"	e	enum:__anon2
-BBUNDOITEM_REDRAW	.\TextDocument.h	/^	BBUNDOITEM_REDRAW = 0x4000,			\/\/	:m の場合の様に強制的にリドローする$/;"	e	enum:__anon2
-BBUNDOITEM_REPTEXT	.\TextDocument.h	/^	BBUNDOITEM_REPTEXT = 0x1000,		\/\/	文字列の置換を行った$/;"	e	enum:__anon2
-BBUNDOITEM_SAVED	.\TextDocument.h	/^	BBUNDOITEM_SAVED = 0x0400,			\/\/	ドキュメントが保存された$/;"	e	enum:__anon2
-BBUNDOITEM_SHIFT_LEFT	.\TextDocument.h	/^	BBUNDOITEM_SHIFT_LEFT = 0x0010,$/;"	e	enum:__anon2
-BBUNDOITEM_SHIFT_RIGHT	.\TextDocument.h	/^	BBUNDOITEM_SHIFT_RIGHT = 0x0000,$/;"	e	enum:__anon2
-BBUNDOITEM_TRANSLATE	.\TextDocument.h	/^	BBUNDOITEM_TRANSLATE = 0x2000,		\/\/	コード変換の場合$/;"	e	enum:__anon2
-BBUNDOITEM_TYPE_ERASE	.\TextDocument.h	/^	BBUNDOITEM_TYPE_ERASE,$/;"	e	enum:__anon3
-BBUNDOITEM_TYPE_INSERT	.\TextDocument.h	/^	BBUNDOITEM_TYPE_INSERT,$/;"	e	enum:__anon3
-BBUNDOITEM_TYPE_REPLACE	.\TextDocument.h	/^	BBUNDOITEM_TYPE_REPLACE,$/;"	e	enum:__anon3
-BBUNDOITEM_TYPE_RESIZE	.\TextDocument.h	/^	BBUNDOITEM_TYPE_RESIZE = 1,$/;"	e	enum:__anon3
-BBUNDOITEM_UNDO_MF_OFF	.\TextDocument.h	/^	BBUNDOITEM_UNDO_MF_OFF = 0x0001,	\/\/	Undo でモディファイフラグがＯＮからＯＦＦに$/;"	e	enum:__anon2
 BLOCK_HAS_SIZE	.\TextDocument.h	38;"	d
 CT_ALNUM	.\TextDocument.h	/^	CT_ALNUM,		\/\/	半角英数字$/;"	e	enum:__anon1
 CT_ALPHA_EX	.\TextDocument.h	/^	CT_ALPHA_EX,	\/\/	その他の国の文字$/;"	e	enum:__anon1
@@ -49,6 +28,27 @@ CUnitTest	.\unit_test.h	/^class CUnitTest$/;"	c
 Down	.\TextDocument.h	/^		Down,$/;"	e	enum:TextCursor::__anon5
 EndOfBlock	.\TextDocument.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon5
 EndOfDocument	.\TextDocument.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon5
+GVUNDOITEM_BLOCK	.\TextDocument.h	/^	GVUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock かどうか$/;"	e	enum:__anon2
+GVUNDOITEM_CONCAT_ALL	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_ALL = 0x0040,		\/\/	挿入文字列連結可能$/;"	e	enum:__anon2
+GVUNDOITEM_CONCAT_LINE	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_LINE = 0x0020,	\/\/	挿入文字列連結可能$/;"	e	enum:__anon2
+GVUNDOITEM_CUR_TAIL	.\TextDocument.h	/^	GVUNDOITEM_CUR_TAIL = 0x0008,		\/\/	削除の時、カーソルが最後にあった$/;"	e	enum:__anon2
+GVUNDOITEM_DELETE	.\TextDocument.h	/^	GVUNDOITEM_DELETE = 0x0080,			\/\/	or BackSpace$/;"	e	enum:__anon2
+GVUNDOITEM_DIFF_RESTORE	.\TextDocument.h	/^	GVUNDOITEM_DIFF_RESTORE = 0x0800,		\/\/	diff で相手ファイルにあわせる$/;"	e	enum:__anon2
+GVUNDOITEM_INSTEXT	.\TextDocument.h	/^	GVUNDOITEM_INSTEXT = 0x8000,		\/\/	文字列の挿入を行った$/;"	e	enum:__anon2
+GVUNDOITEM_MADELINE	.\TextDocument.h	/^	GVUNDOITEM_MADELINE = 0x0004,$/;"	e	enum:__anon2
+GVUNDOITEM_MARK_POS	.\TextDocument.h	/^	GVUNDOITEM_MARK_POS = 0x0100,		\/\/	CUndoItemMarkPos かどうか$/;"	e	enum:__anon2
+GVUNDOITEM_REDO_MF_OFF	.\TextDocument.h	/^	GVUNDOITEM_REDO_MF_OFF = 0x0002,	\/\/	Redo でモディファイフラグがＯＮからＯＦＦに$/;"	e	enum:__anon2
+GVUNDOITEM_REDRAW	.\TextDocument.h	/^	GVUNDOITEM_REDRAW = 0x4000,			\/\/	:m の場合の様に強制的にリドローする$/;"	e	enum:__anon2
+GVUNDOITEM_REPTEXT	.\TextDocument.h	/^	GVUNDOITEM_REPTEXT = 0x1000,		\/\/	文字列の置換を行った$/;"	e	enum:__anon2
+GVUNDOITEM_SAVED	.\TextDocument.h	/^	GVUNDOITEM_SAVED = 0x0400,			\/\/	ドキュメントが保存された$/;"	e	enum:__anon2
+GVUNDOITEM_SHIFT_LEFT	.\TextDocument.h	/^	GVUNDOITEM_SHIFT_LEFT = 0x0010,$/;"	e	enum:__anon2
+GVUNDOITEM_SHIFT_RIGHT	.\TextDocument.h	/^	GVUNDOITEM_SHIFT_RIGHT = 0x0000,$/;"	e	enum:__anon2
+GVUNDOITEM_TRANSLATE	.\TextDocument.h	/^	GVUNDOITEM_TRANSLATE = 0x2000,		\/\/	コード変換の場合$/;"	e	enum:__anon2
+GVUNDOITEM_TYPE_ERASE	.\TextDocument.h	/^	GVUNDOITEM_TYPE_ERASE,$/;"	e	enum:__anon3
+GVUNDOITEM_TYPE_INSERT	.\TextDocument.h	/^	GVUNDOITEM_TYPE_INSERT,$/;"	e	enum:__anon3
+GVUNDOITEM_TYPE_REPLACE	.\TextDocument.h	/^	GVUNDOITEM_TYPE_REPLACE,$/;"	e	enum:__anon3
+GVUNDOITEM_TYPE_RESIZE	.\TextDocument.h	/^	GVUNDOITEM_TYPE_RESIZE = 1,$/;"	e	enum:__anon3
+GVUNDOITEM_UNDO_MF_OFF	.\TextDocument.h	/^	GVUNDOITEM_UNDO_MF_OFF = 0x0001,	\/\/	Undo でモディファイフラグがＯＮからＯＦＦに$/;"	e	enum:__anon2
 GVUndoItem	.\TextDocument.h	/^	GVUndoItem()$/;"	f	struct:GVUndoItem
 GVUndoItem	.\TextDocument.h	/^	GVUndoItem(uchar type,$/;"	f	struct:GVUndoItem
 GVUndoItem	.\TextDocument.h	/^struct GVUndoItem$/;"	s
@@ -158,8 +158,8 @@ cbegin	.\gap_vector.h	/^	const_iterator cbegin() const { return const_iterator(m
 cchar	.\unit_test.h	/^typedef const char cchar;$/;"	t
 cend	.\gap_vector.h	/^	const_iterator cend() const { return const_iterator(m_last, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
 centralWidget	.\GeneratedFiles\ui_mainwindow.h	/^    QWidget *centralWidget;$/;"	m	class:Ui_MainWindowClass
-charEncoding	.\PlainTextEdit.cpp	/^uchar PlainTextEdit::charEncoding() const$/;"	f	class:PlainTextEdit
 charEncoding	.\TextDocument.h	/^	uchar	charEncoding() const { return m_charEncoding; }$/;"	f	class:TextDocument
+charEncoding	.\PlainTextEdit.cpp	/^uchar PlainTextEdit::charEncoding() const$/;"	f	class:PlainTextEdit
 charsCount	.\TextDocument.cpp	/^int TextBlock::charsCount(index_t position) const$/;"	f	class:TextBlock
 clear	.\TextDocument.h	/^	void	clear() { init(); }$/;"	f	class:TextDocument
 clear	.\gap_vector.h	/^	void clear()$/;"	f	class:std::gap_vector
@@ -203,9 +203,9 @@ doJump	.\PlainTextEdit.cpp	/^void PlainTextEdit::doJump(int lineNum)$/;"	f	class
 doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
 doRedo	.\TextDocument.cpp	/^bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
-doRedo	.\TextDocument.h	/^	void	doRedo(index_t &pos) { m_undoMgr.doRedo(this, pos); }$/;"	f	class:TextDocument
+doRedo	.\TextDocument.cpp	/^void TextDocument::doRedo(index_t &pos)$/;"	f	class:TextDocument
 doUndo	.\TextDocument.cpp	/^bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
-doUndo	.\TextDocument.h	/^	void	doUndo(index_t &pos) { m_undoMgr.doUndo(this, pos); }$/;"	f	class:TextDocument
+doUndo	.\TextDocument.cpp	/^void TextDocument::doUndo(index_t &pos)$/;"	f	class:TextDocument
 doUnitTest	.\mainwindowTest.cpp	/^void MainWindow::doUnitTest()$/;"	f	class:MainWindow
 do_erase	.\TextDocument.cpp	/^void TextDocument::do_erase(index_t first, index_t last)$/;"	f	class:TextDocument
 do_insert	.\TextDocument.cpp	/^void TextDocument::do_insert(index_t position, const QString &text)$/;"	f	class:TextDocument
@@ -293,8 +293,8 @@ insertText	.\TextDocument.cpp	/^void TextCursor::insertText(const QString &text)
 insertText	.\TextDocument.cpp	/^void TextDocument::insertText(TextCursor &cur, const QString &text)$/;"	f	class:TextDocument
 isEmpty	.\TextDocument.h	/^	bool	isEmpty() const { return m_buffer.empty(); }$/;"	f	class:TextDocument
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
-isModified	.\PlainTextEdit.cpp	/^bool PlainTextEdit::isModified() const$/;"	f	class:PlainTextEdit
 isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
+isModified	.\PlainTextEdit.cpp	/^bool PlainTextEdit::isModified() const$/;"	f	class:PlainTextEdit
 isNull	.\TextDocument.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:TextCursor
 isTabOrSpace	.\TextDocument.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isUTF8FirstChar	.\TextDocument.cpp	/^inline bool isUTF8FirstChar(uchar ch)$/;"	f
@@ -461,6 +461,7 @@ setCurrentFile	.\mainwindow.cpp	/^void MainWindow::setCurrentFile(const QString 
 setFontFamily	.\PlainTextEdit.cpp	/^void PlainTextEdit::setFontFamily(const QString &name)$/;"	f	class:PlainTextEdit
 setFontPointSize	.\PlainTextEdit.cpp	/^void PlainTextEdit::setFontPointSize(int sz)$/;"	f	class:PlainTextEdit
 setFullPath	.\TextDocument.h	/^	void	setFullPath(const QString &fullPath) { m_fullPath = fullPath; }$/;"	f	class:TextDocument
+setModified	.\TextDocument.h	/^	void	setModified(bool b) { m_modified = b; }$/;"	f	class:TextDocument
 setPlainText	.\TextDocument.cpp	/^void TextDocument::setPlainText(const QString &text)$/;"	f	class:TextDocument
 setPosition	.\TextDocument.cpp	/^void TextCursor::setPosition(index_t position, TextBlockData d, uchar mode)$/;"	f	class:TextCursor
 setPosition	.\TextDocument.cpp	/^void TextCursor::setPosition(index_t position, uchar mode)$/;"	f	class:TextCursor
@@ -483,8 +484,8 @@ test	.\unit_test.h	46;"	d
 test_TextDocument	.\mainwindowTest.cpp	/^void test_TextDocument()$/;"	f
 test_equal	.\unit_test.h	47;"	d
 text	.\TextDocument.cpp	/^QString TextBlock::text() const$/;"	f	class:TextBlock
-toPlainText	.\PlainTextEdit.cpp	/^QString PlainTextEdit::toPlainText() const$/;"	f	class:PlainTextEdit
 toPlainText	.\TextDocument.cpp	/^QString TextDocument::toPlainText() const$/;"	f	class:TextDocument
+toPlainText	.\PlainTextEdit.cpp	/^QString PlainTextEdit::toPlainText() const$/;"	f	class:PlainTextEdit
 uchar	.\TextDocument.h	/^typedef unsigned char uchar;$/;"	t
 uint	.\unit_test.h	/^typedef unsigned int uint;$/;"	t
 uint	.\gap_vector.h	/^typedef unsigned int uint;$/;"	t
@@ -506,8 +507,8 @@ ut_set_output	.\unit_test.cpp	/^void ut_set_output(OutputFunc f)$/;"	f
 value_type	.\gap_vector.h	/^	typedef Type value_type;$/;"	t	class:std::gap_vector
 viewMenu	.\mainwindow.h	/^    QMenu	*viewMenu;$/;"	m	class:MainWindow
 wheelEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::wheelEvent ( QWheelEvent * event )$/;"	f	class:PlainTextEdit
-withBOM	.\PlainTextEdit.cpp	/^bool PlainTextEdit::withBOM() const$/;"	f	class:PlainTextEdit
 withBOM	.\TextDocument.h	/^	bool	withBOM() const { return m_withBOM; }$/;"	f	class:TextDocument
+withBOM	.\PlainTextEdit.cpp	/^bool PlainTextEdit::withBOM() const$/;"	f	class:PlainTextEdit
 withBOM	.\PlainTextEdit.h	/^	bool	withBOM() const { return m_document->withBOM(); }$/;"	f	class:PlainTextEdit
 withBOM	.\PlainTextEdit.h	/^	bool	withBOM() const { return document()->withBOM(); }$/;"	f	class:PlainTextEdit
 writeSettings	.\mainwindow.cpp	/^void MainWindow::writeSettings()$/;"	f	class:MainWindow

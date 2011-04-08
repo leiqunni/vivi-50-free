@@ -407,7 +407,7 @@ void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)
 		m_items.erase(m_items.begin() + m_current, m_items.end());
 	}
 	if( !modified )
-		ptr->m_flags |= BBUNDOITEM_UNDO_MF_OFF;
+		ptr->m_flags |= GVUNDOITEM_UNDO_MF_OFF;
 //#if		!UNDOMGR_USE_OBJECT_POOL
 //	m_items.push_back(boost::shared_ptr<GVUndoItem>(ptr));
 //#else
@@ -423,19 +423,19 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 #if 1
 	GVUndoItem *ptr = m_items[--m_current];
 	switch( ptr->m_type ) {
-	case BBUNDOITEM_TYPE_ERASE: {
+	case GVUNDOITEM_TYPE_ERASE: {
 		cuchar *heap = &m_heap[ptr->m_hp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
 		pos = ptr->m_first + ptr->data_size();
 		break;
 	}
-	case BBUNDOITEM_TYPE_INSERT:
+	case GVUNDOITEM_TYPE_INSERT:
 		if( ptr->m_rhp_ix == 0 )
 			ptr->m_rhp_ix = addToRedoHeap(bb->begin() + ptr->m_first, bb->begin() + ptr->m_last);
 		bb->erase(ptr->m_first, ptr->m_last);
 		pos = ptr->m_first;
 		break;
-	case BBUNDOITEM_TYPE_REPLACE: {
+	case GVUNDOITEM_TYPE_REPLACE: {
 		if( ptr->m_rhp_ix == 0 )
 			ptr->m_rhp_ix = addToRedoHeap(bb->begin() + ptr->m_first, bb->begin() + ptr->m_last2);
 		bb->erase(ptr->m_first, ptr->m_last2);
@@ -445,10 +445,10 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 		break;
 	}
 	}
-	return !(ptr->m_flags & BBUNDOITEM_UNDO_MF_OFF) ? true : false;
+	return !(ptr->m_flags & GVUNDOITEM_UNDO_MF_OFF) ? true : false;
 #else
 	m_items[--m_current]->doUndo(bb, pos);
-	return !(m_items[m_current]->m_flags & BBUNDOITEM_UNDO_MF_OFF) ? true : false;
+	return !(m_items[m_current]->m_flags & GVUNDOITEM_UNDO_MF_OFF) ? true : false;
 #endif
 	//return true;
 }
@@ -460,17 +460,17 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
 #if 1
 	const GVUndoItem *ptr = m_items[m_current++];
 	switch( ptr->m_type ) {
-	case BBUNDOITEM_TYPE_ERASE:
+	case GVUNDOITEM_TYPE_ERASE:
 		bb->erase(ptr->m_first, ptr->m_last);
 		pos = ptr->m_first;
 		break;
-	case BBUNDOITEM_TYPE_INSERT: {
+	case GVUNDOITEM_TYPE_INSERT: {
 		cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
 		pos = ptr->m_first + ptr->data_size();
 		break;
 	}
-	case BBUNDOITEM_TYPE_REPLACE: {
+	case GVUNDOITEM_TYPE_REPLACE: {
 		bb->erase(ptr->m_first, ptr->m_last);
 		cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size2());
@@ -478,10 +478,10 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
 		break;
 	}
 	}
-	return !(ptr->m_flags & BBUNDOITEM_UNDO_MF_OFF) ? true : false;
+	return !(ptr->m_flags & GVUNDOITEM_UNDO_MF_OFF) ? true : false;
 #else
 	m_items[m_current]->doRedo(bb, pos);
-	return !(m_items[m_current++]->m_flags & BBUNDOITEM_REDO_MF_OFF) ? true : false;;
+	return !(m_items[m_current++]->m_flags & GVUNDOITEM_REDO_MF_OFF) ? true : false;;
 #endif
 }
 //----------------------------------------------------------------------
@@ -1027,8 +1027,8 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 	if( position == cur.anchor() ) {
 		m_buffer.insert(position, ptr, ptr + sz);
 		updateBlocksAtInsert(position, cur.blockData(), sz);
-		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_INSERT, position, position + sz, 0);
-		m_undoMgr.push_back(undoItem);
+		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0);
+		m_undoMgr.push_back(undoItem, isModified());
 	} else {
 		if( cur.anchor() < position )
 			cur.swapPositionAnchor();
@@ -1040,9 +1040,9 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 		erase(first, cur.blockData(), last);
 		m_buffer.insert(first, ptr, ptr + sz);
 		updateBlocksAtInsert(first, cur.blockData(), sz);
-		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_REPLACE,
+		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_REPLACE,
 										first, last, hp_ix, first + sz);
-		m_undoMgr.push_back(undoItem);
+		m_undoMgr.push_back(undoItem, isModified());
 		delSz = last - first;
 	}
 	cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
@@ -1061,8 +1061,8 @@ void TextDocument::do_insert(index_t position, const QString &text)
 	TextBlockData d = findBlockData(position);		//	編集によりキャッシュが無効になる前に取得しておく
 	m_buffer.insert(position, ptr, ptr + sz);
 	updateBlocksAtInsert(position, d, sz);
-	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_INSERT, position, position + sz, 0);
-	m_undoMgr.push_back(undoItem);
+	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0);
+	m_undoMgr.push_back(undoItem, isModified());
 	m_modified = true;
 	emit contentsChange(position, 0, sz);
 	emit contentsChanged();
@@ -1071,8 +1071,8 @@ void TextDocument::do_erase(index_t first, index_t last)
 {
 	const index_t hp_ix = m_undoMgr.addToHeap(m_buffer.begin() + first, m_buffer.begin() + last);
 	erase(first, last);
-	GVUndoItem *ptr = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_ERASE, first, last, hp_ix);
-	m_undoMgr.push_back(ptr);
+	GVUndoItem *ptr = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_ERASE, first, last, hp_ix);
+	m_undoMgr.push_back(ptr, isModified());
 	emit contentsChange(first, last - first, 0);
 }
 void TextDocument::do_replace(index_t first, index_t last, const QString &text)
@@ -1091,10 +1091,20 @@ void TextDocument::do_replace(index_t first, index_t last, const QString &text)
 	erase(first, last);
 	m_buffer.insert(first, ptr, ptr + sz);
 	updateBlocksAtInsert(first, d, sz);
-	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(BBUNDOITEM_TYPE_REPLACE,
+	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_REPLACE,
 									first, last, hp_ix, first + sz);
-	m_undoMgr.push_back(undoItem);
+	m_undoMgr.push_back(undoItem, isModified());
 	emit contentsChange(first, last - first, sz);
+}
+void TextDocument::doUndo(index_t &pos)
+{
+	setModified(m_undoMgr.doUndo(this, pos));
+	emit contentsChanged();
+}
+void TextDocument::doRedo(index_t &pos)
+{
+	setModified(m_undoMgr.doRedo(this, pos));
+	emit contentsChanged();
 }
 
 bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const
