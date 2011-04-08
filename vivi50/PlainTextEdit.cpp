@@ -373,10 +373,16 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 			move = TextCursor::EndOfBlock;
 		break;
 	case Qt::Key_Right:
-		move = TextCursor::Right;
+		if( ctrl )
+			move = TextCursor::NextWord;
+		else
+			move = TextCursor::Right;
 		break;
 	case Qt::Key_Left:
-		move = TextCursor::Left;
+		if( ctrl )
+			move = TextCursor::PrevWord;
+		else
+			move = TextCursor::Left;
 		break;
 	case Qt::Key_Up:
 		move = TextCursor::Up;

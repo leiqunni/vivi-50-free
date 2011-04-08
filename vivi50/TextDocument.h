@@ -36,6 +36,24 @@ typedef const unsigned char cuchar;
 
 //#define		BLOCK_HAS_OFFSET	0
 #define		BLOCK_HAS_SIZE		1
+enum {
+	CT_EOF = 0,
+	CT_NEWLINE,
+	CT_SPACE,
+	CT_ALNUM,		//	半角英数字
+	CT_HANKANA,		//	半角カナ
+	CT_SYM,			//	半角シンボル
+	//CT_DBSPACE,		//	全角空白
+	CT_HIRA,		//	全角ひらがな
+	CT_KANA,		//	全角カタカナ
+	CT_DBALNUM,		//	全角英数字
+	CT_KANJI,		//	漢字
+	//CT_SYM,			//	全角記号
+	CT_CONT,		//	繰り返し記号（々など）
+	CT_GREEK,		//	ギリシャ文字
+	CT_ALPHA_EX,	//	その他の国の文字
+	CT_OTHER,		//	その他文字
+};
 
 class TextDocument;
 class TextBlock;
@@ -194,6 +212,8 @@ public:
 		Left,
 		Up,
 		Down,
+		NextWord,
+		PrevWord,
 		StartOfBlock,
 		EndOfBlock,
 		StartOfDocument,
@@ -238,7 +258,7 @@ public:
 	~TextCursor() {}
 
 public:
-	TextDocument	*document() const { return m_document; }
+	const TextDocument	*document() const { return m_document; }
 	index_t	position() const { return m_position; }
 	index_t	anchor() const { return m_anchor; }
 	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
@@ -256,12 +276,14 @@ public:
 #endif
 
 public:
+	TextDocument	*document() { return m_document; }
 	void	clearSelection() { copyPositionToAnchor(); }
 	TextBlock	block();
 	void	copyPositionToAnchor();
 	void	copyAnchorToPosition();
 	void	swapPositionAnchor();
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
+	void	setPosition(index_t position, TextBlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
 
 	void	insertText(const QString &);
@@ -316,6 +338,7 @@ public:
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
+	TextBlockData	data() const { return m_data; }
 	QString		text() const;
 	int			charsCount(index_t) const;		//	行頭から指定位置までの文字数を返す
 
@@ -326,6 +349,7 @@ public:
 
 public:
 	TextBlock	next() const;
+	TextBlock	prev() const;
 
 private:
 	TextDocument	*m_document;
@@ -373,7 +397,12 @@ public:
 	TextBlockData	nextBlockData(TextBlockData d) const
 	{ return TextBlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
 	TextBlockData	prevBlockData(TextBlockData d) const
-	{ return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size); }
+	{
+		if( !d.m_index )
+			return TextBlockData(INVALID_INDEX, 0);
+		else
+			return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
+	}
 
 public:
 	bool	canUndo() const { return m_undoMgr.canUndo(); };

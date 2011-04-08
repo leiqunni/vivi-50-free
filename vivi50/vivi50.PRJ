@@ -21,10 +21,10 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(47,324)
   main.cpp	(-153,-353)
-* mainwindow.cpp	(120,-227)
-* mainwindow.h	(120,-260)
+  mainwindow.cpp	(120,-227)
+  mainwindow.h	(120,-260)
 * PlainTextEdit.cpp	(-174,-23)
-* PlainTextEdit.h	(-174,-56)
+  PlainTextEdit.h	(-174,-56)
 * TextDocument.cpp	(3,164)
 * TextDocument.h	(3,131)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(37,-367)
@@ -35,6 +35,6 @@ memFileColumnWd = 320
   charEncoding.cpp	(369,-63)
   charEncoding.h	(369,-96)
 [ToDo]
-  "TextDocument.cpp" 175 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 180 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 264 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 283 'B: ' '' undone 暫定コード
+  "TextDocument.cpp" 288 'B: ' '' undone 暫定コード
+  "TextDocument.cpp" 378 'M: ' '' undone 不要なヒープの解放

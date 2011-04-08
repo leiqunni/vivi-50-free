@@ -80,10 +80,10 @@ int TextCursor::prevCharsCount() const
 {
 	if( isNull() ) return 0;
 	int cnt = 0;
-	index_t ix = m_blockData.index();
-	while( ix < m_position ) {
+	index_t pos = m_blockData.position();
+	while( pos < m_position ) {
 		++cnt;
-		ix += UTF8CharSize((*m_document)[ix]);
+		pos += UTF8CharSize((*m_document)[pos]);
 	}
 	return cnt;
 }
@@ -128,6 +128,142 @@ void TextCursor::setPosition(index_t position, uchar mode)
 		//m_ancBlockIndex = m_blockIndex;
 		//m_ancBlockPosition = m_blockPosition;
 	}
+}
+void TextCursor::setPosition(index_t position, TextBlockData d, uchar mode)
+{
+	if( isNull() ) return;
+	m_position = position;
+	m_blockData = d;
+	if( mode == MoveAnchor ) {
+		m_anchor = m_position;
+		m_anchorBlockData = m_blockData;
+		//m_ancBlockIndex = m_blockIndex;
+		//m_ancBlockPosition = m_blockPosition;
+	}
+}
+//----------------------------------------------------------------------
+static uchar sbCharTypeTbl[] = {
+/* 0 */	CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER,
+		CT_OTHER, CT_SPACE, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER,
+/* 1 */	CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER,
+		CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER,
+/* 2 */	CT_SPACE, CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,		//	  ! " # $ % & '
+		CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,		//	( ) * + , - . /
+/* 3 */	CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM,		//	0 CT_ALNUM 2 3 4 5 6 7
+		CT_ALNUM, CT_ALNUM, CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,		//	8 9 : ; < = > ?
+/* 4 */	CT_SYM,   CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM,		//	@ A B C D E F G
+		CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM,		//	H I J K L M N O
+/* 5 */	CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM,		//	P Q R S T U V W
+		CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_ALNUM,		//	X Y Z [ \ ] ^ _
+/* 6 */	CT_SYM,   CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM,		//	` a b c d e f g
+		CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM,		//	h i j k l m n o
+/* 7 */	CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_ALNUM,		//	p q r s t u v w
+		CT_ALNUM, CT_ALNUM, CT_ALNUM, CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,   CT_SYM,		//	x y z { | } ~
+};
+
+uchar getCharType(QChar ch)
+{
+	const ushort code = ch.unicode();
+	if( code < 0x80 )
+		return sbCharTypeTbl[code];
+	if( code <= 0xa0 ) return CT_OTHER;
+	if( code <= 0xbf ) return CT_SYM;
+	if( code <= 0x2af ) return CT_ALNUM;
+	if( code <= 0x36f ) return CT_GREEK;
+	if( code >= 0x3040 && code < 0x30a0 ) return CT_HIRA;
+	if( code >= 0x30a0 && code < 0x3100 ) return CT_KANA;
+	if( code >= 0x4e00 && code < 0xa000 ) return CT_KANJI;
+	return CT_SYM;
+}
+
+//----------------------------------------------------------------------
+bool gotoNextWord(TextCursor &cur, int n = 1, bool cdy = false);
+bool gotoPrevWord(TextCursor &cur, int n = 1);
+inline bool isTabOrSpace(const QChar ch)
+{
+	return ch == '\t' || ch == ' ';
+}
+
+bool gotoNextWord(TextCursor &cur, int n, bool cdy)
+{
+	const TextDocument *doc = cur.document();
+	TextBlock block = cur.block();
+	//int blockPos = block.position();
+	QString text = block.text();
+	int pos = cur.position();
+	int ix = cur.prevCharsCount();
+	while( --n >= 0 ) {
+		//	同タイプ文字を読み飛ばす
+		if( ix < text.length() && !isTabOrSpace(text[ix]) ) {
+			uchar cat = getCharType(text[ix++]);
+			pos += UTF8CharSize((*doc)[pos]);
+			//QChar::Category cat = text[ix++].category();
+			while( ix < text.length() && !isTabOrSpace(text[ix]) && getCharType(text[ix]) == cat ) {
+				++ix;
+				pos += UTF8CharSize((*doc)[pos]);
+			}
+		}
+		//	空白類を読み飛ばす
+		while( ix == text.length() || isTabOrSpace(text[ix]) ) {
+			if( ix == text.length() ) {
+				if( cdy && !n )	//	cdy が前置されている場合は、最後の改行はスキップしない
+					break;
+				TextBlock nb = block.next();
+				if( !nb.isValid() ) {
+					cur.setPosition(pos, block.data());
+					return true;
+				}
+				block = nb;
+				//blockPos = block.position();
+				text = block.text();
+				ix = 0;
+			} else {
+				++ix;
+				pos += UTF8CharSize((*doc)[pos]);
+			}
+		}
+	}
+	cur.setPosition(pos, block.data());
+	return true;
+}
+bool gotoPrevWord(TextCursor &cur, int n)
+{
+	const TextDocument *doc = cur.document();
+	TextBlock block = cur.block();
+	//int blockPos = block.position();
+	QString text = block.text();
+	int pos = cur.position();
+	int ix = cur.prevCharsCount();
+	while( --n >= 0 ) {
+		//	ひとつ前の文字が空白類 or 行頭なら文書先頭方向に移動
+		while( !ix || isTabOrSpace(text[ix-1]) ) {
+			if( !ix ) {
+				TextBlock pb = block.prev();
+				if( !pb.isValid() ) {
+					cur.setPosition(pos, block.data());
+					return true;
+				}
+				block = pb;
+				//blockPos = block.position();
+				text = block.text();
+				ix = text.length();
+			} else {
+				--ix;
+				do { } while( !isUTF8FirstChar((*doc)[--pos]) );
+			}
+		}
+		//	ひとつ前の文字が同じタイプ and 空白類になるまで or 行頭まで読み飛ばす
+		if( ix > 0 && !isTabOrSpace(text[ix-1]) ) {
+			uchar cat = getCharType(text[--ix]);
+			do { } while( !isUTF8FirstChar((*doc)[--pos]) );
+			while( ix > 0 && !isTabOrSpace(text[ix-1]) && getCharType(text[ix-1]) == cat ) {
+				--ix;
+				do { } while( !isUTF8FirstChar((*doc)[--pos]) );
+			}
+		}
+	}
+	cur.setPosition(pos, block.data());
+	return true;
 }
 bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 {
@@ -179,6 +315,12 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 		if( m_blockData.m_index >= m_document->blockCount() - 1 ) return false;
 		//	undone B 暫定コード
 		m_position = m_blockData.m_position += m_document->blockSize(m_blockData.m_index++);
+		break;
+	case NextWord:
+		gotoNextWord(*this);
+		break;
+	case PrevWord:
+		gotoPrevWord(*this);
 		break;
 	case StartOfBlock:
 		m_position = m_blockData.position();
@@ -394,7 +536,6 @@ QString TextBlock::text() const
 TextBlock TextBlock::next() const
 {
 	if( !isValid() ) return *this;
-#if BLOCK_HAS_SIZE
 #if 1
 	TextBlockData d = m_document->nextBlockData(m_data);
 	if( d.index() >= m_document->blockCount() )
@@ -407,12 +548,12 @@ TextBlock TextBlock::next() const
 		ix = INVALID_INDEX;
 	return TextBlock(m_document, ix, blockPosition);
 #endif
-#else
-	int ix = m_blockNumber + 1;
-	if( ix >= m_document->blockCount() )
-		ix = INVALID_INDEX;
-	return TextBlock(m_document, ix);
-#endif
+}
+TextBlock TextBlock::prev() const
+{
+	if( !isValid() ) return *this;
+	TextBlockData d = m_document->prevBlockData(m_data);
+	return TextBlock(m_document, d);
 }
 //----------------------------------------------------------------------
 TextDocument::TextDocument(QObject *parent)

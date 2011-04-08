@@ -128,6 +128,52 @@ void test_TextDocument()
 	}
 	if( 1 ) {
 		TextDocument doc;
+		doc.setPlainText(QString("1x() File: hoge\nxyzÇ†Ç¢Ç§äøéö\r"));
+		TextCursor cur(&doc);		//	êÊì™à íu
+		ut.test_equal(0, cur.position());
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(2, cur.position());		//	(
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(5, cur.position());		//	File
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(9, cur.position());		//	:
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(11, cur.position());		//	h
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(15, cur.position());		//	\n
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(16, cur.position());		//	x
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(19, cur.position());		//	Ç†
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(28, cur.position());		//	äø
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(34, cur.position());		//	\r
+		cur.movePosition(TextCursor::NextWord);
+		ut.test_equal(35, cur.position());		//	EOF
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(34, cur.position());		//	\r
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(28, cur.position());		//	äø
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(19, cur.position());		//	Ç†
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(16, cur.position());		//	x
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(15, cur.position());		//	\n
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(11, cur.position());		//	h
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(9, cur.position());		//	:
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(5, cur.position());		//	File
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(2, cur.position());		//	(
+		cur.movePosition(TextCursor::PrevWord);
+		ut.test_equal(0, cur.position());		//	1
+	}
+	if( 1 ) {
+		TextDocument doc;
 		doc.setPlainText(QString("line-1\nline-2\nline-3\nline-4\n"));
 		index_t bp;
 		ut.test_equal(0, doc.findBlockIndex(0, &bp));
