@@ -463,6 +463,22 @@ void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)
 //#endif
 	m_current = m_items.size();
 }
+
+//	ドキュメントが保存された時にコールされる
+void GVUndoMgr::resetModifiedFlags()
+{
+	bool before = true;
+	for(int ix = 0; ix < m_items.size(); ++ix) {
+		if( ix == m_current ) before = false;
+		GVUndoItem *undoItem = m_items[ix];
+		undoItem->m_beforeSave = before;
+		undoItem->m_flags &= ~(GVUNDOITEM_UNDO_MF_OFF|GVUNDOITEM_REDO_MF_OFF);
+		if( ix == m_current - 1 )
+			undoItem->m_flags |= GVUNDOITEM_REDO_MF_OFF | GVUNDOITEM_SAVED;
+		else if( ix == m_current)
+			undoItem->m_flags |= GVUNDOITEM_UNDO_MF_OFF;
+	}
+}
 //	@return		Undo の結果、モディファイフラグがＯＮの場合は TRUE を返す
 bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 {

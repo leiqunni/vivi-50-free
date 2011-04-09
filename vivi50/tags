@@ -56,7 +56,7 @@ GVUndoItem	.\TextDocument.h	/^struct GVUndoItem$/;"	s
 GVUndoMgr	.\TextDocument.h	/^	GVUndoMgr() : m_current(0)$/;"	f	class:GVUndoMgr
 GVUndoMgr	.\TextDocument.h	/^class GVUndoMgr$/;"	c
 GV_USE_ITR_FACADE	.\gap_vector.h	25;"	d
-INVALID_INDEX	.\TextDocument.h	200;"	d
+INVALID_INDEX	.\TextDocument.h	185;"	d
 KeepAnchor	.\TextDocument.h	/^		KeepAnchor,$/;"	e	enum:TextCursor::__anon4
 Left	.\TextDocument.h	/^		Left,$/;"	e	enum:TextCursor::__anon5
 MAINWINDOW_H	.\mainwindow.h	24;"	d
@@ -160,8 +160,8 @@ cbegin	.\gap_vector.h	/^	const_iterator cbegin() const { return const_iterator(m
 cchar	.\unit_test.h	/^typedef const char cchar;$/;"	t
 cend	.\gap_vector.h	/^	const_iterator cend() const { return const_iterator(m_last, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
 centralWidget	.\GeneratedFiles\ui_mainwindow.h	/^    QWidget *centralWidget;$/;"	m	class:Ui_MainWindowClass
-charEncoding	.\PlainTextEdit.cpp	/^uchar PlainTextEdit::charEncoding() const$/;"	f	class:PlainTextEdit
 charEncoding	.\TextDocument.h	/^	uchar	charEncoding() const { return m_charEncoding; }$/;"	f	class:TextDocument
+charEncoding	.\PlainTextEdit.cpp	/^uchar PlainTextEdit::charEncoding() const$/;"	f	class:PlainTextEdit
 charsCount	.\TextDocument.cpp	/^int TextBlock::charsCount(index_t position) const$/;"	f	class:TextBlock
 clear	.\TextDocument.h	/^	void	clear() { init(); }$/;"	f	class:TextDocument
 clear	.\gap_vector.h	/^	void clear()$/;"	f	class:std::gap_vector
@@ -201,8 +201,8 @@ dereference	.\gap_vector.h	/^	Type dereference() const { return *m_ptr; }$/;"	f	
 difference_type	.\gap_vector.h	/^	typedef int difference_type;		\/\/	ギャップが無いとみなした場合のインデックス差$/;"	t	class:std::gap_vector
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Const_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Const_Iterator
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Iterator
-doJump	.\PlainTextEdit.cpp	/^void PlainTextEdit::doJump(int lineNum)$/;"	f	class:PlainTextEdit
 doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
+doJump	.\PlainTextEdit.cpp	/^void PlainTextEdit::doJump(int lineNum)$/;"	f	class:PlainTextEdit
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
 doRedo	.\TextDocument.cpp	/^bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)$/;"	f	class:GVUndoMgr
 doRedo	.\TextDocument.cpp	/^void TextDocument::doRedo(index_t &pos)$/;"	f	class:TextDocument
@@ -282,8 +282,8 @@ index	.\TextDocument.h	/^	index_t index() const { return m_index; }$/;"	f	struct
 index_t	.\PlainTextEdit.h	/^typedef size_t index_t;$/;"	t
 index_t	.\gap_vector.h	/^typedef size_t index_t;$/;"	t
 index_type	.\gap_vector.h	/^	typedef uint index_type;			\/\/	バッファインデックス [0, size()]$/;"	t	class:std::gap_vector
-init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
 init	.\mainwindow.cpp	/^void MainWindow::init()$/;"	f	class:MainWindow
+init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
 inputMethodEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )$/;"	f	class:PlainTextEdit
 insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t ix, TextBlockData d,$/;"	f	class:TextDocument
 insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t ix, cuchar *first, cuchar *last)$/;"	f	class:TextDocument
@@ -297,8 +297,8 @@ insertText	.\TextDocument.cpp	/^void TextCursor::insertText(const QString &text)
 insertText	.\TextDocument.cpp	/^void TextDocument::insertText(TextCursor &cur, const QString &text)$/;"	f	class:TextDocument
 isEmpty	.\TextDocument.h	/^	bool	isEmpty() const { return m_buffer.empty(); }$/;"	f	class:TextDocument
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
-isModified	.\PlainTextEdit.cpp	/^bool PlainTextEdit::isModified() const$/;"	f	class:PlainTextEdit
 isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
+isModified	.\PlainTextEdit.cpp	/^bool PlainTextEdit::isModified() const$/;"	f	class:PlainTextEdit
 isNull	.\TextDocument.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:TextCursor
 isTabOrSpace	.\TextDocument.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isUTF8FirstChar	.\TextDocument.cpp	/^inline bool isUTF8FirstChar(uchar ch)$/;"	f
@@ -447,6 +447,7 @@ redo	.\PlainTextEdit.cpp	/^void PlainTextEdit::redo()$/;"	f	class:PlainTextEdit
 redoAct	.\mainwindow.h	/^    QAction *redoAct;$/;"	m	class:MainWindow
 reference	.\gap_vector.h	/^	typedef Type& reference;$/;"	t	class:std::gap_vector
 reserve	.\gap_vector.h	/^	void reserve(size_type n)$/;"	f	class:std::gap_vector
+resetModifiedFlags	.\TextDocument.cpp	/^void GVUndoMgr::resetModifiedFlags()$/;"	f	class:GVUndoMgr
 resize	.\gap_vector.h	/^	void resize(size_type n, value_type v = value_type())$/;"	f	class:std::gap_vector
 resizeEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::resizeEvent(QResizeEvent *event)$/;"	f	class:PlainTextEdit
 retranslateUi	.\GeneratedFiles\ui_mainwindow.h	/^    void retranslateUi(QMainWindow *MainWindowClass)$/;"	f	class:Ui_MainWindowClass
@@ -512,8 +513,8 @@ ut_set_output	.\unit_test.cpp	/^void ut_set_output(OutputFunc f)$/;"	f
 value_type	.\gap_vector.h	/^	typedef Type value_type;$/;"	t	class:std::gap_vector
 viewMenu	.\mainwindow.h	/^    QMenu	*viewMenu;$/;"	m	class:MainWindow
 wheelEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::wheelEvent ( QWheelEvent * event )$/;"	f	class:PlainTextEdit
-withBOM	.\PlainTextEdit.cpp	/^bool PlainTextEdit::withBOM() const$/;"	f	class:PlainTextEdit
 withBOM	.\TextDocument.h	/^	bool	withBOM() const { return m_withBOM; }$/;"	f	class:TextDocument
+withBOM	.\PlainTextEdit.cpp	/^bool PlainTextEdit::withBOM() const$/;"	f	class:PlainTextEdit
 withBOM	.\PlainTextEdit.h	/^	bool	withBOM() const { return m_document->withBOM(); }$/;"	f	class:PlainTextEdit
 withBOM	.\PlainTextEdit.h	/^	bool	withBOM() const { return document()->withBOM(); }$/;"	f	class:PlainTextEdit
 writeSettings	.\mainwindow.cpp	/^void MainWindow::writeSettings()$/;"	f	class:MainWindow

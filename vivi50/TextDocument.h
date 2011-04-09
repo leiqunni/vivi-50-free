@@ -170,14 +170,6 @@ public:
 		m_heap.insert(m_heap.end(), first, last);
 		return sz;
 	}
-#if 0
-	index_t	addToHeap(uchar v)
-	{
-		const index_t sz = m_heap.size();
-		m_heap.push_back(v);
-		return sz;
-	}
-#endif
 	template<typename InputIterator>
 	index_t	addToRedoHeap(InputIterator first, InputIterator last)
 	{
@@ -185,14 +177,7 @@ public:
 		m_redoHeap.insert(m_redoHeap.end(), first, last);
 		return sz;
 	}
-#if 0
-	index_t	addToRedoHeap(uchar v)
-	{
-		const index_t sz = m_redoHeap.size();
-		m_redoHeap.push_back(v);
-		return sz;
-	}
-#endif
+	void	resetModifiedFlags();	//	ドキュメントが保存された時にコールされる
 	bool	doUndo(TextDocument*, uint&);
 	bool	doRedo(TextDocument*, uint&);
 };
