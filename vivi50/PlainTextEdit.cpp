@@ -196,6 +196,20 @@ TextBlock PlainTextEdit::yToTextBlock(int py) const
 	}
 	return block;
 }
+int getEOLOffset(const QString text)
+{
+	int ix = text.length();
+	if( text.isEmpty() ) return ix;
+	if( text[ix-1] == '\r' )
+		return ix - 1;
+	if( text[ix-1] == '\n' ) {
+		if( ix > 1 && text[ix-2] == '\r' )
+			return ix - 2;
+		else
+			return ix - 1;
+	}
+	return ix;
+}
 void PlainTextEdit::paintEvent(QPaintEvent * event)
 {
 	//qDebug() << verticalScrollBar()->value();
@@ -242,7 +256,8 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		//painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
 		int x = 0;
 		int ix = 0;
-		while( ix < text.length() ) {
+		int EOLOffset = getEOLOffset(text);
+		while( ix < EOLOffset ) {
 			if( text[ix] == ' ' ) {
 				x += spaceWidth;
 				++ix;
@@ -253,13 +268,24 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 				x = (x / tabWidth + 1) * tabWidth;
 			} else {
 				int first = ix;
-				while( ix < text.length() && text[ix] != ' ' && text[ix] != '\t' )
+				while( ix < EOLOffset && text[ix] != ' ' && text[ix] != '\t' )
 					++ix;
 				const QString buf = text.mid(first, ix - first);
 				painter.setPen(Qt::black);
 				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), buf);
 				x += fm.width(buf);
 			}
+		}
+		if( ix < text.length() ) {
+			painter.setPen(Qt::lightGray);
+			QString nl;
+			if( text[ix] == '\n' )
+				nl = QChar(0x266a);		//	ô
+			else if( ix + 1 < text.length() )
+				nl = QChar(0x266c);
+			else
+				nl = QChar(0x2669);
+			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), nl);
 		}
 		if( block.blockNumber() == lastBlockNumber ) {
 			painter.setPen(Qt::blue);
@@ -398,6 +424,10 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		return;
 	case Qt::Key_Delete:
 		m_textCursor->deleteChar();
+		viewport()->update();
+		return;
+	case Qt::Key_Return:
+		m_textCursor->insertText(QString("\n"));	//	undone C –{“–‚ÍÝ’è‚Å CRLF/CR/LF ‚Ì‚¢‚¸‚ê‚©‚ð‘}“ü
 		viewport()->update();
 		return;
 	case Qt::Key_Escape:
@@ -599,4 +629,11 @@ void PlainTextEdit::mouseDoubleClickEvent ( QMouseEvent * event )
 	m_textCursor->movePosition(TextCursor::StartOfWord);
 	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
 	viewport()->update();
+}
+QVariant PlainTextEdit::inputMethodQuery ( Qt::InputMethodQuery query ) const
+{
+	if( query == Qt::ImMicroFocus ) {
+		return QVariant(QRect(10, 10, 20, 20));
+	}
+	return QAbstractScrollArea::inputMethodQuery(query);
 }

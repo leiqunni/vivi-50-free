@@ -79,6 +79,7 @@ protected:
     void	mouseReleaseEvent ( QMouseEvent * event );
     void	mouseMoveEvent ( QMouseEvent * event );
     void	mouseDoubleClickEvent ( QMouseEvent * event );
+    QVariant	inputMethodQuery ( Qt::InputMethodQuery query ) const;
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
 	void	drawLineNumbers();
