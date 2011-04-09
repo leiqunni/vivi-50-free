@@ -9,7 +9,10 @@
 # 2011/04/07 12:46:45
 + 2011/04/07 "TextDocument.cpp" B:   undone 暫定コード
 + 2011/04/07 "TextDocument.cpp" B:   undone 暫定コード
+# 2011/04/09 15:40:32
++ 2011/04/09 "PlainTextEdit.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
 # latest
+2011/04/09 "PlainTextEdit.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
 2011/04/07 "TextDocument.cpp" B:   undone 暫定コード
 2011/04/07 "TextDocument.cpp" B:   undone 暫定コード
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放

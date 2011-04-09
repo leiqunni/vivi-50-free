@@ -22,7 +22,7 @@
 
 #include <QtGui>
 #include "mainwindow.h"
-//#include "PlainTextEdit.h"
+#include "PlainTextEdit.h"
 #include "TextDocument.h"
 
 extern MainWindow *pMainWindow;
@@ -31,6 +31,17 @@ void q_output(const QString &mess)
 {
 	pMainWindow->doOutput(mess);
 }
+void MainWindow::printBuffer()
+{
+	const TextDocument *doc = m_editor->document();
+	doOutput(QString("document size = %1 blockCount = %2\n")
+				.arg(doc->size()).arg(doc->blockCount()));
+	for(size_t ix = 0; ix < doc->blockCount(); ++ix) {
+		doOutput(QString("block[%1].m_size = %2\n")
+				.arg(ix).arg(doc->blockSize(ix)) );
+	}
+}
+
 void test_TextDocument();
 void MainWindow::doUnitTest()
 {
@@ -357,6 +368,44 @@ void test_TextDocument()
 		ut.test_equal(QString("07123\n"), doc.firstBlock().text());
 	}
 	if( 1 ) {
+		TextDocument doc;
+		TextCursor cur(&doc);
+		cur.insertText("abc\n");
+		ut.test_equal(4, cur.position());
+		ut.test_equal(1, cur.blockData().index());
+		ut.test_equal(4, cur.blockData().position());
+		ut.test_equal(2, doc.blockCount());
+		ut.test_equal(4, doc.blockSize(0));
+		ut.test_equal(0, doc.blockSize(1));
+	}
+	if( 1 ) {
+		TextDocument doc;
+		TextCursor cur(&doc);
+		cur.insertText("abc");
+		cur.insertText("\n");
+		ut.test_equal(4, cur.position());
+		ut.test_equal(1, cur.blockData().index());
+		ut.test_equal(4, cur.blockData().position());
+		ut.test_equal(2, doc.blockCount());
+		ut.test_equal(4, doc.blockSize(0));
+		ut.test_equal(0, doc.blockSize(1));
+	}
+	if( 1 ) {
+		TextDocument doc;
+		doc.setPlainText(QString("12\r\nxyz"));
+		TextCursor cur(&doc);
+		cur.movePosition(TextCursor::Right);
+		ut.test_equal(1, cur.position());		//	2
+		cur.movePosition(TextCursor::Right);
+		ut.test_equal(2, cur.position());		//	\r\n
+		cur.movePosition(TextCursor::Right);
+		ut.test_equal(4, cur.position());		//	x
+		cur.movePosition(TextCursor::Left);
+		ut.test_equal(2, cur.position());		//	\r\n
+		cur.movePosition(TextCursor::Left);
+		ut.test_equal(1, cur.position());		//	2
+	}
+	if( 1 ) {
 		TextDocument *doc = new TextDocument();
 		doc->setPlainText(QString("12345\n98765\n"));
 		ut.test_equal(QString("12345\n"), doc->firstBlock().text());
@@ -493,15 +542,15 @@ void test_TextDocument()
 		const int nLines = 30;
 		for(int i = 0; i < nLines; ++i)
 			cur.insertText(text);
-		doc.m_block.m_index = 0;	//	キャッシュ無し
+		doc.m_blockData.m_index = 0;	//	キャッシュ無し
 		for(int i = 0; i <= nLines; ++i) {
 			TextBlockData d = doc.findBlockData(i*10);
 			ut.test_equal(i, d.m_index);
 			ut.test_equal(i*10, d.m_position);
 		}
 		TextBlock block = doc.findBlockByNumber(15);
-		doc.m_block.m_index = block.blockNumber();		//	キャッシュ有り
-		doc.m_block.m_position = block.position();
+		doc.m_blockData.m_index = block.blockNumber();		//	キャッシュ有り
+		doc.m_blockData.m_position = block.position();
 		for(int i = 0; i <= nLines; ++i) {
 			TextBlockData d = doc.findBlockData(i*10);
 			ut.test_equal(i, d.m_index);
@@ -516,8 +565,8 @@ void test_TextDocument()
 		for(int i = 0; i < nLines; ++i)
 			cur.insertText(text);
 		TextBlock block = doc.findBlockByNumber(50);
-		doc.m_block.m_index = block.blockNumber();
-		doc.m_block.m_position = block.position();
+		doc.m_blockData.m_index = block.blockNumber();
+		doc.m_blockData.m_position = block.position();
 		index_t blockPos;
 		index_t ix = doc.findBlockIndex(26*10, &blockPos);
 		for(int i = 0; i <= nLines; ++i) {

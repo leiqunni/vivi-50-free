@@ -47,7 +47,7 @@ void TextCursor::updateBlockData(uchar mode)
 		m_blockData = TextBlockData(0, 0);
 		//m_blockIndex = m_blockPosition = m_ancBlockIndex = m_ancBlockPosition = 0;
 	} else {
-		//m_block.m_index = m_document->findBlockIndex(m_position, &m_block.m_position);
+		//m_blockData.m_index = m_document->findBlockIndex(m_position, &m_blockData.m_position);
 		m_blockData = m_document->findBlockData(m_position);
 		if( mode == MoveAnchor ) {
 			m_anchorBlockData = m_blockData;
@@ -313,12 +313,21 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 	switch( move ) {
 	case Right:
 		if( m_document->size() - m_position <= n ) {
+			//	1文字==1byte とは限らないのでこの処理だけでは不十分
 			m_position = m_document->size();
-			updateBlockData(KeepAnchor);
+			m_blockData = m_document->prevBlockData(TextBlockData(m_document->blockCount(), m_position));
+			//updateBlockData(KeepAnchor);
 		} else {
 			//	for UTF-8
-			while( n != 0 ) {
-				m_position += UTF8CharSize((*m_document)[m_position]);
+			const size_t sz = m_document->size();
+			while( n != 0 && m_position < sz) {
+				if( (*m_document)[m_position] == '\r' &&
+					m_position + 1 < sz && 
+					(*m_document)[m_position+1] == '\n' )
+				{
+					m_position += 2;
+				} else
+					m_position += UTF8CharSize((*m_document)[m_position]);
 				--n;
 			}
 			//	for UTF-16
@@ -339,8 +348,14 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 			m_blockData.m_index = 0;
 			m_blockData.m_position = 0;
 		} else {
-			while( n != 0 ) {
-				do { } while( !isUTF8FirstChar((*m_document)[--m_position]) );
+			while( n != 0 && m_position != 0 ) {
+				if( (*m_document)[m_position - 1] == '\n' &&
+					m_position > 1 &&
+					(*m_document)[m_position - 2] == '\r' )
+				{
+					m_position -= 2;
+				} else
+					do { } while( !isUTF8FirstChar((*m_document)[--m_position]) );
 				--n;
 			}
 			while( m_blockData.m_index > 0 && m_blockData.m_position > m_position ) {
@@ -400,8 +415,8 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 	if( mode == MoveAnchor ) {
 		m_anchor = m_position;
 		m_anchorBlockData = m_blockData;
-		//m_ancBlockIndex = m_block.m_index;
-		//m_ancBlockPosition = m_block.m_position;
+		//m_ancBlockIndex = m_blockData.m_index;
+		//m_ancBlockPosition = m_blockData.m_position;
 	}
 	return true;
 }
@@ -588,10 +603,13 @@ int TextBlock::charsCount(index_t position) const
 	
 QString TextBlock::text() const
 {
-	const size_t sz = size();
+	if( !isValid() ) return QString();
+	/*const*/ size_t sz = size();
 	if( !sz ) return QString();
+	sz = qMin(sz, m_document->size() - position());
 	QByteArray ba;
 	ba.reserve(sz);
+	Q_ASSERT( position() + sz <= m_document->size() );
 	for(index_t ix = position(), iend = position() + sz; ix != iend; ++ix)
 		ba += (*m_document)[ix];
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -637,7 +655,7 @@ void TextDocument::init()
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(TextBlockItem(0));
-	m_block = TextBlockData(0, 0);
+	m_blockData = TextBlockData(0, 0);
 	//m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
 }
@@ -667,7 +685,7 @@ TextBlockData TextDocument::findBlockData(index_t position) const
 	if( m_blocks.size() == 1 )
 		return TextBlockData(0, 0);
 	TextBlockData data(0, 0), next;
-	if( m_block.m_index == 0 ) {		//	キャッシュが無い場合
+	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( position <= size() / 2 ) {
 			while( data.m_index < m_blocks.size() - 1 &&
 					position >= (next = nextBlockData(data)).position() )
@@ -679,22 +697,22 @@ TextBlockData TextDocument::findBlockData(index_t position) const
 			} while( data.position() > position );
 		}
 	} else {
-		if( position < m_block.position() ) {
-			if( position <= m_block.position() / 2 ) {
-				while( data.m_index < m_block.index() - 1 &&
+		if( position < m_blockData.position() ) {
+			if( position <= m_blockData.position() / 2 ) {
+				while( data.m_index < m_blockData.index() - 1 &&
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
 			} else {
-				data = m_block;
+				data = m_blockData;
 				do {
 					data = prevBlockData(data);
 				} while( data.position() > position );
 			}
 		} else {
-			next = nextBlockData(m_block);
-			if( m_block.position() <= position && position < next.position() )
-				return m_block;
-			if( position <= m_block.position() + (size() - m_block.position()) / 2 ) {
+			next = nextBlockData(m_blockData);
+			if( m_blockData.position() <= position && position < next.position() )
+				return m_blockData;
+			if( position <= m_blockData.position() + (size() - m_blockData.position()) / 2 ) {
 				while( data.m_index < m_blocks.size() - 1 &&
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
@@ -714,72 +732,6 @@ index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const
 	if( pBlockPos != 0 )
 		*pBlockPos = d.position();
 	return d.index();
-#if 0
-	if( m_blocks.size() == 1 ) {
-		if( pBlockPos != 0 )
-			*pBlockPos = 0;
-		return 0;
-	}
-	int ix = 0;
-	index_t blockPos = 0;
-	if( m_block.m_index == 0 ) {		//	キャッシュが無い場合
-		if( position <= size() / 2 ) {
-			while( ix < m_blocks.size() && position != 0 && position >= m_blocks[ix].m_size ) {
-				blockPos += m_blocks[ix].m_size;
-				position -= m_blocks[ix].m_size;
-				++ix;
-			}
-			if( pBlockPos != 0 )
-				*pBlockPos = blockPos;
-			return ix;
-		} else {
-			int revPos = (int)(size() - position);
-			int ix = m_blocks.size() - 1;
-			index_t blockPos = size() - m_blocks[ix].m_size;
-			while( ix > 0 && revPos > 0 /*&& revPos > m_blocks[ix-1].m_size*/ ) {
-				--ix;
-				blockPos -= m_blocks[ix].m_size;
-				revPos -= m_blocks[ix].m_size;
-			}
-			if( pBlockPos != 0 )
-				*pBlockPos = blockPos;
-			return ix;
-		}
-	}
-	if( m_block.m_position <= position &&
-		position < m_block.m_position + blockSize(m_block.m_index) )
-	{
-		ix = m_block.m_index;
-		blockPos = m_block.m_position;
-	} else if( position < m_block.m_position ) {
-		//	キャッシュブロックより前の場合
-		if( position <= m_block.m_position / 2 ) {
-			size_t rest = position;
-			while( ix < m_block.m_index && rest != 0 && rest >= m_blocks[ix].m_size ) {
-				blockPos += m_blocks[ix].m_size;
-				rest -= m_blocks[ix].m_size;
-				++ix;
-			}
-		} else {
-			int rest = (int)(m_block.m_position - position);
-			int ix = m_block.m_index - 1;
-			index_t blockPos = m_block.m_position - m_blocks[ix].m_size;
-			while( ix > m_block.m_index && rest > 0 /*&& revPos > m_blocks[ix-1].m_size*/ ) {
-				--ix;
-				blockPos -= m_blocks[ix].m_size;
-				rest -= m_blocks[ix].m_size;
-			}
-		}
-	} else {
-		//	キャッシュブロックより後ろの場合
-		if( position <= m_block.m_position + (size() - m_block.m_position) / 2 ) {
-		} else {
-		}
-	}
-	if( pBlockPos != 0 )
-		*pBlockPos = blockPos;
-	return ix;
-#endif
 }
 
 #if		BLOCK_HAS_SIZE
@@ -792,15 +744,15 @@ size_t TextDocument::blockPosition(index_t ix) const
 }
 #endif
 
-TextBlock TextDocument::findBlock(index_t position)
+TextBlock TextDocument::findBlock(index_t position) const
 {
-	if( position > size() ) return TextBlock(this, INVALID_INDEX, 0);
+	if( position > size() ) return TextBlock(const_cast<TextDocument*>(this), INVALID_INDEX, 0);
 	index_t blockPosition;
 	//const index_t ix = findBlockIndex(position, &blockPosition);
 	TextBlockData d = findBlockData(position);
-	return TextBlock(this, d);
+	return TextBlock(const_cast<TextDocument*>(this), d);
 }
-TextBlock TextDocument::findBlockByNumberRaw(index_t blockIndex)
+TextBlock TextDocument::findBlockByNumberRaw(index_t blockIndex) const
 {
 	index_t blockPosition = 0;
 	index_t ix = 0;
@@ -813,18 +765,18 @@ TextBlock TextDocument::findBlockByNumberRaw(index_t blockIndex)
 		while( ix > blockIndex )
 			blockPosition -= m_blocks[--ix].m_size;
 	}
-	return TextBlock(this, ix, blockPosition);
+	return TextBlock(const_cast<TextDocument*>(this), ix, blockPosition);
 }
-TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
+TextBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 {
 	if( blockIndex >= blockCount() - 1 ) {
-		m_block.m_index = blockCount() - 1;
-		m_block.m_position = size() - blockSize(m_block.m_index);
-		return TextBlock(this, m_block);
+		m_blockData.m_index = blockCount() - 1;
+		m_blockData.m_position = size() - blockSize(m_blockData.m_index);
+		return TextBlock(const_cast<TextDocument*>(this), m_blockData);
 	}
 	index_t blockPosition = 0;
 	index_t ix = 0;
-	if( m_block.m_index == 0 ) {		//	キャッシュが無い場合
+	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( blockIndex <= blockCount() / 2 ) {
 			while( ix < blockIndex )
 				blockPosition += m_blocks[ix++].m_size;
@@ -835,45 +787,45 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex)
 				blockPosition -= m_blocks[--ix].m_size;
 		}
 	} else {
-		if( blockIndex == m_block.m_index )
-			return TextBlock(this, m_block.m_index, m_block.m_position);
-		if( blockIndex < m_block.m_index ) {
+		if( blockIndex == m_blockData.m_index )
+			return TextBlock(const_cast<TextDocument*>(this), m_blockData.m_index, m_blockData.m_position);
+		if( blockIndex < m_blockData.m_index ) {
 #if 0	//	逆方向シーケンシャルアクセス頻度は低いのでコメントアウトしておく
 			if( blockIndex == m_blockIndex - 1 ) {
 				m_blockPosition -= m_blocks[--m_blockIndex].m_size;
 				return TextBlock(this, m_blockIndex, m_blockPosition);
 			}
 #endif
-			if( blockIndex <= m_block.m_index / 2 ) {
+			if( blockIndex <= m_blockData.m_index / 2 ) {
 				while( ix < blockIndex )
 					blockPosition += m_blocks[ix++].m_size;
 			} else {	//	中央より後ろの場合
-				blockPosition = m_block.m_position;
-				ix = m_block.m_index;
+				blockPosition = m_blockData.m_position;
+				ix = m_blockData.m_index;
 				while( ix > blockIndex )
 					blockPosition -= m_blocks[--ix].m_size;
 			}
-		} else {	//	m_block.m_index < blockIndex < m_blocks.size() の場合
-			if( blockIndex == m_block.m_index + 1 ) {
-				m_block.m_position += m_blocks[m_block.m_index++].m_size;
-				return TextBlock(this, m_block);
+		} else {	//	m_blockData.m_index < blockIndex < m_blocks.size() の場合
+			if( blockIndex == m_blockData.m_index + 1 ) {
+				m_blockData.m_position += m_blocks[m_blockData.m_index++].m_size;
+				return TextBlock(const_cast<TextDocument*>(this), m_blockData);
 			}
-			if( blockIndex <= m_block.m_index + (m_blocks.size() - m_block.m_index) / 2 ) {
-				blockPosition = m_block.m_position;
-				ix = m_block.m_index;
+			if( blockIndex <= m_blockData.m_index + (m_blocks.size() - m_blockData.m_index) / 2 ) {
+				blockPosition = m_blockData.m_position;
+				ix = m_blockData.m_index;
 				while( ix < blockIndex )
 					blockPosition += m_blocks[ix++].m_size;
 			} else {	//	中央より後ろの場合
-				blockPosition = m_block.m_position;
-				ix = m_block.m_index;
+				blockPosition = m_blockData.m_position;
+				ix = m_blockData.m_index;
 				while( ix > blockIndex )
 					blockPosition -= m_blocks[--ix].m_size;
 			}
 		}
 	}
-	m_block.m_index = ix;
-	m_block.m_position = blockPosition;
-	return TextBlock(this, ix, blockPosition);
+	m_blockData.m_index = ix;
+	m_blockData.m_position = blockPosition;
+	return TextBlock(const_cast<TextDocument*>(this), ix, blockPosition);
 }
 
 void TextDocument::buildBlocks()
@@ -903,6 +855,7 @@ void TextDocument::updateBlocksAtInsert(index_t first,
 {
 	bool bcChanged = false;
 	index_t offset = first - d.position();		//	挿入位置から行頭までの文字バイト数
+	const size_t rest = m_blocks[d.index()].m_size - offset;	//	挿入位置から次の行頭までの文字バイト数
 	index_t last = first + sz;
 	uchar ch = 0;
 	while( first < last ) {
@@ -921,11 +874,12 @@ void TextDocument::updateBlocksAtInsert(index_t first,
 		m_blocks.insert(d.index(), TextBlockItem(first - d.position()));
 		bcChanged = true;
 		++d.m_index;
-		//offset = 0;
 		d.m_position = first;
 	}
 	if( ch != '\n' && ch != '\n' )	//	最後の挿入文字が改行で無い場合
 		m_blocks[d.index()].m_size += (last - d.position()) - offset;
+	else
+		m_blocks[d.index()].m_size = rest;
 	if( bcChanged )
 		emit blockCountChanged();
 }
@@ -1054,6 +1008,7 @@ void TextDocument::deleteChar(TextCursor &cur)
 	if( first == last ) return;
 	do_erase(first, last);
 	cur.copyAnchorToPosition();
+	m_blockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
@@ -1072,6 +1027,7 @@ void TextDocument::deletePreviousChar(TextCursor &cur)
 	if( first == last ) return;
 	do_erase(first, last);
 	cur.copyPositionToAnchor();
+	m_blockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
@@ -1110,6 +1066,7 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 		delSz = last - first;
 	}
 	cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
+	m_blockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(position, delSz, sz);
 	emit contentsChanged();

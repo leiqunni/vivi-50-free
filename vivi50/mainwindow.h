@@ -78,6 +78,7 @@ private slots:
 	void	doJump(int lineNum);
     void	showAboutDlg();
 	void	showMessage(const QString & text);
+	void	printBuffer();
 	void doUnitTest();
 	void doBenchmark();
 
@@ -106,6 +107,7 @@ private:
     QAction *redoAct;
     QAction *aboutAct;
 
+	QAction	*printBufferAct;
     QAction	*unitTestAct;
     QAction	*benchmarkAct;
 

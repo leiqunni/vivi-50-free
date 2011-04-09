@@ -196,6 +196,22 @@ TextBlock PlainTextEdit::yToTextBlock(int py) const
 	}
 	return block;
 }
+TextBlock PlainTextEdit::firstVisibleBlock() const
+{
+	//QFontMetrics fm = fontMetrics();
+	return m_document->findBlockByNumber(verticalScrollBar()->value());
+}
+int PlainTextEdit::textBlockToY(const TextBlock &block) const
+{
+	TextBlock fvBlock = firstVisibleBlock();
+	if( block < fvBlock ) return -1;
+	QWidget *vp = viewport();
+	QRect vr = vp->rect();
+	int y = (block.index() - fvBlock.index()) * fontMetrics().lineSpacing();
+	if( y >= vr.height() )
+		return -1;
+	return y;
+}
 int getEOLOffset(const QString text)
 {
 	int ix = text.length();
@@ -297,11 +313,6 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		y += fm.lineSpacing();
 	}
 	m_lineNumberArea->update();
-}
-TextBlock PlainTextEdit::firstVisibleBlock()
-{
-	//QFontMetrics fm = fontMetrics();
-	return m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 }
 void PlainTextEdit::ensureCursorVisible()
 {
@@ -433,11 +444,13 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	case Qt::Key_Escape:
 		m_textCursor->clearSelection();
 		viewport()->update();
-		emit showMessage( QString("%1 cur=(%2 %3 %4)")
+		emit showMessage( QString("%1 cur=(%2 %3 %4) blockData=(%5 %6)")
 							.arg(QDir::currentPath())
 							.arg(m_textCursor->position())
 							.arg(m_textCursor->blockData().index())
-							.arg(m_textCursor->blockData().position()) );
+							.arg(m_textCursor->blockData().position())
+							.arg(m_document->blockData().index())
+							.arg(m_document->blockData().position()) );
 		return;
 	}
 	if( move != 0 ) {
@@ -633,7 +646,8 @@ void PlainTextEdit::mouseDoubleClickEvent ( QMouseEvent * event )
 QVariant PlainTextEdit::inputMethodQuery ( Qt::InputMethodQuery query ) const
 {
 	if( query == Qt::ImMicroFocus ) {
-		return QVariant(QRect(10, 10, 20, 20));
+		int y = textBlockToY(m_textCursor->block());
+		return QVariant(QRect(m_lineNumberAreaWidth, y, 20, 20));
 	}
 	return QAbstractScrollArea::inputMethodQuery(query);
 }

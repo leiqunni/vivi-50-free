@@ -144,6 +144,10 @@ void MainWindow::createActions()
     aboutAct = new QAction(QIcon(":vivi/Resources/images/Info.png"), tr("&About ViVi"), this);
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
 
+    printBufferAct = new QAction(QIcon(":vivi/Resources/images/Warning.png"), tr("&PrintBuffer"), this);
+    printBufferAct->setStatusTip(tr("print buffer"));
+    connect(printBufferAct, SIGNAL(triggered()), this, SLOT(printBuffer()));
+
     unitTestAct = new QAction(QIcon(":vivi/Resources/images/Checkmark.png"), tr("&UnitTest"), this);
     unitTestAct->setStatusTip(tr("exec Unit Tests"));
     connect(unitTestAct, SIGNAL(triggered()), this, SLOT(doUnitTest()));
@@ -180,6 +184,7 @@ void MainWindow::createMenus()
 
     otherMenu = menuBar()->addMenu(tr("&Other"));
 	otherMenu->addAction(aboutAct);
+	otherMenu->addAction(printBufferAct);
 	otherMenu->addAction(unitTestAct);
 	otherMenu->addAction(benchmarkAct);
 }
@@ -199,6 +204,7 @@ void MainWindow::createToolBars()
 
 	QToolBar *otherToolBar = addToolBar(tr("Other"));
 	otherToolBar->addAction(aboutAct);
+    otherToolBar->addAction(printBufferAct);
     otherToolBar->addAction(unitTestAct);
     otherToolBar->addAction(benchmarkAct);
     //QToolBar *testToolBar = addToolBar(tr("Edit"));

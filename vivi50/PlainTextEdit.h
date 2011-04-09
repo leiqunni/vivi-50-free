@@ -65,7 +65,8 @@ protected:
 	int		offsetToX(const QString &, int) const;		//	第２引数は文字数
 	int		xToOffset(const QString &, int) const;		//	
 	TextBlock	yToTextBlock(int) const;
-
+	int		textBlockToY(const TextBlock&) const;		//	垂直スクロールを考慮した、block Y座標を返す
+														//	画面外の場合は -1 を返す
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);
 	bool	event ( QEvent * event );
@@ -85,7 +86,7 @@ protected:
 	void	drawLineNumbers();
 	void	onFontChanged();
 
-    TextBlock	firstVisibleBlock();
+    TextBlock	firstVisibleBlock() const;
     void	ensureCursorVisible();
 	int		lineNumberLength() const;			//	最大行番号桁数
 

@@ -333,6 +333,8 @@ public:
 	{ return m_document == x.m_document && blockNumber() == x.blockNumber(); }
 	bool	operator!=(const TextBlock &x) const
 	{ return !this->operator==(x); }
+	bool	operator<(const TextBlock &x) const
+	{ return m_document == x.m_document && blockNumber() < x.blockNumber(); }
 
 public:
 	TextBlock	next() const;
@@ -379,6 +381,7 @@ public:
 	bool	isMatch(index_t, cuchar *, cuchar *) const;		//	単純比較関数
 	uchar	charEncoding() const { return m_charEncoding; }
 	bool	withBOM() const { return m_withBOM; }
+	TextBlockData blockData() const { return m_blockData; }
 
 	TextBlockData	findBlockData(index_t position) const;
 	TextBlockData	nextBlockData(TextBlockData d) const
@@ -387,8 +390,10 @@ public:
 	{
 		if( !d.m_index )
 			return TextBlockData(INVALID_INDEX, 0);
-		else
+		else {
+			size_t sz = m_blocks[d.m_index - 1].m_size;
 			return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
+		}
 	}
 
 public:
@@ -413,10 +418,10 @@ public:
 	TextBlock	firstBlock() { return TextBlock(this, 0); }
 	TextBlock	lastBlock() { return TextBlock(this, blockCount() - 1); }
 #endif
-	TextBlock	findBlock(index_t);
+	TextBlock	findBlock(index_t) const;
 	index_t		findBlockIndex(index_t position, index_t *pBlockPos = 0) const;
-	TextBlock	findBlockByNumber(index_t);		//	ブロック番号（0..*）からブロックを取得
-	TextBlock	findBlockByNumberRaw(index_t);		//	ブロック番号（0..*）からブロックを取得
+	TextBlock	findBlockByNumber(index_t) const;		//	ブロック番号（0..*）からブロックを取得
+	TextBlock	findBlockByNumberRaw(index_t) const;		//	ブロック番号（0..*）からブロックを取得
 
 	void	erase(index_t, index_t);
 	void	erase(index_t, TextBlockData, index_t);
@@ -484,7 +489,7 @@ private:
 	mutable std::gap_vector<uchar>	m_buffer;
 	//mutable std::gap_vector<size_t>	m_blocks;		//	ブロックサイズ配列
 	mutable std::gap_vector<TextBlockItem>	m_blocks;		//	ブロック配列
-	TextBlockData	m_block;			//	カレントブロック情報
+	mutable TextBlockData	m_blockData;			//	カレントブロック情報
 	//index_t		m_blockIndex;		//	カレントブロック情報
 	//index_t		m_blockPosition;	//	カレントブロック情報
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ

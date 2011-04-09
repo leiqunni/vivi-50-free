@@ -15,17 +15,17 @@ memFileColumnWd = 320
 #define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define GV_USE_ITR_FACADE 1
 #define BLOCK_HAS_SIZE 1
+#define GV_USE_ITR_FACADE 1
 [globalMarks]
 [files]
   gap_vector.h	(47,324)
   main.cpp	(-153,-353)
-  mainwindow.cpp	(120,-227)
-  mainwindow.h	(120,-260)
+* mainwindow.cpp	(120,-227)
+* mainwindow.h	(120,-260)
 * PlainTextEdit.cpp	(-174,-23)
 * PlainTextEdit.h	(-174,-56)
-* TextDocument.cpp	(3,164)
+  TextDocument.cpp	(3,164)
 * TextDocument.h	(3,131)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(37,-367)
   mainwindowBench.cpp	(120,-194)
@@ -35,6 +35,7 @@ memFileColumnWd = 320
   charEncoding.cpp	(369,-63)
   charEncoding.h	(369,-96)
 [ToDo]
+  "PlainTextEdit.cpp" 441 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextDocument.cpp" 353 'B: ' '' undone 暫定コード
   "TextDocument.cpp" 358 'B: ' '' undone 暫定コード
   "TextDocument.cpp" 454 'M: ' '' undone 不要なヒープの解放
