@@ -577,7 +577,7 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
 		break;
 	}
 	}
-	return !(ptr->m_flags & GVUNDOITEM_UNDO_MF_OFF) ? true : false;
+	return !(ptr->m_flags & GVUNDOITEM_REDO_MF_OFF) ? true : false;
 #else
 	m_items[m_current]->doRedo(bb, pos);
 	return !(m_items[m_current++]->m_flags & GVUNDOITEM_REDO_MF_OFF) ? true : false;;
@@ -1164,11 +1164,13 @@ void TextDocument::do_replace(index_t first, index_t last, const QString &text)
 }
 void TextDocument::doUndo(index_t &pos)
 {
+	if( !m_undoMgr.canUndo() ) return;
 	setModified(m_undoMgr.doUndo(this, pos));
 	emit contentsChanged();
 }
 void TextDocument::doRedo(index_t &pos)
 {
+	if( !m_undoMgr.canRedo() ) return;
 	setModified(m_undoMgr.doRedo(this, pos));
 	emit contentsChanged();
 }
