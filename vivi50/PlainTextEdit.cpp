@@ -34,6 +34,7 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 {
 	m_mouseCaptured = false;
 	m_toDeleteIMEPreeditText = false;
+	m_drawCursor = true;
 	//m_lineNumberWidth = 6;
 	viewport()->setCursor(Qt::IBeamCursor);
 
@@ -49,12 +50,31 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 	//onFontChanged();
 
 	//m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
+	m_timer = new QTimer(this);
+	connect(m_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+	m_timer->start(800);		//	
+#if 0
+	m_timer = new QElapsedTimer;
+	m_timer->start();
+	resetCursorBlinkTimer();
+#endif
 }
 
 PlainTextEdit::~PlainTextEdit()
 {
 	delete m_document;
 	delete m_textCursor;
+}
+#if 0
+void PlainTextEdit::resetCursorBlinkTimer()
+{
+	m_tickCount = m_timer->elapsed();
+}
+#endif
+void PlainTextEdit::onTimer()
+{
+	m_drawCursor = !m_drawCursor;
+	viewport()->update();
 }
 uchar PlainTextEdit::charEncoding() const
 {
@@ -267,10 +287,12 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 			painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
 		}
 		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
-			const int offset = qMin(block.charsCount(m_textCursor->position()),
-										text.length());
-			int x = offsetToX(text, offset);
-			painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::red);
+			if( m_drawCursor ) {
+				const int offset = qMin(block.charsCount(m_textCursor->position()),
+											text.length());
+				int x = offsetToX(text, offset);
+				painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::red);
+			}
 		}
 		//painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
 		int x = 0;

@@ -28,6 +28,8 @@
 class TextDocument;
 class TextCursor;
 class TextBlock;
+//class QElapsedTimer;
+class QTimer;
 
 typedef size_t index_t;
 
@@ -85,6 +87,7 @@ protected:
 	void	updateScrollBarData();
 	void	drawLineNumbers();
 	void	onFontChanged();
+	void	resetCursorBlinkTimer();
 
     TextBlock	firstVisibleBlock() const;
     void	ensureCursorVisible();
@@ -92,6 +95,7 @@ protected:
 
 protected slots:
 	void	onBlockCountChanged();
+	void	onTimer();
 
 signals:
 	void	showMessage(const QString &);
@@ -99,6 +103,7 @@ signals:
 private:
 	bool	m_mouseCaptured;
 	bool	m_toDeleteIMEPreeditText;
+	bool	m_drawCursor;
 	TextCursor	*m_preeditPosCursor;
 	QString	m_preeditString;
 	TextDocument	*m_document;
@@ -107,6 +112,11 @@ private:
 	int		m_lineNumberAreaWidth;
 	int		m_lineNumberWidth;
 	//int		m_lineNumberNDigits;		//	桁数
+	QTimer	*m_timer;					//	タイマーオブジェクト
+#if 0
+	qint64	m_tickCount;			//	タイマー基準値
+	QElapsedTimer	*m_timer;		//	タイマーオブジェクト
+#endif
 };
 
 #endif // PLAINTEXTEDIT_H
