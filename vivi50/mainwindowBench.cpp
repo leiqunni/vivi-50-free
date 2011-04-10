@@ -145,7 +145,7 @@ void MainWindow::doBenchmark()
 	do_find(10000);
 #endif
 
-#if 0
+#if 1
 	doOutput("replace '...' to 'abcde':\n");
 	doOutput("  QTextDocument:\n");
 	q_replace35_mv7(1000);
@@ -157,7 +157,7 @@ void MainWindow::doBenchmark()
 	do_replace35_mv7(10000);
 #endif
 
-	doOutput("findBlockByNumber:\n");
+	doOutput("findBlockByNumber (sequential):\n");
 	doOutput("  QTextDocument:\n");
 	q_findBlockByNumber(1000);
 	q_findBlockByNumber(5000);

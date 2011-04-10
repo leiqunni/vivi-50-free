@@ -28,6 +28,7 @@
 //#include	<boost/pool/object_pool.hpp>
 #include	"gap_vector.h"
 //#include	"buffer.h"
+#include	"textBlockData.h"
 
 typedef unsigned char uchar;
 typedef const unsigned char cuchar;
@@ -58,21 +59,6 @@ enum {
 class TextDocument;
 class TextBlock;
 
-//----------------------------------------------------------------------
-struct TextBlockData
-{
-public:
-	index_t		m_index;
-	index_t		m_position;
-public:
-	TextBlockData(index_t index = 0, index_t position = 0)
-		: m_index(index), m_position(position)
-		{}
-
-public:
-	index_t index() const { return m_index; }
-	index_t position() const { return m_position; }
-};
 //----------------------------------------------------------------------
 //	undo/redo 文字列の格納にヒープを用い、undoItem クラスは継承をやめ、type でディスパッチする
 //#define		UNDOMGR_USE_HEAP			1
@@ -224,40 +210,20 @@ public:
 		EndOfDocument,
 	};
 public:
-#if	BLOCK_HAS_SIZE
 	TextCursor(TextDocument *document = 0, index_t position = 0)
 		: m_document(document), m_position(position), m_anchor(position)
 		{ updateBlockData(); }
 	TextCursor(TextDocument *document, index_t position, index_t anchor)
 		: m_document(document), m_position(position), m_anchor(anchor)
-		//, m_blockIndex(0), m_blockPosition(0)
 		{ updateBlockData(); }
 	TextCursor(TextDocument *document, index_t position, index_t anchor,
 				TextBlockData blockData)
 		: m_document(document), m_position(position), m_anchor(anchor)
 		, m_blockData(blockData)
 		{}
-#if 0
-	TextCursor(TextDocument *document, index_t position, index_t anchor,
-				index_t blockIx, index_t blockPosition)
-		: m_document(document), m_position(position), m_anchor(anchor)
-		, m_blockIndex(blockIx), m_blockPosition(blockPosition)
-		{}
-#endif
-#else
-	TextCursor(TextDocument *document = 0, index_t position = 0)
-		: m_document(document), m_position(position), m_anchor(position)
-		{}
-	TextCursor(TextDocument *document, index_t position, index_t anchor)
-		: m_document(document), m_position(position), m_anchor(anchor)
-		{}
-#endif
 	TextCursor(const TextCursor &x)
 		: m_document(x.m_document), m_position(x.m_position), m_anchor(x.m_anchor)
-#if	BLOCK_HAS_SIZE
 		, m_blockData(x.m_blockData), m_anchorBlockData(x.m_anchorBlockData)
-		//, m_blockIndex(x.m_blockIndex), m_blockPosition(x.m_blockPosition)
-#endif
 		{}
 	~TextCursor() {}
 
@@ -270,18 +236,15 @@ public:
 	bool	isNull() const { return m_document == 0; }
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
 	QString	selectedText() const;
-#if	BLOCK_HAS_SIZE
 	TextBlockData blockData() const { return m_blockData; }
 	TextBlockData anchorBlock() const { return m_anchorBlockData; }
 	index_t	blockIndex() const { return m_blockData.m_index; }
 	index_t	blockPosition() const { return m_blockData.m_position; }
 	index_t	ancBlockIndex() const { return m_anchorBlockData.m_index; }
 	index_t	ancBlockPosition() const { return m_anchorBlockData.m_position; }
-#endif
 
 public:
 	TextDocument	*document() { return m_document; }
-	//void	setPosition(index_t position) { m_position = position; }
 	void	setAnchor(index_t anchor) { m_anchor = anchor; }
 	void	clearSelection() { copyPositionToAnchor(); }
 	TextBlock	block();
@@ -303,16 +266,8 @@ private:
 	TextDocument	*m_document;
 	index_t			m_position;		//	カーソル位置
 	index_t			m_anchor;		//	アンカー位置
-#if	BLOCK_HAS_SIZE
 	TextBlockData	m_blockData;
 	TextBlockData	m_anchorBlockData;
-#if 0
-	index_t		m_blockIndex;			//	ブロックインデックス
-	index_t		m_blockPosition;		//	ブロック先頭位置
-	index_t		m_ancBlockIndex;		//	ブロックインデックス
-	index_t		m_ancBlockPosition;		//	ブロック先頭位置
-#endif
-#endif
 };
 
 class TextBlock
@@ -369,7 +324,6 @@ private:
 };
 
 //----------------------------------------------------------------------
-#if 1
 //	現状はブロックサイズのみだが、近未来に フラグ類を追加する
 struct TextBlockItem
 {
@@ -377,7 +331,6 @@ struct TextBlockItem
 public:
 	TextBlockItem(size_t size = 0) : m_size(size) {}
 };
-#endif
 //----------------------------------------------------------------------
 class TextDocument : public QObject
 {

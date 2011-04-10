@@ -26,6 +26,13 @@
 #include	<math.h>
 #include	<QDebug>
 
+//----------------------------------------------------------------------
+void ViewTextCursor::updateBlockData(uchar mode)
+{
+}
+
+//----------------------------------------------------------------------
+
 #define		MARGIN_LEFT		4
 //#define		LINE_HEIGHT		20
 
