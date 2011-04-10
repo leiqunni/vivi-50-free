@@ -355,6 +355,7 @@ bool PlainTextEdit::event ( QEvent * event )
 		QKeyEvent *k = static_cast<QKeyEvent *>(event);
 		if( k->key() == Qt::Key_Tab /*|| k->key() == Qt::Key_Backtab*/ ) {
 			m_textCursor->insertText(QString("\t"));
+			ensureCursorVisible();
 			viewport()->update();
 			return true;
 		}
@@ -476,6 +477,7 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		return;
 	case Qt::Key_Return:
 		m_textCursor->insertText(QString("\n"));	//	undone C –{“–‚ÍÝ’è‚Å CRLF/CR/LF ‚Ì‚¢‚¸‚ê‚©‚ð‘}“ü
+		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Escape:
@@ -499,6 +501,7 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	QString text = keyEvent->text();
 	if( !text.isEmpty() ) {
 		m_textCursor->insertText(text);
+		ensureCursorVisible();
 		viewport()->update();
 	}
 }
