@@ -310,16 +310,17 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), "[EOF]");
 			break;
 		}
-		if( !m_preeditString.isEmpty() && block.index() == m_preeditPosCursor->blockData().index() ) {
-			painter.setPen(Qt::black);
-			int x1 = offsetToX(text, block.charsCount(m_preeditPosCursor->anchor()));
-			int x2 = offsetToX(text, block.charsCount(m_preeditPosCursor->position()));
-			const int uy = y + fm.ascent();
+		if( !m_preeditString.isEmpty() && block.index() == m_preeditPosCursor->block().index() ) {
+			painter.setPen(Qt::blue);
+			int x1 = offsetToX(text, block.charsCount(m_preeditPosCursor->anchor())) + MARGIN_LEFT;
+			int x2 = offsetToX(text, block.charsCount(m_preeditPosCursor->position())) + MARGIN_LEFT;
+			const int uy = y + fm.ascent() + 1;
 			painter.drawLine(x1, uy, x2, uy);
 		}
 		block = block.next();
 		y += fm.lineSpacing();
 	}
+	qDebug() << m_preeditPosCursor->block().index() << " '" << m_preeditString << "'";
 	m_lineNumberArea->update();
 }
 void PlainTextEdit::ensureCursorVisible()
