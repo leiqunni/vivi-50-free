@@ -397,6 +397,7 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	const bool shift = (mod & Qt::ShiftModifier) != 0;
 	const uchar mvMode = shift ? TextCursor::KeepAnchor : TextCursor::MoveAnchor;
 	uchar move = 0;
+	uint repCount = 1;
 	switch( keyEvent->key() ) {
 	case Qt::Key_Home:
 		if( ctrl )
@@ -428,6 +429,17 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	case Qt::Key_Down:
 		move = TextCursor::Down;
 		break;
+	case Qt::Key_PageUp:
+		repCount = verticalScrollBar()->pageStep();
+		verticalScrollBar()->setValue( qMax(0,
+								(int)(verticalScrollBar()->value() - repCount)));
+		move = TextCursor::Up;
+		break;
+	case Qt::Key_PageDown:
+		repCount = verticalScrollBar()->pageStep();
+		verticalScrollBar()->setValue( verticalScrollBar()->value() + repCount);
+		move = TextCursor::Down;
+		break;
 	case Qt::Key_Backspace:
 		m_textCursor->deletePreviousChar();
 		ensureCursorVisible();
@@ -454,7 +466,7 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		return;
 	}
 	if( move != 0 ) {
-		m_textCursor->movePosition(move, mvMode);
+		m_textCursor->movePosition(move, mvMode, repCount);
 		ensureCursorVisible();
 		viewport()->update();
 		return;

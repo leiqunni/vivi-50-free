@@ -364,14 +364,20 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 		}
 		break;
 	case Up:
-		if( !m_blockData.m_index ) return false;
-		//	undone B 暫定コード
-		m_position = m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
+		while( n != 0 ) {
+			if( !m_blockData.m_index ) break;
+			//	undone B 暫定コード
+			m_position = m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
+			--n;
+		}
 		break;
 	case Down:
-		if( m_blockData.m_index >= m_document->blockCount() - 1 ) return false;
-		//	undone B 暫定コード
-		m_position = m_blockData.m_position += m_document->blockSize(m_blockData.m_index++);
+		while( n != 0 ) {
+			if( m_blockData.m_index >= m_document->blockCount() - 1 ) break;
+			//	undone B 暫定コード
+			m_position = m_blockData.m_position += m_document->blockSize(m_blockData.m_index++);
+			--n;
+		}
 		break;
 	case StartOfWord:
 		gotoStartOfWord(*this);
