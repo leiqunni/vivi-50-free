@@ -39,6 +39,7 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 
 	m_document = new TextDocument();
 	m_textCursor = new TextCursor(m_document);
+	m_preeditPosCursor = new TextCursor(m_document);
 	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
 
 	m_lineNumberArea = new QWidget(this);
@@ -309,6 +310,13 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), "[EOF]");
 			break;
 		}
+		if( !m_preeditString.isEmpty() && block.index() == m_preeditPosCursor->blockData().index() ) {
+			painter.setPen(Qt::black);
+			int x1 = offsetToX(text, block.charsCount(m_preeditPosCursor->anchor()));
+			int x2 = offsetToX(text, block.charsCount(m_preeditPosCursor->position()));
+			const int uy = y + fm.ascent();
+			painter.drawLine(x1, uy, x2, uy);
+		}
 		block = block.next();
 		y += fm.lineSpacing();
 	}
@@ -356,6 +364,16 @@ bool PlainTextEdit::event ( QEvent * event )
 #endif
 	return QAbstractScrollArea::event(event);
 }
+QVariant PlainTextEdit::inputMethodQuery ( Qt::InputMethodQuery query ) const
+{
+	if( query == Qt::ImMicroFocus ) {
+		TextBlock block = m_textCursor->block();
+		int x = offsetToX(block.text(), block.charsCount(m_preeditPosCursor->anchor()));
+		int y = textBlockToY(block);
+		return QVariant(QRect(m_lineNumberAreaWidth + x, y, 20, 20));
+	}
+	return QAbstractScrollArea::inputMethodQuery(query);
+}
 void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
 {
 	//qDebug() << "*** inputMethodEvent " << event;
@@ -363,6 +381,7 @@ void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
 		//qDebug() << "  doUndo.";
 		//if( event->preeditString() == QString("‚©‚Ž") )
 		//	qDebug() << "  ‚©‚Ž";
+		m_preeditString = QString();
 		undo();
 #if 0
 		index_t position;
@@ -379,12 +398,14 @@ void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
 		m_textCursor->insertText(text);
 		viewport()->update();
 	}
-	const QString &peText = event->preeditString();
-	if( !peText.isEmpty() ) {
+	m_preeditString = event->preeditString();
+	if( !m_preeditString.isEmpty() ) {
 		//qDebug() << "  start = " << event->replacementStart () <<
 		//			", len = " << event->replacementLength ();
 		//qDebug() << "  insertText " << peText;
-		m_textCursor->insertText(peText);
+		m_preeditPosCursor->setAnchor(m_textCursor->position());
+		m_textCursor->insertText(m_preeditString);
+		m_preeditPosCursor->setPosition(m_textCursor->position(), TextCursor::KeepAnchor);
 		m_toDeleteIMEPreeditText = true;
 		viewport()->update();
 	}
@@ -654,12 +675,4 @@ void PlainTextEdit::mouseDoubleClickEvent ( QMouseEvent * event )
 	m_textCursor->movePosition(TextCursor::StartOfWord);
 	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
 	viewport()->update();
-}
-QVariant PlainTextEdit::inputMethodQuery ( Qt::InputMethodQuery query ) const
-{
-	if( query == Qt::ImMicroFocus ) {
-		int y = textBlockToY(m_textCursor->block());
-		return QVariant(QRect(m_lineNumberAreaWidth, y, 20, 20));
-	}
-	return QAbstractScrollArea::inputMethodQuery(query);
 }

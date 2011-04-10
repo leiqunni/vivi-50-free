@@ -99,6 +99,8 @@ signals:
 private:
 	bool	m_mouseCaptured;
 	bool	m_toDeleteIMEPreeditText;
+	TextCursor	*m_preeditPosCursor;
+	QString	m_preeditString;
 	TextDocument	*m_document;
 	TextCursor		*m_textCursor;		//	暫定的、本当はビュー用カーソルを利用する
 	QWidget	*m_lineNumberArea;

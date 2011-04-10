@@ -281,6 +281,8 @@ public:
 
 public:
 	TextDocument	*document() { return m_document; }
+	//void	setPosition(index_t position) { m_position = position; }
+	void	setAnchor(index_t anchor) { m_anchor = anchor; }
 	void	clearSelection() { copyPositionToAnchor(); }
 	TextBlock	block();
 	void	copyPositionToAnchor();

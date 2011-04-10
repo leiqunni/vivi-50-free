@@ -25,7 +25,7 @@ memFileColumnWd = 320
   mainwindow.h	(120,-260)
 * PlainTextEdit.cpp	(-174,-23)
   PlainTextEdit.h	(-174,-56)
-* TextDocument.cpp	(3,164)
+  TextDocument.cpp	(3,164)
   TextDocument.h	(3,131)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(37,-367)
   mainwindowBench.cpp	(120,-194)
@@ -35,7 +35,7 @@ memFileColumnWd = 320
   charEncoding.cpp	(369,-63)
   charEncoding.h	(369,-96)
 [ToDo]
-  "PlainTextEdit.cpp" 453 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "PlainTextEdit.cpp" 461 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextDocument.cpp" 369 'B: ' '' undone 暫定コード
   "TextDocument.cpp" 377 'B: ' '' undone 暫定コード
   "TextDocument.cpp" 476 'M: ' '' undone 不要なヒープの解放
