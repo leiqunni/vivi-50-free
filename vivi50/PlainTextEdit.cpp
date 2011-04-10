@@ -517,6 +517,8 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 	if( move != 0 ) {
 		m_textCursor->movePosition(move, mvMode, repCount);
 		ensureCursorVisible();
+		m_drawCursor = true;
+		m_timer->start();		//	タイマーリスタート
 		viewport()->update();
 		return;
 	}
