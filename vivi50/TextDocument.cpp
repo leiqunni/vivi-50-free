@@ -836,10 +836,18 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 				while( ix < blockIndex )
 					blockPosition += m_blocks[ix++].m_size;
 			} else {	//	’†‰›‚æ‚èŒã‚ë‚Ìê‡
+#if 1
+				blockPosition = size();
+				ix = m_blocks.size();
+				do {
+					blockPosition -= m_blocks[--ix].m_size;
+				} while( ix > blockIndex );
+#else
 				blockPosition = m_blockData.m_position;
 				ix = m_blockData.m_index;
 				while( ix > blockIndex )
 					blockPosition -= m_blocks[--ix].m_size;
+#endif
 			}
 		}
 	}

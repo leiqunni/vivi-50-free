@@ -229,6 +229,7 @@ int getEOLOffset(const QString text)
 }
 void PlainTextEdit::paintEvent(QPaintEvent * event)
 {
+	//qDebug() << "blockData.index = " << m_document->blockData().index();
 	//qDebug() << verticalScrollBar()->value();
 
 	QWidget *vp = viewport();
@@ -252,6 +253,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 	index_t lastBlockNumber = m_document->lastBlock().blockNumber();
 	int y = 0;
 	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
+	qDebug() << "firstVisibleBlock.index = " << block.index();
 	//TextBlock block = m_document->firstBlock();
 	while( y < vr.height() && block.isValid() ) {
 		const QString text = block.text();
@@ -320,8 +322,9 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 		block = block.next();
 		y += fm.lineSpacing();
 	}
-	qDebug() << m_preeditPosCursor->block().index() << " '" << m_preeditString << "'";
+	//qDebug() << m_preeditPosCursor->block().index() << " '" << m_preeditString << "'";
 	m_lineNumberArea->update();
+	//qDebug() << "blockData.index = " << m_document->blockData().index();
 }
 void PlainTextEdit::ensureCursorVisible()
 {
@@ -341,7 +344,7 @@ void PlainTextEdit::ensureCursorVisible()
 	if( t < 4 )
 		bn = fvBlock.blockNumber() + t + 1;
 	else
-		bn = curBlock.blockNumber();
+		bn = qMin( curBlock.blockNumber(), (size_t)verticalScrollBar()->maximum() );
 	verticalScrollBar()->setValue(/*fm.lineSpacing() **/ bn);
 	viewport()->update();
 }
