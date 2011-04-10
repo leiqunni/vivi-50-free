@@ -25,7 +25,7 @@
 
 #include <QObject>
 #include	<vector>
-#include	<boost/pool/object_pool.hpp>
+//#include	<boost/pool/object_pool.hpp>
 #include	"gap_vector.h"
 //#include	"buffer.h"
 
@@ -108,10 +108,10 @@ enum {
 struct GVUndoItem
 {
 public:
-	const uchar	m_type;
+	uchar	m_type;
 	bool	m_beforeSave:1;		//	保存前の undo/redo item
 	short	m_flags;
-	const index_t	m_first;
+	index_t	m_first;
 	index_t	m_last;				//	挿入・削除・置換前範囲
 	index_t	m_last2;			//	置換後の範囲
 	index_t	m_hp_ix;
@@ -138,12 +138,28 @@ public:
 public:
 	size_t	data_size() const { return m_last - m_first; }
 	size_t	data_size2() const { return m_last2 - m_first; }
+
+#if 1
+public:
+	GVUndoItem &operator=(const GVUndoItem &x)
+	{
+		m_type = x.m_type;
+		m_beforeSave = x.m_beforeSave;
+		m_flags = x.m_flags;
+		m_first = x.m_first;
+		m_last = x.m_last;
+		m_last2 = x.m_last2;
+		m_hp_ix = x.m_hp_ix;
+		m_rhp_ix = x.m_rhp_ix;
+		return *this;
+	}
+#endif
 };
 class GVUndoMgr
 {
 	uint	m_current;		//	オブジェクトを次に入れる位置（0..*）
 							//	通常は m_item.size() と同値だが、undo が実行されるとデクリメントされる
-	std::vector<GVUndoItem*>	m_items;
+	std::vector<GVUndoItem>	m_items;
 	std::vector<uchar>	m_heap;			//	undo のための文字列を格納するヒープ
 	std::vector<uchar>	m_redoHeap;		//	redo のための文字列を格納するヒープ
 public:
@@ -161,6 +177,7 @@ public:
 	bool	canRedo() const { return m_current < m_items.size(); };
 public:
 	void	push_back(GVUndoItem *ptr, bool = false);
+	void	push_back(const GVUndoItem &, bool = false);
 
 	//	データをヒープに追加
 	template<typename InputIterator>
@@ -494,7 +511,7 @@ private:
 	//index_t		m_blockPosition;	//	カレントブロック情報
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ
 	GVUndoMgr	m_undoMgr;
-	boost::object_pool<GVUndoItem>	m_pool_undoItem;
+	//boost::object_pool<GVUndoItem>	m_pool_undoItem;
 
 	friend void test_TextDocument();
 };

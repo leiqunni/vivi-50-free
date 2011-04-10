@@ -25,7 +25,7 @@
 //#include	<iostream>
 #include	<string>
 #include	<vector>
-#include	<boost/lexical_cast.hpp>
+//#include	<boost/lexical_cast.hpp>
 #include	<QDebug>
 
 typedef const char cchar;
@@ -43,8 +43,8 @@ extern uint g_total_fail_count;
 
 typedef const char cchar;
 
-#define		test(b)			_test(b, __FILE__, __LINE__)
-#define		test_equal(e, v)	_test_equal(e, v, __FILE__, __LINE__)
+#define		ut_test(b)			_test(b, __FILE__, __LINE__)
+#define		ut_test_equal(e, v)	_test_equal(e, v, __FILE__, __LINE__)
 
 namespace unit_test {
 	extern size_t n_test;			//	トータルテスト回数
@@ -86,8 +86,16 @@ public:
 	~CUnitTest(void);
 
 public:
+	//void test(bool b) { _test(b, __FILE__, __LINE__); }
 	void _test(bool b, cchar *fileName, int lineNum);
 
+#if 0
+	template<typename T>
+	void test_equal(const T &exp, const T &v)
+	{
+		_test_equal(exp, v, __FILE__, __LINE__);
+	}
+#endif
 	template<typename T>
 	void _test_equal(const T &exp, const T &v, cchar *fileName, int lineNum)
 	{

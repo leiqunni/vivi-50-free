@@ -28,7 +28,7 @@
 #include	<iostream>
 #include <memory>
 //#include <boost/static_assert.hpp>
-#include <boost/shared_ptr.hpp>
+//#include <boost/shared_ptr.hpp>
 //#include <typeinfo>
 #include <boost/type_traits.hpp>
 
@@ -62,10 +62,10 @@ typedef size_t index_t;
 //	std::allocater などを使用するので、名前空間は std にしておく
 namespace std {
 
-//template<typename Type, class _A = allocator<Type>> class gap_vector;
+//template<typename Type, class _A = allocator<Type> > class gap_vector;
 
 #if GV_USE_ITR_FACADE
-template<typename Type, class _A = allocator<Type>>
+template<typename Type, class _A = allocator<Type> >
 class _Gap_Vector_Iterator //: public std::iterator<std::random_access_iterator_tag, Type>
 	: public boost::iterator_facade<_Gap_Vector_Iterator<Type>,
 									Type, std::random_access_iterator_tag, Type&>
@@ -109,7 +109,7 @@ public:
 		return x.m_ptr - m_ptr;
 	}
 };
-template<typename Type, class _A = allocator<Type>>
+template<typename Type, class _A = allocator<Type> >
 class _Gap_Vector_Const_Iterator //: public std::iterator<std::random_access_iterator_tag, Type>
 	: public boost::iterator_facade<_Gap_Vector_Const_Iterator<Type>,
 									Type const, std::random_access_iterator_tag, Type>
@@ -154,7 +154,7 @@ public:
 	}
 };
 #else
-template<typename Type, class _A = allocator<Type>>
+template<typename Type, class _A = allocator<Type> >
 class _Gap_Vector_Const_Iterator : public std::iterator<std::random_access_iterator_tag, Type>
 {
 public:
@@ -225,7 +225,7 @@ public:
 
 	//friend class gap_vector<Type, _A>;
 };
-template<typename Type, class _A = allocator<Type>>
+template<typename Type, class _A = allocator<Type> >
 class _Gap_Vector_Iterator : public _Gap_Vector_Const_Iterator<Type, _A>
 {
 public:
@@ -275,7 +275,7 @@ public:
 };
 #endif
 
-template<typename Type, class _A = allocator<Type>>
+template<typename Type, class _A = allocator<Type> >
 class gap_vector
 {
 public:
@@ -463,8 +463,8 @@ public:
 		}
 #endif
 	}
-#if 1
-	template<>
+#ifdef MSVC
+	template< >
 	void assign(value_type *first, value_type *last)
 	{
 		clear();
@@ -904,10 +904,20 @@ protected:
 		if( p >= m_gapBegin ) p += (m_gapEnd - m_gapBegin);
 		return p;
 	}
+#ifdef	MSVC
 #if PTR_ALLOCATOR
-	void _Destroy(pointer m_first, pointer m_last) { _Destroy_range(m_first, m_last, *_pAllocator); }
+	void _Destroy(pointer first, pointer last) { _Destroy_range(first, last, *_pAllocator); }
 #else
-	void _Destroy(pointer m_first, pointer m_last) { _Destroy_range(m_first, m_last, _allocator); }
+	void _Destroy(pointer first, pointer last) { _Destroy_range(first, last, _allocator); }
+#endif
+#else
+	void _Destroy(pointer first, pointer last)
+	{
+		while( first != last ) {
+			_allocator.destroy(first);
+			++first;
+		}
+	}
 #endif
 	void assert_valid() const
 	{

@@ -463,6 +463,19 @@ void TextCursor::deletePreviousChar()
 	m_document->deletePreviousChar(*this);
 }
 //----------------------------------------------------------------------
+#if 1
+void GVUndoMgr::push_back(const GVUndoItem &item, bool modified)
+{
+	if( m_current < m_items.size() ) {
+		//	undone M 不要なヒープの解放
+		m_items.erase(m_items.begin() + m_current, m_items.end());
+	}
+	m_items.push_back(item);
+	if( !modified )
+		m_items[m_items.size() - 1].m_flags |= GVUNDOITEM_UNDO_MF_OFF;
+	m_current = m_items.size();
+}
+#else
 void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)
 {
 	if( m_current < m_items.size() ) {
@@ -478,6 +491,7 @@ void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)
 //#endif
 	m_current = m_items.size();
 }
+#endif
 
 //	ドキュメントが保存された時にコールされる
 void GVUndoMgr::resetModifiedFlags()
@@ -485,7 +499,7 @@ void GVUndoMgr::resetModifiedFlags()
 	bool before = true;
 	for(int ix = 0; ix < m_items.size(); ++ix) {
 		if( ix == m_current ) before = false;
-		GVUndoItem *undoItem = m_items[ix];
+		GVUndoItem *undoItem = &m_items[ix];
 		undoItem->m_beforeSave = before;
 		undoItem->m_flags &= ~(GVUNDOITEM_UNDO_MF_OFF|GVUNDOITEM_REDO_MF_OFF);
 		if( ix == m_current - 1 )
@@ -500,7 +514,7 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 	if( !m_current ) return false;
 	//boost::shared_ptr<GVUndoItem> undoItem = m_items[--m_current];
 #if 1
-	GVUndoItem *ptr = m_items[--m_current];
+	GVUndoItem *ptr = &m_items[--m_current];
 	switch( ptr->m_type ) {
 	case GVUNDOITEM_TYPE_ERASE: {
 		cuchar *heap = &m_heap[ptr->m_hp_ix];
@@ -537,7 +551,7 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
 	//boost::shared_ptr<GVUndoItem> undoItem = m_items[m_current];
 	//++m_current;
 #if 1
-	const GVUndoItem *ptr = m_items[m_current++];
+	const GVUndoItem *ptr = &m_items[m_current++];
 	switch( ptr->m_type ) {
 	case GVUNDOITEM_TYPE_ERASE:
 		bb->erase(ptr->m_first, ptr->m_last);
@@ -1047,8 +1061,13 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 	if( position == cur.anchor() ) {
 		m_buffer.insert(position, ptr, ptr + sz);
 		updateBlocksAtInsert(position, cur.blockData(), sz);
+#if 1
+		m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0),
+							isModified());
+#else
 		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0);
 		m_undoMgr.push_back(undoItem, isModified());
+#endif
 	} else {
 		if( cur.anchor() < position )
 			cur.swapPositionAnchor();
@@ -1060,9 +1079,14 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 		erase(first, cur.blockData(), last);
 		m_buffer.insert(first, ptr, ptr + sz);
 		updateBlocksAtInsert(first, cur.blockData(), sz);
+#if 1
+		m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_REPLACE, first, last, hp_ix, first + sz),
+							isModified());
+#else
 		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_REPLACE,
 										first, last, hp_ix, first + sz);
 		m_undoMgr.push_back(undoItem, isModified());
+#endif
 		delSz = last - first;
 	}
 	cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
@@ -1082,8 +1106,13 @@ void TextDocument::do_insert(index_t position, const QString &text)
 	TextBlockData d = findBlockData(position);		//	編集によりキャッシュが無効になる前に取得しておく
 	m_buffer.insert(position, ptr, ptr + sz);
 	updateBlocksAtInsert(position, d, sz);
+#if 1
+	m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0),
+						isModified());
+#else
 	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0);
 	m_undoMgr.push_back(undoItem, isModified());
+#endif
 	m_modified = true;
 	emit contentsChange(position, 0, sz);
 	emit contentsChanged();
@@ -1092,8 +1121,13 @@ void TextDocument::do_erase(index_t first, index_t last)
 {
 	const index_t hp_ix = m_undoMgr.addToHeap(m_buffer.begin() + first, m_buffer.begin() + last);
 	erase(first, last);
+#if 1
+	m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_ERASE, first, last, hp_ix),
+						isModified());
+#else
 	GVUndoItem *ptr = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_ERASE, first, last, hp_ix);
 	m_undoMgr.push_back(ptr, isModified());
+#endif
 	emit contentsChange(first, last - first, 0);
 }
 void TextDocument::do_replace(index_t first, index_t last, const QString &text)
@@ -1112,9 +1146,14 @@ void TextDocument::do_replace(index_t first, index_t last, const QString &text)
 	erase(first, last);
 	m_buffer.insert(first, ptr, ptr + sz);
 	updateBlocksAtInsert(first, d, sz);
+#if 1
+	m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_REPLACE, first, last, hp_ix, first + sz),
+						isModified());
+#else
 	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_REPLACE,
 									first, last, hp_ix, first + sz);
 	m_undoMgr.push_back(undoItem, isModified());
+#endif
 	emit contentsChange(first, last - first, sz);
 }
 void TextDocument::doUndo(index_t &pos)
