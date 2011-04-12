@@ -322,7 +322,7 @@ void MainWindow::openRecentFile()
 {
     QAction *action = qobject_cast<QAction *>(sender());
     if (action)
-        loadFile(action->data().toString());
+        open(action->data().toString());
 }
 void MainWindow::doJump(int lineNum)
 {
