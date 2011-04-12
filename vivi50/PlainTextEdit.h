@@ -26,6 +26,7 @@
 #include <QAbstractScrollArea>
 #include	"gap_vector.h"
 #include	"textBlockData.h"
+#include	"textCursor.h"
 
 class PlainTextEdit;
 class TextDocument;
@@ -34,83 +35,6 @@ class TextBlock;
 //class QElapsedTimer;
 class QTimer;
 
-//----------------------------------------------------------------------
-struct ViewTextBlockItem
-{
-	size_t		m_size;		//	ブロック内文字サイズ
-
-public:
-	ViewTextBlockItem(size_t size = 0) : m_size(size) {}
-};
-
-//----------------------------------------------------------------------
-class ViewTextCursor
-{
-public:
-	enum {
-		MoveAnchor = 0,
-		KeepAnchor,
-	};
-public:
-	ViewTextCursor(PlainTextEdit *view = 0, index_t position = 0)
-		: m_view(view), m_position(position), m_anchor(position)
-		{ updateBlockData(); }
-	ViewTextCursor(PlainTextEdit *view, index_t position, index_t anchor)
-		: m_view(view), m_position(position), m_anchor(anchor)
-		{ updateBlockData(); }
-	ViewTextCursor(PlainTextEdit *view, index_t position, index_t anchor,
-				TextBlockData blockData)
-		: m_view(view), m_position(position), m_anchor(anchor)
-		, m_blockData(blockData)
-		{}
-	ViewTextCursor(const ViewTextCursor &x)
-		: m_view(x.m_view), m_position(x.m_position), m_anchor(x.m_anchor)
-		, m_blockData(x.m_blockData), m_anchorBlockData(x.m_anchorBlockData)
-		{}
-	~ViewTextCursor() {}
-
-public:
-	const PlainTextEdit	*view() const { return m_view; }
-	index_t	position() const { return m_position; }
-	index_t	anchor() const { return m_anchor; }
-	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
-	bool	hasSelection() const { return m_position != m_anchor; }
-	bool	isNull() const { return m_view == 0; }
-	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
-	QString	selectedText() const;
-	TextBlockData blockData() const { return m_blockData; }
-	TextBlockData anchorBlock() const { return m_anchorBlockData; }
-	index_t	blockIndex() const { return m_blockData.m_index; }
-	index_t	blockPosition() const { return m_blockData.m_position; }
-	index_t	ancBlockIndex() const { return m_anchorBlockData.m_index; }
-	index_t	ancBlockPosition() const { return m_anchorBlockData.m_position; }
-
-public:
-	PlainTextEdit	*view() { return m_view; }
-	void	setAnchor(index_t anchor) { m_anchor = anchor; }
-	void	clearSelection() { copyPositionToAnchor(); }
-	TextBlock	block();
-	void	copyPositionToAnchor();
-	void	copyAnchorToPosition();
-	void	swapPositionAnchor();
-	void	setPosition(index_t position, uchar mode = MoveAnchor);
-	void	setPosition(index_t position, TextBlockData, uchar mode = MoveAnchor);
-	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
-
-	void	insertText(const QString &);
-	void	deleteChar();
-	void	deletePreviousChar();
-
-protected:
-	void	updateBlockData(uchar mode = MoveAnchor);		//	m_blockIndex, m_blockPosition 更新
-
-private:
-	PlainTextEdit	*m_view;
-	index_t			m_position;
-	index_t			m_anchor;
-	TextBlockData	m_blockData;
-	TextBlockData	m_anchorBlockData;
-};
 
 class PlainTextEdit : public QAbstractScrollArea
 {
@@ -126,10 +50,26 @@ public:
 	bool	isModified() const;
 	QString	toPlainText() const;
 	const TextDocument	*document() const { return m_document; }
+	TextBlockData	findBlockData(index_t position) const;
+	TextBlockData	nextBlockData(TextBlockData d) const
+	{ return TextBlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
+	TextBlockData	prevBlockData(TextBlockData d) const
+	{
+		if( !d.m_index )
+			return TextBlockData(INVALID_INDEX, 0);
+		else {
+			size_t sz = m_blocks[d.m_index - 1].m_size;
+			return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
+		}
+	}
+	size_t	size() const;	// { return document()->size(); }
 
 public:
 	TextDocument	*document() { return m_document; }
 	void	doJump(int lineNum);
+
+public:
+	void	insertText(ViewTextCursor &, const QString &);
 
 public slots:
 	void	copy();

@@ -576,4 +576,17 @@ void test_TextDocument()
 			ut.ut_test_equal(i*10, blockPos);
 		}
 	}
+	if( 1 ) {
+		PlainTextEdit editor;
+		TextDocument *doc = editor.document();
+		ut.ut_test( doc->isEmpty() );
+		ut.ut_test_equal(0, doc->size());
+		ViewTextCursor cur(&editor);
+		cur.insertText(QString("123\r\n‚ ‚¢‚¤\n"));
+		cur.setPosition(0);
+		ut.ut_test_equal(0, cur.position());
+		ut.ut_test_equal(0, cur.anchor());
+		cur.movePosition(TextCursor::Right);
+
+	}
 }

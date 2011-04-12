@@ -19,24 +19,23 @@ memFileColumnWd = 320
 #define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
-  gap_vector.h	(47,324)
-  main.cpp	(-153,-353)
-  mainwindow.cpp	(120,-227)
-  mainwindow.h	(120,-260)
-  PlainTextEdit.cpp	(-174,-23)
-* PlainTextEdit.h	(-174,-56)
-  TextDocument.cpp	(3,164)
-* TextDocument.h	(3,131)
-* C:/user/vivi5.0/arc/vivi50_jp.txt	(37,-367)
-  mainwindowBench.cpp	(120,-194)
-  unit_test.cpp	(284,61)
-  unit_test.h	(284,28)
-  mainwindowTest.cpp	(120,-161)
-  charEncoding.cpp	(369,-63)
-  charEncoding.h	(369,-96)
+  gap_vector.h	(-93.32,306.556)
+  main.cpp	(-190.594,-326.596)
+  mainwindow.cpp	(-30.4345,-141.907)
+  mainwindow.h	(-30.4345,-174.907)
+  PlainTextEdit.cpp	(-268.841,-10.7704)
+* PlainTextEdit.h	(-268.841,-43.7704)
+* TextDocument.cpp	(-47.691,116.259)
+* TextDocument.h	(-47.691,83.2587)
+* C:/user/vivi5.0/arc/vivi50_jp.txt	(-7.59357,-274.596)
+  mainwindowBench.cpp	(-30.4345,-108.907)
+  unit_test.cpp	(148.179,169.277)
+  unit_test.h	(148.179,136.277)
+  mainwindowTest.cpp	(-30.4345,-75.907)
+  charEncoding.cpp	(230.65,21.8433)
+  charEncoding.h	(230.65,-11.1567)
+* textBlockData.h	(-266.356,233.934)
 [ToDo]
-  "PlainTextEdit.cpp" 501 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextDocument.cpp" 369 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 377 'B: ' '' undone 暫定コード
-  "TextDocument.cpp" 476 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 488 'M: ' '' undone 不要なヒープの解放
+  "PlainTextEdit.cpp" 581 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextDocument.cpp" 48 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 60 'M: ' '' undone 不要なヒープの解放

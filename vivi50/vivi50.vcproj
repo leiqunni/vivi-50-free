@@ -186,6 +186,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\textCursor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TextDocument.cpp"
 				>
 			</File>
@@ -261,6 +265,10 @@
 			</File>
 			<File
 				RelativePath=".\textBlockData.h"
+				>
+			</File>
+			<File
+				RelativePath=".\textCursor.h"
 				>
 			</File>
 			<File

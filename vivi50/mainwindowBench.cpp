@@ -24,6 +24,7 @@
 #include "mainwindow.h"
 //#include "PlainTextEdit.h"
 #include "TextDocument.h"
+#include "TextCursor.h"
 #include	<boost/timer.hpp>
 
 extern MainWindow *pMainWindow;

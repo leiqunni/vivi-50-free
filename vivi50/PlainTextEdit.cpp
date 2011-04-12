@@ -23,13 +23,9 @@
 #include <QtGui>
 #include "PlainTextEdit.h"
 #include	"TextDocument.h"
+#include	"textCursor.h"
 #include	<math.h>
 #include	<QDebug>
-
-//----------------------------------------------------------------------
-void ViewTextCursor::updateBlockData(uchar mode)
-{
-}
 
 //----------------------------------------------------------------------
 
@@ -45,6 +41,7 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 	//m_lineNumberWidth = 6;
 	viewport()->setCursor(Qt::IBeamCursor);
 
+	m_blocks.push_back(ViewTextBlockItem(0));
 	m_document = new TextDocument();
 	m_textCursor = new TextCursor(m_document);
 	m_preeditPosCursor = new TextCursor(m_document);
@@ -71,6 +68,56 @@ PlainTextEdit::~PlainTextEdit()
 {
 	delete m_document;
 	delete m_textCursor;
+}
+size_t PlainTextEdit::size() const
+{
+	return document()->size();
+}
+TextBlockData PlainTextEdit::findBlockData(index_t position) const
+{
+	if( m_blocks.size() == 1 )
+		return TextBlockData(0, 0);
+	TextBlockData data(0, 0), next;
+	if( m_blockData.m_index == 0 ) {		//	ÉLÉÉÉbÉVÉÖÇ™ñ≥Ç¢èÍçá
+		if( position <= size() / 2 ) {
+			while( data.m_index < m_blocks.size() - 1 &&
+					position >= (next = nextBlockData(data)).position() )
+				data = next;
+		} else {
+			data = TextBlockData(m_blocks.size(), size());
+			do {
+				data = prevBlockData(data);
+			} while( data.position() > position );
+		}
+	} else {
+		if( position < m_blockData.position() ) {
+			if( position <= m_blockData.position() / 2 ) {
+				while( data.m_index < m_blockData.index() - 1 &&
+						position >= (next = nextBlockData(data)).position() )
+					data = next;
+			} else {
+				data = m_blockData;
+				do {
+					data = prevBlockData(data);
+				} while( data.position() > position );
+			}
+		} else {
+			next = nextBlockData(m_blockData);
+			if( m_blockData.position() <= position && position < next.position() )
+				return m_blockData;
+			if( position <= m_blockData.position() + (size() - m_blockData.position()) / 2 ) {
+				while( data.m_index < m_blocks.size() - 1 &&
+						position >= (next = nextBlockData(data)).position() )
+					data = next;
+			} else {
+				data = TextBlockData(m_blocks.size(), size());
+				do {
+					data = prevBlockData(data);
+				} while( data.position() > position );
+			}
+		}
+	}
+	return data;
 }
 #if 0
 void PlainTextEdit::resetCursorBlinkTimer()
@@ -713,4 +760,7 @@ void PlainTextEdit::mouseDoubleClickEvent ( QMouseEvent * event )
 	m_textCursor->movePosition(TextCursor::StartOfWord);
 	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
 	viewport()->update();
+}
+void PlainTextEdit::insertText(ViewTextCursor &cur, const QString &text)
+{
 }

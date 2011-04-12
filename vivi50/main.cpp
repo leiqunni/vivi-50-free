@@ -31,7 +31,28 @@
 #include "mainwindow.h"
 #include <QtGui/QApplication>
 #include <QTextCodec>
+#include <QDebug>
 
+#if	0	//def	MSVC
+#include	<windows.h>
+#include	<FPIEEE.H>
+bool		g_initSE = false;
+//LPEXCEPTION_POINTERS pep;
+EXCEPTION_RECORD ERecord;
+CONTEXT		EContext;
+CString		g_regs, g_t;
+CString		g_retAdrString;
+
+int MyFilter( PEXCEPTION_POINTERS pep )
+{
+	if( !g_initSE ) {
+		g_initSE = true;
+		ERecord = *pep->ExceptionRecord;
+		EContext = *pep->ContextRecord;
+	}
+	return EXCEPTION_EXECUTE_HANDLER;
+}
+#endif
 int main(int argc, char *argv[])
 {
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Shift-JIS"));
@@ -40,5 +61,16 @@ int main(int argc, char *argv[])
 	app.setApplicationName("vivi5");
 	MainWindow w;
 	w.show();
+#if	0	//def	MSVC
+	__try {
+		return app.exec();
+	}
+	__except(//pep = (LPEXCEPTION_POINTERS)GetExceptionInformation(),
+		MyFilter(GetExceptionInformation()) )
+	{
+		qDebug() << "ExceptionRecord = " << (int)ERecord.ExceptionAddress;
+	}
+#else
 	return app.exec();
+#endif
 }
