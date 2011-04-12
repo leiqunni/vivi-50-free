@@ -22,9 +22,16 @@
 + 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 + 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 + 2011/04/12 "TextView.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+# 2011/04/13 07:47:43
++ 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
++ 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
++ 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 # latest
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
 2011/04/10 "TextDocument.cpp" M:   undone 不要なヒープの解放
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 2011/04/12 "TextView.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
+2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
+2011/04/13 "TextView.cpp" B:   undone ブロック情報更新

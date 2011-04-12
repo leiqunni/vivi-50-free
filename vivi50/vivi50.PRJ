@@ -15,31 +15,34 @@ memFileColumnWd = 320
 #define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define GV_USE_ITR_FACADE 1
 #define BLOCK_HAS_SIZE 1
+#define GV_USE_ITR_FACADE 1
 [globalMarks]
 [files]
-  gap_vector.h	(-10.5407,151.554)
-  main.cpp	(-172.929,-197.269)
-* mainwindow.cpp	(-119.64,-124.559)
-* mainwindow.h	(-119.64,-143.186)
-* TextDocument.cpp	(-104.744,88.6985)
-  TextDocument.h	(-104.744,70.0708)
-* C:/user/vivi5.0/arc/vivi50_jp.txt	(-54.8429,-197.765)
-* mainwindowBench.cpp	(-119.64,-105.931)
-  unit_test.cpp	(50.5426,-24.2)
-  unit_test.h	(50.5426,-42.8276)
-* mainwindowTest.cpp	(-119.64,-87.3033)
-* charEncoding.cpp	(52.3002,-81.9606)
-  charEncoding.h	(52.3002,-100.588)
-  textBlockData.h	(-218.555,81.2585)
-  textCursor.cpp	(-223.899,-16.5373)
-  textCursor.h	(-223.899,-35.165)
-* TextView.cpp	(-66.4182,-12.2611)
-  TextView.h	(-66.4182,-30.8887)
+  gap_vector.h	(127.459,134.554)
+  main.cpp	(-244.929,-355.269)
+  mainwindow.cpp	(-179.64,-209.186)
+  mainwindow.h	(-179.64,-242.186)
+  TextDocument.cpp	(-117.744,151.071)
+  TextDocument.h	(-117.744,118.071)
+* C:/user/vivi5.0/arc/vivi50_jp.txt	(-46.8429,-350.765)
+  mainwindowBench.cpp	(-179.64,-176.186)
+  unit_test.cpp	(149.543,-74.8276)
+  unit_test.h	(149.543,-107.828)
+  mainwindowTest.cpp	(-179.64,-143.186)
+  charEncoding.cpp	(142.3,-187.588)
+  charEncoding.h	(142.3,-220.588)
+  textBlockData.h	(-343.555,130.259)
+* textCursor.cpp	(-293.899,-28.165)
+* textCursor.h	(-293.899,-61.165)
+* TextView.cpp	(-33.4182,-27.8887)
+* TextView.h	(-33.4182,-60.8887)
 [ToDo]
   "TextDocument.cpp" 38 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 50 'M: ' '' undone 不要なヒープの解放
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
   "TextView.cpp" 542 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 760 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 765 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 770 'B: ' '' undone ブロック情報更新

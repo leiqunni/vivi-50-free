@@ -43,8 +43,8 @@ TextView::TextView(QWidget *parent)
 
 	m_blocks.push_back(ViewTextBlockItem(0));
 	m_document = new TextDocument();
-	m_textCursor = new TextCursor(m_document);
-	m_preeditPosCursor = new TextCursor(m_document);
+	m_textCursor = new ViewTextCursor(this);
+	m_preeditPosCursor = new ViewTextCursor(this);
 	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
 
 	m_lineNumberArea = new QWidget(this);
@@ -417,7 +417,7 @@ bool TextView::event ( QEvent * event )
 	if( event->type() == QEvent::KeyPress ) {
 		QKeyEvent *k = static_cast<QKeyEvent *>(event);
 		if( k->key() == Qt::Key_Tab /*|| k->key() == Qt::Key_Backtab*/ ) {
-			m_textCursor->insertText(QString("\t"));
+			insertText(*m_textCursor, QString("\t"));
 			ensureCursorVisible();
 			viewport()->update();
 			return true;
@@ -463,7 +463,7 @@ void TextView::inputMethodEvent ( QInputMethodEvent * event )
 	const QString &text = event->commitString();
 	if( !text.isEmpty() ) {
 		//qDebug() << "  insert commitString " << text;
-		m_textCursor->insertText(text);
+		insertText(*m_textCursor, text);
 		viewport()->update();
 	}
 	m_preeditString = event->preeditString();
@@ -472,7 +472,7 @@ void TextView::inputMethodEvent ( QInputMethodEvent * event )
 		//			", len = " << event->replacementLength ();
 		//qDebug() << "  insertText " << peText;
 		m_preeditPosCursor->setAnchor(m_textCursor->position());
-		m_textCursor->insertText(m_preeditString);
+		insertText(*m_textCursor, m_preeditString);
 		m_preeditPosCursor->setPosition(m_textCursor->position(), TextCursor::KeepAnchor);
 		m_toDeleteIMEPreeditText = true;
 		viewport()->update();
@@ -539,7 +539,7 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		viewport()->update();
 		return;
 	case Qt::Key_Return:
-		m_textCursor->insertText(QString("\n"));	//	undone C 本当は設定で CRLF/CR/LF のいずれかを挿入
+		insertText(*m_textCursor, QString("\n"));	//	undone C 本当は設定で CRLF/CR/LF のいずれかを挿入
 		ensureCursorVisible();
 		viewport()->update();
 		return;
@@ -565,7 +565,7 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 	}
 	QString text = keyEvent->text();
 	if( !text.isEmpty() ) {
-		m_textCursor->insertText(text);
+		insertText(*m_textCursor, text);
 		ensureCursorVisible();
 		viewport()->update();
 	}
@@ -629,7 +629,7 @@ void TextView::paste()
 	QClipboard *clipboard = QApplication::clipboard();
 	QString text = clipboard->text();
 	if( !text.isEmpty() ) {
-		m_textCursor->insertText(text);
+		insertText(*m_textCursor, text);
 		ensureCursorVisible();
 		viewport()->update();
 	}
@@ -705,7 +705,7 @@ void TextView::drawLineNumbers()
 }
 void TextView::doJump(int lineNum)
 {
-	TextCursor cur(document());
+	ViewTextCursor cur(this);
 	if( cur.movePosition(TextCursor::Down, TextCursor::MoveAnchor, lineNum - 1) ) {
 		*m_textCursor = cur;
 		ensureCursorVisible();
@@ -756,4 +756,16 @@ void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
 }
 void TextView::insertText(ViewTextCursor &cur, const QString &text)
 {
+	document()->insertText(cur, text);
+	//	undone B ブロック情報更新
+}
+void TextView::deleteChar(ViewTextCursor &cur)
+{
+	document()->deleteChar(cur);
+	//	undone B ブロック情報更新
+}
+void TextView::deletePreviousChar(ViewTextCursor &cur)
+{
+	document()->deletePreviousChar(cur);
+	//	undone B ブロック情報更新
 }

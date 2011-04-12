@@ -537,8 +537,18 @@ void ViewTextCursor::updateBlockData(uchar mode)
 }
 void ViewTextCursor::insertText(const QString &text)
 {
-	if( !isNull() ) return;
+	if( isNull() ) return;
 	m_view->insertText(*this, text);
+}
+void ViewTextCursor::deleteChar()
+{
+	if( isNull() ) return;
+	m_view->deleteChar(*this);
+}
+void ViewTextCursor::deletePreviousChar()
+{
+	if( isNull() ) return;
+	m_view->deletePreviousChar(*this);
 }
 bool ViewTextCursor::movePosition(uchar move, uchar mode, uint n)
 {

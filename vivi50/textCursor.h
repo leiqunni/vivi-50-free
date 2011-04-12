@@ -130,18 +130,10 @@ class ViewTextCursor : public TextCursor
 {
 public:
 	ViewTextCursor(TextView *view = 0, index_t position = 0);
-		//: m_view(view), TextCursor(position)
-		//{ updateBlockData(); }
 	ViewTextCursor(TextView *view, index_t position, index_t anchor);
-		//: m_view(view), TextCursor(position, anchor)
-		//{ updateBlockData(); }
 	ViewTextCursor(TextView *view, index_t position, index_t anchor,
 				TextBlockData blockData);
-		//: m_view(view), TextCursor(position, anchor, blockData)
-		//{}
 	ViewTextCursor(const ViewTextCursor &x);
-		//: m_view(x.m_view), TextCursor(x)
-		//{}
 	~ViewTextCursor() {}
 
 public:

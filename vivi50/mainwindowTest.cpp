@@ -612,10 +612,12 @@ void test_TextView()
 		ut.ut_test_equal(0, doc->size());
 		ViewTextCursor cur(&editor);
 		cur.insertText(QString("123\r\n‚ ‚¢‚¤\n"));
+		ut.ut_test( !doc->isEmpty() );
+		ut.ut_test_equal(15, doc->size());
 		cur.setPosition(0);
 		ut.ut_test_equal(0, cur.position());
 		ut.ut_test_equal(0, cur.anchor());
 		cur.movePosition(TextCursor::Right);
-
+		ut.ut_test_equal(1, cur.position());
 	}
 }
