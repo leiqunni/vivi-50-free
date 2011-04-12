@@ -294,7 +294,8 @@ uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &BOMLength)
 bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 				uchar *cePtr, bool *wbPtr)
 {
-	QFile file(fileName);
+	QDir path(fileName);
+	QFile file(path.path());
 	if( !file.open(QFile::ReadOnly /*| QFile::Text*/) ) {
 		errorString = file.errorString();
 		buffer.clear();

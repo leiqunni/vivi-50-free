@@ -705,6 +705,12 @@ void TextView::drawLineNumbers()
 }
 void TextView::doJump(int lineNum)
 {
+	TextCursor cur(document());
+	if( cur.movePosition(TextCursor::Down, TextCursor::MoveAnchor, lineNum - 1) ) {
+		*m_textCursor = cur;
+		ensureCursorVisible();
+		viewport()->update();
+	}
 #if 0
 	ViCursor cur = viCursor();
 	if( cur.movePosition(ViMoveOperation::JumpLine, QTextCursor::MoveAnchor, lineNum) )

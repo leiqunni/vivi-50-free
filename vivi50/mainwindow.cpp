@@ -331,11 +331,21 @@ void MainWindow::doJump(int lineNum)
 }
 MainWindow *MainWindow::findMainWindow(const QString &fileName)
 {
-    QString canonicalFilePath = QFileInfo(fileName).canonicalFilePath();
+#if 0
+	QString fn;
+	if( fileName.left(2) == "./" || fileName.left(2) == ".\\" )
+		fn == fileName.mid(2);
+	else
+		fn = fileName;
+    //QString canonicalFilePath = QFileInfo(fn).canonicalFilePath();
+	QString absFilePath = QFileInfo(fn).absoluteFilePath
+#else
+	QString absFilePath = QFileInfo(fileName).absoluteFilePath();
+#endif
 
     foreach( QWidget *widget, qApp->topLevelWidgets() ) {
         MainWindow *mainWin = qobject_cast<MainWindow *>(widget);
-        if( mainWin && mainWin->m_curFile == canonicalFilePath )
+        if( mainWin && mainWin->m_absFilePath == absFilePath )
             return mainWin;
     }
     return 0;
@@ -491,7 +501,12 @@ void MainWindow::open()
 }
 void MainWindow::loadFile(const QString &fileName, int lineNum)
 {
-    MainWindow *existing = findMainWindow(fileName);
+	QString fn;
+	if( fileName.left(2) == "./" || fileName.left(2) == ".\\" )
+		fn = fileName.mid(2);
+	else
+		fn = fileName;
+    MainWindow *existing = findMainWindow(fn);
     if( existing ) {
     	if( lineNum ) existing->doJump(lineNum);
         existing->show();
@@ -505,10 +520,10 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
     QString errorString;
     uchar ce;
     bool withBOM;
-	if( !::loadFile(fileName, buffer, errorString, &ce, &withBOM) ) {
+	if( !::loadFile(fn, buffer, errorString, &ce, &withBOM) ) {
 		QMessageBox::warning(this, tr("qvi"),
 							 tr("Cannot read file %1:\n%2.")
-							 .arg(fileName)
+							 .arg(fn)
 							 .arg(errorString));
 		QApplication::restoreOverrideCursor();
 		return;
@@ -520,7 +535,7 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
 	m_editor->doJump(lineNum);
 	m_editor->viewport()->update();
 
-	setCurrentFile(fileName);
+	setCurrentFile(fn);
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 void MainWindow::documentWasModified()

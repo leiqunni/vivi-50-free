@@ -87,6 +87,7 @@ private:
 	TextView	*m_editor;
 	QTextEdit	*m_output;
 	QString	m_curFile;
+	QString	m_absFilePath;
 	bool	m_isUntitled;
 	bool	m_isModified;
 
