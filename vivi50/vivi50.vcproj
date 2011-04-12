@@ -59,6 +59,7 @@
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="$(QTDIR)\lib"
 				GenerateDebugInformation="false"
+				GenerateMapFile="true"
 				SubSystem="2"
 			/>
 			<Tool

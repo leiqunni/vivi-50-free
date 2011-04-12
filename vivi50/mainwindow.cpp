@@ -241,7 +241,7 @@ bool MainWindow::maybeSave()
 {
 	if( isWindowModified()) {
 		QMessageBox::StandardButton ret;
-		ret = QMessageBox::warning(this, tr("qvi"),
+		ret = QMessageBox::warning(this, tr("ViVi 5.0"),
 					 tr("The document has been modified.\n"
 						"Do you want to save your changes?"),
 					 QMessageBox::Save | QMessageBox::Discard
@@ -363,7 +363,7 @@ void MainWindow::updateWindowTitle()
 	QString title = m_curFile;
 	if( isWindowModified() )
 		title += "*";
-	title += " - qvi ";
+	title += " - ViVi ";
 	title += VERSION_STR;
     setWindowTitle(title);
 }
@@ -428,8 +428,10 @@ bool MainWindow::save()
 }
 bool MainWindow::saveAs()
 {
+	//QMessageBox::warning(this, "test", "MainWindow::saveAs()");
 	QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"), m_curFile, "*.*");
 
+	//QMessageBox::warning(this, "test", "fileName = " + fileName);
 	if( fileName.isEmpty() )
 		return false;
 
@@ -445,41 +447,60 @@ void MainWindow::save(const QString &fileName)
 }
 bool MainWindow::saveFile(const QString &fileName, bool replace)
 {
+	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile " + fileName);
 	QFile file(fileName);
 	if( !file.open(QFile::WriteOnly /*| QFile::Text*/) ) {
-		QMessageBox::warning(this, tr("qvi"),
+		QMessageBox::warning(this, tr("ViVi 5.0"),
 							 tr("Cannot write file %1:\n%2.")
 							 .arg(fileName)
 							 .arg(file.errorString()));
 		return false;
 	}
+	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() file opened.");
 	QApplication::setOverrideCursor(Qt::WaitCursor);
+	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() setOverrideCursor()");
 	QTextCodec *codec = 0;
+	cchar *codecName;
 	switch( m_editor->charEncoding() ) {
 	case CharEncoding::UTF8:
 		if( m_editor->withBOM() )
 			file.write((cchar*)UTF8_BOM, UTF8_BOM_LENGTH);
-		codec = QTextCodec::codecForName("UTF-8");
+		codec = QTextCodec::codecForName(codecName = "UTF-8");
 		break;
 	case CharEncoding::UTF16_LE:
 		if( m_editor->withBOM() )
 			file.write((cchar*)UTF16LE_BOM, UTF16_BOM_LENGTH);
-		codec = QTextCodec::codecForName("UTF-16LE");
+		codec = QTextCodec::codecForName(codecName = "UTF-16LE");
 		break;
 	case CharEncoding::UTF16_BE:
 		if( m_editor->withBOM() )
 			file.write((cchar*)UTF16BE_BOM, UTF16_BOM_LENGTH);
-		codec = QTextCodec::codecForName("UTF-16BE");
+		codec = QTextCodec::codecForName(codecName = "UTF-16BE");
 		break;
 	case CharEncoding::EUC:
-		codec = QTextCodec::codecForName("EUC-JP");
+		codec = QTextCodec::codecForName(codecName = "EUC-JP");
 		break;
 	case CharEncoding::UNKNOWN:
 	default:
-		codec = QTextCodec::codecForName("Shift-JIS");
+		codec = QTextCodec::codecForName(codecName = "Shift-JIS");
 	}
-	QByteArray ba = codec->fromUnicode(m_editor->toPlainText());
+	if( codec == 0 )
+		codec = QTextCodec::codecForLocale();
+	if( codec == 0 ) {
+		QMessageBox::warning(this, tr("ViVi 5.0"),
+							 tr("No QTextCodec for %1.")
+							 .arg(QString(codecName)));
+		return false;
+	}
+	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() set codec");
+	const QString text = m_editor->toPlainText();
+	//QMessageBox::warning(this, "ViVi 5.0",
+	//				QString("MainWindow::saveFile() toPlaintext() finished. length = %1")
+	//						.arg(text.length()));
+	QByteArray ba = codec->fromUnicode(text);
+	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() set QByteArray");
 	file.write(ba);
+	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() wrote file");
 	QApplication::restoreOverrideCursor();
 
 	if( replace )
@@ -522,7 +543,7 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
     uchar ce;
     bool withBOM;
 	if( !::loadFile(fn, buffer, errorString, &ce, &withBOM) ) {
-		QMessageBox::warning(this, tr("qvi"),
+		QMessageBox::warning(this, tr("ViVi 5.0"),
 							 tr("Cannot read file %1:\n%2.")
 							 .arg(fn)
 							 .arg(errorString));

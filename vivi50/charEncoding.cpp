@@ -21,6 +21,7 @@
 */
 
 #include <QtCore>
+#include <QMessageBox>
 #include "charEncoding.h"
 
 #define		EUC_KANA_LEADBYTE		((uchar)0x8e)
@@ -307,6 +308,27 @@ bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 	cuchar *endptr = ptr + ba.size();
 	int BOMLength;
 	uchar ce = checkCharEncoding(ptr, endptr, BOMLength);
+#if 1
+	cchar *codecName;
+	switch( ce ) {
+	case CharEncoding::UTF8:
+		codecName = "UTF-8";
+		break;
+	case CharEncoding::UTF16_LE:
+		codecName = "UTF-16LE";
+		break;
+	case CharEncoding::UTF16_BE:
+		codecName = "UTF-16BE";
+		break;
+	case CharEncoding::EUC:
+		codecName = "EUC-JP";
+		break;
+	case CharEncoding::UNKNOWN:
+	default:
+		codecName = "Shift-JIS";
+	}
+	QTextCodec *codec = QTextCodec::codecForName(codecName);;
+#else
 	QTextCodec *codec = 0;
 	switch( ce ) {
 	case CharEncoding::UTF8:
@@ -324,6 +346,15 @@ bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 	case CharEncoding::UNKNOWN:
 	default:
 		codec = QTextCodec::codecForName("Shift-JIS");
+	}
+#endif
+	if( codec == 0 )
+		codec = QTextCodec::codecForLocale();
+	if( codec == 0 ) {
+		QMessageBox::warning(0, "ViVi 5.0",
+			QObject::tr("No QTextCodec for %1.")
+							 .arg(QString(codecName)));
+		return false;
 	}
 	buffer = codec->toUnicode(ba);
 	if( cePtr != 0 ) *cePtr = ce;
