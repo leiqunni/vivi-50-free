@@ -34,7 +34,7 @@ DBCStable2	.\charEncoding.cpp	/^bool const DBCStable2[0x100] = {		\/\/	‚c‚a•¶Žš‚
 Down	.\textCursor.h	/^		Down,$/;"	e	enum:TextCursor::__anon2
 EOLOffset	.\TextDocument.cpp	/^uint TextBlock::EOLOffset() const$/;"	f	class:TextBlock
 EUC	.\charEncoding.h	/^		EUC,$/;"	e	enum:CharEncoding::__anon1
-EUC_KANA_LEADBYTE	.\charEncoding.cpp	26;"	d	file:
+EUC_KANA_LEADBYTE	.\charEncoding.cpp	27;"	d	file:
 EndOfBlock	.\textCursor.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon2
 EndOfDocument	.\textCursor.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon2
 EndOfWord	.\textCursor.h	/^		EndOfWord,$/;"	e	enum:TextCursor::__anon2
@@ -392,6 +392,7 @@ lineNumberLength	.\TextView.cpp	/^int TextView::lineNumberLength() const$/;"	f	c
 lineNumberLength	.\PlainTextEdit.cpp	/^int PlainTextEdit::lineNumberLength() const$/;"	f	class:PlainTextEdit
 loadFile	.\charEncoding.cpp	/^bool loadFile(const QString &fileName, QString &buffer, QString &errorString,$/;"	f
 loadFile	.\mainwindow.cpp	/^void MainWindow::loadFile(const QString &fileName, int lineNum)$/;"	f	class:MainWindow
+loadFile	.\charEncoding.cpp	/^bool loadFile(const QString &fileName, QString &buffer, QString &errorString,$/;"	f
 loadFile	.\charEncoding.cpp	/^bool loadFile(const QString &fileName, QString &buffer, QString &errorString,$/;"	f
 loadFile	.\charEncoding.cpp	/^bool loadFile(const QString &fileName, QString &buffer, QString &errorString,$/;"	f
 m_absFilePath	.\mainwindow.h	/^	QString	m_absFilePath;$/;"	m	class:MainWindow

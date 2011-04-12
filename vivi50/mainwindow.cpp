@@ -26,7 +26,7 @@
 #include "TextDocument.h"
 #include "charEncoding.h"
 
-#define	VERSION_STR			"5.0.002 Dev"
+#define	VERSION_STR			"5.0.003 Dev"
 
 MainWindow *pMainWindow;
 
@@ -460,36 +460,38 @@ bool MainWindow::saveFile(const QString &fileName, bool replace)
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() setOverrideCursor()");
 	QTextCodec *codec = 0;
-	cchar *codecName;
+	cchar *codecName = 0;
 	switch( m_editor->charEncoding() ) {
 	case CharEncoding::UTF8:
 		if( m_editor->withBOM() )
 			file.write((cchar*)UTF8_BOM, UTF8_BOM_LENGTH);
-		codec = QTextCodec::codecForName(codecName = "UTF-8");
+		codecName = "UTF-8";
 		break;
 	case CharEncoding::UTF16_LE:
 		if( m_editor->withBOM() )
 			file.write((cchar*)UTF16LE_BOM, UTF16_BOM_LENGTH);
-		codec = QTextCodec::codecForName(codecName = "UTF-16LE");
+		codecName = "UTF-16LE";
 		break;
 	case CharEncoding::UTF16_BE:
 		if( m_editor->withBOM() )
 			file.write((cchar*)UTF16BE_BOM, UTF16_BOM_LENGTH);
-		codec = QTextCodec::codecForName(codecName = "UTF-16BE");
+		codecName = "UTF-16BE";
 		break;
 	case CharEncoding::EUC:
-		codec = QTextCodec::codecForName(codecName = "EUC-JP");
+		codecName = "EUC-JP";
 		break;
-	case CharEncoding::UNKNOWN:
-	default:
-		codec = QTextCodec::codecForName(codecName = "Shift-JIS");
+	case CharEncoding::SJIS:
+		codecName = "Shift-JIS";
+		break;
 	}
+	if( codecName != 0 )
+		codec = QTextCodec::codecForName(codecName);
 	if( codec == 0 )
 		codec = QTextCodec::codecForLocale();
 	if( codec == 0 ) {
 		QMessageBox::warning(this, tr("ViVi 5.0"),
 							 tr("No QTextCodec for %1.")
-							 .arg(QString(codecName)));
+							 .arg(QString(codecName ? codecName : "Locale")));
 		return false;
 	}
 	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() set codec");

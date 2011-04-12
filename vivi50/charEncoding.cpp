@@ -308,8 +308,7 @@ bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 	cuchar *endptr = ptr + ba.size();
 	int BOMLength;
 	uchar ce = checkCharEncoding(ptr, endptr, BOMLength);
-#if 1
-	cchar *codecName;
+	cchar *codecName = 0;
 	switch( ce ) {
 	case CharEncoding::UTF8:
 		codecName = "UTF-8";
@@ -323,37 +322,16 @@ bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 	case CharEncoding::EUC:
 		codecName = "EUC-JP";
 		break;
-	case CharEncoding::UNKNOWN:
-	default:
+	case CharEncoding::SJIS:
 		codecName = "Shift-JIS";
 	}
-	QTextCodec *codec = QTextCodec::codecForName(codecName);;
-#else
-	QTextCodec *codec = 0;
-	switch( ce ) {
-	case CharEncoding::UTF8:
-		codec = QTextCodec::codecForName("UTF-8");
-		break;
-	case CharEncoding::UTF16_LE:
-		codec = QTextCodec::codecForName("UTF-16LE");
-		break;
-	case CharEncoding::UTF16_BE:
-		codec = QTextCodec::codecForName("UTF-16BE");
-		break;
-	case CharEncoding::EUC:
-		codec = QTextCodec::codecForName("EUC-JP");
-		break;
-	case CharEncoding::UNKNOWN:
-	default:
-		codec = QTextCodec::codecForName("Shift-JIS");
-	}
-#endif
+	QTextCodec *codec = codecName ? QTextCodec::codecForName(codecName) : 0;
 	if( codec == 0 )
 		codec = QTextCodec::codecForLocale();
 	if( codec == 0 ) {
 		QMessageBox::warning(0, "ViVi 5.0",
 			QObject::tr("No QTextCodec for %1.")
-							 .arg(QString(codecName)));
+							 .arg(QString(codecName ? codecName : "Locale")));
 		return false;
 	}
 	buffer = codec->toUnicode(ba);
