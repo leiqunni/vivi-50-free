@@ -287,20 +287,7 @@ int TextView::textBlockToY(const TextBlock &block) const
 		return -1;
 	return y;
 }
-int getEOLOffset(const QString text)
-{
-	int ix = text.length();
-	if( text.isEmpty() ) return ix;
-	if( text[ix-1] == '\r' )
-		return ix - 1;
-	if( text[ix-1] == '\n' ) {
-		if( ix > 1 && text[ix-2] == '\r' )
-			return ix - 2;
-		else
-			return ix - 1;
-	}
-	return ix;
-}
+int getEOLOffset(const QString text);
 void TextView::paintEvent(QPaintEvent * event)
 {
 	//qDebug() << "blockData.index = " << m_document->blockData().index();

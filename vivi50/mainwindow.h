@@ -44,6 +44,7 @@ public:
     void doOutput(const QString &);
 
 protected:
+	bool	eventFilter(QObject *obj, QEvent *event);
     void closeEvent(QCloseEvent *event);
     MainWindow	*findMainWindow(const QString &fileName);
     void	updateWindowTitle();
@@ -84,7 +85,7 @@ private slots:
 
 private:
 	TextView	*m_editor;
-	QTextEdit	*output;
+	QTextEdit	*m_output;
 	QString	m_curFile;
 	bool	m_isUntitled;
 	bool	m_isModified;

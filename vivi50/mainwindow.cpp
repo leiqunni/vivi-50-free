@@ -215,11 +215,12 @@ void MainWindow::createDockWindows()
 {
     QDockWidget *dock = new QDockWidget(tr("Output"), this);
     dock->setAllowedAreas(Qt::AllDockWidgetAreas);
-    output = new QTextEdit(dock);
-    output->setReadOnly(true);
-    dock->setWidget(output);
+    m_output = new QTextEdit(dock);
+    m_output->setReadOnly(true);
+    dock->setWidget(m_output);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
     viewMenu->addAction(dock->toggleViewAction());
+	m_output->viewport()->installEventFilter(this);
 }
 void MainWindow::readSettings()
 {
@@ -264,13 +265,36 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 #endif
 }
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+	if( obj == m_output->viewport() ) {
+		//qDebug() << event->type();
+		if( event->type() == QEvent::MouseButtonDblClick ) {
+			const QTextCursor cur = m_output->textCursor();
+			const QTextBlock block = cur.block();
+			//qDebug() << block.text();
+			QString text = block.text();
+			int ix, ix2;
+			if( !text.isEmpty() && text[0] == '"' &&
+				(ix = text.indexOf("\"(", 1)) > 1 &&
+				(ix2 = text.indexOf(")", ix)) > 1 )
+			{
+				QString fileName = text.mid(1, ix - 1);
+				int lineNum = text.mid(ix+2, ix2-(ix+2)).toInt();
+				loadFile(fileName, lineNum);
+			}
+		}
+	}
+	
+	return false;
+}
 void MainWindow::doOutput(const QString &text)
 {
-	QTextCursor cur = output->textCursor();
+	QTextCursor cur = m_output->textCursor();
 	cur.movePosition(QTextCursor::End);
 	cur.insertText(text);
-	output->setTextCursor(cur);
-	output->viewport()->repaint();		//	‹­§Ä•`‰æ
+	m_output->setTextCursor(cur);
+	m_output->viewport()->repaint();		//	‹­§Ä•`‰æ
 }
 //	settings ‚©‚ç RecentFile î•ñ‚ğæ‚èo‚µArecentFileActs ‚Éİ’è
 void MainWindow::updateRecentFileActions()

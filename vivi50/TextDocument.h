@@ -192,7 +192,6 @@ public:
 class TextBlock
 {
 public:
-#if	BLOCK_HAS_SIZE
 	//TextBlock(TextDocument *document, index_t blockNumber)
 	//	: m_document(document), m_blockNumber(blockNumber)
 	//	{}
@@ -202,7 +201,6 @@ public:
 	TextBlock(TextDocument *document, TextBlockData block)
 		: m_document(document), m_data(block)
 		{}
-#endif
 	TextBlock(const TextBlock &x)
 		: m_document(x.m_document)
 #if	BLOCK_HAS_SIZE
@@ -214,6 +212,7 @@ public:
 public:
 	uint		size() const;		//	改行を含めたコード長
 	uint		length() const { return size(); }
+	uint		EOLOffset() const;
 	bool		isValid() const { return m_document == 0 || blockNumber() != INVALID_INDEX; }
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }
@@ -235,11 +234,7 @@ public:
 
 private:
 	TextDocument	*m_document;
-#if	BLOCK_HAS_SIZE
 	TextBlockData	m_data;
-	//index_t			m_blockNumber;		//	ブロック配列インデックス 0..*
-	//index_t			m_blockPosition;
-#endif
 };
 
 //----------------------------------------------------------------------

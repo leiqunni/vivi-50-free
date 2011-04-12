@@ -18,6 +18,13 @@
 - 2011/04/07 "TextDocument.cpp" B:   undone 暫定コード
 # 2011/04/12 13:11:35
 - 2011/04/09 "PlainTextEdit.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+# 2011/04/12 13:39:57
++ 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
++ 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
++ 2011/04/12 "TextView.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
 # latest
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
 2011/04/10 "TextDocument.cpp" M:   undone 不要なヒープの解放
+2011/04/12 "textCursor.cpp" B:   undone 暫定コード
+2011/04/12 "textCursor.cpp" B:   undone 暫定コード
+2011/04/12 "TextView.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入

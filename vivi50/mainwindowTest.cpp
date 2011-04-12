@@ -392,7 +392,7 @@ void test_TextDocument()
 	}
 	if( 1 ) {
 		TextDocument doc;
-		doc.setPlainText(QString("12\r\nxyz"));
+		doc.setPlainText(QString("12\r\nxyzzz\n"));
 		TextCursor cur(&doc);
 		cur.movePosition(TextCursor::Right);
 		ut.ut_test_equal(1, cur.position());		//	2
@@ -403,6 +403,29 @@ void test_TextDocument()
 		cur.movePosition(TextCursor::Left);
 		ut.ut_test_equal(2, cur.position());		//	\r\n
 		cur.movePosition(TextCursor::Left);
+		ut.ut_test_equal(1, cur.position());		//	2
+	}
+	if( 1 ) {		//	カーソル上下移動テスト
+		TextDocument doc;
+		doc.setPlainText(QString("12\r\nxyzzz\n"));
+		TextCursor cur(&doc);
+		cur.movePosition(TextCursor::Down);
+		ut.ut_test_equal(4, cur.position());		//	x
+		cur.movePosition(TextCursor::Down);
+		ut.ut_test_equal(10, cur.position());		//	EOF
+		cur.movePosition(TextCursor::Up);
+		ut.ut_test_equal(4, cur.position());		//	x
+		cur.movePosition(TextCursor::Up);
+		ut.ut_test_equal(0, cur.position());		//	1
+		cur.movePosition(TextCursor::Right);
+		ut.ut_test_equal(1, cur.position());		//	2
+		cur.movePosition(TextCursor::Down);
+		ut.ut_test_equal(5, cur.position());		//	y
+		cur.movePosition(TextCursor::Down);
+		ut.ut_test_equal(10, cur.position());		//	EOF
+		cur.movePosition(TextCursor::Up);
+		ut.ut_test_equal(5, cur.position());		//	y
+		cur.movePosition(TextCursor::Up);
 		ut.ut_test_equal(1, cur.position());		//	2
 	}
 	if( 1 ) {

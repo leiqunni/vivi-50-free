@@ -162,6 +162,24 @@ index_t TextBlock::position() const
 {
 	return isValid() ? m_data.m_position : 0;
 }
+uint TextBlock::EOLOffset() const
+{
+	if( !isValid() ) return 0;
+	const size_t sz = size();
+	index_t np = position() + sz;
+	if( np > position() ) {
+		uchar uch = (*m_document)[np-1];
+		if( uch == '\r' )
+			return sz - 1;
+		if( uch == '\n' ) {
+			if( np - 2 >= position() && (*m_document)[np-2] == '\r' )
+				return sz - 2;
+			else
+				return sz - 1;
+		}
+	}
+	return sz;
+}
 
 int TextBlock::charsCount(index_t position) const
 {

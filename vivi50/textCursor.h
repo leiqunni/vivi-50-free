@@ -48,17 +48,26 @@ public:
 public:
 	TextCursor(TextDocument *document = 0, index_t position = 0)
 		: m_document(document), m_position(position), m_anchor(position)
-		{ updateBlockData(); }
+		{
+			updateBlockData();
+			m_offset = m_position - m_blockData.index();
+		}
 	TextCursor(TextDocument *document, index_t position, index_t anchor)
 		: m_document(document), m_position(position), m_anchor(anchor)
-		{ updateBlockData(); }
+		{
+			updateBlockData();
+			m_offset = m_position - m_blockData.index();
+		}
 	TextCursor(TextDocument *document, index_t position, index_t anchor,
 				TextBlockData blockData)
 		: m_document(document), m_position(position), m_anchor(anchor)
 		, m_blockData(blockData)
-		{}
+		{
+			m_offset = m_position - m_blockData.index();
+		}
 	TextCursor(const TextCursor &x)
 		: m_document(x.m_document), m_position(x.m_position), m_anchor(x.m_anchor)
+		, m_offset(x.m_offset)
 		, m_blockData(x.m_blockData), m_anchorBlockData(x.m_anchorBlockData)
 		{}
 	~TextCursor() {}
@@ -101,6 +110,7 @@ protected:
 protected:
 	TextDocument	*m_document;
 	index_t			m_position;		//	カーソル位置
+	index_t			m_offset;		//	行頭からのオフセット値（本来の値）
 	index_t			m_anchor;		//	アンカー位置
 	TextBlockData	m_blockData;
 	TextBlockData	m_anchorBlockData;

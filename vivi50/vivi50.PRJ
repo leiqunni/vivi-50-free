@@ -21,8 +21,8 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-10.5407,151.554)
   main.cpp	(-172.929,-197.269)
-  mainwindow.cpp	(-119.64,-124.559)
-  mainwindow.h	(-119.64,-143.186)
+* mainwindow.cpp	(-119.64,-124.559)
+* mainwindow.h	(-119.64,-143.186)
   TextDocument.cpp	(-104.744,88.6985)
   TextDocument.h	(-104.744,70.0708)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(-54.8429,-197.765)
@@ -33,10 +33,13 @@ memFileColumnWd = 320
   charEncoding.cpp	(52.3002,-81.9606)
   charEncoding.h	(52.3002,-100.588)
   textBlockData.h	(-218.555,81.2585)
-  textCursor.cpp	(-223.899,-16.5373)
+* textCursor.cpp	(-223.899,-16.5373)
   textCursor.h	(-223.899,-35.165)
   TextView.cpp	(-66.4182,-12.2611)
   TextView.h	(-66.4182,-30.8887)
 [ToDo]
   "TextDocument.cpp" 38 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 50 'M: ' '' undone 不要なヒープの解放
+  "textCursor.cpp" 385 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 394 'B: ' '' undone 暫定コード
+  "TextView.cpp" 542 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
