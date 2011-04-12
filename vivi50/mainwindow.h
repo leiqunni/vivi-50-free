@@ -29,7 +29,7 @@
 class QAction;
 class QMenu;
 class QTextEdit;
-class PlainTextEdit;
+class TextView;
 
 class MainWindow : public QMainWindow
 {
@@ -83,7 +83,7 @@ private slots:
 	void doBenchmark();
 
 private:
-	PlainTextEdit	*m_editor;
+	TextView	*m_editor;
 	QTextEdit	*output;
 	QString	m_curFile;
 	bool	m_isUntitled;

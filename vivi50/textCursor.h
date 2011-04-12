@@ -16,7 +16,7 @@
 #include	"textBlockData.h"
 
 class TextDocument;
-class PlainTextEdit;
+class TextView;
 class TextBlock;
 
 typedef size_t index_t;
@@ -119,13 +119,13 @@ public:
 class ViewTextCursor : public TextCursor
 {
 public:
-	ViewTextCursor(PlainTextEdit *view = 0, index_t position = 0);
+	ViewTextCursor(TextView *view = 0, index_t position = 0);
 		//: m_view(view), TextCursor(position)
 		//{ updateBlockData(); }
-	ViewTextCursor(PlainTextEdit *view, index_t position, index_t anchor);
+	ViewTextCursor(TextView *view, index_t position, index_t anchor);
 		//: m_view(view), TextCursor(position, anchor)
 		//{ updateBlockData(); }
-	ViewTextCursor(PlainTextEdit *view, index_t position, index_t anchor,
+	ViewTextCursor(TextView *view, index_t position, index_t anchor,
 				TextBlockData blockData);
 		//: m_view(view), TextCursor(position, anchor, blockData)
 		//{}
@@ -135,10 +135,10 @@ public:
 	~ViewTextCursor() {}
 
 public:
-	const PlainTextEdit	*view() const { return m_view; }
+	const TextView	*view() const { return m_view; }
 
 public:
-	PlainTextEdit	*view() { return m_view; }
+	TextView	*view() { return m_view; }
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
 	void	setPosition(index_t position, TextBlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
@@ -151,7 +151,7 @@ protected:
 	void	updateBlockData(uchar mode = MoveAnchor);		//	m_blockIndex, m_blockPosition çXêV
 
 private:
-	PlainTextEdit	*m_view;
+	TextView	*m_view;
 };
 
 #endif		//_HEADER_TEXTCURSOR_H

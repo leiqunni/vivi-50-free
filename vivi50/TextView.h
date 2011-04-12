@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------
 //
-//			File:			"PlainTextEdit.h"
+//			File:			"TextView.h"
 //			Created:		01-Apr-2011
 //			Author:			Nobuhide Tsuda
-//			Description:	PlainTextEdit クラス宣言
+//			Description:	TextView クラス宣言
 //
 //----------------------------------------------------------------------
 
@@ -28,7 +28,7 @@
 #include	"textBlockData.h"
 #include	"textCursor.h"
 
-class PlainTextEdit;
+class TextView;
 class TextDocument;
 class TextCursor;
 class TextBlock;
@@ -36,13 +36,13 @@ class TextBlock;
 class QTimer;
 
 
-class PlainTextEdit : public QAbstractScrollArea
+class TextView : public QAbstractScrollArea
 {
 	Q_OBJECT
 
 public:
-	PlainTextEdit(QWidget *parent = 0);
-	~PlainTextEdit();
+	TextView(QWidget *parent = 0);
+	~TextView();
 
 public:
 	uchar	charEncoding() const;

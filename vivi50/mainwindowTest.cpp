@@ -22,7 +22,7 @@
 
 #include <QtGui>
 #include "mainwindow.h"
-#include "PlainTextEdit.h"
+#include "TextView.h"
 #include "TextDocument.h"
 
 extern MainWindow *pMainWindow;
@@ -577,7 +577,7 @@ void test_TextDocument()
 		}
 	}
 	if( 1 ) {
-		PlainTextEdit editor;
+		TextView editor;
 		TextDocument *doc = editor.document();
 		ut.ut_test( doc->isEmpty() );
 		ut.ut_test_equal(0, doc->size());

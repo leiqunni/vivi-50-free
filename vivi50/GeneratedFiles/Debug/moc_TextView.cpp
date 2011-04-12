@@ -1,15 +1,15 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'PlainTextEdit.h'
+** Meta object code from reading C++ file 'TextView.h'
 **
-** Created: Sun Apr 10 21:36:33 2011
+** Created: Tue Apr 12 13:09:35 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../PlainTextEdit.h"
+#include "../../TextView.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'PlainTextEdit.h' doesn't include <QObject>."
+#error "The header file 'TextView.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
 #error "This file was generated using the moc from 4.7.1. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_PlainTextEdit[] = {
+static const uint qt_meta_data_TextView[] = {
 
  // content:
        5,       // revision
@@ -31,55 +31,55 @@ static const uint qt_meta_data_PlainTextEdit[] = {
        1,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
-      15,   14,   14,   14, 0x05,
+      10,    9,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      36,   14,   14,   14, 0x0a,
-      43,   14,   14,   14, 0x0a,
-      49,   14,   14,   14, 0x0a,
-      57,   14,   14,   14, 0x0a,
-      64,   14,   14,   14, 0x0a,
-      71,   14,   14,   14, 0x0a,
-      83,   14,   14,   14, 0x0a,
-     105,   14,   14,   14, 0x0a,
-     128,   14,   14,   14, 0x0a,
-     149,   14,   14,   14, 0x09,
-     171,   14,   14,   14, 0x09,
+      31,    9,    9,    9, 0x0a,
+      38,    9,    9,    9, 0x0a,
+      44,    9,    9,    9, 0x0a,
+      52,    9,    9,    9, 0x0a,
+      59,    9,    9,    9, 0x0a,
+      66,    9,    9,    9, 0x0a,
+      78,    9,    9,    9, 0x0a,
+     100,    9,    9,    9, 0x0a,
+     123,    9,    9,    9, 0x0a,
+     144,    9,    9,    9, 0x09,
+     166,    9,    9,    9, 0x09,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_PlainTextEdit[] = {
-    "PlainTextEdit\0\0showMessage(QString)\0"
-    "copy()\0cut()\0paste()\0undo()\0redo()\0"
-    "selectAll()\0setFontPointSize(int)\0"
-    "setFontFamily(QString)\0makeFontBigger(bool)\0"
-    "onBlockCountChanged()\0onTimer()\0"
+static const char qt_meta_stringdata_TextView[] = {
+    "TextView\0\0showMessage(QString)\0copy()\0"
+    "cut()\0paste()\0undo()\0redo()\0selectAll()\0"
+    "setFontPointSize(int)\0setFontFamily(QString)\0"
+    "makeFontBigger(bool)\0onBlockCountChanged()\0"
+    "onTimer()\0"
 };
 
-const QMetaObject PlainTextEdit::staticMetaObject = {
-    { &QAbstractScrollArea::staticMetaObject, qt_meta_stringdata_PlainTextEdit,
-      qt_meta_data_PlainTextEdit, 0 }
+const QMetaObject TextView::staticMetaObject = {
+    { &QAbstractScrollArea::staticMetaObject, qt_meta_stringdata_TextView,
+      qt_meta_data_TextView, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &PlainTextEdit::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &TextView::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *PlainTextEdit::metaObject() const
+const QMetaObject *TextView::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *PlainTextEdit::qt_metacast(const char *_clname)
+void *TextView::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_PlainTextEdit))
-        return static_cast<void*>(const_cast< PlainTextEdit*>(this));
+    if (!strcmp(_clname, qt_meta_stringdata_TextView))
+        return static_cast<void*>(const_cast< TextView*>(this));
     return QAbstractScrollArea::qt_metacast(_clname);
 }
 
-int PlainTextEdit::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int TextView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QAbstractScrollArea::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -106,7 +106,7 @@ int PlainTextEdit::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void PlainTextEdit::showMessage(const QString & _t1)
+void TextView::showMessage(const QString & _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

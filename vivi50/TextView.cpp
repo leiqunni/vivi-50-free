@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------
 //
-//			File:			"PlainTextEdit.cpp"
+//			File:			"TextView.cpp"
 //			Created:		01-Apr-2011
 //			Author:			Nobuhide Tsuda
-//			Description:	PlainTextEdit クラス実装
+//			Description:	TextView クラス実装
 //
 //----------------------------------------------------------------------
 
@@ -21,7 +21,7 @@
 */
 
 #include <QtGui>
-#include "PlainTextEdit.h"
+#include "TextView.h"
 #include	"TextDocument.h"
 #include	"textCursor.h"
 #include	<math.h>
@@ -32,7 +32,7 @@
 #define		MARGIN_LEFT		4
 //#define		LINE_HEIGHT		20
 
-PlainTextEdit::PlainTextEdit(QWidget *parent)
+TextView::TextView(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
 	m_mouseCaptured = false;
@@ -64,16 +64,16 @@ PlainTextEdit::PlainTextEdit(QWidget *parent)
 #endif
 }
 
-PlainTextEdit::~PlainTextEdit()
+TextView::~TextView()
 {
 	delete m_document;
 	delete m_textCursor;
 }
-size_t PlainTextEdit::size() const
+size_t TextView::size() const
 {
 	return document()->size();
 }
-TextBlockData PlainTextEdit::findBlockData(index_t position) const
+TextBlockData TextView::findBlockData(index_t position) const
 {
 	if( m_blocks.size() == 1 )
 		return TextBlockData(0, 0);
@@ -120,34 +120,34 @@ TextBlockData PlainTextEdit::findBlockData(index_t position) const
 	return data;
 }
 #if 0
-void PlainTextEdit::resetCursorBlinkTimer()
+void TextView::resetCursorBlinkTimer()
 {
 	m_tickCount = m_timer->elapsed();
 }
 #endif
-void PlainTextEdit::onTimer()
+void TextView::onTimer()
 {
 	m_drawCursor = !m_drawCursor;
 	viewport()->update();
 }
-uchar PlainTextEdit::charEncoding() const
+uchar TextView::charEncoding() const
 {
 	return document()->charEncoding();
 }
-bool PlainTextEdit::withBOM() const
+bool TextView::withBOM() const
 {
 	return document()->withBOM();
 }
-QString PlainTextEdit::toPlainText() const
+QString TextView::toPlainText() const
 {
 	return document()->toPlainText();
 }
-bool PlainTextEdit::isModified() const
+bool TextView::isModified() const
 {
 	return document()->isModified();
 }
 
-int PlainTextEdit::lineNumberLength() const
+int TextView::lineNumberLength() const
 {
 	const size_t bc = document()->blockCount();
 	if( bc < 10000 ) return 6;
@@ -160,7 +160,7 @@ int PlainTextEdit::lineNumberLength() const
 			[2] フォントサイズが変化した場合
 			[3] ウィンドウサイズが変化した場合
 */
-void PlainTextEdit::onFontChanged()
+void TextView::onFontChanged()
 {
 	//setTabStopWidth(fontMetrics().width('>') * 4);		//	tab 4
 	const int len = lineNumberLength();
@@ -170,13 +170,13 @@ void PlainTextEdit::onFontChanged()
 	updateLineNumberAreaSize();
 	updateScrollBarData();
 }
-void PlainTextEdit::onBlockCountChanged()
+void TextView::onBlockCountChanged()
 {
 	//updateScrollBarData();
 	onFontChanged();
 }
 
-void PlainTextEdit::updateScrollBarData()
+void TextView::updateScrollBarData()
 {
 	QFontMetrics fm = fontMetrics();
 	QSize areaSize = viewport()->size();
@@ -191,7 +191,7 @@ void PlainTextEdit::updateScrollBarData()
 
 	m_lineNumberArea->update();
 }
-void PlainTextEdit::focusInEvent ( QFocusEvent * event )
+void TextView::focusInEvent ( QFocusEvent * event )
 {
 	QAbstractScrollArea::focusInEvent( event );
 	const QString fullPath = document()->fullPath();
@@ -202,7 +202,7 @@ void PlainTextEdit::focusInEvent ( QFocusEvent * event )
 	}
 }
 
-int PlainTextEdit::xToOffset(const QString &text, int x) const
+int TextView::xToOffset(const QString &text, int x) const
 {
 	const QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
@@ -224,7 +224,7 @@ int PlainTextEdit::xToOffset(const QString &text, int x) const
 	}
 	return ix;
 }
-int PlainTextEdit::offsetToX(const QString &text, int offset) const
+int TextView::offsetToX(const QString &text, int offset) const
 {
 	offset = qMin(offset, text.length());
 	const QFontMetrics fm = fontMetrics();
@@ -254,7 +254,7 @@ int PlainTextEdit::offsetToX(const QString &text, int offset) const
 	return x;
 }
 
-TextBlock PlainTextEdit::yToTextBlock(int py) const
+TextBlock TextView::yToTextBlock(int py) const
 {
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
@@ -271,12 +271,12 @@ TextBlock PlainTextEdit::yToTextBlock(int py) const
 	}
 	return block;
 }
-TextBlock PlainTextEdit::firstVisibleBlock() const
+TextBlock TextView::firstVisibleBlock() const
 {
 	//QFontMetrics fm = fontMetrics();
 	return m_document->findBlockByNumber(verticalScrollBar()->value());
 }
-int PlainTextEdit::textBlockToY(const TextBlock &block) const
+int TextView::textBlockToY(const TextBlock &block) const
 {
 	TextBlock fvBlock = firstVisibleBlock();
 	if( block < fvBlock ) return -1;
@@ -301,7 +301,7 @@ int getEOLOffset(const QString text)
 	}
 	return ix;
 }
-void PlainTextEdit::paintEvent(QPaintEvent * event)
+void TextView::paintEvent(QPaintEvent * event)
 {
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
 	//qDebug() << verticalScrollBar()->value();
@@ -402,7 +402,7 @@ void PlainTextEdit::paintEvent(QPaintEvent * event)
 	m_lineNumberArea->update();
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
 }
-void PlainTextEdit::ensureCursorVisible()
+void TextView::ensureCursorVisible()
 {
 	TextBlock fvBlock = firstVisibleBlock();
 	TextBlock curBlock = m_textCursor->block();
@@ -425,7 +425,7 @@ void PlainTextEdit::ensureCursorVisible()
 	viewport()->update();
 }
 
-bool PlainTextEdit::event ( QEvent * event )
+bool TextView::event ( QEvent * event )
 {
 	if( event->type() == QEvent::KeyPress ) {
 		QKeyEvent *k = static_cast<QKeyEvent *>(event);
@@ -445,7 +445,7 @@ bool PlainTextEdit::event ( QEvent * event )
 #endif
 	return QAbstractScrollArea::event(event);
 }
-QVariant PlainTextEdit::inputMethodQuery ( Qt::InputMethodQuery query ) const
+QVariant TextView::inputMethodQuery ( Qt::InputMethodQuery query ) const
 {
 	if( query == Qt::ImMicroFocus ) {
 		TextBlock block = m_textCursor->block();
@@ -455,7 +455,7 @@ QVariant PlainTextEdit::inputMethodQuery ( Qt::InputMethodQuery query ) const
 	}
 	return QAbstractScrollArea::inputMethodQuery(query);
 }
-void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
+void TextView::inputMethodEvent ( QInputMethodEvent * event )
 {
 	//qDebug() << "*** inputMethodEvent " << event;
 	if( m_toDeleteIMEPreeditText ) {
@@ -492,7 +492,7 @@ void PlainTextEdit::inputMethodEvent ( QInputMethodEvent * event )
 	}
 	QAbstractScrollArea::inputMethodEvent( event );
 }
-void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
+void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 {
 	Qt::KeyboardModifiers mod = keyEvent->modifiers();
 	const bool ctrl = (mod & Qt::ControlModifier) != 0;
@@ -583,7 +583,7 @@ void PlainTextEdit::keyPressEvent ( QKeyEvent * keyEvent )
 		viewport()->update();
 	}
 }
-void PlainTextEdit::wheelEvent ( QWheelEvent * event )
+void TextView::wheelEvent ( QWheelEvent * event )
 {
 	Qt::KeyboardModifiers mod = event->modifiers ();
 	if( (mod & Qt::ControlModifier) != 0 ) {
@@ -591,7 +591,7 @@ void PlainTextEdit::wheelEvent ( QWheelEvent * event )
 	} else
 		QAbstractScrollArea::wheelEvent(event);
 }
-void PlainTextEdit::makeFontBigger(bool bigger)
+void TextView::makeFontBigger(bool bigger)
 {
 	int sz = font().pointSize();
 	if( bigger )
@@ -599,7 +599,7 @@ void PlainTextEdit::makeFontBigger(bool bigger)
 	else if( !--sz ) return;
 	setFontPointSize(sz);
 }
-void PlainTextEdit::setFontPointSize(int sz)
+void TextView::setFontPointSize(int sz)
 {
 	QFont ft = font();
 	ft.setPointSize(sz);
@@ -607,7 +607,7 @@ void PlainTextEdit::setFontPointSize(int sz)
 	onFontChanged();
 	//emit showMessage(QString(tr("fontSize:%1").arg(sz)));
 }
-void PlainTextEdit::setFontFamily(const QString &name)
+void TextView::setFontFamily(const QString &name)
 {
 	QFont ft = font();
 	ft.setFamily(name);
@@ -615,14 +615,14 @@ void PlainTextEdit::setFontFamily(const QString &name)
 	onFontChanged();
 	//emit showMessage(QString(tr("fontSize:%1").arg(sz)));
 }
-void PlainTextEdit::selectAll()
+void TextView::selectAll()
 {
 	m_textCursor->movePosition(TextCursor::StartOfDocument);
 	m_textCursor->movePosition(TextCursor::EndOfDocument, TextCursor::KeepAnchor);
 	ensureCursorVisible();
 	viewport()->update();
 }
-void PlainTextEdit::copy()
+void TextView::copy()
 {
 	if( !m_textCursor->hasSelection() ) return;
 	const QString text = m_textCursor->selectedText();
@@ -630,14 +630,14 @@ void PlainTextEdit::copy()
 	QClipboard *clipboard = QApplication::clipboard();
 	clipboard->setText(text);
 }
-void PlainTextEdit::cut()
+void TextView::cut()
 {
 	if( !m_textCursor->hasSelection() ) return;
 	copy();
 	m_textCursor->deleteChar();
 	viewport()->update();
 }
-void PlainTextEdit::paste()
+void TextView::paste()
 {
 	QClipboard *clipboard = QApplication::clipboard();
 	QString text = clipboard->text();
@@ -647,7 +647,7 @@ void PlainTextEdit::paste()
 		viewport()->update();
 	}
 }
-void PlainTextEdit::undo()
+void TextView::undo()
 {
 	index_t pos = 0;
 	m_document->doUndo(pos);
@@ -655,7 +655,7 @@ void PlainTextEdit::undo()
 	ensureCursorVisible();
 	viewport()->update();
 }
-void PlainTextEdit::redo()
+void TextView::redo()
 {
 	index_t pos = 0;
 	m_document->doRedo(pos);
@@ -663,21 +663,21 @@ void PlainTextEdit::redo()
 	ensureCursorVisible();
 	viewport()->update();
 }
-void PlainTextEdit::resizeEvent(QResizeEvent *event)
+void TextView::resizeEvent(QResizeEvent *event)
 {
 	QAbstractScrollArea::resizeEvent(event);
 	updateLineNumberAreaSize();
 	//onBlockCountChanged();
 	updateScrollBarData();
 }
-void PlainTextEdit::updateLineNumberAreaSize()
+void TextView::updateLineNumberAreaSize()
 {
 	//QRect r = contentsRect();
 	size_t bc = m_document->blockCount();
 	QRect r = rect();
 	m_lineNumberArea->setGeometry(QRect(r.left(), r.top(), m_lineNumberAreaWidth, r.height()));
 }
-bool PlainTextEdit::eventFilter(QObject *obj, QEvent *event)
+bool TextView::eventFilter(QObject *obj, QEvent *event)
 {
 	if( obj == m_lineNumberArea && event->type() == QEvent::Paint ) {
 		drawLineNumbers();
@@ -685,7 +685,7 @@ bool PlainTextEdit::eventFilter(QObject *obj, QEvent *event)
 	}
 	return false;
 }
-void PlainTextEdit::drawLineNumbers()
+void TextView::drawLineNumbers()
 {
 	//qDebug() << "drawLineNumbers()";
 	QPainter painter(m_lineNumberArea);
@@ -716,7 +716,7 @@ void PlainTextEdit::drawLineNumbers()
 		y += fm.lineSpacing();
 	}
 }
-void PlainTextEdit::doJump(int lineNum)
+void TextView::doJump(int lineNum)
 {
 #if 0
 	ViCursor cur = viCursor();
@@ -724,7 +724,7 @@ void PlainTextEdit::doJump(int lineNum)
 		setViCursor(cur);
 #endif
 }
-void PlainTextEdit::mousePressEvent ( QMouseEvent * event )
+void TextView::mousePressEvent ( QMouseEvent * event )
 {
 	TextBlock block = yToTextBlock(event->y());
 	if( !block.isValid() )
@@ -738,11 +738,11 @@ void PlainTextEdit::mousePressEvent ( QMouseEvent * event )
 	viewport()->update();
 	m_mouseCaptured = true;
 }
-void PlainTextEdit::mouseReleaseEvent ( QMouseEvent * event )
+void TextView::mouseReleaseEvent ( QMouseEvent * event )
 {
 	m_mouseCaptured = false;
 }
-void PlainTextEdit::mouseMoveEvent ( QMouseEvent * event )
+void TextView::mouseMoveEvent ( QMouseEvent * event )
 {
 	if( m_mouseCaptured ) {
 		TextBlock block = yToTextBlock(event->y());
@@ -755,12 +755,12 @@ void PlainTextEdit::mouseMoveEvent ( QMouseEvent * event )
 		viewport()->update();
 	}
 }
-void PlainTextEdit::mouseDoubleClickEvent ( QMouseEvent * event )
+void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
 {
 	m_textCursor->movePosition(TextCursor::StartOfWord);
 	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
 	viewport()->update();
 }
-void PlainTextEdit::insertText(ViewTextCursor &cur, const QString &text)
+void TextView::insertText(ViewTextCursor &cur, const QString &text)
 {
 }

@@ -22,7 +22,7 @@
 
 #include <QtGui>
 #include "mainwindow.h"
-#include "PlainTextEdit.h"
+#include "TextView.h"
 #include "TextDocument.h"
 #include "charEncoding.h"
 
@@ -53,7 +53,7 @@ void MainWindow::init()
 {
 	m_isUntitled = true;
 	m_isModified = false;
-	m_editor = new PlainTextEdit;
+	m_editor = new TextView;
 	setCentralWidget(m_editor);
 
 	connect(m_editor, SIGNAL(showMessage(const QString &)), this, SLOT(showMessage(const QString &)));

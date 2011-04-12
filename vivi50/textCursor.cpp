@@ -9,7 +9,7 @@
 
 #include	"textCursor.h"
 #include	"TextDocument.h"
-#include	"PlainTextEdit.h"
+#include	"TextView.h"
 
 inline bool isUTF8FirstChar(uchar ch)
 {
@@ -449,17 +449,17 @@ void TextCursor::deletePreviousChar()
 }
 
 //----------------------------------------------------------------------
-ViewTextCursor::ViewTextCursor(PlainTextEdit *view, index_t position)
+ViewTextCursor::ViewTextCursor(TextView *view, index_t position)
 	: m_view(view), TextCursor(view ? view->document() : 0, position)
 {
 	updateBlockData();
 }
-ViewTextCursor::ViewTextCursor(PlainTextEdit *view, index_t position, index_t anchor)
+ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor)
 	: m_view(view), TextCursor(view ? view->document() : 0, position, anchor)
 {
 	updateBlockData();
 }
-ViewTextCursor::ViewTextCursor(PlainTextEdit *view, index_t position, index_t anchor,
+ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor,
 			TextBlockData blockData)
 	: m_view(view), TextCursor(view ? view->document() : 0, position, anchor, blockData)
 {
@@ -496,5 +496,6 @@ void ViewTextCursor::insertText(const QString &text)
 }
 bool ViewTextCursor::movePosition(uchar move, uchar mode, uint n)
 {
-	return false;
+	if( !TextCursor::movePosition(move, mode, n) ) return false;
+	return true;
 }
