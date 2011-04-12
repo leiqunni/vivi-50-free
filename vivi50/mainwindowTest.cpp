@@ -43,6 +43,7 @@ void MainWindow::printBuffer()
 }
 
 void test_TextDocument();
+void test_TextView();
 void MainWindow::doUnitTest()
 {
 	g_ut_output = q_output;
@@ -58,6 +59,7 @@ void MainWindow::doUnitTest()
 		ut.ut_test_equal(QString("あいうえお"), QString("かきくけこ"));
 	}
 	test_TextDocument();
+	test_TextView();
 	QString temp;
 	if( !g_total_fail_count ) {
 		temp = QString("おめでとぉ、テスト失敗がひとつもありませんでした。(%1 tested)\n")
@@ -598,6 +600,11 @@ void test_TextDocument()
 			ut.ut_test_equal(i*10, blockPos);
 		}
 	}
+}
+
+void test_TextView()
+{
+	CUnitTest ut("TextView");
 	if( 1 ) {
 		TextView editor;
 		TextDocument *doc = editor.document();

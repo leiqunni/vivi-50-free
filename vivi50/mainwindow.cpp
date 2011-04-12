@@ -65,7 +65,8 @@ void MainWindow::init()
 	createDockWindows();
     readSettings();			//	createActions() ‚ÌŒã‚ÉƒR[ƒ‹‚·‚é‚±‚Æ
 
-    statusBar()->showMessage("Ready");
+	updateWindowTitle();
+	statusBar()->showMessage("Ready");
 }
 void MainWindow::createActions()
 {

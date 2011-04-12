@@ -29,13 +29,13 @@ memFileColumnWd = 320
   mainwindowBench.cpp	(-119.64,-105.931)
   unit_test.cpp	(50.5426,-24.2)
   unit_test.h	(50.5426,-42.8276)
-  mainwindowTest.cpp	(-119.64,-87.3033)
-  charEncoding.cpp	(52.3002,-81.9606)
+* mainwindowTest.cpp	(-119.64,-87.3033)
+* charEncoding.cpp	(52.3002,-81.9606)
   charEncoding.h	(52.3002,-100.588)
   textBlockData.h	(-218.555,81.2585)
-* textCursor.cpp	(-223.899,-16.5373)
+  textCursor.cpp	(-223.899,-16.5373)
   textCursor.h	(-223.899,-35.165)
-  TextView.cpp	(-66.4182,-12.2611)
+* TextView.cpp	(-66.4182,-12.2611)
   TextView.h	(-66.4182,-30.8887)
 [ToDo]
   "TextDocument.cpp" 38 'M: ' '' undone 不要なヒープの解放
