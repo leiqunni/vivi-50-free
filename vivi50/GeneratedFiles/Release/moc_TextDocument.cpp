@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'TextDocument.h'
 **
-** Created: Sun Apr 10 21:36:33 2011
+** Created: Tue Apr 12 15:00:43 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!

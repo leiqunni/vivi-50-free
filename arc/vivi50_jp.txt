@@ -1,5 +1,5 @@
-                        ViVi version 5.0.000
-                             03-Apr-2011
+                        ViVi version 5.0.002
+                             12-Apr-2011
                     Copyright (C) 2011 by N.Tsuda
                   mailto: ntsuda@master.email.ne.jp
                        http://vivi.dyndns.org/
