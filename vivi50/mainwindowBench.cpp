@@ -92,6 +92,7 @@ void do_replace35_mv7(uint n)
 }
 void MainWindow::doBenchmark()
 {
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 #if 0
 	doOutput("append:\n");
 	doOutput("  QTextDocument:\n");
@@ -169,4 +170,5 @@ void MainWindow::doBenchmark()
 	v_findBlockByNumber(10000);
 
 	doOutput("\n=== Benchmark Test finished ===\n");
+	QApplication::restoreOverrideCursor();
 }

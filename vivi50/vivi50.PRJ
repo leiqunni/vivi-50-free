@@ -21,15 +21,15 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(127.459,134.554)
   main.cpp	(-244.929,-355.269)
-  mainwindow.cpp	(-179.64,-209.186)
-  mainwindow.h	(-179.64,-242.186)
+* mainwindow.cpp	(-179.64,-209.186)
+* mainwindow.h	(-179.64,-242.186)
   TextDocument.cpp	(-117.744,151.071)
   TextDocument.h	(-117.744,118.071)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(-46.8429,-350.765)
-  mainwindowBench.cpp	(-179.64,-176.186)
+* mainwindowBench.cpp	(-179.64,-176.186)
   unit_test.cpp	(149.543,-74.8276)
   unit_test.h	(149.543,-107.828)
-  mainwindowTest.cpp	(-179.64,-143.186)
+* mainwindowTest.cpp	(-179.64,-143.186)
   charEncoding.cpp	(142.3,-187.588)
   charEncoding.h	(142.3,-220.588)
   textBlockData.h	(-343.555,130.259)
@@ -43,6 +43,6 @@ memFileColumnWd = 320
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
   "TextView.cpp" 542 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 760 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 765 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 770 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 761 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 766 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 771 'B: ' '' undone ブロック情報更新

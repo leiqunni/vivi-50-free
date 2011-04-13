@@ -585,6 +585,7 @@ void TextView::makeFontBigger(bool bigger)
 		++sz;
 	else if( !--sz ) return;
 	setFontPointSize(sz);
+	emit showMessage(QString(tr("fontPointSize:%1").arg(sz)));
 }
 void TextView::setFontPointSize(int sz)
 {
