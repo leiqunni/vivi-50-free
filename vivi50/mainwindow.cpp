@@ -119,7 +119,8 @@ void MainWindow::createActions()
     connect(selectAllAct, SIGNAL(triggered()), m_view, SLOT(selectAll()));
 
     cutAct = new QAction(QIcon(":vivi/Resources/images/cut.png"), tr("Cu&t"), this);
-    cutAct->setShortcuts(QKeySequence::Cut);
+    cutAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
+    //cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setStatusTip(tr("Cut the current selection's contents to the clipboard"));
     connect(cutAct, SIGNAL(triggered()), m_view, SLOT(cut()));
 

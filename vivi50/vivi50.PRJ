@@ -44,7 +44,7 @@ memFileColumnWd = 320
   "TextDocument.cpp" 50 'M: ' '' undone 不要なヒープの解放
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
-  "TextView.cpp" 553 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 790 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 795 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 800 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 565 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 802 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 807 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 812 'B: ' '' undone ブロック情報更新
