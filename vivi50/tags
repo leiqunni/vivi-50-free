@@ -233,6 +233,7 @@ cuchar	.\charEncoding.h	/^typedef const unsigned char cuchar;$/;"	t
 cut	.\TextView.cpp	/^void TextView::cut()$/;"	f	class:TextView
 cut	.\PlainTextEdit.cpp	/^void PlainTextEdit::cut()$/;"	f	class:PlainTextEdit
 cutAct	.\mainwindow.h	/^    QAction *cutAct;$/;"	m	class:MainWindow
+d_replace_Abcde_XYZ	.\mainwindowBench.cpp	/^void d_replace_Abcde_XYZ(uint n)$/;"	f
 d_replace_XYZ_Abcde	.\mainwindowBench.cpp	/^void d_replace_XYZ_Abcde(uint n)$/;"	f
 data	.\TextDocument.h	/^	TextBlockData	data() const { return m_data; }$/;"	f	class:TextBlock
 data	.\gap_vector.h	/^	const_pointer data()$/;"	f	class:std::gap_vector
@@ -576,6 +577,7 @@ qInitResources_mainwindow	.\GeneratedFiles\qrc_mainwindow.cpp	/^int QT_MANGLE_NA
 q_findBlockByNumber	.\mainwindowBench.cpp	/^void q_findBlockByNumber(uint n)$/;"	f
 q_output	.\mainwindowTest.cpp	/^void q_output(const QString &mess)$/;"	f
 q_replace35_mv7	.\mainwindowBench.cpp	/^void q_replace35_mv7(uint n)$/;"	f
+q_replace_Abcde_XYZ	.\mainwindowBench.cpp	/^void q_replace_Abcde_XYZ(uint n)$/;"	f
 q_replace_XYZ_Abcde	.\mainwindowBench.cpp	/^void q_replace_XYZ_Abcde(uint n)$/;"	f
 qt_meta_data_MainWindow	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^static const uint qt_meta_data_MainWindow[] = {$/;"	v	file:
 qt_meta_data_MainWindow	.\GeneratedFiles\Release\moc_mainwindow.cpp	/^static const uint qt_meta_data_MainWindow[] = {$/;"	v	file:

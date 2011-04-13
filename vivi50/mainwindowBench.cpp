@@ -136,6 +136,52 @@ void d_replace_XYZ_Abcde(uint n)
 			pMainWindow->doOutput(QString("\tfailed at line %1\n").arg(i + 1));
 	}
 }
+void q_replace_Abcde_XYZ(uint n)
+{
+	QTextDocument doc;
+	QTextCursor c(&doc);
+	QString text = "Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。\n";
+	for(uint i = 0; i < n; ++i)
+		c.insertText(text);
+	boost::timer tm;
+	QTextCursor cur(&doc);
+	for(;;) {
+		QTextCursor c = doc.find("Abcde", cur);
+		if( c.isNull() ) break;
+		c.insertText("XYZ");
+		cur = c;
+	}
+	const double dur = tm.elapsed();
+	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));
+	QTextBlock block = doc.firstBlock();
+	for(uint i = 0; i < n; ++i, block = block.next()) {
+		if( block.text() != "XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。" )
+			pMainWindow->doOutput(QString("\tfailed at line %1\n").arg(i + 1));
+	}
+}
+void d_replace_Abcde_XYZ(uint n)
+{
+	TextDocument doc;
+	TextCursor c(&doc);
+	QString text = "Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。\n";
+	for(uint i = 0; i < n; ++i)
+		c.insertText(text);
+	boost::timer tm;
+	TextCursor cur(&doc);
+	for(;;) {
+		TextCursor c = doc.find("Abcde", cur);
+		if( c.isNull() ) break;
+		c.insertText("XYZ");
+		cur = c;
+	}
+	const double dur = tm.elapsed();
+	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));
+	TextBlock block = doc.firstBlock();
+	for(uint i = 0; i < n; ++i, block = block.next()) {
+		if( block.text() != "XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。\n" )
+			pMainWindow->doOutput(QString("\tfailed at line %1\n").arg(i + 1));
+	}
+}
 void MainWindow::doBenchmark()
 {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -205,7 +251,7 @@ void MainWindow::doBenchmark()
 	do_replace35_mv7(10000);
 #endif
 
-	doOutput("replace 'XYZ to 'Abcde':\n");
+	doOutput("replace 'XYZ' to 'Abcde':\n");
 	doOutput("  QTextDocument:\n");
 	q_replace_XYZ_Abcde(1000);
 	q_replace_XYZ_Abcde(2000);
@@ -214,6 +260,16 @@ void MainWindow::doBenchmark()
 	d_replace_XYZ_Abcde(2000);
 	d_replace_XYZ_Abcde(5000);
 	d_replace_XYZ_Abcde(10000);
+
+	doOutput("replace 'Abcde' to 'XYZ':\n");
+	doOutput("  QTextDocument:\n");
+	q_replace_Abcde_XYZ(1000);
+	q_replace_Abcde_XYZ(2000);
+	doOutput("  TextDocument:\n");
+	d_replace_Abcde_XYZ(1000);
+	d_replace_Abcde_XYZ(2000);
+	d_replace_Abcde_XYZ(5000);
+	d_replace_Abcde_XYZ(10000);
 
 	doOutput("findBlockByNumber (sequential):\n");
 	doOutput("  QTextDocument:\n");
