@@ -314,7 +314,7 @@ void TextView::paintEvent(QPaintEvent * event)
 	index_t lastBlockNumber = m_document->lastBlock().blockNumber();
 	int y = 0;
 	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
-	qDebug() << "firstVisibleBlock.index = " << block.index();
+	//qDebug() << "firstVisibleBlock.index = " << block.index();
 	//TextBlock block = m_document->firstBlock();
 	while( y < vr.height() && block.isValid() ) {
 		const QString text = block.text();

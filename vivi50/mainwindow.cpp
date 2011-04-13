@@ -53,11 +53,18 @@ void MainWindow::init()
 {
 	m_isUntitled = true;
 	m_isModified = false;
-	m_editor = new TextView;
-	setCentralWidget(m_editor);
+	m_view = new TextView;
+    QSettings settings;
+    const QString fontName = settings.value("fontName", "").toString();
+    const int fontSize = settings.value("fontSize", 0).toInt();
+    if( !fontName.isEmpty() && fontSize != 0 ) {
+		m_view->setFont(QFont(fontName, fontSize));
+		m_view->onFontChanged();
+    }
+	setCentralWidget(m_view);
 
-	connect(m_editor, SIGNAL(showMessage(const QString &)), this, SLOT(showMessage(const QString &)));
-    connect(m_editor->document(), SIGNAL(contentsChanged()), this, SLOT(documentWasModified()));
+	connect(m_view, SIGNAL(showMessage(const QString &)), this, SLOT(showMessage(const QString &)));
+    connect(m_view->document(), SIGNAL(contentsChanged()), this, SLOT(documentWasModified()));
 
 	createActions();
 	createMenus();
@@ -110,37 +117,41 @@ void MainWindow::createActions()
     selectAllAct = new QAction(tr("Select&All"), this);
     selectAllAct->setShortcuts(QKeySequence::SelectAll);
     selectAllAct->setStatusTip(tr("Select All text"));
-    connect(selectAllAct, SIGNAL(triggered()), m_editor, SLOT(selectAll()));
+    connect(selectAllAct, SIGNAL(triggered()), m_view, SLOT(selectAll()));
 
     cutAct = new QAction(QIcon(":vivi/Resources/images/cut.png"), tr("Cu&t"), this);
     cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setStatusTip(tr("Cut the current selection's contents to the clipboard"));
-    connect(cutAct, SIGNAL(triggered()), m_editor, SLOT(cut()));
+    connect(cutAct, SIGNAL(triggered()), m_view, SLOT(cut()));
 
     copyAct = new QAction(QIcon(":vivi/Resources/images/copy.png"), tr("&Copy"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
-    connect(copyAct, SIGNAL(triggered()), m_editor, SLOT(copy()));
+    connect(copyAct, SIGNAL(triggered()), m_view, SLOT(copy()));
 
     pasteAct = new QAction(QIcon(":vivi/Resources/images/paste.png"), tr("&Paste"), this);
     pasteAct->setShortcuts(QKeySequence::Paste);
     pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current selection"));
-    connect(pasteAct, SIGNAL(triggered()), m_editor, SLOT(paste()));
+    connect(pasteAct, SIGNAL(triggered()), m_view, SLOT(paste()));
 
 	undoAct = new QAction(QIcon(":vivi/Resources/images/editundo.png"), tr("&Undo"), this);
     undoAct->setShortcuts(QKeySequence::Undo);
     undoAct->setStatusTip(tr("undo edit commande"));
 	//undoAct->setEnabled(false);
-    connect(undoAct, SIGNAL(triggered()), m_editor, SLOT(undo()));
-    connect(m_editor, SIGNAL(undoAvailable(bool)), undoAct, SLOT(setEnabled(bool)));
+    connect(undoAct, SIGNAL(triggered()), m_view, SLOT(undo()));
+    connect(m_view, SIGNAL(undoAvailable(bool)), undoAct, SLOT(setEnabled(bool)));
 
 	redoAct = new QAction(QIcon(":vivi/Resources/images/editredo.png"), tr("&Redo"), this);
     redoAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
     //redoAct->setShortcuts(QKeySequence::Redo);
     redoAct->setStatusTip(tr("redo edit commande"));
 	//redoAct->setEnabled(false);
-    connect(redoAct, SIGNAL(triggered()), m_editor, SLOT(redo()));
-    connect(m_editor, SIGNAL(redoAvailable(bool)), redoAct, SLOT(setEnabled(bool)));
+    connect(redoAct, SIGNAL(triggered()), m_view, SLOT(redo()));
+    connect(m_view, SIGNAL(redoAvailable(bool)), redoAct, SLOT(setEnabled(bool)));
+
+	fontAct = new QAction(/*QIcon(":vivi/Resources/images/editredo.png"),*/ tr("&Font..."), this);
+    fontAct->setStatusTip(tr("select Font family and/or size"));
+    connect(fontAct, SIGNAL(triggered()), this, SLOT(font()));
 
     aboutAct = new QAction(QIcon(":vivi/Resources/images/Info.png"), tr("&About ViVi"), this);
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
@@ -182,6 +193,9 @@ void MainWindow::createMenus()
 	editMenu->addAction(selectAllAct);
 
     viewMenu = menuBar()->addMenu(tr("&View"));
+
+    settingsMenu = menuBar()->addMenu(tr("&Settings"));
+	settingsMenu->addAction(fontAct);
 
     otherMenu = menuBar()->addMenu(tr("&Other"));
 	otherMenu->addAction(aboutAct);
@@ -327,8 +341,8 @@ void MainWindow::openRecentFile()
 }
 void MainWindow::doJump(int lineNum)
 {
-	if( lineNum && m_editor != 0 )
-		m_editor->doJump(lineNum);
+	if( lineNum && m_view != 0 )
+		m_view->doJump(lineNum);
 }
 MainWindow *MainWindow::findMainWindow(const QString &fileName)
 {
@@ -375,7 +389,7 @@ void MainWindow::setCurrentFile(const QString &fileName)
         m_curFile.clear();
         updateCurFile();
     } else {
-    	m_editor->document()->setFullPath(fileName);
+    	m_view->document()->setFullPath(fileName);
         m_curFile = QFileInfo(fileName).canonicalFilePath();
     }
     setWindowModified(false);
@@ -403,7 +417,7 @@ void MainWindow::open(const QString &fileName)
 	if( fileName.isEmpty() )
 		open();
 	else {
-		if( m_isUntitled && m_editor->document()->isEmpty()
+		if( m_isUntitled && m_view->document()->isEmpty()
 				&& !isWindowModified() )
 		{
 			loadFile(fileName);
@@ -461,19 +475,19 @@ bool MainWindow::saveFile(const QString &fileName, bool replace)
 	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() setOverrideCursor()");
 	QTextCodec *codec = 0;
 	cchar *codecName = 0;
-	switch( m_editor->charEncoding() ) {
+	switch( m_view->charEncoding() ) {
 	case CharEncoding::UTF8:
-		if( m_editor->withBOM() )
+		if( m_view->withBOM() )
 			file.write((cchar*)UTF8_BOM, UTF8_BOM_LENGTH);
 		codecName = "UTF-8";
 		break;
 	case CharEncoding::UTF16_LE:
-		if( m_editor->withBOM() )
+		if( m_view->withBOM() )
 			file.write((cchar*)UTF16LE_BOM, UTF16_BOM_LENGTH);
 		codecName = "UTF-16LE";
 		break;
 	case CharEncoding::UTF16_BE:
-		if( m_editor->withBOM() )
+		if( m_view->withBOM() )
 			file.write((cchar*)UTF16BE_BOM, UTF16_BOM_LENGTH);
 		codecName = "UTF-16BE";
 		break;
@@ -495,7 +509,7 @@ bool MainWindow::saveFile(const QString &fileName, bool replace)
 		return false;
 	}
 	//QMessageBox::warning(this, "ViVi 5.0", "MainWindow::saveFile() set codec");
-	const QString text = m_editor->toPlainText();
+	const QString text = m_view->toPlainText();
 	//QMessageBox::warning(this, "ViVi 5.0",
 	//				QString("MainWindow::saveFile() toPlaintext() finished. length = %1")
 	//						.arg(text.length()));
@@ -552,20 +566,33 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
 		QApplication::restoreOverrideCursor();
 		return;
     }
-	m_editor->document()->setPlainText(buffer);
-	m_editor->document()->setCharEncodeing(ce);
-	m_editor->document()->setWithBOM(withBOM);
+	m_view->document()->setPlainText(buffer);
+	m_view->document()->setCharEncodeing(ce);
+	m_view->document()->setWithBOM(withBOM);
 	QApplication::restoreOverrideCursor();
-	m_editor->doJump(lineNum);
-	m_editor->viewport()->update();
+	m_view->doJump(lineNum);
+	m_view->viewport()->update();
 
 	setCurrentFile(fn);
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 void MainWindow::documentWasModified()
 {
-    setWindowModified(m_editor->document()->isModified());
+    setWindowModified(m_view->document()->isModified());
     updateWindowTitle();
+}
+void MainWindow::font()
+{
+	bool ok;
+	QFont font = QFontDialog::getFont(&ok, m_view->font(), this);
+	if( ok ) {
+		m_view->setFont(font);
+		m_view->onFontChanged();
+	    QSettings settings;
+	    settings.setValue("fontName", font.family());
+	    settings.setValue("fontSize", font.pointSize());
+	} else {
+	}
 }
 void MainWindow::showMessage(const QString & text)
 {

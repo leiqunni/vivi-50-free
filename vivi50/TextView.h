@@ -68,6 +68,7 @@ public:
 public:
 	TextDocument	*document() { return m_document; }
 	void	doJump(int lineNum);
+	void	onFontChanged();
 
 public:
 	void	insertText(ViewTextCursor &, const QString &);
@@ -108,7 +109,6 @@ protected:
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
 	void	drawLineNumbers();
-	void	onFontChanged();
 	void	resetCursorBlinkTimer();
 
     TextBlock	firstVisibleBlock() const;

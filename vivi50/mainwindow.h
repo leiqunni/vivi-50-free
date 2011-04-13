@@ -80,11 +80,12 @@ private slots:
     void	showAboutDlg();
 	void	showMessage(const QString & text);
 	void	printBuffer();
+	void	font();
 	void doUnitTest();
 	void doBenchmark();
 
 private:
-	TextView	*m_editor;
+	TextView	*m_view;
 	QTextEdit	*m_output;
 	QString	m_curFile;
 	QString	m_absFilePath;
@@ -94,6 +95,7 @@ private:
     QMenu	*fileMenu;
     QMenu	*editMenu;
     QMenu	*viewMenu;
+    QMenu	*settingsMenu;
     QMenu	*otherMenu;
 
 	QAction *newAct;
@@ -107,6 +109,7 @@ private:
     QAction *pasteAct;
     QAction *undoAct;
     QAction *redoAct;
+    QAction *fontAct;		//	Žb’è“I
     QAction *aboutAct;
 
 	QAction	*printBufferAct;

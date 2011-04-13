@@ -33,7 +33,7 @@ void q_output(const QString &mess)
 }
 void MainWindow::printBuffer()
 {
-	const TextDocument *doc = m_editor->document();
+	const TextDocument *doc = m_view->document();
 	doOutput(QString("document size = %1 blockCount = %2\n")
 				.arg(doc->size()).arg(doc->blockCount()));
 	for(size_t ix = 0; ix < doc->blockCount(); ++ix) {
