@@ -498,17 +498,20 @@ void TextCursor::deletePreviousChar()
 ViewTextCursor::ViewTextCursor(TextView *view, index_t position)
 	: m_view(view), TextCursor(view ? view->document() : 0, position)
 {
+	TextCursor::updateBlockData();
 	updateBlockData();
 }
 ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor)
 	: m_view(view), TextCursor(view ? view->document() : 0, position, anchor)
 {
+	TextCursor::updateBlockData();
 	updateBlockData();
 }
 ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor,
 			TextBlockData blockData)
 	: m_view(view), TextCursor(view ? view->document() : 0, position, anchor, blockData)
 {
+	TextCursor::updateBlockData();
 	updateBlockData();
 }
 ViewTextCursor::ViewTextCursor(const ViewTextCursor &x)
@@ -519,20 +522,24 @@ void ViewTextCursor::setPosition(index_t position, uchar mode)
 {
 	if( isNull() ) return;
 	m_position = position;
+	TextCursor::updateBlockData(KeepAnchor);
 	updateBlockData(KeepAnchor);
 	if( mode == MoveAnchor ) {
 		m_anchor = m_position;
 		m_anchorBlockData = m_blockData;
+		m_viewAnchorBlockData = m_viewBlockData;
 	}
 }
 void ViewTextCursor::updateBlockData(uchar mode)
 {
 	if( !m_view ) {
-		m_blockData = TextBlockData(0, 0);
+		m_viewBlockData = m_viewAnchorBlockData = TextBlockData(0, 0);
 	} else {
-		m_blockData = m_view->findBlockData(m_position);
-		if( mode == MoveAnchor )
+		m_viewBlockData = m_view->findBlockData(m_position);
+		if( mode == MoveAnchor ) {
 			m_anchorBlockData = m_blockData;
+			m_viewAnchorBlockData = m_viewBlockData;
+		}
 	}
 }
 void ViewTextCursor::insertText(const QString &text)

@@ -154,6 +154,8 @@ protected:
 
 private:
 	TextView	*m_view;
+	TextBlockData	m_viewBlockData;
+	TextBlockData	m_viewAnchorBlockData;
 };
 
 #endif		//_HEADER_TEXTCURSOR_H
