@@ -54,8 +54,7 @@ void MainWindow::init()
 	m_isUntitled = true;
 	m_isModified = false;
 	m_view = new TextView;
-    QSettings settings;
-    const QString fontName = settings.value("fontName", "").toString();
+    QSettings settings;    const QString fontName = settings.value("fontName", "").toString();
     const int fontSize = settings.value("fontSize", 0).toInt();
     if( !fontName.isEmpty() && fontSize != 0 ) {
 		m_view->setFont(QFont(fontName, fontSize));
@@ -149,6 +148,11 @@ void MainWindow::createActions()
     connect(redoAct, SIGNAL(triggered()), m_view, SLOT(redo()));
     connect(m_view, SIGNAL(redoAvailable(bool)), redoAct, SLOT(setEnabled(bool)));
 
+	findAct = new QAction(QIcon(":vivi/Resources/images/Search.png"), tr("&Find..."), this);
+    findAct->setShortcut(QKeySequence::Find);
+    findAct->setStatusTip(tr("find strings..."));
+    connect(findAct, SIGNAL(triggered()), m_view, SLOT(find()));
+
 	fontAct = new QAction(/*QIcon(":vivi/Resources/images/editredo.png"),*/ tr("&Font..."), this);
     fontAct->setStatusTip(tr("select Font family and/or size"));
     connect(fontAct, SIGNAL(triggered()), this, SLOT(font()));
@@ -192,6 +196,9 @@ void MainWindow::createMenus()
 	editMenu->addAction(pasteAct);
 	editMenu->addAction(selectAllAct);
 
+    searchMenu = menuBar()->addMenu(tr("Search(&K)"));
+    searchMenu->addAction(findAct);
+
     viewMenu = menuBar()->addMenu(tr("&View"));
 
     settingsMenu = menuBar()->addMenu(tr("&Settings"));
@@ -216,6 +223,9 @@ void MainWindow::createToolBars()
 	editToolBar->addAction(cutAct);
 	editToolBar->addAction(copyAct);
 	editToolBar->addAction(pasteAct);
+
+	QToolBar *searchToolBar = addToolBar(tr("Search"));
+	searchToolBar->addAction(findAct);
 
 	QToolBar *otherToolBar = addToolBar(tr("Other"));
 	otherToolBar->addAction(aboutAct);

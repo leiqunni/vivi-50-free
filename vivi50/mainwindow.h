@@ -94,6 +94,7 @@ private:
 
     QMenu	*fileMenu;
     QMenu	*editMenu;
+    QMenu	*searchMenu;
     QMenu	*viewMenu;
     QMenu	*settingsMenu;
     QMenu	*otherMenu;
@@ -109,6 +110,7 @@ private:
     QAction *pasteAct;
     QAction *undoAct;
     QAction *redoAct;
+    QAction *findAct;
     QAction *fontAct;		//	Žb’è“I
     QAction *aboutAct;
 

@@ -541,7 +541,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\Resources\images\ayabu-001.png;.\Resources\images\copy.png;.\Resources\images\cut.png;.\Resources\images\editredo.png;.\Resources\images\editundo.png;.\Resources\images\Info.png;.\Resources\images\new.png;.\Resources\images\open.png;.\Resources\images\paste.png;.\Resources\images\save.png;.\Resources\images\momoshiki.png;.\Resources\images\Checkmark.png;.\Resources\images\Clock.png;.\Resources\images\stopwatch.png;.\Resources\images\Warning.png"
+						AdditionalDependencies="$(InputPath);.\Resources\images\ayabu-001.png;.\Resources\images\copy.png;.\Resources\images\cut.png;.\Resources\images\editredo.png;.\Resources\images\editundo.png;.\Resources\images\Info.png;.\Resources\images\new.png;.\Resources\images\open.png;.\Resources\images\paste.png;.\Resources\images\save.png;.\Resources\images\momoshiki.png;.\Resources\images\Checkmark.png;.\Resources\images\Clock.png;.\Resources\images\stopwatch.png;.\Resources\images\Warning.png;.\Resources\images\Search.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -552,7 +552,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\Resources\images\ayabu-001.png;.\Resources\images\copy.png;.\Resources\images\cut.png;.\Resources\images\editredo.png;.\Resources\images\editundo.png;.\Resources\images\Info.png;.\Resources\images\new.png;.\Resources\images\open.png;.\Resources\images\paste.png;.\Resources\images\save.png;.\Resources\images\momoshiki.png;.\Resources\images\Checkmark.png;.\Resources\images\Clock.png;.\Resources\images\stopwatch.png;.\Resources\images\Warning.png"
+						AdditionalDependencies="$(InputPath);.\Resources\images\ayabu-001.png;.\Resources\images\copy.png;.\Resources\images\cut.png;.\Resources\images\editredo.png;.\Resources\images\editundo.png;.\Resources\images\Info.png;.\Resources\images\new.png;.\Resources\images\open.png;.\Resources\images\paste.png;.\Resources\images\save.png;.\Resources\images\momoshiki.png;.\Resources\images\Checkmark.png;.\Resources\images\Clock.png;.\Resources\images\stopwatch.png;.\Resources\images\Warning.png;.\Resources\images\Search.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -639,6 +639,26 @@
 			</File>
 			<File
 				RelativePath=".\Resources\images\save.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Resources\images\Search.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"

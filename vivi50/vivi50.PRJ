@@ -37,14 +37,14 @@ memFileColumnWd = 320
 * textCursor.h	(-366.316,-72.0248)
 * TextView.cpp	(-21.3877,4.13526)
 * TextView.h	(-21.3877,-28.8647)
-  FindDlg.cpp	(133.637,25.2772)
-  FindDlg.h	(133.637,-7.72283)
+* FindDlg.cpp	(133.637,25.2772)
+* FindDlg.h	(133.637,-7.72283)
 [ToDo]
   "TextDocument.cpp" 38 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 50 'M: ' '' undone 不要なヒープの解放
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
-  "TextView.cpp" 542 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 763 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 768 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 773 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 543 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 769 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 774 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 779 'B: ' '' undone ブロック情報更新

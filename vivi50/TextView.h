@@ -82,6 +82,7 @@ public slots:
 	void	undo();
 	void	redo();
 	void	selectAll();
+	void	find();
 	void	setFontPointSize(int);
 	void	setFontFamily(const QString &);
 	void	makeFontBigger(bool);

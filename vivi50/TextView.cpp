@@ -24,6 +24,7 @@
 #include "TextView.h"
 #include	"TextDocument.h"
 #include	"textCursor.h"
+#include	"FindDlg.h"
 #include	<math.h>
 #include	<QDebug>
 
@@ -652,6 +653,11 @@ void TextView::redo()
 	m_textCursor->setPosition(pos);
 	ensureCursorVisible();
 	viewport()->update();
+}
+void TextView::find()
+{
+	FindDlg aDlg;
+	aDlg.exec();
 }
 void TextView::resizeEvent(QResizeEvent *event)
 {

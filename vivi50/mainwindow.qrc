@@ -15,5 +15,6 @@
         <file>Resources/images/Clock.png</file>
         <file>Resources/images/stopwatch.png</file>
         <file>Resources/images/Warning.png</file>
+        <file>Resources/images/Search.png</file>
     </qresource>
 </RCC>
