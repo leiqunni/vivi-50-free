@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'TextView.h'
 **
-** Created: Tue Apr 12 20:18:49 2011
+** Created: Wed Apr 13 13:04:44 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.1)
 **
 ** WARNING! All changes made in this file will be lost!

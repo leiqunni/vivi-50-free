@@ -346,6 +346,7 @@ public:
 #endif
 
 	TextCursor	find(const QString &, index_t = 0);
+	TextCursor	find(const QString &, const TextCursor &);
 	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }
 	void	setWithBOM(bool b) { m_withBOM = b; }
 

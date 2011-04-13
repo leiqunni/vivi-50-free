@@ -760,6 +760,13 @@ bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const
 	}
 	return true;
 }
+TextCursor TextDocument::find(const QString &text, const TextCursor &cur)
+{
+	if( cur.hasSelection() && cur.anchor() > cur.position() )
+		return find(text, cur.anchor());
+	else
+		return find(text, cur.position());
+}
 TextCursor TextDocument::find(const QString &text, index_t position)
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -768,8 +775,11 @@ TextCursor TextDocument::find(const QString &text, index_t position)
 	const uchar *ptr = (const uchar *)(ba.data());
 	//	単純線形検索アルゴリズム
 	while( position < size() ) {
-		if( isMatch(position, ptr, ptr + sz) )
-			return TextCursor(this, position);
+		if( isMatch(position, ptr, ptr + sz) ) {
+			TextCursor c(this, position);
+			c.setPosition(position + sz, TextCursor::KeepAnchor);
+			return c;
+		}
 		++position;
 	}
 	return TextCursor();	//	null cursor

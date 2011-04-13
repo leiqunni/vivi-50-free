@@ -24,6 +24,7 @@
 #include "mainwindow.h"
 #include "TextView.h"
 #include "TextDocument.h"
+#include "TextCursor.h"
 
 extern MainWindow *pMainWindow;
 
@@ -331,7 +332,9 @@ void test_TextDocument()
 		doc.do_insert(0, "123\nxyzzz\nxyZZZ\n");
 		ut.ut_test( doc.find(QString("abc")).isNull() );
 		ut.ut_test( !doc.find(QString("xyZ")).isNull() );
-		ut.ut_test_equal(10, doc.find(QString("xyZ")).position() );
+		TextCursor c = doc.find(QString("xyZ"));
+		ut.ut_test_equal(10, c.anchor() );
+		ut.ut_test_equal(13, c.position() );
 	}
 	if( 1 ) {		//	TextCursor::insert() ƒeƒXƒg
 		TextDocument doc;
