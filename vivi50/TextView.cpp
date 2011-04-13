@@ -531,11 +531,21 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		move = TextCursor::Down;
 		break;
 	case Qt::Key_Backspace:
+		if( !m_textCursor->hasSelection() && ctrl ) {
+			m_textCursor->movePosition(TextCursor::PrevWord, TextCursor::KeepAnchor);
+			if( !m_textCursor->hasSelection() )
+				return;
+		}
 		m_textCursor->deletePreviousChar();
 		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Delete:
+		if( !m_textCursor->hasSelection() && ctrl ) {
+			m_textCursor->movePosition(TextCursor::NextWord, TextCursor::KeepAnchor);
+			if( !m_textCursor->hasSelection() )
+				return;
+		}
 		m_textCursor->deleteChar();
 		viewport()->update();
 		return;
