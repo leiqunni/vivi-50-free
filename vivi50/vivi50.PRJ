@@ -15,27 +15,27 @@ memFileColumnWd = 320
 #define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define BLOCK_HAS_SIZE 1
 #define GV_USE_ITR_FACADE 1
+#define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
   gap_vector.h	(139.922,171.793)
   main.cpp	(-178.304,-339.84)
 * mainwindow.cpp	(-128.265,-196.142)
 * mainwindow.h	(-128.265,-229.142)
-* TextDocument.cpp	(-117.875,191.766)
-* TextDocument.h	(-117.875,158.766)
+  TextDocument.cpp	(-117.875,191.766)
+  TextDocument.h	(-117.875,158.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
-* mainwindowBench.cpp	(-128.265,-163.142)
+  mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
   unit_test.h	(173.104,-115.746)
-* mainwindowTest.cpp	(-128.265,-130.142)
+  mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
   textBlockData.h	(-364.713,168.24)
 * textCursor.cpp	(-366.316,-39.0248)
 * textCursor.h	(-366.316,-72.0248)
-* TextView.cpp	(-21.3877,4.13526)
+* TextView.cpp	(-21.3877,4.1353)
 * TextView.h	(-21.3877,-28.8647)
 * FindDlg.cpp	(133.637,25.2772)
 * FindDlg.h	(133.637,-7.72283)
@@ -45,6 +45,6 @@ memFileColumnWd = 320
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
   "TextView.cpp" 543 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 769 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 774 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 779 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 780 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 785 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 790 'B: ' '' undone ブロック情報更新

@@ -562,3 +562,17 @@ bool ViewTextCursor::movePosition(uchar move, uchar mode, uint n)
 	if( !TextCursor::movePosition(move, mode, n) ) return false;
 	return true;
 }
+ViewTextCursor &ViewTextCursor::operator=(const TextCursor &x)
+{
+	if( isNull() ) return *this;
+	m_position = x.position();
+	m_blockData = x.blockData();
+	m_anchor = x.anchor();
+	m_anchorBlockData = x.anchorBlockData();
+	m_viewBlockData = m_view->findBlockData(m_position);
+	if( m_position != m_anchor )
+		m_viewAnchorBlockData = m_view->findBlockData(m_anchor);
+	else
+		m_viewAnchorBlockData = m_viewBlockData;
+	return *this;
+}

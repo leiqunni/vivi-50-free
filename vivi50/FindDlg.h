@@ -14,6 +14,12 @@ public:
 	FindDlg(QWidget *parent = 0);
 	~FindDlg();
 
+protected slots:
+	void	findNextPushed();
+
+signals:
+	void	doFindNext(const QString &);
+
 private:
 	QLineEdit	*m_findStringEdit;
 };

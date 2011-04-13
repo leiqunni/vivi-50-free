@@ -657,7 +657,18 @@ void TextView::redo()
 void TextView::find()
 {
 	FindDlg aDlg;
+	connect(&aDlg, SIGNAL(doFindNext(const QString &)), this, SLOT(doFindNext(const QString &)));
 	aDlg.exec();
+}
+void TextView::doFindNext(const QString &text)
+{
+	if( text.isEmpty() ) return;
+	TextCursor c = document()->find(text, *m_textCursor);
+	if( !c.isNull() ) {
+		*m_textCursor = c;
+		ensureCursorVisible();
+		viewport()->update();
+	}
 }
 void TextView::resizeEvent(QResizeEvent *event)
 {

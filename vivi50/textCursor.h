@@ -82,7 +82,7 @@ public:
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
 	QString	selectedText() const;
 	TextBlockData blockData() const { return m_blockData; }
-	TextBlockData anchorBlock() const { return m_anchorBlockData; }
+	TextBlockData anchorBlockData() const { return m_anchorBlockData; }
 	index_t	blockIndex() const { return m_blockData.m_index; }
 	index_t	blockPosition() const { return m_blockData.m_position; }
 	index_t	ancBlockIndex() const { return m_anchorBlockData.m_index; }
@@ -134,6 +134,7 @@ public:
 	ViewTextCursor(TextView *view, index_t position, index_t anchor,
 				TextBlockData blockData);
 	ViewTextCursor(const ViewTextCursor &x);
+	//ViewTextCursor(const TextCursor &x);
 	~ViewTextCursor() {}
 
 public:
@@ -141,6 +142,7 @@ public:
 
 public:
 	TextView	*view() { return m_view; }
+	//void	assign(const TextCursor &);
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
 	void	setPosition(index_t position, TextBlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
@@ -148,6 +150,8 @@ public:
 	void	insertText(const QString &);
 	void	deleteChar();
 	void	deletePreviousChar();
+
+	ViewTextCursor &operator=(const TextCursor &);
 
 protected:
 	void	updateBlockData(uchar mode = MoveAnchor);		//	m_blockIndex, m_blockPosition çXêV
