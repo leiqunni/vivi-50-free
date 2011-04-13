@@ -642,13 +642,8 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 	if( position == cur.anchor() ) {
 		m_buffer.insert(position, ptr, ptr + sz);
 		updateBlocksAtInsert(position, cur.blockData(), sz);
-#if 1
 		m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0),
 							isModified());
-#else
-		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0);
-		m_undoMgr.push_back(undoItem, isModified());
-#endif
 	} else {
 		if( cur.anchor() < position )
 			cur.swapPositionAnchor();
@@ -660,17 +655,12 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 		erase(first, cur.blockData(), last);
 		m_buffer.insert(first, ptr, ptr + sz);
 		updateBlocksAtInsert(first, cur.blockData(), sz);
-#if 1
 		m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_REPLACE, first, last, hp_ix, first + sz),
 							isModified());
-#else
-		GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_REPLACE,
-										first, last, hp_ix, first + sz);
-		m_undoMgr.push_back(undoItem, isModified());
-#endif
 		delSz = last - first;
 	}
-	cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
+	cur.setPosition(cur.position() + sz);
+	//cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
 	m_blockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(position, delSz, sz);
