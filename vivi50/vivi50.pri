@@ -14,7 +14,8 @@ HEADERS += ./charEncoding.h \
     ./textCursor.h \
     ./TextDocument.h \
     ./TextView.h \
-    ./unit_test.h
+    ./unit_test.h \
+    ./FindDlg.h
 SOURCES += ./charEncoding.cpp \
     ./main.cpp \
     ./mainwindow.cpp \
@@ -23,6 +24,7 @@ SOURCES += ./charEncoding.cpp \
     ./textCursor.cpp \
     ./TextDocument.cpp \
     ./TextView.cpp \
-    ./unit_test.cpp
+    ./unit_test.cpp \
+    ./FindDlg.cpp
 FORMS += ./mainwindow.ui
 RESOURCES += ./mainwindow.qrc

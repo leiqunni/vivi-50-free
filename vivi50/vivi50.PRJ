@@ -24,7 +24,7 @@ memFileColumnWd = 320
 * mainwindow.cpp	(-128.265,-196.142)
 * mainwindow.h	(-128.265,-229.142)
   TextDocument.cpp	(-117.875,191.766)
-  TextDocument.h	(-117.875,158.766)
+* TextDocument.h	(-117.875,158.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
   mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
@@ -44,7 +44,7 @@ memFileColumnWd = 320
   "TextDocument.cpp" 50 'M: ' '' undone 不要なヒープの解放
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
-  "TextView.cpp" 543 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 780 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 785 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 553 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 790 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 795 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 800 'B: ' '' undone ブロック情報更新

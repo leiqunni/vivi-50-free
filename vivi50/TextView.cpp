@@ -417,12 +417,18 @@ bool TextView::event ( QEvent * event )
 {
 	if( event->type() == QEvent::KeyPress ) {
 		QKeyEvent *k = static_cast<QKeyEvent *>(event);
-		if( k->key() == Qt::Key_Tab /*|| k->key() == Qt::Key_Backtab*/ ) {
+		if( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab ) {
 			insertText(*m_textCursor, QString("\t"));
 			ensureCursorVisible();
 			viewport()->update();
 			return true;
 		}
+#if 0	//	‚¤‚Ü‚­‚¢‚©‚È‚¢ 11/04/13
+		if( k->key() == Qt::Key_Delete ) {
+			keyPressEvent(k);
+			return true;
+		}
+#endif
 	}
 #if 0
 	if( event->type() == QEvent::InputMethod ) {
@@ -541,10 +547,16 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		viewport()->update();
 		return;
 	case Qt::Key_Delete:
-		if( !m_textCursor->hasSelection() && ctrl ) {
-			m_textCursor->movePosition(TextCursor::NextWord, TextCursor::KeepAnchor);
-			if( !m_textCursor->hasSelection() )
-				return;
+		if( !m_textCursor->hasSelection() ) {
+			if( ctrl ) {
+				m_textCursor->movePosition(TextCursor::NextWord, TextCursor::KeepAnchor);
+				if( !m_textCursor->hasSelection() )
+					return;
+			} else if( shift ) {
+				m_textCursor->movePosition(TextCursor::EndOfBlock, TextCursor::KeepAnchor);
+				if( !m_textCursor->hasSelection() )
+					return;
+			}
 		}
 		m_textCursor->deleteChar();
 		viewport()->update();
