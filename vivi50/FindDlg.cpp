@@ -32,12 +32,14 @@ FindDlg::FindDlg(QWidget *parent, uchar matchCase)
 
 	QVBoxLayout *vBoxLayout2 = new QVBoxLayout();	//	ボタン配置用
 		QPushButton *findNext = new QPushButton(tr("Find&Next"));
-		connect(findNext, SIGNAL(clicked()), this, SLOT(findNextPushed()));
+		connect(findNext, SIGNAL(clicked()), this, SLOT(onFindNext()));
 		findNext->setDefault(true);
 		vBoxLayout2->addWidget(findNext);
 		QPushButton *findClose = new QPushButton(tr("&FindClose"));
+		connect(findClose, SIGNAL(clicked()), this, SLOT(onFindClose()));
 		vBoxLayout2->addWidget(findClose);
 		QPushButton *cancel = new QPushButton(tr("Cancel"));
+		connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 		vBoxLayout2->addWidget(cancel);
 		vBoxLayout2->addStretch();
 
@@ -53,7 +55,12 @@ FindDlg::~FindDlg()
 {
 
 }
-void FindDlg::findNextPushed()
+void FindDlg::onFindClose()
+{
+	onFindNext();
+	close();
+}
+void FindDlg::onFindNext()
 {
 	const QString findString = m_findStringEdit->text();
 	if( !findString.isEmpty() ) {

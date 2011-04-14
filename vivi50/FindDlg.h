@@ -26,7 +26,8 @@ public:
 	~FindDlg();
 
 protected slots:
-	void	findNextPushed();
+	void	onFindNext();
+	void	onFindClose();
 
 signals:
 	void	doFindNext(const QString &, uchar);

@@ -26,7 +26,10 @@
 + 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 + 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 + 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
+# 2011/04/14 12:48:57
++ 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 # latest
+2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
 2011/04/10 "TextDocument.cpp" M:   undone 不要なヒープの解放
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
