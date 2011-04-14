@@ -87,7 +87,9 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 	case GVUNDOITEM_TYPE_ERASE: {
 		cuchar *heap = &m_heap[ptr->m_hp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
-		pos = ptr->m_first + ptr->data_size();
+		pos = ptr->m_first;
+		if( (ptr->m_flags & GVUNDOITEM_CUR_TAIL) != 0 )
+			pos += ptr->data_size();
 		break;
 	}
 	case GVUNDOITEM_TYPE_INSERT:
@@ -594,14 +596,17 @@ void TextDocument::deleteChar(TextCursor &cur)
 {
 	if( cur.isNull() || cur.document() != this )
 		return;
+	ushort flags = 0;		//
 	if( !cur.hasSelection() )
 		cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor);
 	else if( cur.position() < cur.anchor() )
 		cur.swapPositionAnchor();
+	else
+		flags = GVUNDOITEM_CUR_TAIL;	//	文書先頭から末尾方向に向かって選択されていた場合
 	index_t first = cur.anchor();
 	index_t last = cur.position();
 	if( first == last ) return;
-	do_erase(first, last);
+	do_erase(first, last, flags);
 	cur.copyAnchorToPosition();
 	m_blockData = cur.blockData();
 	m_modified = true;
@@ -620,7 +625,7 @@ void TextDocument::deletePreviousChar(TextCursor &cur)
 	index_t first = cur.position();
 	index_t last = cur.anchor();
 	if( first == last ) return;
-	do_erase(first, last);
+	do_erase(first, last, GVUNDOITEM_CUR_TAIL);
 	cur.copyPositionToAnchor();
 	m_blockData = cur.blockData();
 	m_modified = true;
@@ -688,17 +693,12 @@ void TextDocument::do_insert(index_t position, const QString &text)
 	emit contentsChange(position, 0, sz);
 	emit contentsChanged();
 }
-void TextDocument::do_erase(index_t first, index_t last)
+void TextDocument::do_erase(index_t first, index_t last, ushort flag)
 {
 	const index_t hp_ix = m_undoMgr.addToHeap(m_buffer.begin() + first, m_buffer.begin() + last);
 	erase(first, last);
-#if 1
-	m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_ERASE, first, last, hp_ix),
+	m_undoMgr.push_back(GVUndoItem(GVUNDOITEM_TYPE_ERASE, first, last, hp_ix, 0, flag),
 						isModified());
-#else
-	GVUndoItem *ptr = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_ERASE, first, last, hp_ix);
-	m_undoMgr.push_back(ptr, isModified());
-#endif
 	emit contentsChange(first, last - first, 0);
 }
 void TextDocument::do_replace(index_t first, index_t last, const QString &text)
@@ -740,6 +740,7 @@ void TextDocument::doRedo(index_t &pos)
 	emit contentsChanged();
 }
 
+//	単純線形検索アルゴリズム
 bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const
 {
 	while( first < last ) {
@@ -750,27 +751,48 @@ bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const
 	}
 	return true;
 }
-TextCursor TextDocument::find(const QString &text, const TextCursor &cur)
+bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *last) const
+{
+	while( first < last ) {
+		if( tolower(*first) != tolower(m_buffer[position]) )
+			return false;
+		++first;
+		++position;
+	}
+	return true;
+}
+TextCursor TextDocument::find(const QString &text, const TextCursor &cur, uchar matchCase)
 {
 	if( cur.hasSelection() && cur.anchor() > cur.position() )
-		return find(text, cur.anchor());
+		return find(text, cur.anchor(), matchCase);
 	else
-		return find(text, cur.position());
+		return find(text, cur.position(), matchCase);
 }
-TextCursor TextDocument::find(const QString &text, index_t position)
+TextCursor TextDocument::find(const QString &text, index_t position, uchar matchCase)
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(text);
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	//	単純線形検索アルゴリズム
-	while( position < size() ) {
-		if( isMatch(position, ptr, ptr + sz) ) {
-			TextCursor c(this, position);
-			c.setPosition(position + sz, TextCursor::KeepAnchor);
-			return c;
+	if( matchCase ) {
+		while( position < size() ) {
+			if( isMatch(position, ptr, ptr + sz) ) {
+				TextCursor c(this, position);
+				c.setPosition(position + sz, TextCursor::KeepAnchor);
+				return c;
+			}
+			++position;
 		}
-		++position;
+	} else {
+		while( position < size() ) {
+			if( isMatchIgnoreCase(position, ptr, ptr + sz) ) {
+				TextCursor c(this, position);
+				c.setPosition(position + sz, TextCursor::KeepAnchor);
+				return c;
+			}
+			++position;
+		}
 	}
 	return TextCursor();	//	null cursor
 }

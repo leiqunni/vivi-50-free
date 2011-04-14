@@ -685,13 +685,14 @@ void TextView::redo()
 void TextView::find()
 {
 	FindDlg aDlg;
-	connect(&aDlg, SIGNAL(doFindNext(const QString &)), this, SLOT(doFindNext(const QString &)));
+	connect(&aDlg, SIGNAL(doFindNext(const QString &, uchar)),
+			this, SLOT(doFindNext(const QString &, uchar)));
 	aDlg.exec();
 }
-void TextView::doFindNext(const QString &text)
+void TextView::doFindNext(const QString &text, uchar matchCase)
 {
 	if( text.isEmpty() ) return;
-	TextCursor c = document()->find(text, *m_textCursor);
+	TextCursor c = document()->find(text, *m_textCursor, matchCase);
 	if( !c.isNull() ) {
 		*m_textCursor = c;
 		ensureCursorVisible();

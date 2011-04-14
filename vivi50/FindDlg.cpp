@@ -1,7 +1,7 @@
 #include <QtGui>
 #include "FindDlg.h"
 
-FindDlg::FindDlg(QWidget *parent)
+FindDlg::FindDlg(QWidget *parent, uchar matchCase)
 	: QDialog(parent)
 {
 	setWindowTitle(tr("Find Dialog"));
@@ -9,12 +9,17 @@ FindDlg::FindDlg(QWidget *parent)
 	QLabel *findStringLabel = new QLabel(tr("Find &String:"));
 	findStringLabel->setBuddy(m_findStringEdit = new QLineEdit);
 	QHBoxLayout *hBoxLayout = new QHBoxLayout();
-	hBoxLayout->addWidget(findStringLabel);
-	hBoxLayout->addWidget(m_findStringEdit);
+		hBoxLayout->addWidget(findStringLabel);
+		hBoxLayout->addWidget(m_findStringEdit);
 
+	m_caseComboBox = new QComboBox();
+		m_caseComboBox->addItem(tr("Ignore Case"));
+		m_caseComboBox->addItem(tr("Match Case"));
+		m_caseComboBox->setCurrentIndex(matchCase);
 	QVBoxLayout *vBoxLayout = new QVBoxLayout();
-	vBoxLayout->addLayout(hBoxLayout);
-	vBoxLayout->addStretch();
+		vBoxLayout->addLayout(hBoxLayout);
+		vBoxLayout->addWidget(m_caseComboBox);
+		vBoxLayout->addStretch();
 
 	QVBoxLayout *vBoxLayout2 = new QVBoxLayout();	//	ボタン配置用
 	QPushButton *findNext = new QPushButton(tr("Find&Next"));
@@ -42,6 +47,6 @@ void FindDlg::findNextPushed()
 {
 	const QString findString = m_findStringEdit->text();
 	if( !findString.isEmpty() )
-		emit doFindNext(findString);
+		emit doFindNext(findString, m_caseComboBox->currentIndex());
 
 }

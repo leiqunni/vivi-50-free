@@ -83,7 +83,7 @@ public slots:
 	void	redo();
 	void	selectAll();
 	void	find();
-	void	doFindNext(const QString &);
+	void	doFindNext(const QString &, uchar);
 	void	setFontPointSize(int);
 	void	setFontFamily(const QString &);
 	void	makeFontBigger(bool);
