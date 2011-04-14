@@ -72,7 +72,7 @@ public:
 
 public:
 	void	insertText(const QString &);
-	void	insertText(ViewTextCursor &, const QString &);
+	size_t	insertText(ViewTextCursor &, const QString &);
 	void	deleteChar(ViewTextCursor &);
 	void	deletePreviousChar(ViewTextCursor &);
 

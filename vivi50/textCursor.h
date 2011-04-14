@@ -102,7 +102,7 @@ public:
 	void	setPosition(index_t position, TextBlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
 
-	void	insertText(const QString &);
+	size_t	insertText(const QString &);
 	void	deleteChar();
 	void	deletePreviousChar();
 

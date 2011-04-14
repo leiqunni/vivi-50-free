@@ -111,6 +111,8 @@ private:
     QAction *undoAct;
     QAction *redoAct;
     QAction *findAct;
+    QAction *findNextAct;
+    QAction *findPrevAct;
     QAction *fontAct;		//	Žb’è“I
     QAction *aboutAct;
 

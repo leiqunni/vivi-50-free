@@ -16,5 +16,7 @@
         <file>Resources/images/stopwatch.png</file>
         <file>Resources/images/Warning.png</file>
         <file>Resources/images/Search.png</file>
+        <file>Resources/images/Paper-arrow.png</file>
+        <file>Resources/images/Paper-arrow-back.png</file>
     </qresource>
 </RCC>

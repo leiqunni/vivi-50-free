@@ -793,7 +793,11 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 	if( offset != 0 )
 		cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, offset);
 	if( ctrl ) {
-		m_multiCursor.push_back(*m_textCursor);		//	暫定的、ホントはソートして格納
+		std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin();
+		std::vector<ViewTextCursor>::iterator iend = m_multiCursor.end();
+		while( itr != iend && itr->position() < m_textCursor->position() )
+			++itr;
+		m_multiCursor.insert(itr, *m_textCursor);
 	} else
 		clearMultiCursor();
 	*m_textCursor = cur;
@@ -829,6 +833,29 @@ void TextView::insertText(const QString &text)
 	if( m_multiCursor.empty() )
 		insertText(*m_textCursor, text);
 	else {
+		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		v.reserve(m_multiCursor.size() + 1);
+		bool inserted = false;
+		for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
+															iend = m_multiCursor.end();
+			itr != iend; ++itr)
+		{
+			if( !inserted && m_textCursor->position() <= itr->position() ) {
+				v.push_back(m_textCursor);
+				inserted = true;
+			}
+			v.push_back(&*itr);
+		}
+		if( !inserted )
+			v.push_back(m_textCursor);
+		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+			itr != iend; ++itr)
+		{
+			const size_t sz = insertText(**itr, text);
+			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; )
+				(*k)->setPosition((*k)->position() + sz);
+		}
+#if 0
 		bool inserted = false;
 		for(std::vector<ViewTextCursor>::reverse_iterator itr = m_multiCursor.rbegin(),
 															iend = m_multiCursor.rend();
@@ -840,13 +867,16 @@ void TextView::insertText(const QString &text)
 				inserted = true;
 			}
 			insertText(*itr, text);
+			//	undone B 挿入位置以降にあるカーソル位置更新
 		}
+#endif
 	}
 }
-void TextView::insertText(ViewTextCursor &cur, const QString &text)
+size_t TextView::insertText(ViewTextCursor &cur, const QString &text)
 {
-	document()->insertText(cur, text);
+	const size_t sz = document()->insertText(cur, text);
 	//	undone B ブロック情報更新
+	return sz;
 }
 void TextView::deleteChar(ViewTextCursor &cur)
 {

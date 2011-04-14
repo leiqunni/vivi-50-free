@@ -153,6 +153,14 @@ void MainWindow::createActions()
     findAct->setShortcut(QKeySequence::Find);
     findAct->setStatusTip(tr("find strings..."));
     connect(findAct, SIGNAL(triggered()), m_view, SLOT(find()));
+	findNextAct = new QAction(QIcon(":vivi/Resources/images/Paper-arrow.png"), tr("&FindNext"), this);
+    findNextAct->setShortcut(QKeySequence(Qt::Key_F3));
+    findNextAct->setStatusTip(tr("find next"));
+    connect(findNextAct, SIGNAL(triggered()), m_view, SLOT(findNext()));
+	findPrevAct = new QAction(QIcon(":vivi/Resources/images/Paper-arrow-back.png"), tr("&FindPrev"), this);
+    findPrevAct->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F3));
+    findPrevAct->setStatusTip(tr("find prev"));
+    connect(findPrevAct, SIGNAL(triggered()), m_view, SLOT(findPrev()));
 
 	fontAct = new QAction(/*QIcon(":vivi/Resources/images/editredo.png"),*/ tr("&Font..."), this);
     fontAct->setStatusTip(tr("select Font family and/or size"));
@@ -199,6 +207,8 @@ void MainWindow::createMenus()
 
     searchMenu = menuBar()->addMenu(tr("Search(&K)"));
     searchMenu->addAction(findAct);
+    searchMenu->addAction(findPrevAct);
+    searchMenu->addAction(findNextAct);
 
     viewMenu = menuBar()->addMenu(tr("&View"));
 
@@ -227,6 +237,8 @@ void MainWindow::createToolBars()
 
 	QToolBar *searchToolBar = addToolBar(tr("Search"));
 	searchToolBar->addAction(findAct);
+	searchToolBar->addAction(findPrevAct);
+	searchToolBar->addAction(findNextAct);
 
 	QToolBar *otherToolBar = addToolBar(tr("Other"));
 	otherToolBar->addAction(aboutAct);

@@ -634,10 +634,10 @@ void TextDocument::deletePreviousChar(TextCursor &cur)
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
 }
-void TextDocument::insertText(TextCursor &cur, const QString &text)
+size_t TextDocument::insertText(TextCursor &cur, const QString &text)
 {
 	if( cur.isNull() || cur.document() != this )
-		return;
+		return 0;
 	const index_t position = cur.position();
 	//if( position > m_buffer.size() ) position = m_buffer.size();
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -672,6 +672,7 @@ void TextDocument::insertText(TextCursor &cur, const QString &text)
 	m_modified = true;
 	emit contentsChange(position, delSz, sz);
 	emit contentsChanged();
+	return sz;		//	ë}ì¸ÉoÉCÉgêî
 }
 void TextDocument::do_insert(index_t position, const QString &text)
 {

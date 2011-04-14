@@ -456,10 +456,10 @@ bool TextCursor::atEnd() const
 {
 	return isNull() || m_position >= m_document->size();
 }
-void TextCursor::insertText(const QString &text)
+size_t TextCursor::insertText(const QString &text)
 {
-	if( isNull() ) return;
-	m_document->insertText(*this, text);
+	if( isNull() ) return 0;
+	return m_document->insertText(*this, text);
 #if 0
 	{
 		TextBlock bk = block();
