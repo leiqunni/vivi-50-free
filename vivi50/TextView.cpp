@@ -428,7 +428,7 @@ bool TextView::event ( QEvent * event )
 	if( event->type() == QEvent::KeyPress ) {
 		QKeyEvent *k = static_cast<QKeyEvent *>(event);
 		if( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab ) {
-			insertText(*m_textCursor, QString("\t"));
+			insertText(QString("\t"));
 			ensureCursorVisible();
 			viewport()->update();
 			return true;
@@ -578,7 +578,7 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		viewport()->update();
 		return;
 	case Qt::Key_Return:
-		insertText(*m_textCursor, QString("\n"));	//	undone C –{“–‚ÍÝ’è‚Å CRLF/CR/LF ‚Ì‚¢‚¸‚ê‚©‚ð‘}“ü
+		insertText(QString("\n"));	//	undone C –{“–‚ÍÝ’è‚Å CRLF/CR/LF ‚Ì‚¢‚¸‚ê‚©‚ð‘}“ü
 		ensureCursorVisible();
 		viewport()->update();
 		return;
@@ -605,7 +605,7 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 	}
 	QString text = keyEvent->text();
 	if( !text.isEmpty() ) {
-		insertText(*m_textCursor, text);
+		insertText(text);
 		ensureCursorVisible();
 		viewport()->update();
 	}
@@ -670,7 +670,7 @@ void TextView::paste()
 	QClipboard *clipboard = QApplication::clipboard();
 	QString text = clipboard->text();
 	if( !text.isEmpty() ) {
-		insertText(*m_textCursor, text);
+		insertText(text);
 		ensureCursorVisible();
 		viewport()->update();
 	}
@@ -823,6 +823,25 @@ void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
 	m_textCursor->movePosition(TextCursor::StartOfWord);
 	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
 	viewport()->update();
+}
+void TextView::insertText(const QString &text)
+{
+	if( m_multiCursor.empty() )
+		insertText(*m_textCursor, text);
+	else {
+		bool inserted = false;
+		for(std::vector<ViewTextCursor>::reverse_iterator itr = m_multiCursor.rbegin(),
+															iend = m_multiCursor.rend();
+			itr != iend; ++itr)
+		{
+			//	undone B ‘I‘ðó‘Ô‚Ìê‡‚É–¢‘Î‰ž
+			if( !inserted && m_textCursor->position() >= itr->position() ) {
+				insertText(*m_textCursor, text);
+				inserted = true;
+			}
+			insertText(*itr, text);
+		}
+	}
 }
 void TextView::insertText(ViewTextCursor &cur, const QString &text)
 {

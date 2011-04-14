@@ -138,11 +138,11 @@ Up	.\textCursor.h	/^		Up,$/;"	e	enum:TextCursor::__anon2
 VERSION_STR	.\mainwindow.cpp	29;"	d	file:
 ViewTextBlockItem	.\textCursor.h	/^	ViewTextBlockItem(size_t size = 0) : m_size(size) {}$/;"	f	struct:ViewTextBlockItem
 ViewTextBlockItem	.\textCursor.h	/^struct ViewTextBlockItem$/;"	s
+ViewTextCursor	.\textCursor.h	/^class ViewTextCursor : public TextCursor$/;"	c
 ViewTextCursor	.\textCursor.cpp	/^ViewTextCursor::ViewTextCursor(TextView *view, index_t position)$/;"	f	class:ViewTextCursor
 ViewTextCursor	.\textCursor.cpp	/^ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor)$/;"	f	class:ViewTextCursor
 ViewTextCursor	.\textCursor.cpp	/^ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor,$/;"	f	class:ViewTextCursor
 ViewTextCursor	.\textCursor.cpp	/^ViewTextCursor::ViewTextCursor(const ViewTextCursor &x)$/;"	f	class:ViewTextCursor
-ViewTextCursor	.\textCursor.h	/^class ViewTextCursor : public TextCursor$/;"	c
 _Destroy	.\gap_vector.h	/^	void _Destroy(pointer first, pointer last) { _Destroy_range(first, last, *_pAllocator); }$/;"	f	class:std::gap_vector
 _Destroy	.\gap_vector.h	/^	void _Destroy(pointer first, pointer last) { _Destroy_range(first, last, _allocator); }$/;"	f	class:std::gap_vector
 _Destroy	.\gap_vector.h	/^	void _Destroy(pointer first, pointer last)$/;"	f	class:std::gap_vector
@@ -385,6 +385,7 @@ insert	.\gap_vector.h	/^	iterator insert(const iterator &itr, Type ch)$/;"	f	cla
 insert	.\gap_vector.h	/^	iterator insert(size_t ix, InputIterator first, InputIterator last)$/;"	f	class:std::gap_vector
 insert	.\gap_vector.h	/^	void insert(index_type ix, Type ch)$/;"	f	class:std::gap_vector
 insertText	.\TextView.cpp	/^void TextView::insertText(ViewTextCursor &cur, const QString &text)$/;"	f	class:TextView
+insertText	.\TextView.cpp	/^void TextView::insertText(const QString &text)$/;"	f	class:TextView
 insertText	.\textCursor.cpp	/^void TextCursor::insertText(const QString &text)$/;"	f	class:TextCursor
 insertText	.\textCursor.cpp	/^void ViewTextCursor::insertText(const QString &text)$/;"	f	class:ViewTextCursor
 insertText	.\TextDocument.cpp	/^void TextDocument::insertText(TextCursor &cur, const QString &text)$/;"	f	class:TextDocument
@@ -562,6 +563,7 @@ open	.\mainwindow.cpp	/^void MainWindow::open(const QString &fileName)$/;"	f	cla
 openAct	.\mainwindow.h	/^	QAction *openAct;$/;"	m	class:MainWindow
 openRecentFile	.\mainwindow.cpp	/^void MainWindow::openRecentFile()$/;"	f	class:MainWindow
 operator !=	.\TextDocument.h	/^	bool	operator!=(const TextBlock &x) const$/;"	f	class:TextBlock
+operator <	.\textCursor.h	/^	bool	operator<(const TextCursor &x) const { return position() < x.position(); }$/;"	f	class:TextCursor
 operator <	.\TextDocument.h	/^	bool	operator<(const TextBlock &x) const$/;"	f	class:TextBlock
 operator =	.\textCursor.cpp	/^ViewTextCursor &ViewTextCursor::operator=(const TextCursor &x)$/;"	f	class:ViewTextCursor
 operator =	.\TextDocument.h	/^	GVUndoItem &operator=(const GVUndoItem &x)$/;"	f	struct:GVUndoItem

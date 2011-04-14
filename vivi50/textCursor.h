@@ -89,6 +89,8 @@ public:
 	index_t	ancBlockIndex() const { return m_anchorBlockData.m_index; }
 	index_t	ancBlockPosition() const { return m_anchorBlockData.m_position; }
 
+	bool	operator<(const TextCursor &x) const { return position() < x.position(); }
+
 public:
 	TextDocument	*document() { return m_document; }
 	void	setAnchor(index_t anchor) { m_anchor = anchor; }

@@ -71,6 +71,7 @@ public:
 	void	onFontChanged();
 
 public:
+	void	insertText(const QString &);
 	void	insertText(ViewTextCursor &, const QString &);
 	void	deleteChar(ViewTextCursor &);
 	void	deletePreviousChar(ViewTextCursor &);
