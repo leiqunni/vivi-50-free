@@ -23,6 +23,8 @@
 #include	<QtCore>
 #include "TextDocument.h"
 #include "textCursor.h"
+#include	"FindDlg.h"		//	for 検索オプション
+							//	undone R 検索オプションだけのファイル作った方がいいかも
 
 static inline bool isUTF8FirstChar(uchar ch)
 {
@@ -741,6 +743,13 @@ void TextDocument::doRedo(index_t &pos)
 }
 
 //	単純線形検索アルゴリズム
+bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last, uchar options) const
+{
+	if( (options & FindDlg::MatchCase) != 0 )
+		return isMatch(position, first, last);
+	else
+		return isMatchIgnoreCase(position, first, last);
+}
 bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const
 {
 	while( first < last ) {
@@ -761,23 +770,26 @@ bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *la
 	}
 	return true;
 }
-TextCursor TextDocument::find(const QString &text, const TextCursor &cur, uchar matchCase)
+TextCursor TextDocument::find(const QString &text, const TextCursor &cur, uchar options)
 {
-	if( cur.hasSelection() && cur.anchor() > cur.position() )
-		return find(text, cur.anchor(), matchCase);
-	else
-		return find(text, cur.position(), matchCase);
+	if( cur.hasSelection() &&
+		((options & FindDlg::FindBackWard) == 0 && cur.anchor() > cur.position() ||
+		(options & FindDlg::FindBackWard) != 0 && cur.anchor() < cur.position()) )
+	{
+		return find(text, cur.anchor(), options);
+	}
+	return find(text, cur.position(), options);
 }
-TextCursor TextDocument::find(const QString &text, index_t position, uchar matchCase)
+TextCursor TextDocument::find(const QString &text, index_t position, uchar options)
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(text);
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	//	単純線形検索アルゴリズム
-	if( matchCase ) {
+	if( (options & FindDlg::FindBackWard) == 0 ) {
 		while( position < size() ) {
-			if( isMatch(position, ptr, ptr + sz) ) {
+			if( isMatch(position, ptr, ptr + sz, options) ) {
 				TextCursor c(this, position);
 				c.setPosition(position + sz, TextCursor::KeepAnchor);
 				return c;
@@ -785,13 +797,13 @@ TextCursor TextDocument::find(const QString &text, index_t position, uchar match
 			++position;
 		}
 	} else {
-		while( position < size() ) {
+		while( position > 0 ) {
+			--position;
 			if( isMatchIgnoreCase(position, ptr, ptr + sz) ) {
 				TextCursor c(this, position);
 				c.setPosition(position + sz, TextCursor::KeepAnchor);
 				return c;
 			}
-			++position;
 		}
 	}
 	return TextCursor();	//	null cursor
