@@ -29,7 +29,7 @@ memFileColumnWd = 320
   mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
   unit_test.h	(173.104,-115.746)
-  mainwindowTest.cpp	(-128.265,-130.142)
+* mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
   textBlockData.h	(-364.713,168.24)
@@ -46,7 +46,8 @@ memFileColumnWd = 320
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
   "TextView.cpp" 581 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 837 'B: ' '' undone 選択状態の場合に未対応
-  "TextView.cpp" 849 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 854 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 859 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 864 'B: ' '' undone 選択状態の場合に未対応
+  "TextView.cpp" 870 'B: ' '' undone 挿入位置以降にあるカーソル位置更新
+  "TextView.cpp" 878 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 884 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 889 'B: ' '' undone ブロック情報更新

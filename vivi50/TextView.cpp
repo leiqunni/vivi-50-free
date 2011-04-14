@@ -678,8 +678,8 @@ void TextView::paste()
 void TextView::undo()
 {
 	if( !m_document->canUndo() ) return;
-	index_t pos = 0;
-	m_document->doUndo(pos);
+	index_t pos = 0, anchor = 0;
+	m_document->doUndo(pos, anchor);
 	m_textCursor->setPosition(pos);
 	ensureCursorVisible();
 	viewport()->update();
@@ -687,8 +687,8 @@ void TextView::undo()
 void TextView::redo()
 {
 	if( !m_document->canRedo() ) return;
-	index_t pos = 0;
-	m_document->doRedo(pos);
+	index_t pos = 0, anchor = 0;
+	m_document->doRedo(pos, anchor);
 	m_textCursor->setPosition(pos);
 	ensureCursorVisible();
 	viewport()->update();

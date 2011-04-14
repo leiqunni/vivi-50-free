@@ -79,7 +79,7 @@ void GVUndoMgr::resetModifiedFlags()
 	}
 }
 //	@return		Undo の結果、モディファイフラグがＯＮの場合は TRUE を返す
-bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
+bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos, uint& anchor)
 {
 	if( !m_current ) return false;
 	//boost::shared_ptr<GVUndoItem> undoItem = m_items[--m_current];
@@ -89,16 +89,17 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 	case GVUNDOITEM_TYPE_ERASE: {
 		cuchar *heap = &m_heap[ptr->m_hp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
-		pos = ptr->m_first;
 		if( (ptr->m_flags & GVUNDOITEM_CUR_TAIL) != 0 )
-			pos += ptr->data_size();
+			pos = (anchor = ptr->m_first) + ptr->data_size();
+		else
+			anchor = (pos = ptr->m_first) + ptr->data_size();
 		break;
 	}
 	case GVUNDOITEM_TYPE_INSERT:
 		if( ptr->m_rhp_ix == 0 )
 			ptr->m_rhp_ix = addToRedoHeap(bb->begin() + ptr->m_first, bb->begin() + ptr->m_last);
 		bb->erase(ptr->m_first, ptr->m_last);
-		pos = ptr->m_first;
+		pos = anchor = ptr->m_first;
 		break;
 	case GVUNDOITEM_TYPE_REPLACE: {
 		if( ptr->m_rhp_ix == 0 )
@@ -106,7 +107,11 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 		bb->erase(ptr->m_first, ptr->m_last2);
 		cuchar *heap = &m_heap[ptr->m_hp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
-		pos = ptr->m_first + ptr->data_size();
+		if( (ptr->m_flags & GVUNDOITEM_CUR_TAIL) != 0 )
+			pos = (anchor = ptr->m_first) + ptr->data_size();
+		else
+			anchor = (pos = ptr->m_first) + ptr->data_size();
+		//pos = ptr->m_first + ptr->data_size();
 		break;
 	}
 	}
@@ -117,7 +122,7 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos)
 #endif
 	//return true;
 }
-bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
+bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos, uint& anchor)
 {
 	if( m_current >= m_items.size() ) return false;
 	//boost::shared_ptr<GVUndoItem> undoItem = m_items[m_current];
@@ -127,19 +132,19 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos)
 	switch( ptr->m_type ) {
 	case GVUNDOITEM_TYPE_ERASE:
 		bb->erase(ptr->m_first, ptr->m_last);
-		pos = ptr->m_first;
+		pos = anchor = ptr->m_first;
 		break;
 	case GVUNDOITEM_TYPE_INSERT: {
 		cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
-		pos = ptr->m_first + ptr->data_size();
+		pos = anchor = ptr->m_first + ptr->data_size();
 		break;
 	}
 	case GVUNDOITEM_TYPE_REPLACE: {
 		bb->erase(ptr->m_first, ptr->m_last);
 		cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
 		bb->insert(ptr->m_first, heap, heap + ptr->data_size2());
-		pos = ptr->m_first + ptr->data_size();
+		pos = (anchor = ptr->m_first) + ptr->data_size2();
 		break;
 	}
 	}
@@ -730,16 +735,16 @@ void TextDocument::do_replace(index_t first, index_t last, const QString &text)
 #endif
 	emit contentsChange(first, last - first, sz);
 }
-void TextDocument::doUndo(index_t &pos)
+void TextDocument::doUndo(index_t &pos, index_t &anchor)
 {
 	if( !m_undoMgr.canUndo() ) return;
-	setModified(m_undoMgr.doUndo(this, pos));
+	setModified(m_undoMgr.doUndo(this, pos, anchor));
 	emit contentsChanged();
 }
-void TextDocument::doRedo(index_t &pos)
+void TextDocument::doRedo(index_t &pos, index_t &anchor)
 {
 	if( !m_undoMgr.canRedo() ) return;
-	setModified(m_undoMgr.doRedo(this, pos));
+	setModified(m_undoMgr.doRedo(this, pos, anchor));
 	emit contentsChanged();
 }
 

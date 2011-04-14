@@ -25,6 +25,7 @@
 #include "TextView.h"
 #include "TextDocument.h"
 #include "TextCursor.h"
+#include "FindDlg.h"
 
 extern MainWindow *pMainWindow;
 
@@ -297,10 +298,10 @@ void test_TextDocument()
 		TextDocument doc;
 		doc.do_insert(0, "123\n");
 		ut.ut_test_equal(QString("123\n"), doc.toPlainText());
-		index_t position;
-		doc.doUndo(position);
+		index_t position, anchor;
+		doc.doUndo(position, anchor);
 		ut.ut_test_equal(QString(""), doc.toPlainText());
-		doc.doRedo(position);
+		doc.doRedo(position, anchor);
 		ut.ut_test_equal(QString("123\n"), doc.toPlainText());
 	}
 	if( 1 ) {		//	undo/redo ‘Î‰ž do_replace() ƒeƒXƒg
@@ -310,11 +311,11 @@ void test_TextDocument()
 		doc.do_replace(0, 1, "XYZ");
 		ut.ut_test_equal(6, doc.firstBlock().size());
 		ut.ut_test_equal(QString("XYZ23\n"), doc.firstBlock().text());
-		index_t position;
-		doc.doUndo(position);
+		index_t position, anchor;
+		doc.doUndo(position, anchor);
 		ut.ut_test_equal(4, doc.firstBlock().size());
 		ut.ut_test_equal(QString("123\n"), doc.firstBlock().text());
-		doc.doRedo(position);
+		doc.doRedo(position, anchor);
 		ut.ut_test_equal(6, doc.firstBlock().size());
 		ut.ut_test_equal(QString("XYZ23\n"), doc.firstBlock().text());
 
@@ -332,7 +333,7 @@ void test_TextDocument()
 		doc.do_insert(0, "123\nxyzzz\nxyZZZ\n");
 		ut.ut_test( doc.find(QString("abc")).isNull() );
 		ut.ut_test( !doc.find(QString("xyZ")).isNull() );
-		TextCursor c = doc.find(QString("xyZ"));
+		TextCursor c = doc.find(QString("xyZ"), 0, FindDlg::MatchCase);
 		ut.ut_test_equal(10, c.anchor() );
 		ut.ut_test_equal(13, c.position() );
 	}
@@ -346,12 +347,12 @@ void test_TextDocument()
 		ut.ut_test_equal(4, cur.position());
 		ut.ut_test_equal(8, doc.firstBlock().size());
 		ut.ut_test_equal(QString("0XYZ123\n"), doc.firstBlock().text());
-		index_t position;
-		doc.doUndo(position);
+		index_t position, anchor;
+		doc.doUndo(position, anchor);
 		//ut.ut_test_equal(4, cur.position());
 		ut.ut_test_equal(5, doc.firstBlock().size());
 		ut.ut_test_equal(QString("0123\n"), doc.firstBlock().text());
-		doc.doRedo(position);
+		doc.doRedo(position, anchor);
 		ut.ut_test_equal(4, cur.position());
 		ut.ut_test_equal(8, doc.firstBlock().size());
 		ut.ut_test_equal(QString("0XYZ123\n"), doc.firstBlock().text());
@@ -362,11 +363,11 @@ void test_TextDocument()
 		ut.ut_test_equal(2, cur.position());
 		ut.ut_test_equal(6, doc.firstBlock().size());
 		ut.ut_test_equal(QString("07123\n"), doc.firstBlock().text());
-		doc.doUndo(position);
+		doc.doUndo(position, anchor);
 		//ut.ut_test_equal(4, cur.position());
 		ut.ut_test_equal(8, doc.firstBlock().size());
 		ut.ut_test_equal(QString("0XYZ123\n"), doc.firstBlock().text());
-		doc.doRedo(position);
+		doc.doRedo(position, anchor);
 		ut.ut_test_equal(2, cur.position());
 		ut.ut_test_equal(6, doc.firstBlock().size());
 		ut.ut_test_equal(QString("07123\n"), doc.firstBlock().text());

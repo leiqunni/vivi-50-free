@@ -184,8 +184,8 @@ public:
 		return sz;
 	}
 	void	resetModifiedFlags();	//	ドキュメントが保存された時にコールされる
-	bool	doUndo(TextDocument*, uint&);
-	bool	doRedo(TextDocument*, uint&);
+	bool	doUndo(TextDocument*, uint&, uint&);
+	bool	doRedo(TextDocument*, uint&, uint&);
 };
 //----------------------------------------------------------------------
 
@@ -332,8 +332,8 @@ public:
 	void	deleteChar(TextCursor&);
 	void	deletePreviousChar(TextCursor&);
 
-	void	doUndo(index_t &pos); //{ m_undoMgr.doUndo(this, pos); }
-	void	doRedo(index_t &pos); //{ m_undoMgr.doRedo(this, pos); }
+	void	doUndo(index_t &pos, index_t &); //{ m_undoMgr.doUndo(this, pos); }
+	void	doRedo(index_t &pos, index_t &); //{ m_undoMgr.doRedo(this, pos); }
 #if 0
 	void	doUndo()
 	{
