@@ -81,6 +81,7 @@ public:
 	bool	isNull() const { return m_document == 0; }
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
 	QString	selectedText() const;
+	TextBlock	block() const;
 	TextBlockData blockData() const { return m_blockData; }
 	TextBlockData anchorBlockData() const { return m_anchorBlockData; }
 	index_t	blockIndex() const { return m_blockData.m_index; }
@@ -92,7 +93,6 @@ public:
 	TextDocument	*document() { return m_document; }
 	void	setAnchor(index_t anchor) { m_anchor = anchor; }
 	void	clearSelection() { copyPositionToAnchor(); }
-	TextBlock	block();
 	void	copyPositionToAnchor();
 	void	copyAnchorToPosition();
 	void	swapPositionAnchor();

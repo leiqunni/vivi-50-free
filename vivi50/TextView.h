@@ -112,6 +112,7 @@ protected:
 	void	updateScrollBarData();
 	void	drawLineNumbers();
 	void	resetCursorBlinkTimer();
+	void	clearMultiCursor() { m_multiCursor.clear(); }
 
     TextBlock	firstVisibleBlock() const;
     void	ensureCursorVisible();
@@ -129,6 +130,8 @@ private:
 	bool	m_toDeleteIMEPreeditText;
 	bool	m_drawCursor;
 	ViewTextCursor	m_viewTextCursor;
+	std::vector<ViewTextCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
+													//	個数は少数と仮定して std::vector を用いる
 	TextCursor	*m_preeditPosCursor;
 	QString	m_preeditString;
 	TextDocument	*m_document;

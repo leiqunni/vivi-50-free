@@ -317,6 +317,8 @@ void TextView::paintEvent(QPaintEvent * event)
 	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	//qDebug() << "firstVisibleBlock.index = " << block.index();
 	//TextBlock block = m_document->firstBlock();
+	std::vector<ViewTextCursor>::const_iterator mcitr = m_multiCursor.begin();
+	std::vector<ViewTextCursor>::const_iterator mciend = m_multiCursor.end();
 	while( y < vr.height() && block.isValid() ) {
 		const QString text = block.text();
 		index_t nextBlockPosition = block.position() + m_document->blockSize(block.index());
@@ -328,12 +330,20 @@ void TextView::paintEvent(QPaintEvent * event)
 			int x2 = offsetToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
 			painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
 		}
-		if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
-			if( m_drawCursor ) {
+		if( m_drawCursor ) {
+			if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
 				const int offset = qMin(block.charsCount(m_textCursor->position()),
 											text.length());
 				int x = offsetToX(text, offset);
 				painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::red);
+			}
+			while( mcitr != mciend && mcitr->block() < block )
+				++mcitr;
+			if( mcitr != mciend && mcitr->block() == block) {		//	カーソルがブロック内にある場合
+				const int offset = qMin(block.charsCount(mcitr->position()),
+											text.length());
+				int x = offsetToX(text, offset);
+				painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::green);
 			}
 		}
 		//painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
@@ -574,6 +584,7 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		return;
 	case Qt::Key_Escape:
 		m_textCursor->clearSelection();
+		clearMultiCursor();
 		viewport()->update();
 		emit showMessage( QString("%1 cur=(%2 %3 %4) blockData=(%5 %6)")
 							.arg(QDir::currentPath())
@@ -768,15 +779,25 @@ void TextView::doJump(int lineNum)
 }
 void TextView::mousePressEvent ( QMouseEvent * event )
 {
+	Qt::KeyboardModifiers mod = event->modifiers();
+	const bool ctrl = (mod & Qt::ControlModifier) != 0;
+	const bool shift = (mod & Qt::ShiftModifier) != 0;
 	TextBlock block = yToTextBlock(event->y());
 	if( !block.isValid() )
 		block = document()->lastBlock();
 	//qDebug() << "block index = " << block.index();
 	int offset = xToOffset(block.text(), event->x());
 	//qDebug() << "offset = " << offset;
-	m_textCursor->setPosition(block.position());
+	ViewTextCursor cur(*m_textCursor);
+	cur.setPosition(block.position());
 	if( offset != 0 )
-		m_textCursor->movePosition(TextCursor::Right, TextCursor::MoveAnchor, offset);
+		cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, offset);
+	if( ctrl ) {
+		m_multiCursor.push_back(*m_textCursor);		//	暫定的、ホントはソートして格納
+	} else
+		clearMultiCursor();
+	*m_textCursor = cur;
+	m_timer->start();		//	タイマーリスタート
 	viewport()->update();
 	m_mouseCaptured = true;
 }

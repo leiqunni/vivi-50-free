@@ -101,7 +101,7 @@ int TextCursor::prevCharsCount() const
 	}
 	return cnt;
 }
-TextBlock TextCursor::block()
+TextBlock TextCursor::block() const
 {
 	return TextBlock(m_document, m_blockData);
 }
