@@ -680,7 +680,12 @@ void TextView::undo()
 	if( !m_document->canUndo() ) return;
 	index_t pos = 0, anchor = 0;
 	m_document->doUndo(pos, anchor);
-	m_textCursor->setPosition(pos);
+	if( pos == anchor )
+		m_textCursor->setPosition(pos);
+	else {
+		m_textCursor->setPosition(anchor);
+		m_textCursor->setPosition(pos, TextCursor::KeepAnchor);
+	}
 	ensureCursorVisible();
 	viewport()->update();
 }
