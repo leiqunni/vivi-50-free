@@ -213,6 +213,7 @@ public:
 	uint		size() const;		//	改行を含めたコード長
 	uint		length() const { return size(); }
 	uint		EOLOffset() const;
+	uint		newlineLength() const;		//	改行部分のバイト数を返す
 	bool		isValid() const { return m_document == 0 || blockNumber() != INVALID_INDEX; }
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }

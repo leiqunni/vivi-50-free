@@ -60,7 +60,7 @@ void MainWindow::doUnitTest()
 		ut.ut_test_equal(QString("abc"), QString("xyzzz"));
 		ut.ut_test_equal(QString("‚ ‚¢‚¤‚¦‚¨"), QString("‚©‚«‚­‚¯‚±"));
 	}
-	test_TextDocument();
+	//test_TextDocument();
 	test_TextView();
 	QString temp;
 	if( !g_total_fail_count ) {
@@ -610,12 +610,19 @@ void test_TextView()
 {
 	CUnitTest ut("TextView");
 	if( 1 ) {
-		TextView editor;
-		TextDocument *doc = editor.document();
+		TextView view;
+		TextDocument *doc = view.document();
 		ut.ut_test( doc->isEmpty() );
 		ut.ut_test_equal(0, doc->size());
-		ViewTextCursor cur(&editor);
+		ut.ut_test_equal(1, view.blockCount());
+		ViewTextCursor cur(&view);
 		cur.insertText(QString("123\r\n‚ ‚¢‚¤\n"));
+		view.buildBlocks();
+		ut.ut_test_equal(3, view.blockCount());
+		ut.ut_test_equal(5, view.blockSize(0));
+		ut.ut_test_equal(10, view.blockSize(1));
+		ut.ut_test_equal(0, view.blockSize(2));
+
 		ut.ut_test( !doc->isEmpty() );
 		ut.ut_test_equal(15, doc->size());
 		cur.setPosition(0);
@@ -623,5 +630,18 @@ void test_TextView()
 		ut.ut_test_equal(0, cur.anchor());
 		cur.movePosition(TextCursor::Right);
 		ut.ut_test_equal(1, cur.position());
+	}
+	if( 1 ) {
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("123\r\n‚ ‚¢‚¤‚¦‚¨‚©‚«‚­\n"));
+		QFontMetrics fm = view.fontMetrics();
+		view.m_viewportWidth = fm.width(QString("‚ ‚¢‚¤‚¦‚¨"));
+		view.buildBlocks();
+		ut.ut_test_equal(4, view.blockCount());
+		ut.ut_test_equal(5, view.blockSize(0));
+		ut.ut_test_equal(15, view.blockSize(1));	//	‚ ‚¢‚¤‚¦‚¨
+		ut.ut_test_equal(10, view.blockSize(2));	//	‚©‚«‚­
+		ut.ut_test_equal(0, view.blockSize(3));
 	}
 }

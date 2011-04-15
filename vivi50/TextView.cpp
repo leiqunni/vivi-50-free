@@ -28,6 +28,7 @@
 #include	<math.h>
 #include	<QDebug>
 
+size_t UTF8CharSize(uchar ch);
 //----------------------------------------------------------------------
 
 #define		MARGIN_LEFT		4
@@ -53,6 +54,7 @@ TextView::TextView(QWidget *parent)
 	setFontPointSize(11);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	//onFontChanged();
+	m_viewportWidth = viewport()->width();
 
 	//m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
 	m_timer = new QTimer(this);
@@ -892,4 +894,39 @@ void TextView::deletePreviousChar(ViewTextCursor &cur)
 {
 	document()->deletePreviousChar(cur);
 	//	undone B ブロック情報更新
+}
+void TextView::buildBlocks()
+{
+	QFontMetrics fm = fontMetrics();
+	m_blocks.clear();
+	//m_blocks.push_back(ViewTextBlockItem(0));
+	TextBlock block = document()->firstBlock();
+	while( block.isValid() ) {
+		index_t pos = block.position();
+		index_t blockPos = pos;
+		QString text = block.text();
+		const size_t nlLength = block.newlineLength();
+		index_t ixEOL = text.length() - nlLength;		//	改行コードは１バイトと仮定
+		if( !ixEOL )
+			m_blocks.push_back(ViewTextBlockItem(block.size()));
+		else {
+			index_t ix = 0;
+			while( ix < ixEOL ) {
+				QString buf;
+				for(;;) {
+					if( ix == ixEOL ) {
+						pos += nlLength;
+						break;
+					}
+					buf += text[ix];
+					if( fm.width(buf) > m_viewportWidth ) break;
+					++ix;
+					pos += UTF8CharSize((*document())[pos]);
+				}
+				m_blocks.push_back(ViewTextBlockItem(pos - blockPos));
+				blockPos = pos;
+			}
+		}
+		block = block.next();
+	}
 }

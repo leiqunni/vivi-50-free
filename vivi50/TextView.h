@@ -51,6 +51,7 @@ public:
 	bool	isModified() const;
 	QString	toPlainText() const;
 	const TextDocument	*document() const { return m_document; }
+	size_t blockCount() const { return m_blocks.size(); }
 	TextBlockData	findBlockData(index_t position) const;
 	TextBlockData	nextBlockData(TextBlockData d) const
 	{ return TextBlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
@@ -64,6 +65,7 @@ public:
 		}
 	}
 	size_t	size() const;	// { return document()->size(); }
+	size_t	blockSize(index_t ix) const { return m_blocks[ix].m_size; }
 
 public:
 	TextDocument	*document() { return m_document; }
@@ -114,6 +116,7 @@ protected:
 	void	drawLineNumbers();
 	void	resetCursorBlinkTimer();
 	void	clearMultiCursor() { m_multiCursor.clear(); }
+	void	buildBlocks();
 
     TextBlock	firstVisibleBlock() const;
     void	ensureCursorVisible();
@@ -137,6 +140,7 @@ private:
 	QString	m_preeditString;
 	TextDocument	*m_document;
 	ViewTextCursor	*m_textCursor;		//	ビュー用カーソル
+	int		m_viewportWidth;
 	QWidget	*m_lineNumberArea;
 	int		m_lineNumberAreaWidth;
 	int		m_lineNumberWidth;
@@ -144,6 +148,8 @@ private:
 	QTimer	*m_timer;					//	タイマーオブジェクト
 	mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		//	ブロック配列
 	mutable TextBlockData	m_blockData;			//	カレントブロック情報
+
+	friend void test_TextView();
 };
 
 #endif // PLAINTEXTEDIT_H
