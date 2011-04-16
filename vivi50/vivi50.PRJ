@@ -21,8 +21,8 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(139.922,171.793)
   main.cpp	(-178.304,-339.84)
-  mainwindow.cpp	(-128.265,-196.142)
-  mainwindow.h	(-128.265,-229.142)
+* mainwindow.cpp	(-128.265,-196.142)
+* mainwindow.h	(-128.265,-229.142)
 * TextDocument.cpp	(-117.875,191.766)
 * TextDocument.h	(-117.875,158.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
