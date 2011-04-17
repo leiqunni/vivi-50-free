@@ -700,6 +700,9 @@ void TextView::redo()
 	ensureCursorVisible();
 	viewport()->update();
 }
+void TextView::replace()
+{
+}
 void TextView::find()
 {
 	FindDlg aDlg;

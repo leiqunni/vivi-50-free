@@ -166,6 +166,11 @@ void MainWindow::createActions()
     findCurWordAct->setStatusTip(tr("find cursor position's word text"));
     connect(findCurWordAct, SIGNAL(triggered()), m_view, SLOT(findCurWord()));
 
+	replaceAct = new QAction(tr("&Replace..."), this);
+    replaceAct->setShortcut(QKeySequence(Qt::Key_F4));
+    replaceAct->setStatusTip(tr("replace strings..."));
+    connect(replaceAct, SIGNAL(triggered()), m_view, SLOT(replace()));
+
 	fontAct = new QAction(/*QIcon(":vivi/Resources/images/editredo.png"),*/ tr("&Font..."), this);
     fontAct->setStatusTip(tr("select Font family and/or size"));
     connect(fontAct, SIGNAL(triggered()), this, SLOT(font()));
@@ -214,6 +219,7 @@ void MainWindow::createMenus()
     searchMenu->addAction(findPrevAct);
     searchMenu->addAction(findNextAct);
     searchMenu->addAction(findCurWordAct);
+    searchMenu->addAction(replaceAct);
 
     viewMenu = menuBar()->addMenu(tr("&View"));
 

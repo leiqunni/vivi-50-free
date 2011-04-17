@@ -8,6 +8,7 @@ message("You are running qmake on a generated .pro file. This may not work!")
 
 
 HEADERS += ./charEncoding.h \
+    ./FindDlg.h \
     ./gap_vector.h \
     ./mainwindow.h \
     ./textBlockData.h \
@@ -15,8 +16,9 @@ HEADERS += ./charEncoding.h \
     ./TextDocument.h \
     ./TextView.h \
     ./unit_test.h \
-    ./FindDlg.h
+    ./ReplaceDlg.h
 SOURCES += ./charEncoding.cpp \
+    ./FindDlg.cpp \
     ./main.cpp \
     ./mainwindow.cpp \
     ./mainwindowBench.cpp \
@@ -25,6 +27,6 @@ SOURCES += ./charEncoding.cpp \
     ./TextDocument.cpp \
     ./TextView.cpp \
     ./unit_test.cpp \
-    ./FindDlg.cpp
+    ./ReplaceDlg.cpp
 FORMS += ./mainwindow.ui
 RESOURCES += ./mainwindow.qrc

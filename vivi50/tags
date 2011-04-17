@@ -38,10 +38,10 @@ EUC_KANA_LEADBYTE	.\charEncoding.cpp	27;"	d	file:
 EndOfBlock	.\textCursor.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon2
 EndOfDocument	.\textCursor.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon2
 EndOfWord	.\textCursor.h	/^		EndOfWord,$/;"	e	enum:TextCursor::__anon2
-FINDDLG_H	.\FindDlg.h	2;"	d
+FINDDLG_H	.\FindDlg.h	24;"	d
 FindBackWard	.\FindDlg.h	/^	FindBackWard = 0x04,$/;"	e	enum:__anon1
-FindDlg	.\FindDlg.cpp	/^FindDlg::FindDlg(QWidget *parent, ushort matchCase)$/;"	f	class:FindDlg
 FindDlg	.\FindDlg.h	/^class FindDlg : public QDialog$/;"	c
+FindDlg	.\FindDlg.cpp	/^FindDlg::FindDlg(QWidget *parent, ushort matchCase)$/;"	f	class:FindDlg
 GVUNDOITEM_BLOCK	.\TextDocument.h	/^	GVUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock ‚©‚Ç‚¤‚©$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_ALL	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_ALL = 0x0040,		\/\/	‘}“ü•¶Žš—ñ˜AŒ‹‰Â”\$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_LINE	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_LINE = 0x0020,	\/\/	‘}“ü•¶Žš—ñ˜AŒ‹‰Â”\$/;"	e	enum:__anon2
@@ -654,6 +654,8 @@ redo	.\TextView.cpp	/^void TextView::redo()$/;"	f	class:TextView
 redo	.\PlainTextEdit.cpp	/^void PlainTextEdit::redo()$/;"	f	class:PlainTextEdit
 redoAct	.\mainwindow.h	/^    QAction *redoAct;$/;"	m	class:MainWindow
 reference	.\gap_vector.h	/^	typedef Type& reference;$/;"	t	class:std::gap_vector
+replace	.\TextView.cpp	/^void TextView::replace()$/;"	f	class:TextView
+replaceAct	.\mainwindow.h	/^    QAction *replaceAct;$/;"	m	class:MainWindow
 reserve	.\gap_vector.h	/^	void reserve(size_type n)$/;"	f	class:std::gap_vector
 resetModifiedFlags	.\TextDocument.cpp	/^void GVUndoMgr::resetModifiedFlags()$/;"	f	class:GVUndoMgr
 resize	.\gap_vector.h	/^	void resize(size_type n, value_type v = value_type())$/;"	f	class:std::gap_vector

@@ -85,6 +85,7 @@ public slots:
 	void	undo();
 	void	redo();
 	void	selectAll();
+	void	replace();
 	void	find();
 	void	findNext();
 	void	findPrev();

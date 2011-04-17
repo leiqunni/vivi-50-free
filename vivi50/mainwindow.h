@@ -114,6 +114,7 @@ private:
     QAction *findNextAct;
     QAction *findPrevAct;
     QAction *findCurWordAct;	//	カーソル位置単語検索
+    QAction *replaceAct;
     QAction *fontAct;			//	暫定的
     QAction *aboutAct;
 
