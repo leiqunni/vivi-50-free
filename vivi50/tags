@@ -40,8 +40,8 @@ EndOfDocument	.\textCursor.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon2
 EndOfWord	.\textCursor.h	/^		EndOfWord,$/;"	e	enum:TextCursor::__anon2
 FINDDLG_H	.\FindDlg.h	2;"	d
 FindBackWard	.\FindDlg.h	/^	FindBackWard = 0x04,$/;"	e	enum:__anon1
-FindDlg	.\FindDlg.h	/^class FindDlg : public QDialog$/;"	c
 FindDlg	.\FindDlg.cpp	/^FindDlg::FindDlg(QWidget *parent, ushort matchCase)$/;"	f	class:FindDlg
+FindDlg	.\FindDlg.h	/^class FindDlg : public QDialog$/;"	c
 GVUNDOITEM_BLOCK	.\TextDocument.h	/^	GVUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock ‚©‚Ç‚¤‚©$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_ALL	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_ALL = 0x0040,		\/\/	‘}“ü•¶š—ñ˜AŒ‹‰Â”\$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_LINE	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_LINE = 0x0020,	\/\/	‘}“ü•¶š—ñ˜AŒ‹‰Â”\$/;"	e	enum:__anon2
@@ -458,7 +458,7 @@ m_drawCursor	.\PlainTextEdit.h	/^	bool	m_drawCursor;$/;"	m	class:PlainTextEdit
 m_failCount	.\unit_test.h	/^	int		m_failCount;		\/\/	¸”s‰ñ”$/;"	m	class:CUnitTest
 m_fileName	.\unit_test.h	/^	QString		m_fileName;$/;"	m	struct:SFailedInfo
 m_findBackWard	.\FindDlg.h	/^	QRadioButton	*m_findBackWard;$/;"	m	class:FindDlg
-m_findStringEdit	.\FindDlg.h	/^	QLineEdit	*m_findStringEdit;$/;"	m	class:FindDlg
+m_findStringCB	.\FindDlg.h	/^	QComboBox	*m_findStringCB;$/;"	m	class:FindDlg
 m_first	.\TextDocument.h	/^	index_t	m_first;$/;"	m	struct:GVUndoItem
 m_first	.\gap_vector.h	/^	pointer	m_first;		\/\/   «first   «gapBegi n   «gapEnd        «m_last$/;"	m	class:std::gap_vector
 m_flags	.\TextDocument.h	/^	short	m_flags;$/;"	m	struct:GVUndoItem

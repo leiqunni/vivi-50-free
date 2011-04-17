@@ -37,7 +37,8 @@ signals:
 	void	doFindNext(const QString &, ushort);
 
 private:
-	QLineEdit	*m_findStringEdit;
+	//QLineEdit	*m_findStringEdit;
+	QComboBox	*m_findStringCB;
 	QComboBox	*m_caseComboBox;
 	QGroupBox	*m_dirGroup;
 	QRadioButton	*m_findBackWard;

@@ -22,8 +22,8 @@ void addFindStringHist(/*ushort opt,*/ const QString &text)
 			hist.erase(hist.begin() + ix);		//	d•¡íœ
 	}
 	hist.push_back(text);
-	if( hist.size() > 100 )
-		hist.erase(hist.begin());		//	—v‘f”‚ª100‚ð’´‚¦‚½ê‡‚ÍŒÃ‚¢‚à‚Ì‚ðíœ
+	if( hist.size() > 30 )
+		hist.erase(hist.begin());		//	—v‘f”‚ª30‚ð’´‚¦‚½ê‡‚ÍŒÃ‚¢‚à‚Ì‚ðíœ
 	settings.setValue("findStringHist", hist);
 }
 
@@ -34,9 +34,15 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 
 	QHBoxLayout *hBoxLayout = new QHBoxLayout();
 		QLabel *findStringLabel = new QLabel(tr("Find &String:"));
-		findStringLabel->setBuddy(m_findStringEdit = new QLineEdit);
+		//findStringLabel->setBuddy(m_findStringEdit = new QLineEdit);
 		hBoxLayout->addWidget(findStringLabel);
-		hBoxLayout->addWidget(m_findStringEdit);
+		//hBoxLayout->addWidget(m_findStringEdit);
+		(m_findStringCB = new QComboBox)->setEditable(true);
+	    QSettings settings;
+	    QStringList hist = settings.value("findStringHist").toStringList();
+	    for(int ix = hist.size(); ix != 0; )
+	    	m_findStringCB->addItem(hist[--ix]);
+		hBoxLayout->addWidget(m_findStringCB);
 	m_caseComboBox = new QComboBox();
 		m_caseComboBox->addItem(tr("Ignore Case"));
 		m_caseComboBox->addItem(tr("Match Case"));
@@ -88,7 +94,8 @@ void FindDlg::onFindClose()
 }
 void FindDlg::onFindNext()
 {
-	const QString findString = m_findStringEdit->text();
+	const QString findString = m_findStringCB->currentText();
+	//const QString findString = m_findStringEdit->text();
 	if( !findString.isEmpty() ) {
 		ushort options = 0;
 		if( m_caseComboBox->currentIndex() == 1 )
