@@ -770,9 +770,9 @@ void TextDocument::doRedo(index_t &pos, index_t &anchor)
 }
 
 //	単純線形検索アルゴリズム
-bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last, uchar options) const
+bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last, ushort options) const
 {
-	if( (options & FindDlg::MatchCase) != 0 )
+	if( (options & MatchCase) != 0 )
 		return isMatch(position, first, last);
 	else
 		return isMatchIgnoreCase(position, first, last);
@@ -797,24 +797,24 @@ bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *la
 	}
 	return true;
 }
-TextCursor TextDocument::find(const QString &text, const TextCursor &cur, uchar options)
+TextCursor TextDocument::find(const QString &text, const TextCursor &cur, ushort options)
 {
 	if( cur.hasSelection() &&
-		((options & FindDlg::FindBackWard) == 0 && cur.anchor() > cur.position() ||
-		(options & FindDlg::FindBackWard) != 0 && cur.anchor() < cur.position()) )
+		((options & FindBackWard) == 0 && cur.anchor() > cur.position() ||
+		(options & FindBackWard) != 0 && cur.anchor() < cur.position()) )
 	{
 		return find(text, cur.anchor(), options);
 	}
 	return find(text, cur.position(), options);
 }
-TextCursor TextDocument::find(const QString &text, index_t position, uchar options)
+TextCursor TextDocument::find(const QString &text, index_t position, ushort options)
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(text);
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	//	単純線形検索アルゴリズム
-	if( (options & FindDlg::FindBackWard) == 0 ) {
+	if( (options & FindBackWard) == 0 ) {
 		while( position < size() ) {
 			if( isMatch(position, ptr, ptr + sz, options) ) {
 				TextCursor c(this, position);

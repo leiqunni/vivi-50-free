@@ -15,12 +15,12 @@ memFileColumnWd = 320
 #define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define GV_USE_ITR_FACADE 1
 #define BLOCK_HAS_SIZE 1
+#define GV_USE_ITR_FACADE 1
 [globalMarks]
 [files]
   gap_vector.h	(139.922,171.793)
-  main.cpp	(-178.304,-339.84)
+* main.cpp	(-178.304,-339.84)
 * mainwindow.cpp	(-128.265,-196.142)
 * mainwindow.h	(-128.265,-229.142)
 * TextDocument.cpp	(-117.875,191.766)
@@ -29,16 +29,16 @@ memFileColumnWd = 320
   mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
   unit_test.h	(173.104,-115.746)
-* mainwindowTest.cpp	(-128.265,-130.142)
+  mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
   textBlockData.h	(-364.713,168.24)
-* textCursor.cpp	(-366.316,-29.0248)
-* textCursor.h	(-366.316,-62.0248)
+  textCursor.cpp	(-366.316,-29.0248)
+  textCursor.h	(-366.316,-62.0248)
 * TextView.cpp	(-16.3877,-25.8647)
 * TextView.h	(-16.3877,-58.8647)
-  FindDlg.cpp	(133.637,25.2772)
-  FindDlg.h	(133.637,-7.72283)
+* FindDlg.cpp	(133.637,25.2772)
+* FindDlg.h	(133.637,-7.72283)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 40 'M: ' '' undone 不要なヒープの解放
@@ -46,8 +46,8 @@ memFileColumnWd = 320
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
   "TextView.cpp" 583 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 871 'B: ' '' undone 選択状態の場合に未対応
-  "TextView.cpp" 877 'B: ' '' undone 挿入位置以降にあるカーソル位置更新
-  "TextView.cpp" 885 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 891 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 896 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 887 'B: ' '' undone 選択状態の場合に未対応
+  "TextView.cpp" 893 'B: ' '' undone 挿入位置以降にあるカーソル位置更新
+  "TextView.cpp" 901 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 907 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 912 'B: ' '' undone ブロック情報更新

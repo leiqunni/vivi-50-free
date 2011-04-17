@@ -1,7 +1,33 @@
 #include <QtGui>
 #include "FindDlg.h"
 
-FindDlg::FindDlg(QWidget *parent, uchar matchCase)
+void getLastFindString(/*ushort &opt,*/ QString &text)
+{
+    QSettings settings;
+    QStringList hist = settings.value("findStringHist").toStringList();
+	if( hist.isEmpty() )
+		text = QString();
+	else {
+		QStringList::const_iterator itr = hist.end() - 1;
+		text = *itr;	//	ÅŒã‚Ì—v‘f‚ªÅVŒŸõ•¶Žš—ñ
+	}
+}
+void addFindStringHist(/*ushort opt,*/ const QString &text)
+{
+    QSettings settings;
+    QStringList hist = settings.value("findStringHist").toStringList();
+	if( !hist.isEmpty() ) {
+		int ix = hist.indexOf(text);
+		if( ix >= 0 )
+			hist.erase(hist.begin() + ix);		//	d•¡íœ
+	}
+	hist.push_back(text);
+	if( hist.size() > 100 )
+		hist.erase(hist.begin());		//	—v‘f”‚ª100‚ð’´‚¦‚½ê‡‚ÍŒÃ‚¢‚à‚Ì‚ðíœ
+	settings.setValue("findStringHist", hist);
+}
+
+FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 	: QDialog(parent)
 {
 	setWindowTitle(tr("Find Dialog"));
@@ -64,11 +90,12 @@ void FindDlg::onFindNext()
 {
 	const QString findString = m_findStringEdit->text();
 	if( !findString.isEmpty() ) {
-		uchar options = 0;
+		ushort options = 0;
 		if( m_caseComboBox->currentIndex() == 1 )
 			options |= MatchCase;
 		if( m_findBackWard->isChecked() != 0 )
 			options |= FindBackWard;
 		emit doFindNext(findString, options);
+		addFindStringHist(findString);
 	}
 }

@@ -265,7 +265,7 @@ public:
 	size_t	blockSize(index_t ix) const;
 	uchar	operator[](index_t ix) const { return m_buffer[ix]; }
 	QString	toPlainText() const;
-	bool	isMatch(index_t, cuchar *, cuchar *, uchar) const;		//	’Pƒ”äŠrŠÖ”
+	bool	isMatch(index_t, cuchar *, cuchar *, ushort) const;		//	’Pƒ”äŠrŠÖ”
 	bool	isMatch(index_t, cuchar *, cuchar *) const;		//	’Pƒ”äŠrŠÖ”
 	bool	isMatchIgnoreCase(index_t, cuchar *, cuchar *) const;		//	’Pƒ”äŠrŠÖ”
 	uchar	charEncoding() const { return m_charEncoding; }
@@ -348,8 +348,8 @@ public:
 	}
 #endif
 
-	TextCursor	find(const QString &, index_t = 0, uchar=0);
-	TextCursor	find(const QString &, const TextCursor &, uchar=0);
+	TextCursor	find(const QString &, index_t = 0, ushort=0);
+	TextCursor	find(const QString &, const TextCursor &, ushort=0);
 	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }
 	void	setWithBOM(bool b) { m_withBOM = b; }
 

@@ -333,7 +333,7 @@ void test_TextDocument()
 		doc.do_insert(0, "123\nxyzzz\nxyZZZ\n");
 		ut.ut_test( doc.find(QString("abc")).isNull() );
 		ut.ut_test( !doc.find(QString("xyZ")).isNull() );
-		TextCursor c = doc.find(QString("xyZ"), 0, FindDlg::MatchCase);
+		TextCursor c = doc.find(QString("xyZ"), 0, MatchCase);
 		ut.ut_test_equal(10, c.anchor() );
 		ut.ut_test_equal(13, c.position() );
 	}

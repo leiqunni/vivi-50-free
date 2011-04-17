@@ -703,19 +703,35 @@ void TextView::redo()
 void TextView::find()
 {
 	FindDlg aDlg;
-	connect(&aDlg, SIGNAL(doFindNext(const QString &, uchar)),
-			this, SLOT(doFindNext(const QString &, uchar)));
+	connect(&aDlg, SIGNAL(doFindNext(const QString &, ushort)),
+			this, SLOT(doFindNext(const QString &, ushort)));
 	aDlg.exec();
 }
-void TextView::doFindNext(const QString &text, uchar matchCase)
+void TextView::doFindNext(const QString &text, ushort options)
 {
 	if( text.isEmpty() ) return;
-	TextCursor c = document()->find(text, *m_textCursor, matchCase);
+	TextCursor c = document()->find(text, *m_textCursor, options);
 	if( !c.isNull() ) {
 		*m_textCursor = c;
 		ensureCursorVisible();
 		viewport()->update();
 	}
+}
+void TextView::findNext()
+{
+	QString text;
+	getLastFindString(text);
+	if( text.isEmpty() ) return;
+	ushort options = 0;
+	doFindNext(text, options);
+}
+void TextView::findPrev()
+{
+	QString text;
+	getLastFindString(text);
+	if( text.isEmpty() ) return;
+	ushort options = 0;
+	doFindNext(text, options | FindBackWard);
 }
 void TextView::resizeEvent(QResizeEvent *event)
 {

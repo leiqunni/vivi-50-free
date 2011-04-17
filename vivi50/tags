@@ -39,9 +39,9 @@ EndOfBlock	.\textCursor.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon2
 EndOfDocument	.\textCursor.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon2
 EndOfWord	.\textCursor.h	/^		EndOfWord,$/;"	e	enum:TextCursor::__anon2
 FINDDLG_H	.\FindDlg.h	2;"	d
-FindBackWard	.\FindDlg.h	/^		FindBackWard = 0x04,$/;"	e	enum:FindDlg::__anon1
-FindDlg	.\FindDlg.cpp	/^FindDlg::FindDlg(QWidget *parent, uchar matchCase)$/;"	f	class:FindDlg
+FindBackWard	.\FindDlg.h	/^	FindBackWard = 0x04,$/;"	e	enum:__anon1
 FindDlg	.\FindDlg.h	/^class FindDlg : public QDialog$/;"	c
+FindDlg	.\FindDlg.cpp	/^FindDlg::FindDlg(QWidget *parent, ushort matchCase)$/;"	f	class:FindDlg
 GVUNDOITEM_BLOCK	.\TextDocument.h	/^	GVUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock Ç©Ç«Ç§Ç©$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_ALL	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_ALL = 0x0040,		\/\/	ë}ì¸ï∂éöóÒòAåãâ¬î\$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_LINE	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_LINE = 0x0020,	\/\/	ë}ì¸ï∂éöóÒòAåãâ¬î\$/;"	e	enum:__anon2
@@ -71,8 +71,8 @@ GVUndoMgr	.\TextDocument.h	/^class GVUndoMgr$/;"	c
 GV_USE_ITR_FACADE	.\gap_vector.h	25;"	d
 INVALID_INDEX	.\TextDocument.h	36;"	d
 INVALID_INDEX	.\textCursor.h	24;"	d
-IgnoreCase	.\FindDlg.h	/^		IgnoreCase = 0,$/;"	e	enum:FindDlg::__anon1
-IgnoreLowerCase	.\FindDlg.h	/^		IgnoreLowerCase = 0x02,		\/\/	è¨ï∂éöÇÃÇ›åüçıéûÅFëÂï∂éöè¨ï∂éöìØàÍéã$/;"	e	enum:FindDlg::__anon1
+IgnoreCase	.\FindDlg.h	/^	IgnoreCase = 0,$/;"	e	enum:__anon1
+IgnoreLowerCase	.\FindDlg.h	/^	IgnoreLowerCase = 0x02,		\/\/	è¨ï∂éöÇÃÇ›åüçıéûÅFëÂï∂éöè¨ï∂éöìØàÍéã$/;"	e	enum:__anon1
 KeepAnchor	.\textCursor.h	/^		KeepAnchor,$/;"	e	enum:TextCursor::__anon1
 LF	.\charEncoding.h	/^		LF,$/;"	e	enum:CharEncoding::__anon2
 Left	.\textCursor.h	/^		Left,$/;"	e	enum:TextCursor::__anon2
@@ -83,7 +83,7 @@ MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^    class MainWindowClass: public Ui_MainWindowClass {};$/;"	c	namespace:Ui
-MatchCase	.\FindDlg.h	/^		MatchCase = 0x01,$/;"	e	enum:FindDlg::__anon1
+MatchCase	.\FindDlg.h	/^	MatchCase = 0x01,$/;"	e	enum:__anon1
 MaxRecentFiles	.\mainwindow.h	/^    enum { MaxRecentFiles = 10 };$/;"	e	enum:MainWindow::__anon1
 MoveAnchor	.\textCursor.h	/^		MoveAnchor = 0,$/;"	e	enum:TextCursor::__anon1
 NextWord	.\textCursor.h	/^		NextWord,$/;"	e	enum:TextCursor::__anon2
@@ -117,8 +117,8 @@ TextCursor	.\textCursor.h	/^	TextCursor(TextDocument *document, index_t position
 TextCursor	.\textCursor.h	/^	TextCursor(TextDocument *document, index_t position, index_t anchor,$/;"	f	class:TextCursor
 TextCursor	.\textCursor.h	/^	TextCursor(const TextCursor &x)$/;"	f	class:TextCursor
 TextCursor	.\textCursor.h	/^class TextCursor$/;"	c
-TextDocument	.\TextDocument.cpp	/^TextDocument::TextDocument(QObject *parent)$/;"	f	class:TextDocument
 TextDocument	.\TextDocument.h	/^class TextDocument : public QObject$/;"	c
+TextDocument	.\TextDocument.cpp	/^TextDocument::TextDocument(QObject *parent)$/;"	f	class:TextDocument
 TextView	.\TextView.cpp	/^TextView::TextView(QWidget *parent)$/;"	f	class:TextView
 TextView	.\TextView.h	/^class TextView : public QAbstractScrollArea$/;"	c
 UI_MAINWINDOW_H	.\GeneratedFiles\ui_mainwindow.h	11;"	d
@@ -167,6 +167,7 @@ _test_equal	.\unit_test.h	/^	void _test_equal(const QString &exp, const QString 
 _test_equal	.\unit_test.h	/^	void _test_equal(const T &exp, const T &v, cchar *fileName, int lineNum)$/;"	f	class:CUnitTest
 _test_equal	.\unit_test.h	/^	void _test_equal(int exp, int v, cchar *fileName = __FILE__, int lineNum = __LINE__)$/;"	f	class:CUnitTest
 aboutAct	.\mainwindow.h	/^    QAction *aboutAct;$/;"	m	class:MainWindow
+addFindStringHist	.\FindDlg.cpp	/^void addFindStringHist(\/*ushort opt,*\/ const QString &text)$/;"	f
 addToHeap	.\TextDocument.h	/^	index_t	addToHeap(InputIterator first, InputIterator last)$/;"	f	class:GVUndoMgr
 addToRedoHeap	.\TextDocument.h	/^	index_t	addToRedoHeap(InputIterator first, InputIterator last)$/;"	f	class:GVUndoMgr
 advance	.\gap_vector.h	/^	void	advance(int n)$/;"	f	class:std::_Gap_Vector_Const_Iterator
@@ -185,8 +186,8 @@ begin	.\gap_vector.h	/^	const_iterator begin() const { return const_iterator(m_f
 begin	.\gap_vector.h	/^	iterator begin() { return iterator(m_first != m_gapBegin ? m_first : m_gapEnd, m_gapBegin, m_gapEnd); }$/;"	f	class:std::gap_vector
 benchmarkAct	.\mainwindow.h	/^    QAction	*benchmarkAct;$/;"	m	class:MainWindow
 block	.\textCursor.cpp	/^TextBlock TextCursor::block() const$/;"	f	class:TextCursor
-blockCount	.\TextView.h	/^	size_t blockCount() const { return m_blocks.size(); }$/;"	f	class:TextView
 blockCount	.\TextDocument.h	/^	size_t	blockCount() const { return m_blocks.size(); }$/;"	f	class:TextDocument
+blockCount	.\TextView.h	/^	size_t blockCount() const { return m_blocks.size(); }$/;"	f	class:TextView
 blockCountChanged	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^void TextDocument::blockCountChanged()$/;"	f	class:TextDocument
 blockCountChanged	.\GeneratedFiles\Release\moc_TextDocument.cpp	/^void TextDocument::blockCountChanged()$/;"	f	class:TextDocument
 blockData	.\TextDocument.h	/^	TextBlockData blockData() const { return m_blockData; }$/;"	f	class:TextDocument
@@ -195,8 +196,8 @@ blockIndex	.\textCursor.h	/^	index_t	blockIndex() const { return m_blockData.m_i
 blockNumber	.\TextDocument.h	/^	index_t		blockNumber() const { return m_data.m_index; }$/;"	f	class:TextBlock
 blockPosition	.\TextDocument.cpp	/^size_t TextDocument::blockPosition(index_t ix) const$/;"	f	class:TextDocument
 blockPosition	.\textCursor.h	/^	index_t	blockPosition() const { return m_blockData.m_position; }$/;"	f	class:TextCursor
-blockSize	.\TextView.h	/^	size_t	blockSize(index_t ix) const { return m_blocks[ix]; }$/;"	f	class:TextView
 blockSize	.\TextDocument.cpp	/^size_t TextDocument::blockSize(index_t ix) const$/;"	f	class:TextDocument
+blockSize	.\TextView.h	/^	size_t	blockSize(index_t ix) const { return m_blocks[ix].m_size; }$/;"	f	class:TextView
 buildBlocks	.\TextView.cpp	/^void TextView::buildBlocks()$/;"	f	class:TextView
 buildBlocks	.\TextDocument.cpp	/^void TextDocument::buildBlocks()$/;"	f	class:TextDocument
 canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_current < m_items.size(); };$/;"	f	class:GVUndoMgr
@@ -209,8 +210,8 @@ cchar	.\charEncoding.h	/^typedef const char cchar;$/;"	t
 cchar	.\unit_test.h	/^typedef const char cchar;$/;"	t
 cend	.\gap_vector.h	/^	const_iterator cend() const { return const_iterator(m_last, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
 centralWidget	.\GeneratedFiles\ui_mainwindow.h	/^    QWidget *centralWidget;$/;"	m	class:Ui_MainWindowClass
-charEncoding	.\TextView.cpp	/^uchar TextView::charEncoding() const$/;"	f	class:TextView
 charEncoding	.\TextDocument.h	/^	uchar	charEncoding() const { return m_charEncoding; }$/;"	f	class:TextDocument
+charEncoding	.\TextView.cpp	/^uchar TextView::charEncoding() const$/;"	f	class:TextView
 charEncoding	.\PlainTextEdit.cpp	/^uchar PlainTextEdit::charEncoding() const$/;"	f	class:PlainTextEdit
 charsCount	.\TextDocument.cpp	/^int TextBlock::charsCount(index_t position) const$/;"	f	class:TextBlock
 checkCharEncoding	.\charEncoding.cpp	/^uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &BOMLength)$/;"	f
@@ -266,7 +267,7 @@ difference_type	.\gap_vector.h	/^	typedef int difference_type;		\/\/	ÉMÉÉÉbÉvÇ™ñ
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Const_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Const_Iterator
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Iterator
 doBenchmark	.\mainwindowBench.cpp	/^void MainWindow::doBenchmark()$/;"	f	class:MainWindow
-doFindNext	.\TextView.cpp	/^void TextView::doFindNext(const QString &text, uchar matchCase)$/;"	f	class:TextView
+doFindNext	.\TextView.cpp	/^void TextView::doFindNext(const QString &text, ushort options)$/;"	f	class:TextView
 doJump	.\TextView.cpp	/^void TextView::doJump(int lineNum)$/;"	f	class:TextView
 doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doJump	.\PlainTextEdit.cpp	/^void PlainTextEdit::doJump(int lineNum)$/;"	f	class:PlainTextEdit
@@ -312,7 +313,7 @@ eventFilter	.\PlainTextEdit.cpp	/^bool PlainTextEdit::eventFilter(QObject *obj, 
 expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector
 fileMenu	.\mainwindow.h	/^    QMenu	*fileMenu;$/;"	m	class:MainWindow
 find	.\TextView.cpp	/^void TextView::find()$/;"	f	class:TextView
-find	.\TextDocument.cpp	/^TextCursor TextDocument::find(const QString &text, const TextCursor &cur, uchar options)$/;"	f	class:TextDocument
+find	.\TextDocument.cpp	/^TextCursor TextDocument::find(const QString &text, const TextCursor &cur, ushort options)$/;"	f	class:TextDocument
 find	.\TextDocument.cpp	/^TextCursor TextDocument::find(const QString &text, index_t position, uchar options)$/;"	f	class:TextDocument
 findAct	.\mainwindow.h	/^    QAction *findAct;$/;"	m	class:MainWindow
 findBlock	.\TextDocument.cpp	/^TextBlock TextDocument::findBlock(index_t position) const$/;"	f	class:TextDocument
@@ -323,7 +324,9 @@ findBlockData	.\TextDocument.cpp	/^TextBlockData TextDocument::findBlockData(ind
 findBlockData	.\PlainTextEdit.cpp	/^TextBlockData PlainTextEdit::findBlockData(index_t position) const$/;"	f	class:PlainTextEdit
 findBlockIndex	.\TextDocument.cpp	/^index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const$/;"	f	class:TextDocument
 findMainWindow	.\mainwindow.cpp	/^MainWindow *MainWindow::findMainWindow(const QString &fileName)$/;"	f	class:MainWindow
+findNext	.\TextView.cpp	/^void TextView::findNext()$/;"	f	class:TextView
 findNextAct	.\mainwindow.h	/^    QAction *findNextAct;$/;"	m	class:MainWindow
+findPrev	.\TextView.cpp	/^void TextView::findPrev()$/;"	f	class:TextView
 findPrevAct	.\mainwindow.h	/^    QAction *findPrevAct;$/;"	m	class:MainWindow
 firstBlock	.\TextDocument.h	/^	TextBlock	firstBlock() { return TextBlock(this, 0); }$/;"	f	class:TextDocument
 firstBlock	.\TextDocument.h	/^	TextBlock	firstBlock() { return TextBlock(this, 0, 0); }$/;"	f	class:TextDocument
@@ -348,6 +351,7 @@ getCharType	.\textCursor.cpp	/^uchar getCharType(QChar ch)$/;"	f
 getEOLOffset	.\textCursor.cpp	/^int getEOLOffset(const QString text)$/;"	f
 getEOLOffset	.\textCursor.cpp	/^size_t getEOLOffset(const TextDocument *doc, TextBlockData d)$/;"	f
 getEOLOffset	.\PlainTextEdit.cpp	/^int getEOLOffset(const QString text)$/;"	f
+getLastFindString	.\FindDlg.cpp	/^void getLastFindString(\/*ushort &opt,*\/ QString &text)$/;"	f
 getStaticMetaObject	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^const QMetaObject &PlainTextEdit::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:PlainTextEdit
 getStaticMetaObject	.\GeneratedFiles\Debug\moc_TextDocument.cpp	/^const QMetaObject &TextDocument::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:TextDocument
 getStaticMetaObject	.\GeneratedFiles\Debug\moc_mainwindow.cpp	/^const QMetaObject &MainWindow::getStaticMetaObject() { return staticMetaObject; }$/;"	f	class:MainWindow
@@ -401,10 +405,10 @@ isEUCcode	.\charEncoding.h	/^inline int isEUCcode(uchar uch)$/;"	f
 isEmpty	.\TextDocument.h	/^	bool	isEmpty() const { return m_buffer.empty(); }$/;"	f	class:TextDocument
 isHankakuKana	.\charEncoding.h	/^inline bool isHankakuKana(uchar uch)$/;"	f
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
-isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last, uchar options) const$/;"	f	class:TextDocument
+isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last, ushort options) const$/;"	f	class:TextDocument
 isMatchIgnoreCase	.\TextDocument.cpp	/^bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
-isModified	.\TextView.cpp	/^bool TextView::isModified() const$/;"	f	class:TextView
 isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
+isModified	.\TextView.cpp	/^bool TextView::isModified() const$/;"	f	class:TextView
 isModified	.\PlainTextEdit.cpp	/^bool PlainTextEdit::isModified() const$/;"	f	class:PlainTextEdit
 isNull	.\textCursor.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:TextCursor
 isTabOrSpace	.\textCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
@@ -431,12 +435,12 @@ m_absFilePath	.\mainwindow.h	/^	QString	m_absFilePath;$/;"	m	class:MainWindow
 m_anchor	.\textCursor.h	/^	index_t			m_anchor;		\/\/	ÉAÉìÉJÅ[à íu$/;"	m	class:TextCursor
 m_anchorBlockData	.\textCursor.h	/^	TextBlockData	m_anchorBlockData;$/;"	m	class:TextCursor
 m_beforeSave	.\TextDocument.h	/^	bool	m_beforeSave:1;		\/\/	ï€ë∂ëOÇÃ undo\/redo item$/;"	m	struct:GVUndoItem
-m_blockData	.\TextView.h	/^	mutable TextBlockData	m_blockData;			\/\/	ÉJÉåÉìÉgÉuÉçÉbÉNèÓïÒ$/;"	m	class:TextView
 m_blockData	.\TextDocument.h	/^	mutable TextBlockData	m_blockData;			\/\/	ÉJÉåÉìÉgÉuÉçÉbÉNèÓïÒ$/;"	m	class:TextDocument
+m_blockData	.\TextView.h	/^	mutable TextBlockData	m_blockData;			\/\/	ÉJÉåÉìÉgÉuÉçÉbÉNèÓïÒ$/;"	m	class:TextView
 m_blockData	.\textCursor.h	/^	TextBlockData	m_blockData;$/;"	m	class:TextCursor
 m_blockData	.\PlainTextEdit.h	/^	mutable TextBlockData	m_blockData;			\/\/	ÉJÉåÉìÉgÉuÉçÉbÉNèÓïÒ$/;"	m	class:PlainTextEdit
-m_blocks	.\TextView.h	/^	mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		\/\/	ÉuÉçÉbÉNîzóÒ$/;"	m	class:TextView
 m_blocks	.\TextDocument.h	/^	mutable std::gap_vector<TextBlockItem>	m_blocks;		\/\/	ÉuÉçÉbÉNîzóÒ$/;"	m	class:TextDocument
+m_blocks	.\TextView.h	/^	mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		\/\/	ÉuÉçÉbÉNîzóÒ$/;"	m	class:TextView
 m_blocks	.\PlainTextEdit.h	/^	mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		\/\/	ÉuÉçÉbÉNîzóÒ$/;"	m	class:PlainTextEdit
 m_buffer	.\TextDocument.h	/^	mutable std::gap_vector<uchar>	m_buffer;$/;"	m	class:TextDocument
 m_caseComboBox	.\FindDlg.h	/^	QComboBox	*m_caseComboBox;$/;"	m	class:FindDlg
@@ -445,8 +449,8 @@ m_curFile	.\mainwindow.h	/^	QString	m_curFile;$/;"	m	class:MainWindow
 m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	ÉIÉuÉWÉFÉNÉgÇéüÇ…ì¸ÇÍÇÈà íuÅi0..*Åj$/;"	m	class:GVUndoMgr
 m_data	.\TextDocument.h	/^	TextBlockData	m_data;$/;"	m	class:TextBlock
 m_dirGroup	.\FindDlg.h	/^	QGroupBox	*m_dirGroup;$/;"	m	class:FindDlg
-m_document	.\TextView.h	/^	TextDocument	*m_document;$/;"	m	class:TextView
 m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:TextBlock
+m_document	.\TextView.h	/^	TextDocument	*m_document;$/;"	m	class:TextView
 m_document	.\textCursor.h	/^	TextDocument	*m_document;$/;"	m	class:TextCursor
 m_document	.\PlainTextEdit.h	/^	TextDocument	*m_document;$/;"	m	class:PlainTextEdit
 m_drawCursor	.\TextView.h	/^	bool	m_drawCursor;$/;"	m	class:TextView
@@ -552,8 +556,8 @@ newAct	.\mainwindow.h	/^	QAction *newAct;$/;"	m	class:MainWindow
 newFile	.\mainwindow.cpp	/^void MainWindow::newFile()$/;"	f	class:MainWindow
 newlineLength	.\TextDocument.cpp	/^uint TextBlock::newlineLength() const$/;"	f	class:TextBlock
 next	.\TextDocument.cpp	/^TextBlock TextBlock::next() const$/;"	f	class:TextBlock
-nextBlockData	.\TextView.h	/^	TextBlockData	nextBlockData(TextBlockData d) const$/;"	f	class:TextView
 nextBlockData	.\TextDocument.h	/^	TextBlockData	nextBlockData(TextBlockData d) const$/;"	f	class:TextDocument
+nextBlockData	.\TextView.h	/^	TextBlockData	nextBlockData(TextBlockData d) const$/;"	f	class:TextView
 nextBlockData	.\PlainTextEdit.h	/^	TextBlockData	nextBlockData(TextBlockData d) const$/;"	f	class:PlainTextEdit
 offsetToX	.\TextView.cpp	/^int TextView::offsetToX(const QString &text, int offset) const$/;"	f	class:TextView
 offsetToX	.\PlainTextEdit.cpp	/^int PlainTextEdit::offsetToX(const QString &text, int offset) const$/;"	f	class:PlainTextEdit
@@ -593,8 +597,8 @@ position	.\TextDocument.cpp	/^index_t TextBlock::position() const$/;"	f	class:Te
 position	.\textCursor.h	/^	index_t	position() const { return m_position; }$/;"	f	class:TextCursor
 position	.\textBlockData.h	/^	index_t position() const { return m_position; }$/;"	f	struct:TextBlockData
 prev	.\TextDocument.cpp	/^TextBlock TextBlock::prev() const$/;"	f	class:TextBlock
-prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
 prevBlockData	.\TextDocument.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextDocument
+prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
 prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
 prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
 prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
@@ -686,9 +690,9 @@ showAboutDlg	.\mainwindow.cpp	/^void MainWindow::showAboutDlg()$/;"	f	class:Main
 showMessage	.\mainwindow.cpp	/^void MainWindow::showMessage(const QString & text)$/;"	f	class:MainWindow
 showMessage	.\GeneratedFiles\Debug\moc_PlainTextEdit.cpp	/^void PlainTextEdit::showMessage(const QString & _t1)$/;"	f	class:PlainTextEdit
 showMessage	.\GeneratedFiles\Release\moc_PlainTextEdit.cpp	/^void PlainTextEdit::showMessage(const QString & _t1)$/;"	f	class:PlainTextEdit
+size	.\TextDocument.h	/^	size_t	size() const { return m_buffer.size(); }$/;"	f	class:TextDocument
 size	.\TextView.cpp	/^size_t TextView::size() const$/;"	f	class:TextView
 size	.\TextDocument.cpp	/^uint TextBlock::size() const$/;"	f	class:TextBlock
-size	.\TextDocument.h	/^	size_t	size() const { return m_buffer.size(); }$/;"	f	class:TextDocument
 size	.\PlainTextEdit.cpp	/^size_t PlainTextEdit::size() const$/;"	f	class:PlainTextEdit
 size	.\gap_vector.h	/^	size_type	size() const { return !m_first ? 0 : (m_gapBegin - m_first) + (m_last - m_gapEnd); }$/;"	f	class:std::gap_vector
 size_type	.\gap_vector.h	/^	typedef uint size_type;$/;"	t	class:std::gap_vector
@@ -742,8 +746,8 @@ view	.\textCursor.h	/^	const TextView	*view() const { return m_view; }$/;"	f	cla
 viewMenu	.\mainwindow.h	/^    QMenu	*viewMenu;$/;"	m	class:MainWindow
 wheelEvent	.\TextView.cpp	/^void TextView::wheelEvent ( QWheelEvent * event )$/;"	f	class:TextView
 wheelEvent	.\PlainTextEdit.cpp	/^void PlainTextEdit::wheelEvent ( QWheelEvent * event )$/;"	f	class:PlainTextEdit
-withBOM	.\TextView.cpp	/^bool TextView::withBOM() const$/;"	f	class:TextView
 withBOM	.\TextDocument.h	/^	bool	withBOM() const { return m_withBOM; }$/;"	f	class:TextDocument
+withBOM	.\TextView.cpp	/^bool TextView::withBOM() const$/;"	f	class:TextView
 withBOM	.\PlainTextEdit.cpp	/^bool PlainTextEdit::withBOM() const$/;"	f	class:PlainTextEdit
 writeSettings	.\mainwindow.cpp	/^void MainWindow::writeSettings()$/;"	f	class:MainWindow
 xToOffset	.\TextView.cpp	/^int TextView::xToOffset(const QString &text, int x) const$/;"	f	class:TextView
