@@ -243,6 +243,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\findOpt.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gap_vector.h"
 				>
 			</File>

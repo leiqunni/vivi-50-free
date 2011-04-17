@@ -24,16 +24,27 @@
 #define REPLACEDLG_H
 
 #include <QDialog>
+#include "findOpt.h"
+
+class QLabel;
+class QLineEdit;
+class QComboBox;
+class QGroupBox;
+class QRadioButton;
 
 class ReplaceDlg : public QDialog
 {
 	Q_OBJECT
 
 public:
-	ReplaceDlg(QWidget *parent);
+	ReplaceDlg(QWidget *parent = 0, ushort = IgnoreCase);
 	~ReplaceDlg();
 
 private:
+	QComboBox	*m_findStringCB;
+	QComboBox	*m_caseComboBox;
+	QGroupBox	*m_dirGroup;
+	QRadioButton	*m_findBackWard;
 	
 };
 

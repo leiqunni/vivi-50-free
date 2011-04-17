@@ -25,6 +25,7 @@
 #include	"TextDocument.h"
 #include	"textCursor.h"
 #include	"FindDlg.h"
+#include	"ReplaceDlg.h"
 #include	<math.h>
 #include	<QDebug>
 
@@ -702,6 +703,8 @@ void TextView::redo()
 }
 void TextView::replace()
 {
+	ReplaceDlg aDlg;
+	aDlg.exec();
 }
 void TextView::find()
 {

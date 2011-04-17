@@ -24,6 +24,7 @@
 #define FINDDLG_H
 
 #include <QDialog>
+#include "findOpt.h"
 
 class QLabel;
 class QLineEdit;
@@ -31,12 +32,6 @@ class QComboBox;
 class QGroupBox;
 class QRadioButton;
 
-enum {
-	IgnoreCase = 0,
-	MatchCase = 0x01,
-	IgnoreLowerCase = 0x02,		//	¬•¶š‚Ì‚İŒŸõF‘å•¶š¬•¶š“¯ˆê‹
-	FindBackWard = 0x04,
-};
 
 void addFindStringHist(/*ushort,*/ const QString &);
 void getLastFindString(/*ushort &,*/ QString&);

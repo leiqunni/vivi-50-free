@@ -39,7 +39,6 @@ EndOfBlock	.\textCursor.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon2
 EndOfDocument	.\textCursor.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon2
 EndOfWord	.\textCursor.h	/^		EndOfWord,$/;"	e	enum:TextCursor::__anon2
 FINDDLG_H	.\FindDlg.h	24;"	d
-FindBackWard	.\FindDlg.h	/^	FindBackWard = 0x04,$/;"	e	enum:__anon1
 FindDlg	.\FindDlg.h	/^class FindDlg : public QDialog$/;"	c
 FindDlg	.\FindDlg.cpp	/^FindDlg::FindDlg(QWidget *parent, ushort matchCase)$/;"	f	class:FindDlg
 GVUNDOITEM_BLOCK	.\TextDocument.h	/^	GVUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock Ç©Ç«Ç§Ç©$/;"	e	enum:__anon2
@@ -71,19 +70,16 @@ GVUndoMgr	.\TextDocument.h	/^class GVUndoMgr$/;"	c
 GV_USE_ITR_FACADE	.\gap_vector.h	25;"	d
 INVALID_INDEX	.\TextDocument.h	36;"	d
 INVALID_INDEX	.\textCursor.h	24;"	d
-IgnoreCase	.\FindDlg.h	/^	IgnoreCase = 0,$/;"	e	enum:__anon1
-IgnoreLowerCase	.\FindDlg.h	/^	IgnoreLowerCase = 0x02,		\/\/	è¨ï∂éöÇÃÇ›åüçıéûÅFëÂï∂éöè¨ï∂éöìØàÍéã$/;"	e	enum:__anon1
 KeepAnchor	.\textCursor.h	/^		KeepAnchor,$/;"	e	enum:TextCursor::__anon1
 LF	.\charEncoding.h	/^		LF,$/;"	e	enum:CharEncoding::__anon2
 Left	.\textCursor.h	/^		Left,$/;"	e	enum:TextCursor::__anon2
 MAINWINDOW_H	.\mainwindow.h	24;"	d
-MARGIN_LEFT	.\TextView.cpp	34;"	d	file:
+MARGIN_LEFT	.\TextView.cpp	35;"	d	file:
 MARGIN_LEFT	.\PlainTextEdit.cpp	32;"	d	file:
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^    class MainWindowClass: public Ui_MainWindowClass {};$/;"	c	namespace:Ui
-MatchCase	.\FindDlg.h	/^	MatchCase = 0x01,$/;"	e	enum:__anon1
 MaxRecentFiles	.\mainwindow.h	/^    enum { MaxRecentFiles = 10 };$/;"	e	enum:MainWindow::__anon1
 MoveAnchor	.\textCursor.h	/^		MoveAnchor = 0,$/;"	e	enum:TextCursor::__anon1
 NextWord	.\textCursor.h	/^		NextWord,$/;"	e	enum:TextCursor::__anon2

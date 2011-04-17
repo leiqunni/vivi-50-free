@@ -78,28 +78,28 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 		ptr->setChecked(true);
 		m_dirGroup->setLayout(hBoxLayout);
 	}
-	QVBoxLayout *vBoxLayout = new QVBoxLayout();
-		vBoxLayout->addLayout(hBoxLayout);
-		vBoxLayout->addWidget(m_caseComboBox);
-		vBoxLayout->addWidget(m_dirGroup);
-		vBoxLayout->addStretch();
+	QVBoxLayout *vBoxLayoutLeft = new QVBoxLayout();
+		vBoxLayoutLeft->addLayout(hBoxLayout);
+		vBoxLayoutLeft->addWidget(m_caseComboBox);
+		vBoxLayoutLeft->addWidget(m_dirGroup);
+		vBoxLayoutLeft->addStretch();
 
-	QVBoxLayout *vBoxLayout2 = new QVBoxLayout();	//	ボタン配置用
+	QVBoxLayout *vBoxLayoutRight = new QVBoxLayout();	//	ボタン配置用
 		QPushButton *findNext = new QPushButton(tr("Find&Next"));
 		connect(findNext, SIGNAL(clicked()), this, SLOT(onFindNext()));
 		findNext->setDefault(true);
-		vBoxLayout2->addWidget(findNext);
+		vBoxLayoutRight->addWidget(findNext);
 		QPushButton *findClose = new QPushButton(tr("&FindClose"));
 		connect(findClose, SIGNAL(clicked()), this, SLOT(onFindClose()));
-		vBoxLayout2->addWidget(findClose);
+		vBoxLayoutRight->addWidget(findClose);
 		QPushButton *cancel = new QPushButton(tr("Cancel"));
 		connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
-		vBoxLayout2->addWidget(cancel);
-		vBoxLayout2->addStretch();
+		vBoxLayoutRight->addWidget(cancel);
+		vBoxLayoutRight->addStretch();
 
 	QHBoxLayout *hBoxLayout0 = new QHBoxLayout();
-		hBoxLayout0->addLayout(vBoxLayout);
-		hBoxLayout0->addLayout(vBoxLayout2);
+		hBoxLayout0->addLayout(vBoxLayoutLeft);
+		hBoxLayout0->addLayout(vBoxLayoutRight);
 
 	setLayout(hBoxLayout0);
 
