@@ -733,6 +733,18 @@ void TextView::findPrev()
 	ushort options = 0;
 	doFindNext(text, options | FindBackWard);
 }
+void TextView::findCurWord()
+{
+	if( !m_textCursor->hasSelection() ) {
+		m_textCursor->movePosition(TextCursor::StartOfWord);
+		m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
+	}
+	if( m_textCursor->hasSelection() ) {
+		QString text = m_textCursor->selectedText();
+		doFindNext(text, 0);
+		addFindStringHist(text);
+	}
+}
 void TextView::resizeEvent(QResizeEvent *event)
 {
 	QAbstractScrollArea::resizeEvent(event);

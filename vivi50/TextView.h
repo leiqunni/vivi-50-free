@@ -88,6 +88,7 @@ public slots:
 	void	find();
 	void	findNext();
 	void	findPrev();
+	void	findCurWord();
 	void	doFindNext(const QString &, ushort);
 	void	setFontPointSize(int);
 	void	setFontFamily(const QString &);

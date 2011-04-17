@@ -113,7 +113,8 @@ private:
     QAction *findAct;
     QAction *findNextAct;
     QAction *findPrevAct;
-    QAction *fontAct;		//	暫定的
+    QAction *findCurWordAct;	//	カーソル位置単語検索
+    QAction *fontAct;			//	暫定的
     QAction *aboutAct;
 
 	QAction	*printBufferAct;
