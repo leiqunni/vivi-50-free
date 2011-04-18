@@ -704,6 +704,8 @@ void TextView::redo()
 void TextView::replace()
 {
 	ReplaceDlg aDlg;
+	connect(&aDlg, SIGNAL(doFindNext(const QString &, ushort)),
+			this, SLOT(doFindNext(const QString &, ushort)));
 	aDlg.exec();
 }
 void TextView::find()

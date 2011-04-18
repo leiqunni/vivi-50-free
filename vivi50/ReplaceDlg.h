@@ -25,6 +25,7 @@
 
 #include <QDialog>
 #include "findOpt.h"
+#include "findDlg.h"
 
 class QLabel;
 class QLineEdit;
@@ -40,8 +41,15 @@ public:
 	ReplaceDlg(QWidget *parent = 0, ushort = IgnoreCase);
 	~ReplaceDlg();
 
+protected slots:
+	void	onFindNext();
+
+signals:
+	void	doFindNext(const QString &, ushort);
+
 private:
 	QComboBox	*m_findStringCB;
+	QComboBox	*m_replaceStringCB;
 	QComboBox	*m_caseComboBox;
 	QGroupBox	*m_dirGroup;
 	QRadioButton	*m_findBackWard;
