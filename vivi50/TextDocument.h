@@ -339,8 +339,8 @@ public:
 	void	do_replace(index_t, index_t, const QString &);		//	undo/redo ‘Î‰ž”Å
 
 	size_t	insertText(TextCursor&, const QString &);
-	void	deleteChar(TextCursor&);
-	void	deletePreviousChar(TextCursor&);
+	size_t	deleteChar(TextCursor&);
+	size_t	deletePreviousChar(TextCursor&);
 
 	void	doUndo(index_t &pos, index_t &); //{ m_undoMgr.doUndo(this, pos); }
 	void	doRedo(index_t &pos, index_t &); //{ m_undoMgr.doRedo(this, pos); }

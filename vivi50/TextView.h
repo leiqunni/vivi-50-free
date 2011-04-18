@@ -73,6 +73,8 @@ public:
 	void	onFontChanged();
 
 public:
+	void	deleteChar();
+	void	deletePreviousChar();
 	void	insertText(const QString &);
 	size_t	insertText(ViewTextCursor &, const QString &);
 	void	deleteChar(ViewTextCursor &);

@@ -563,34 +563,42 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		move = TextCursor::Down;
 		break;
 	case Qt::Key_Backspace:
-		if( !m_textCursor->hasSelection() ) {
-			if( ctrl ) {
-				m_textCursor->movePosition(TextCursor::PrevWord, TextCursor::KeepAnchor);
-				if( !m_textCursor->hasSelection() )
-					return;
-			} else if( shift ) {
-				m_textCursor->movePosition(TextCursor::StartOfBlock, TextCursor::KeepAnchor);
-				if( !m_textCursor->hasSelection() )
-					return;
+		if( !ctrl && !shift )
+			deletePreviousChar();
+		else {
+			if( !m_textCursor->hasSelection() ) {
+				if( ctrl ) {
+					m_textCursor->movePosition(TextCursor::PrevWord, TextCursor::KeepAnchor);
+					if( !m_textCursor->hasSelection() )
+						return;
+				} else if( shift ) {
+					m_textCursor->movePosition(TextCursor::StartOfBlock, TextCursor::KeepAnchor);
+					if( !m_textCursor->hasSelection() )
+						return;
+				}
 			}
+			m_textCursor->deletePreviousChar();
 		}
-		m_textCursor->deletePreviousChar();
 		ensureCursorVisible();
 		viewport()->update();
 		return;
 	case Qt::Key_Delete:
-		if( !m_textCursor->hasSelection() ) {
-			if( ctrl ) {
-				m_textCursor->movePosition(TextCursor::NextWord, TextCursor::KeepAnchor);
-				if( !m_textCursor->hasSelection() )
-					return;
-			} else if( shift ) {
-				m_textCursor->movePosition(TextCursor::EndOfBlock, TextCursor::KeepAnchor);
-				if( !m_textCursor->hasSelection() )
-					return;
+		if( !ctrl && !shift )
+			deleteChar();
+		else {
+			if( !m_textCursor->hasSelection() ) {
+				if( ctrl ) {
+					m_textCursor->movePosition(TextCursor::NextWord, TextCursor::KeepAnchor);
+					if( !m_textCursor->hasSelection() )
+						return;
+				} else if( shift ) {
+					m_textCursor->movePosition(TextCursor::EndOfBlock, TextCursor::KeepAnchor);
+					if( !m_textCursor->hasSelection() )
+						return;
+				}
 			}
+			m_textCursor->deleteChar();
 		}
-		m_textCursor->deleteChar();
 		viewport()->update();
 		return;
 	case Qt::Key_Return:
@@ -889,6 +897,70 @@ void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
 	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
 	removeOverlappedCursor();
 	viewport()->update();
+}
+void TextView::deleteChar()
+{
+	if( m_multiCursor.empty() )
+		document()->deleteChar(*m_textCursor);
+	else {
+		//	undone R insertText と処理を共通化
+		document()->openUndoBlock();
+		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		v.reserve(m_multiCursor.size() + 1);
+		bool inserted = false;
+		for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
+															iend = m_multiCursor.end();
+			itr != iend; ++itr)
+		{
+			if( !inserted && m_textCursor->position() <= itr->position() ) {
+				v.push_back(m_textCursor);
+				inserted = true;
+			}
+			v.push_back(&*itr);
+		}
+		if( !inserted )
+			v.push_back(m_textCursor);
+		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+			itr != iend; ++itr)
+		{
+			const size_t sz = document()->deleteChar(**itr);
+			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; )
+				(*k)->setPosition((*k)->position() - sz);
+		}
+		document()->closeUndoBlock();
+	}
+}
+void TextView::deletePreviousChar()
+{
+	if( m_multiCursor.empty() )
+		document()->deleteChar(*m_textCursor);
+	else {
+		//	undone R insertText と処理を共通化
+		document()->openUndoBlock();
+		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		v.reserve(m_multiCursor.size() + 1);
+		bool inserted = false;
+		for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
+															iend = m_multiCursor.end();
+			itr != iend; ++itr)
+		{
+			if( !inserted && m_textCursor->position() <= itr->position() ) {
+				v.push_back(m_textCursor);
+				inserted = true;
+			}
+			v.push_back(&*itr);
+		}
+		if( !inserted )
+			v.push_back(m_textCursor);
+		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+			itr != iend; ++itr)
+		{
+			const size_t sz = document()->deletePreviousChar(**itr);
+			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; )
+				(*k)->setPosition((*k)->position() - sz);
+		}
+		document()->closeUndoBlock();
+	}
 }
 void TextView::insertText(const QString &text)
 {

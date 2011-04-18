@@ -35,6 +35,9 @@
 # 2011/04/18 19:15:55
 - 2011/04/14 "TextView.cpp" B:   undone 選択状態の場合に未対応
 - 2011/04/14 "TextView.cpp" B:   undone 挿入位置以降にあるカーソル位置更新
+# 2011/04/18 20:42:20
++ 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
++ 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -42,6 +45,8 @@
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 2011/04/12 "TextView.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
+2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新

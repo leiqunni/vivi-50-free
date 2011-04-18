@@ -21,7 +21,7 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-94.078,307.793)
   main.cpp	(-178.304,-339.84)
-  mainwindow.cpp	(-128.265,-196.142)
+* mainwindow.cpp	(-128.265,-196.142)
   mainwindow.h	(-128.265,-229.142)
 * TextDocument.cpp	(-163.875,183.766)
 * TextDocument.h	(-163.875,150.766)
@@ -48,7 +48,9 @@ memFileColumnWd = 320
   "TextDocument.cpp" 76 'M: ' '' undone 不要なヒープの解放
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
-  "TextView.cpp" 597 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 925 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 931 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 936 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 605 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 906 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 938 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 999 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1005 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1010 'B: ' '' undone ブロック情報更新

@@ -648,10 +648,10 @@ void TextDocument::append(const QByteArray &utf8)
 	buildBlocks();
 }
 #endif
-void TextDocument::deleteChar(TextCursor &cur)
+size_t TextDocument::deleteChar(TextCursor &cur)
 {
 	if( cur.isNull() || cur.document() != this )
-		return;
+		return 0;
 	ushort flags = 0;		//
 	if( !cur.hasSelection() )
 		cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor);
@@ -661,32 +661,32 @@ void TextDocument::deleteChar(TextCursor &cur)
 		flags = GVUNDOITEM_CUR_TAIL;	//	ï∂èëêÊì™Ç©ÇÁññîˆï˚å¸Ç…å¸Ç©Ç¡ÇƒëIëÇ≥ÇÍÇƒÇ¢ÇΩèÍçá
 	index_t first = cur.anchor();
 	index_t last = cur.position();
-	if( first == last ) return;
+	if( first == last ) return 0;
 	do_erase(first, last, flags);
 	cur.copyAnchorToPosition();
 	m_blockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
+	return last - first;
 }
-void TextDocument::deletePreviousChar(TextCursor &cur)
+size_t TextDocument::deletePreviousChar(TextCursor &cur)
 {
 	if( cur.isNull() || cur.document() != this )
-		return;
-	if( cur.hasSelection() ) {
-		deleteChar(cur);
-		return;
-	}
+		return 0;
+	if( cur.hasSelection() )
+		return deleteChar(cur);
 	cur.movePosition(TextCursor::Left, TextCursor::KeepAnchor);
 	index_t first = cur.position();
 	index_t last = cur.anchor();
-	if( first == last ) return;
+	if( first == last ) return 0;
 	do_erase(first, last, GVUNDOITEM_CUR_TAIL);
 	cur.copyPositionToAnchor();
 	m_blockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
+	return last - first;
 }
 size_t TextDocument::insertText(TextCursor &cur, const QString &text)
 {
