@@ -359,6 +359,7 @@ public:
 
 	TextCursor	find(const QString &, index_t = 0, ushort=0);
 	TextCursor	find(const QString &, const TextCursor &, ushort=0);
+	bool		isMatched(const QString &, const TextCursor &, ushort=0);
 	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }
 	void	setWithBOM(bool b) { m_withBOM = b; }
 

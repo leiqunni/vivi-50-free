@@ -78,9 +78,9 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			connect(findNext, SIGNAL(clicked()), this, SLOT(onFindNext()));
 			findNext->setDefault(true);
 			vBoxLayoutRight->addWidget(findNext);
-		QPushButton *findReplace = new QPushButton(tr("&FindReplace"));
-			connect(findReplace, SIGNAL(clicked()), this, SLOT(onFindReplace()));
-			vBoxLayoutRight->addWidget(findReplace);
+		QPushButton *replaceFind = new QPushButton(tr("&ReplaceFind"));
+			connect(replaceFind, SIGNAL(clicked()), this, SLOT(onReplaceFind()));
+			vBoxLayoutRight->addWidget(replaceFind);
 		QPushButton *replaceAll = new QPushButton(tr("replace&All"));
 			connect(replaceAll, SIGNAL(clicked()), this, SLOT(onReplaceAll()));
 			vBoxLayoutRight->addWidget(replaceAll);
@@ -125,5 +125,17 @@ void ReplaceDlg::onFindPrev()
 }
 void ReplaceDlg::onFindNext()
 {
-	doFind(false);
+	doFind();
+}
+void ReplaceDlg::onReplaceFind()
+{
+	bool b = false;
+	const QString findString = m_findStringCB->currentText();
+	ushort options = 0;
+	if( m_caseComboBox->currentIndex() == 1 )
+		options |= MatchCase;
+	emit isMatched(b, findString, options);
+	if( !b ) return;
+	emit doReplace(m_replaceStringCB->currentText());
+	doFind();
 }

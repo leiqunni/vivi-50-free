@@ -42,20 +42,23 @@ public:
 	~ReplaceDlg();
 
 protected:
-	void	doFind(bool backward);
+	void	doFind(bool backward = false);
 
 protected slots:
 	void	onFindNext();
 	void	onFindPrev();
+	void	onReplaceFind();
 
 signals:
 	void	doFindNext(const QString &, ushort);
+	void	isMatched(bool &, const QString &, ushort);
+	void	doReplace(const QString &);
 
 private:
 	QComboBox	*m_findStringCB;
 	QComboBox	*m_replaceStringCB;
 	QComboBox	*m_caseComboBox;
-	QGroupBox	*m_dirGroup;
+	//QGroupBox	*m_dirGroup;
 	QRadioButton	*m_findBackWard;
 	
 };

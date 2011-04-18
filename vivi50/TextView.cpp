@@ -730,6 +730,10 @@ void TextView::replace()
 	ReplaceDlg aDlg;
 	connect(&aDlg, SIGNAL(doFindNext(const QString &, ushort)),
 			this, SLOT(doFindNext(const QString &, ushort)));
+	connect(&aDlg, SIGNAL(isMatched(bool &, const QString &, ushort)),
+			this, SLOT(isMatched(bool &, const QString &, ushort)));
+	connect(&aDlg, SIGNAL(doReplace(const QString &)),
+			this, SLOT(doReplace(const QString &)));
 	aDlg.exec();
 }
 void TextView::find()
@@ -748,6 +752,12 @@ void TextView::doFindNext(const QString &text, ushort options)
 		ensureCursorVisible();
 		viewport()->update();
 	}
+}
+void TextView::isMatched(bool &b, const QString &text, ushort options)
+{
+	b = false;
+	if( !m_textCursor->hasSelection() || text.isEmpty() ) return;
+	b = document()->isMatched(text, *m_textCursor, options);
 }
 void TextView::findNext()
 {
@@ -776,6 +786,11 @@ void TextView::findCurWord()
 		doFindNext(text, 0);
 		addFindStringHist(text);
 	}
+}
+void TextView::doReplace(const QString &text)
+{
+	if( m_textCursor->hasSelection() )
+		insertText(text);
 }
 void TextView::resizeEvent(QResizeEvent *event)
 {

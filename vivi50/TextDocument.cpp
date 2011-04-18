@@ -825,6 +825,16 @@ bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *la
 	}
 	return true;
 }
+bool TextDocument::isMatched(const QString &text, const TextCursor &cur, ushort options)
+{
+	if( text.isEmpty() ) return false;
+	if( !cur.hasSelection() ) return false;		//	‚Æ‚è‚ ‚¦‚¸‘I‘ð—Ìˆæ‚Æ‚Ì‚Ý”äŠr‚·‚é
+	const QString buf = cur.selectedText();
+	if( (options & MatchCase) != 0 )
+		return text == buf;
+	else
+		return 0 == text.compare(buf, Qt::CaseInsensitive);
+}
 TextCursor TextDocument::find(const QString &text, const TextCursor &cur, ushort options)
 {
 	if( cur.hasSelection() &&
