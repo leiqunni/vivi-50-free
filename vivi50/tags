@@ -39,8 +39,8 @@ EndOfBlock	.\textCursor.h	/^		EndOfBlock,$/;"	e	enum:TextCursor::__anon2
 EndOfDocument	.\textCursor.h	/^		EndOfDocument,$/;"	e	enum:TextCursor::__anon2
 EndOfWord	.\textCursor.h	/^		EndOfWord,$/;"	e	enum:TextCursor::__anon2
 FINDDLG_H	.\FindDlg.h	24;"	d
-FindDlg	.\FindDlg.h	/^class FindDlg : public QDialog$/;"	c
 FindDlg	.\FindDlg.cpp	/^FindDlg::FindDlg(QWidget *parent, ushort matchCase)$/;"	f	class:FindDlg
+FindDlg	.\FindDlg.h	/^class FindDlg : public QDialog$/;"	c
 GVUNDOITEM_BLOCK	.\TextDocument.h	/^	GVUNDOITEM_BLOCK = 0x0200,			\/\/	CUndoItemBlock ‚©‚Ç‚¤‚©$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_ALL	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_ALL = 0x0040,		\/\/	‘}“ü•¶Žš—ñ˜AŒ‹‰Â”\$/;"	e	enum:__anon2
 GVUNDOITEM_CONCAT_LINE	.\TextDocument.h	/^	GVUNDOITEM_CONCAT_LINE = 0x0020,	\/\/	‘}“ü•¶Žš—ñ˜AŒ‹‰Â”\$/;"	e	enum:__anon2
@@ -92,8 +92,8 @@ PlainTextEdit	.\PlainTextEdit.cpp	/^PlainTextEdit::PlainTextEdit(QWidget *parent
 PlainTextEdit	.\PlainTextEdit.h	/^class PlainTextEdit : public QAbstractScrollArea$/;"	c
 PrevWord	.\textCursor.h	/^		PrevWord,$/;"	e	enum:TextCursor::__anon2
 REPLACEDLG_H	.\ReplaceDlg.h	24;"	d
-ReplaceDlg	.\ReplaceDlg.h	/^class ReplaceDlg : public QDialog$/;"	c
 ReplaceDlg	.\ReplaceDlg.cpp	/^ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)$/;"	f	class:ReplaceDlg
+ReplaceDlg	.\ReplaceDlg.h	/^class ReplaceDlg : public QDialog$/;"	c
 Right	.\textCursor.h	/^		Right,$/;"	e	enum:TextCursor::__anon2
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const QString &fileName, int lineNum, QString mess="")$/;"	f	struct:SFailedInfo
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
@@ -570,7 +570,7 @@ offsetToX	.\PlainTextEdit.cpp	/^int PlainTextEdit::offsetToX(const QString &text
 onBlockCountChanged	.\TextView.cpp	/^void TextView::onBlockCountChanged()$/;"	f	class:TextView
 onBlockCountChanged	.\PlainTextEdit.cpp	/^void PlainTextEdit::onBlockCountChanged()$/;"	f	class:PlainTextEdit
 onFindClose	.\FindDlg.cpp	/^void FindDlg::onFindClose()$/;"	f	class:FindDlg
-onFindNext	.\ReplaceDlg.cpp	/^void FindDlg::onFindNext()$/;"	f	class:FindDlg
+onFindNext	.\ReplaceDlg.cpp	/^void ReplaceDlg::onFindNext()$/;"	f	class:ReplaceDlg
 onFindNext	.\FindDlg.cpp	/^void FindDlg::onFindNext()$/;"	f	class:FindDlg
 onFontChanged	.\TextView.cpp	/^void TextView::onFontChanged()$/;"	f	class:TextView
 onFontChanged	.\PlainTextEdit.cpp	/^void PlainTextEdit::onFontChanged()$/;"	f	class:PlainTextEdit

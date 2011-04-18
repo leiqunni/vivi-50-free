@@ -60,6 +60,7 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 		hBoxLayout->addWidget(findStringLabel);
 		//hBoxLayout->addWidget(m_findStringEdit);
 		(m_findStringCB = new QComboBox)->setEditable(true);
+		m_findStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
 	    QSettings settings;
 	    QStringList hist = settings.value("findStringHist").toStringList();
 	    for(int ix = hist.size(); ix != 0; )

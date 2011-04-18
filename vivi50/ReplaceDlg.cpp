@@ -34,6 +34,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 		QHBoxLayout *hBoxLayout = new QHBoxLayout();
 			hBoxLayout->addWidget(new QLabel(tr("Find &String:")));
 			(m_findStringCB = new QComboBox)->setEditable(true);
+			m_findStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
 		    QStringList hist = settings.value("findStringHist").toStringList();
 		    for(int ix = hist.size(); ix != 0; )
 		    	m_findStringCB->addItem(hist[--ix]);
@@ -42,6 +43,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 		QHBoxLayout *hBoxLayout2 = new QHBoxLayout();
 			hBoxLayout2->addWidget(new QLabel(tr("Replace &To:")));
 			(m_replaceStringCB = new QComboBox)->setEditable(true);
+			m_replaceStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
 		    QStringList hist2 = settings.value("replaceStringHist").toStringList();
 		    for(int ix = hist2.size(); ix != 0; )
 		    	m_replaceStringCB->addItem(hist2[--ix]);
