@@ -72,7 +72,7 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 			m_caseComboBox->addItem(tr("Ignore Case"));
 			m_caseComboBox->addItem(tr("Match Case"));
 			m_caseComboBox->setCurrentIndex(matchCase);
-			//m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum) );
+			m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayout2->addWidget(m_caseComboBox);
 		m_dirGroup = new QGroupBox(tr("direction"));
 			QHBoxLayout *hBoxLayout3 = new QHBoxLayout();

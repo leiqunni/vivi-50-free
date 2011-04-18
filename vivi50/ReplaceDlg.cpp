@@ -53,6 +53,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			m_caseComboBox->addItem(tr("Ignore Case"));
 			m_caseComboBox->addItem(tr("Match Case"));
 			m_caseComboBox->setCurrentIndex(matchCase);
+			m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayoutLeft->addWidget(m_caseComboBox);
 		m_dirGroup = new QGroupBox(tr("direction"));
 		{
@@ -62,6 +63,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			hBoxLayout->addWidget(m_findBackWard = new QRadioButton(tr("Backward")));
 			ptr->setChecked(true);
 			m_dirGroup->setLayout(hBoxLayout);
+			m_dirGroup->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayoutLeft->addWidget(m_dirGroup);
 		}
 		vBoxLayoutLeft->addStretch();
