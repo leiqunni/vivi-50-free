@@ -55,7 +55,7 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 	setWindowTitle(tr("Find Dialog"));
 
 	QHBoxLayout *hBoxLayout = new QHBoxLayout();
-		QLabel *findStringLabel = new QLabel(tr("Find &String:"));
+		QLabel *findStringLabel = new QLabel(tr("Find&String:"));
 		//findStringLabel->setBuddy(m_findStringEdit = new QLineEdit);
 		hBoxLayout->addWidget(findStringLabel);
 		//hBoxLayout->addWidget(m_findStringEdit);
@@ -66,23 +66,27 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 	    for(int ix = hist.size(); ix != 0; )
 	    	m_findStringCB->addItem(hist[--ix]);
 		hBoxLayout->addWidget(m_findStringCB);
-	m_caseComboBox = new QComboBox();
-		m_caseComboBox->addItem(tr("Ignore Case"));
-		m_caseComboBox->addItem(tr("Match Case"));
-		m_caseComboBox->setCurrentIndex(matchCase);
-	m_dirGroup = new QGroupBox(tr("direction"));
-	{
-		QHBoxLayout *hBoxLayout = new QHBoxLayout();
-		QRadioButton *ptr;
-		hBoxLayout->addWidget(ptr = new QRadioButton(tr("Forward")));
-		hBoxLayout->addWidget(m_findBackWard = new QRadioButton(tr("Backward")));
-		ptr->setChecked(true);
-		m_dirGroup->setLayout(hBoxLayout);
-	}
+	QHBoxLayout *hBoxLayout2 = new QHBoxLayout();
+		QVBoxLayout *vBoxLayout2 = new QVBoxLayout();
+		m_caseComboBox = new QComboBox();
+			m_caseComboBox->addItem(tr("Ignore Case"));
+			m_caseComboBox->addItem(tr("Match Case"));
+			m_caseComboBox->setCurrentIndex(matchCase);
+			//m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum) );
+			vBoxLayout2->addWidget(m_caseComboBox);
+		m_dirGroup = new QGroupBox(tr("direction"));
+			QHBoxLayout *hBoxLayout3 = new QHBoxLayout();
+			QRadioButton *ptr;
+			hBoxLayout3->addWidget(ptr = new QRadioButton(tr("Forward")));
+			hBoxLayout3->addWidget(m_findBackWard = new QRadioButton(tr("Backward")));
+			ptr->setChecked(true);
+			m_dirGroup->setLayout(hBoxLayout3);
+			vBoxLayout2->addWidget(m_dirGroup);
+		hBoxLayout2->addLayout(vBoxLayout2);
+		hBoxLayout2->addStretch();
 	QVBoxLayout *vBoxLayoutLeft = new QVBoxLayout();
 		vBoxLayoutLeft->addLayout(hBoxLayout);
-		vBoxLayoutLeft->addWidget(m_caseComboBox);
-		vBoxLayoutLeft->addWidget(m_dirGroup);
+		vBoxLayoutLeft->addLayout(hBoxLayout2);
 		vBoxLayoutLeft->addStretch();
 
 	QVBoxLayout *vBoxLayoutRight = new QVBoxLayout();	//	ボタン配置用
