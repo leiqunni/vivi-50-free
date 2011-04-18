@@ -48,11 +48,15 @@ protected slots:
 	void	onFindNext();
 	void	onFindPrev();
 	void	onReplaceFind();
+	void	onUndo() { doUndo(); }
+	void	onRedo() { doRedo(); }
 
 signals:
 	void	doFindNext(const QString &, ushort);
 	void	isMatched(bool &, const QString &, ushort);
 	void	doReplace(const QString &);
+	void	doUndo();
+	void	doRedo();
 
 private:
 	QComboBox	*m_findStringCB;

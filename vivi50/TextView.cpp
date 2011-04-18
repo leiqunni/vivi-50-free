@@ -734,6 +734,8 @@ void TextView::replace()
 			this, SLOT(isMatched(bool &, const QString &, ushort)));
 	connect(&aDlg, SIGNAL(doReplace(const QString &)),
 			this, SLOT(doReplace(const QString &)));
+	connect(&aDlg, SIGNAL(doUndo()), this, SLOT(undo()));
+	connect(&aDlg, SIGNAL(doRedo()), this, SLOT(redo()));
 	aDlg.exec();
 }
 void TextView::find()
