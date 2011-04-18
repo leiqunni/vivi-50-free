@@ -23,8 +23,8 @@ memFileColumnWd = 320
   main.cpp	(-178.304,-339.84)
   mainwindow.cpp	(-128.265,-196.142)
   mainwindow.h	(-128.265,-229.142)
-  TextDocument.cpp	(-163.875,183.766)
-  TextDocument.h	(-163.875,150.766)
+* TextDocument.cpp	(-163.875,183.766)
+* TextDocument.h	(-163.875,150.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
   mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
@@ -44,13 +44,11 @@ memFileColumnWd = 320
   ReplaceDlg.h	(249,156)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
-  "TextDocument.cpp" 40 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 52 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 59 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 76 'M: ' '' undone 不要なヒープの解放
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
-  "TextView.cpp" 596 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 923 'B: ' '' undone 選択状態の場合に未対応
-  "TextView.cpp" 929 'B: ' '' undone 挿入位置以降にあるカーソル位置更新
-  "TextView.cpp" 937 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 943 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 948 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 597 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 925 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 931 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 936 'B: ' '' undone ブロック情報更新

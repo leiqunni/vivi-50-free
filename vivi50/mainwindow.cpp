@@ -153,15 +153,15 @@ void MainWindow::createActions()
     findAct->setShortcut(QKeySequence::Find);
     findAct->setStatusTip(tr("find strings..."));
     connect(findAct, SIGNAL(triggered()), m_view, SLOT(find()));
-	findNextAct = new QAction(QIcon(":vivi/Resources/images/Paper-arrow.png"), tr("&FindNext"), this);
+	findNextAct = new QAction(QIcon(":vivi/Resources/images/Paper-arrow.png"), tr("Find&Next"), this);
     findNextAct->setShortcut(QKeySequence(Qt::Key_F3));
     findNextAct->setStatusTip(tr("find next"));
     connect(findNextAct, SIGNAL(triggered()), m_view, SLOT(findNext()));
-	findPrevAct = new QAction(QIcon(":vivi/Resources/images/Paper-arrow-back.png"), tr("&FindPrev"), this);
+	findPrevAct = new QAction(QIcon(":vivi/Resources/images/Paper-arrow-back.png"), tr("Find&Prev"), this);
     findPrevAct->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F3));
     findPrevAct->setStatusTip(tr("find prev"));
     connect(findPrevAct, SIGNAL(triggered()), m_view, SLOT(findPrev()));
-	findCurWordAct = new QAction(tr("&FindCurWord"), this);
+	findCurWordAct = new QAction(tr("FindCur&Word"), this);
     findCurWordAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F3));
     findCurWordAct->setStatusTip(tr("find cursor position's word text"));
     connect(findCurWordAct, SIGNAL(triggered()), m_view, SLOT(findCurWord()));
