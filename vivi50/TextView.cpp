@@ -496,7 +496,7 @@ void TextView::inputMethodEvent ( QInputMethodEvent * event )
 	const QString &text = event->commitString();
 	if( !text.isEmpty() ) {
 		//qDebug() << "  insert commitString " << text;
-		insertText(*m_textCursor, text);
+		insertText(text);
 		viewport()->update();
 	}
 	m_preeditString = event->preeditString();
