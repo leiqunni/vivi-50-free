@@ -342,11 +342,12 @@ void TextView::paintEvent(QPaintEvent * event)
 			}
 			while( mcitr != mciend && mcitr->block() < block )
 				++mcitr;
-			if( mcitr != mciend && mcitr->block() == block) {		//	カーソルがブロック内にある場合
+			while( mcitr != mciend && mcitr->block() == block) {		//	カーソルがブロック内にある場合
 				const int offset = qMin(block.charsCount(mcitr->position()),
 											text.length());
 				int x = offsetToX(text, offset);
 				painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::green);
+				++mcitr;
 			}
 		}
 		//painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
@@ -424,6 +425,18 @@ void TextView::ensureCursorVisible()
 		bn = qMin( curBlock.blockNumber(), (size_t)verticalScrollBar()->maximum() );
 	verticalScrollBar()->setValue(/*fm.lineSpacing() **/ bn);
 	viewport()->update();
+}
+void TextView::removeOverlappedCursor()
+{
+	for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
+												iend = m_multiCursor.end();
+		itr != iend; ++itr)
+	{
+		if( itr->isOverlapped(*m_textCursor) ) {
+			m_multiCursor.erase(itr);
+			break;
+		}
+	}
 }
 
 bool TextView::event ( QEvent * event )
@@ -600,6 +613,7 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 	}
 	if( move != 0 ) {
 		m_textCursor->movePosition(move, mvMode, repCount);
+		removeOverlappedCursor();
 		ensureCursorVisible();
 		m_drawCursor = true;
 		m_timer->start();		//	タイマーリスタート
@@ -844,6 +858,7 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 	} else
 		clearMultiCursor();
 	*m_textCursor = cur;
+	removeOverlappedCursor();
 	m_timer->start();		//	タイマーリスタート
 	viewport()->update();
 	m_mouseCaptured = true;
@@ -862,6 +877,7 @@ void TextView::mouseMoveEvent ( QMouseEvent * event )
 		m_textCursor->setPosition(block.position(), TextCursor::KeepAnchor);
 		if( offset != 0 )
 			m_textCursor->movePosition(TextCursor::Right, TextCursor::KeepAnchor, offset);
+		removeOverlappedCursor();
 		viewport()->update();
 	}
 }
@@ -869,6 +885,7 @@ void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
 {
 	m_textCursor->movePosition(TextCursor::StartOfWord);
 	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
+	removeOverlappedCursor();
 	viewport()->update();
 }
 void TextView::insertText(const QString &text)
@@ -876,6 +893,7 @@ void TextView::insertText(const QString &text)
 	if( m_multiCursor.empty() )
 		insertText(*m_textCursor, text);
 	else {
+		document()->openUndoBlock();
 		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
 		v.reserve(m_multiCursor.size() + 1);
 		bool inserted = false;
@@ -898,21 +916,7 @@ void TextView::insertText(const QString &text)
 			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; )
 				(*k)->setPosition((*k)->position() + sz);
 		}
-#if 0
-		bool inserted = false;
-		for(std::vector<ViewTextCursor>::reverse_iterator itr = m_multiCursor.rbegin(),
-															iend = m_multiCursor.rend();
-			itr != iend; ++itr)
-		{
-			//	undone B 選択状態の場合に未対応
-			if( !inserted && m_textCursor->position() >= itr->position() ) {
-				insertText(*m_textCursor, text);
-				inserted = true;
-			}
-			insertText(*itr, text);
-			//	undone B 挿入位置以降にあるカーソル位置更新
-		}
-#endif
+		document()->closeUndoBlock();
 	}
 }
 size_t TextView::insertText(ViewTextCursor &cur, const QString &text)

@@ -456,6 +456,25 @@ bool TextCursor::atEnd() const
 {
 	return isNull() || m_position >= m_document->size();
 }
+bool TextCursor::isOverlapped(const TextCursor &x) const
+{
+	if( !hasSelection() ) {
+		if( !x.hasSelection() )
+			return position() == x.position();
+		if( x.anchor() < x.position() )
+			return x.anchor() <= position() && position() <= x.position();
+		else
+			return x.position() <= position() && position() <= x.anchor();
+	} else {
+		const index_t first = qMin(anchor(), position());
+		const index_t last = qMax(anchor(), position());
+		if( !x.hasSelection() )
+			return first <= x.position() && x.position() <= last;
+		const index_t xfirst = qMin(x.anchor(), x.position());
+		const index_t xlast = qMax(x.anchor(), x.position());
+		return (last >= xfirst && xlast >= first);
+	}
+}
 size_t TextCursor::insertText(const QString &text)
 {
 	if( isNull() ) return 0;

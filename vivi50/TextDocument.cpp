@@ -33,6 +33,25 @@ static inline bool isUTF8FirstChar(uchar ch)
 //	UTF-8データの最初のバイトにより文字バイト数を計算
 size_t UTF8CharSize(uchar ch);
 //----------------------------------------------------------------------
+void GVUndoMgr::openUndoBlock()
+{
+	if( !m_undoBlockLevel )
+		m_toSetBlockFlag = true;
+	++m_undoBlockLevel;
+}
+void GVUndoMgr::closeUndoBlock()
+{
+	if( !m_undoBlockLevel ) return;
+	if( !--m_undoBlockLevel && !m_toSetBlockFlag && !m_items.empty() )
+		m_items[m_items.size() - 1].m_flags ^= GVUNDOITEM_BLOCK;
+}
+void GVUndoMgr::resetUndoBlock()
+{
+	if( !m_undoBlockLevel ) return;
+	m_undoBlockLevel = 0;
+	if( !m_toSetBlockFlag && !m_items.empty() )
+		m_items[m_items.size() - 1].m_flags ^= GVUNDOITEM_BLOCK;
+}
 #if 1
 void GVUndoMgr::push_back(const GVUndoItem &item, bool modified)
 {
@@ -41,8 +60,13 @@ void GVUndoMgr::push_back(const GVUndoItem &item, bool modified)
 		m_items.erase(m_items.begin() + m_current, m_items.end());
 	}
 	m_items.push_back(item);
+	GVUndoItem *ptr = &m_items[m_items.size() - 1];
 	if( !modified )
-		m_items[m_items.size() - 1].m_flags |= GVUNDOITEM_UNDO_MF_OFF;
+		ptr->m_flags |= GVUNDOITEM_UNDO_MF_OFF;
+	if( m_toSetBlockFlag ) {
+		ptr->m_flags |= GVUNDOITEM_BLOCK;
+		m_toSetBlockFlag = false;
+	}
 	m_current = m_items.size();
 }
 #else
@@ -83,43 +107,45 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos, uint& anchor)
 {
 	if( !m_current ) return false;
 	//boost::shared_ptr<GVUndoItem> undoItem = m_items[--m_current];
-#if 1
-	GVUndoItem *ptr = &m_items[--m_current];
-	switch( ptr->m_type ) {
-	case GVUNDOITEM_TYPE_ERASE: {
-		cuchar *heap = &m_heap[ptr->m_hp_ix];
-		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
-		if( (ptr->m_flags & GVUNDOITEM_CUR_TAIL) != 0 )
-			pos = (anchor = ptr->m_first) + ptr->data_size();
-		else
-			anchor = (pos = ptr->m_first) + ptr->data_size();
-		break;
-	}
-	case GVUNDOITEM_TYPE_INSERT:
-		if( ptr->m_rhp_ix == 0 )
-			ptr->m_rhp_ix = addToRedoHeap(bb->begin() + ptr->m_first, bb->begin() + ptr->m_last);
-		bb->erase(ptr->m_first, ptr->m_last);
-		pos = anchor = ptr->m_first;
-		break;
-	case GVUNDOITEM_TYPE_REPLACE: {
-		if( ptr->m_rhp_ix == 0 )
-			ptr->m_rhp_ix = addToRedoHeap(bb->begin() + ptr->m_first, bb->begin() + ptr->m_last2);
-		bb->erase(ptr->m_first, ptr->m_last2);
-		cuchar *heap = &m_heap[ptr->m_hp_ix];
-		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
-		if( (ptr->m_flags & GVUNDOITEM_CUR_TAIL) != 0 )
-			pos = (anchor = ptr->m_first) + ptr->data_size();
-		else
-			anchor = (pos = ptr->m_first) + ptr->data_size();
-		//pos = ptr->m_first + ptr->data_size();
-		break;
-	}
+	GVUndoItem *ptr;
+	for(bool b = true;;) {
+		ptr = &m_items[--m_current];
+		switch( ptr->m_type ) {
+		case GVUNDOITEM_TYPE_ERASE: {
+			cuchar *heap = &m_heap[ptr->m_hp_ix];
+			bb->insert(ptr->m_first, heap, heap + ptr->data_size());
+			if( (ptr->m_flags & GVUNDOITEM_CUR_TAIL) != 0 )
+				pos = (anchor = ptr->m_first) + ptr->data_size();
+			else
+				anchor = (pos = ptr->m_first) + ptr->data_size();
+			break;
+		}
+		case GVUNDOITEM_TYPE_INSERT:
+			if( ptr->m_rhp_ix == 0 )
+				ptr->m_rhp_ix = addToRedoHeap(bb->begin() + ptr->m_first, bb->begin() + ptr->m_last);
+			bb->erase(ptr->m_first, ptr->m_last);
+			pos = anchor = ptr->m_first;
+			break;
+		case GVUNDOITEM_TYPE_REPLACE: {
+			if( ptr->m_rhp_ix == 0 )
+				ptr->m_rhp_ix = addToRedoHeap(bb->begin() + ptr->m_first, bb->begin() + ptr->m_last2);
+			bb->erase(ptr->m_first, ptr->m_last2);
+			cuchar *heap = &m_heap[ptr->m_hp_ix];
+			bb->insert(ptr->m_first, heap, heap + ptr->data_size());
+			if( (ptr->m_flags & GVUNDOITEM_CUR_TAIL) != 0 )
+				pos = (anchor = ptr->m_first) + ptr->data_size();
+			else
+				anchor = (pos = ptr->m_first) + ptr->data_size();
+			//pos = ptr->m_first + ptr->data_size();
+			break;
+		}
+		}
+		//	GVUNDOITEM_BLOCK が立っている場合は 次に GVUNDOITEM_BLOCK が立っているものまで処理する
+		const bool pb = (ptr->m_flags & GVUNDOITEM_BLOCK) != 0;
+		if( !m_current || pb != b ) break;
+		b = false;
 	}
 	return !(ptr->m_flags & GVUNDOITEM_UNDO_MF_OFF) ? true : false;
-#else
-	m_items[--m_current]->doUndo(bb, pos);
-	return !(m_items[m_current]->m_flags & GVUNDOITEM_UNDO_MF_OFF) ? true : false;
-#endif
 	//return true;
 }
 bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos, uint& anchor)
@@ -127,32 +153,34 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos, uint& anchor)
 	if( m_current >= m_items.size() ) return false;
 	//boost::shared_ptr<GVUndoItem> undoItem = m_items[m_current];
 	//++m_current;
-#if 1
-	const GVUndoItem *ptr = &m_items[m_current++];
-	switch( ptr->m_type ) {
-	case GVUNDOITEM_TYPE_ERASE:
-		bb->erase(ptr->m_first, ptr->m_last);
-		pos = anchor = ptr->m_first;
-		break;
-	case GVUNDOITEM_TYPE_INSERT: {
-		cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
-		bb->insert(ptr->m_first, heap, heap + ptr->data_size());
-		pos = anchor = ptr->m_first + ptr->data_size();
-		break;
-	}
-	case GVUNDOITEM_TYPE_REPLACE: {
-		bb->erase(ptr->m_first, ptr->m_last);
-		cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
-		bb->insert(ptr->m_first, heap, heap + ptr->data_size2());
-		pos = (anchor = ptr->m_first) + ptr->data_size2();
-		break;
-	}
+	GVUndoItem *ptr;
+	for(bool b = true;;) {
+		ptr = &m_items[m_current++];
+		switch( ptr->m_type ) {
+		case GVUNDOITEM_TYPE_ERASE:
+			bb->erase(ptr->m_first, ptr->m_last);
+			pos = anchor = ptr->m_first;
+			break;
+		case GVUNDOITEM_TYPE_INSERT: {
+			cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
+			bb->insert(ptr->m_first, heap, heap + ptr->data_size());
+			pos = anchor = ptr->m_first + ptr->data_size();
+			break;
+		}
+		case GVUNDOITEM_TYPE_REPLACE: {
+			bb->erase(ptr->m_first, ptr->m_last);
+			cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
+			bb->insert(ptr->m_first, heap, heap + ptr->data_size2());
+			pos = (anchor = ptr->m_first) + ptr->data_size2();
+			break;
+		}
+		}
+		//	GVUNDOITEM_BLOCK が立っている場合は 次に GVUNDOITEM_BLOCK が立っているものまで処理する
+		const bool pb = (ptr->m_flags & GVUNDOITEM_BLOCK) != 0;
+		if( m_current >= m_items.size() || pb != b ) break;
+		b = false;
 	}
 	return !(ptr->m_flags & GVUNDOITEM_REDO_MF_OFF) ? true : false;
-#else
-	m_items[m_current]->doRedo(bb, pos);
-	return !(m_items[m_current++]->m_flags & GVUNDOITEM_REDO_MF_OFF) ? true : false;;
-#endif
 }
 //----------------------------------------------------------------------
 uint TextBlock::size() const

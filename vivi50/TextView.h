@@ -122,6 +122,7 @@ protected:
 	void	clearMultiCursor() { m_multiCursor.clear(); }
 	void	buildBlocks();
 
+    void	removeOverlappedCursor();
     TextBlock	firstVisibleBlock() const;
     void	ensureCursorVisible();
 	int		lineNumberLength() const;			//	Å‘ås”Ô†Œ…”

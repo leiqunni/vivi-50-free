@@ -80,6 +80,7 @@ public:
 	bool	hasSelection() const { return m_position != m_anchor; }
 	bool	isNull() const { return m_document == 0; }
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
+	bool	isOverlapped(const TextCursor &) const;
 	QString	selectedText() const;
 	TextBlock	block() const;
 	TextBlockData blockData() const { return m_blockData; }

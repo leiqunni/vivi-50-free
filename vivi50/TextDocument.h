@@ -148,12 +148,16 @@ class GVUndoMgr
 {
 	uint	m_current;		//	オブジェクトを次に入れる位置（0..*）
 							//	通常は m_item.size() と同値だが、undo が実行されるとデクリメントされる
+	uint	m_undoBlockLevel;
+	bool	m_toSetBlockFlag;			//	次の push_back で block フラグを立てる
 	std::vector<GVUndoItem>	m_items;
 	std::vector<uchar>	m_heap;			//	undo のための文字列を格納するヒープ
 	std::vector<uchar>	m_redoHeap;		//	redo のための文字列を格納するヒープ
 public:
 	GVUndoMgr() : m_current(0)
 	{
+		m_undoBlockLevel = 0;
+		m_toSetBlockFlag = false;
 		m_heap.push_back(1);			//	最初のデータインデックスを 1 にするためのダミー
 		m_redoHeap.push_back(1);
 	}
@@ -165,7 +169,10 @@ public:
 	bool	canUndo() const { return m_current != 0; };
 	bool	canRedo() const { return m_current < m_items.size(); };
 public:
-	void	push_back(GVUndoItem *ptr, bool = false);
+	void	openUndoBlock();		//	undo block レベル += 1
+	void	closeUndoBlock();		//	undo block レベル -= 1
+	void	resetUndoBlock();		//	undo block レベル = 0
+	//void	push_back(GVUndoItem *ptr, bool = false);
 	void	push_back(const GVUndoItem &, bool = false);
 
 	//	データをヒープに追加
@@ -295,6 +302,8 @@ public:
 
 	void	setModified(bool b) { m_modified = b; }
 	void	setFullPath(const QString &fullPath) { m_fullPath = fullPath; }
+	void	openUndoBlock() { m_undoMgr.openUndoBlock(); }
+	void	closeUndoBlock() { m_undoMgr.closeUndoBlock(); }
 
 #if BLOCK_HAS_SIZE
 	TextBlock	firstBlock() { return TextBlock(this, 0, 0); }
