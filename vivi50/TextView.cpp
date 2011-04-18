@@ -695,6 +695,7 @@ void TextView::paste()
 void TextView::undo()
 {
 	if( !m_document->canUndo() ) return;
+	clearMultiCursor();
 	index_t pos = 0, anchor = 0;
 	m_document->doUndo(pos, anchor);
 	if( pos == anchor )
@@ -709,6 +710,7 @@ void TextView::undo()
 void TextView::redo()
 {
 	if( !m_document->canRedo() ) return;
+	clearMultiCursor();
 	index_t pos = 0, anchor = 0;
 	m_document->doRedo(pos, anchor);
 	m_textCursor->setPosition(pos);
