@@ -55,6 +55,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			m_caseComboBox->setCurrentIndex(matchCase);
 			m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayoutLeft->addWidget(m_caseComboBox);
+#if 0
 		m_dirGroup = new QGroupBox(tr("direction"));
 		{
 			QHBoxLayout *hBoxLayout = new QHBoxLayout();
@@ -66,6 +67,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			m_dirGroup->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayoutLeft->addWidget(m_dirGroup);
 		}
+#endif
 		vBoxLayoutLeft->addStretch();
 	}
 	QVBoxLayout *vBoxLayoutRight = new QVBoxLayout();	//	ボタン配置用
@@ -104,17 +106,24 @@ ReplaceDlg::~ReplaceDlg()
 {
 
 }
-void ReplaceDlg::onFindNext()
+void ReplaceDlg::doFind(bool backward)
 {
 	const QString findString = m_findStringCB->currentText();
 	//const QString findString = m_findStringEdit->text();
-	if( !findString.isEmpty() ) {
-		ushort options = 0;
-		if( m_caseComboBox->currentIndex() == 1 )
-			options |= MatchCase;
-		if( m_findBackWard->isChecked() != 0 )
-			options |= FindBackWard;
-		emit doFindNext(findString, options);
-		addFindStringHist(findString);
-	}
+	if( findString.isEmpty() ) return;
+	ushort options = 0;
+	if( m_caseComboBox->currentIndex() == 1 )
+		options |= MatchCase;
+	if( backward )
+		options |= FindBackWard;
+	emit doFindNext(findString, options);
+	addFindStringHist(findString);
+}
+void ReplaceDlg::onFindPrev()
+{
+	doFind(true);
+}
+void ReplaceDlg::onFindNext()
+{
+	doFind(false);
 }

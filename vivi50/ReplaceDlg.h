@@ -41,8 +41,12 @@ public:
 	ReplaceDlg(QWidget *parent = 0, ushort = IgnoreCase);
 	~ReplaceDlg();
 
+protected:
+	void	doFind(bool backward);
+
 protected slots:
 	void	onFindNext();
+	void	onFindPrev();
 
 signals:
 	void	doFindNext(const QString &, ushort);
