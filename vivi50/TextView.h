@@ -75,7 +75,7 @@ public:
 public:
 	void	deleteChar();
 	void	deletePreviousChar();
-	void	insertText(const QString &);
+	void	insertText(const QString &, bool = false);
 	size_t	insertText(ViewTextCursor &, const QString &);
 	void	deleteChar(ViewTextCursor &);
 	void	deletePreviousChar(ViewTextCursor &);

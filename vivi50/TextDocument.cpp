@@ -688,7 +688,8 @@ size_t TextDocument::deletePreviousChar(TextCursor &cur)
 	emit contentsChanged();
 	return last - first;
 }
-size_t TextDocument::insertText(TextCursor &cur, const QString &text)
+size_t TextDocument::insertText(TextCursor &cur, const QString &text,
+								bool select)		//	‘}“ü”ÍˆÍ‚ð‘I‘ð
 {
 	if( cur.isNull() || cur.document() != this )
 		return 0;
@@ -720,7 +721,10 @@ size_t TextDocument::insertText(TextCursor &cur, const QString &text)
 							isModified());
 		delSz = last - first;
 	}
-	cur.setPosition(cur.position() + sz);
+	if( select ) {
+		cur.setPosition(cur.position() + sz, TextCursor::KeepAnchor);
+	} else
+		cur.setPosition(cur.position() + sz);
 	//cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
 	m_blockData = cur.blockData();
 	m_modified = true;

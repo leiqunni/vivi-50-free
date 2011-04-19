@@ -30,6 +30,17 @@
 #include	<QDebug>
 
 size_t UTF8CharSize(uchar ch);
+
+bool hasSelection(const std::vector<ViewTextCursor*> &v)
+{
+	for(std::vector<ViewTextCursor*>::const_iterator itr = v.begin(),
+														iend = v.end();
+		itr != iend; ++itr)
+	{
+		if( (*itr)->hasSelection() ) return true;
+	}
+	return false;
+}
 //----------------------------------------------------------------------
 
 #define		MARGIN_LEFT		4
@@ -473,7 +484,7 @@ bool TextView::event ( QEvent * event )
 	if( event->type() == QEvent::KeyPress ) {
 		QKeyEvent *k = static_cast<QKeyEvent *>(event);
 		if( k->key() == Qt::Key_Tab || k->key() == Qt::Key_Backtab ) {
-			insertText(QString("\t"));
+			insertText(QString("\t"), true);
 			ensureCursorVisible();
 			viewport()->update();
 			return true;
@@ -984,8 +995,10 @@ void TextView::deleteChar()
 			itr != iend; ++itr)
 		{
 			const size_t sz = document()->deleteChar(**itr);
-			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; )
+			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
 				(*k)->setPosition((*k)->position() - sz);
+				(*k)->setAnchor((*k)->anchor() - sz);
+			}
 		}
 		document()->closeUndoBlock();
 	}
@@ -1003,13 +1016,15 @@ void TextView::deletePreviousChar()
 			itr != iend; ++itr)
 		{
 			const size_t sz = document()->deletePreviousChar(**itr);
-			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; )
+			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
 				(*k)->setPosition((*k)->position() - sz);
+				(*k)->setAnchor((*k)->anchor() - sz);
+			}
 		}
 		document()->closeUndoBlock();
 	}
 }
-void TextView::insertText(const QString &text)
+void TextView::insertText(const QString &text, bool tab)
 {
 	if( m_multiCursor.empty() )
 		insertText(*m_textCursor, text);
@@ -1017,13 +1032,36 @@ void TextView::insertText(const QString &text)
 		document()->openUndoBlock();
 		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
 		getAllCursor(v);
-		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
-			itr != iend; ++itr)
-		{
-			const size_t sz = insertText(**itr, text);
-			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; )
-				(*k)->setPosition((*k)->position() + sz);
-		}
+		if( tab && hasSelection(v) ) {
+			//	選択領域がある場合はローテイト
+			std::vector<ViewTextCursor*>::iterator itr = v.end() - 1;
+			const QString lastText = (*itr)->selectedText();
+			int lastLength = lastText.length();
+			for(;;) {
+				const QString text = itr == v.begin() ? lastText
+											: (*(itr-1))->selectedText();
+				const int d = text.length() - lastLength;		//	増減値
+				document()->insertText(**itr, text, /*select::=*/true);
+				for(std::vector<ViewTextCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
+					if( (*k)->anchor() < (*k)->position() )
+						(*k)->setPosition((*k)->position() + d);
+					else if( (*k)->position() < (*k)->anchor() )
+						(*k)->setAnchor((*k)->anchor() + d);
+				}
+				if( itr == v.begin() ) break;
+				lastLength = text.length();
+				--itr;
+			}
+		} else
+			for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+				itr != iend; ++itr)
+			{
+				const size_t sz = insertText(**itr, text);
+				for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
+					(*k)->setPosition((*k)->position() + sz);
+					(*k)->setAnchor((*k)->anchor() + sz);
+				}
+			}
 		document()->closeUndoBlock();
 	}
 }
