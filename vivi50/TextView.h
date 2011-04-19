@@ -125,6 +125,7 @@ protected:
 	void	drawLineNumbers();
 	void	resetCursorBlinkTimer();
 	void	clearMultiCursor() { m_multiCursor.clear(); }
+	void	getAllCursor(std::vector<ViewTextCursor*> &);
 	void	buildBlocks();
 
     void	removeOverlappedCursor();

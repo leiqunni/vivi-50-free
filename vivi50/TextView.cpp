@@ -314,9 +314,9 @@ void TextView::paintEvent(QPaintEvent * event)
 													iend = m_multiCursor.end();
 		itr != iend; ++itr)
 	{
-		if( !itr->hasSelection() ) continue;
+		if( !itr->hasSelection() ) continue;		//	非選択状態の場合
 		index_t selLast = itr->lastPosition();
-		if( selLast < block.position() ) continue;
+		if( selLast <= block.position() ) continue;		//	選択箇所が最初のブロック以前の場合
 		index_t selFirst = itr->firstPosition();
 		while( y < vr.height() && block.isValid() &&
 			selFirst >= block.position() + m_document->blockSize(block.index()) )
@@ -953,6 +953,24 @@ void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
 	removeOverlappedCursor();
 	viewport()->update();
 }
+void TextView::getAllCursor(std::vector<ViewTextCursor*> &v)
+{
+	v.clear();
+	v.reserve(m_multiCursor.size() + 1);
+	bool inserted = false;
+	for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
+														iend = m_multiCursor.end();
+		itr != iend; ++itr)
+	{
+		if( !inserted && m_textCursor->position() <= itr->position() ) {
+			v.push_back(m_textCursor);
+			inserted = true;
+		}
+		v.push_back(&*itr);
+	}
+	if( !inserted )
+		v.push_back(m_textCursor);
+}
 void TextView::deleteChar()
 {
 	if( m_multiCursor.empty() )
@@ -961,20 +979,7 @@ void TextView::deleteChar()
 		//	undone R insertText と処理を共通化
 		document()->openUndoBlock();
 		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
-		v.reserve(m_multiCursor.size() + 1);
-		bool inserted = false;
-		for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
-															iend = m_multiCursor.end();
-			itr != iend; ++itr)
-		{
-			if( !inserted && m_textCursor->position() <= itr->position() ) {
-				v.push_back(m_textCursor);
-				inserted = true;
-			}
-			v.push_back(&*itr);
-		}
-		if( !inserted )
-			v.push_back(m_textCursor);
+		getAllCursor(v);
 		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
@@ -993,20 +998,7 @@ void TextView::deletePreviousChar()
 		//	undone R insertText と処理を共通化
 		document()->openUndoBlock();
 		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
-		v.reserve(m_multiCursor.size() + 1);
-		bool inserted = false;
-		for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
-															iend = m_multiCursor.end();
-			itr != iend; ++itr)
-		{
-			if( !inserted && m_textCursor->position() <= itr->position() ) {
-				v.push_back(m_textCursor);
-				inserted = true;
-			}
-			v.push_back(&*itr);
-		}
-		if( !inserted )
-			v.push_back(m_textCursor);
+		getAllCursor(v);
 		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
@@ -1024,20 +1016,7 @@ void TextView::insertText(const QString &text)
 	else {
 		document()->openUndoBlock();
 		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
-		v.reserve(m_multiCursor.size() + 1);
-		bool inserted = false;
-		for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
-															iend = m_multiCursor.end();
-			itr != iend; ++itr)
-		{
-			if( !inserted && m_textCursor->position() <= itr->position() ) {
-				v.push_back(m_textCursor);
-				inserted = true;
-			}
-			v.push_back(&*itr);
-		}
-		if( !inserted )
-			v.push_back(m_textCursor);
+		getAllCursor(v);
 		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{

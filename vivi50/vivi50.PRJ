@@ -49,9 +49,9 @@ memFileColumnWd = 320
   "TextDocument.cpp" 888 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 385 'B: ' '' undone 暫定コード
   "textCursor.cpp" 394 'B: ' '' undone 暫定コード
-  "TextView.cpp" 605 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 932 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 964 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1025 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1031 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1036 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 634 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 961 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 993 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1054 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1060 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1065 'B: ' '' undone ブロック情報更新
