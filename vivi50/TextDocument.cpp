@@ -722,6 +722,7 @@ size_t TextDocument::insertText(TextCursor &cur, const QString &text,
 		delSz = last - first;
 	}
 	if( select ) {
+		cur.setAnchor(cur.position());
 		cur.setPosition(cur.position() + sz, TextCursor::KeepAnchor);
 	} else
 		cur.setPosition(cur.position() + sz);

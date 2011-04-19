@@ -41,6 +41,15 @@ bool hasSelection(const std::vector<ViewTextCursor*> &v)
 	}
 	return false;
 }
+void print(const std::vector<ViewTextCursor*> &v)
+{
+	for(std::vector<ViewTextCursor*>::const_iterator itr = v.begin(),
+														iend = v.end();
+		itr != iend; ++itr)
+	{
+		qDebug() << "anc = " << (*itr)->anchor() << ", pos = " << (*itr)->position();
+	}
+}
 //----------------------------------------------------------------------
 
 #define		MARGIN_LEFT		4
@@ -1034,6 +1043,7 @@ void TextView::insertText(const QString &text, bool tab)
 		getAllCursor(v);
 		if( tab && hasSelection(v) ) {
 			//	選択領域がある場合はローテイト
+			print(v);
 			std::vector<ViewTextCursor*>::iterator itr = v.end() - 1;
 			const QString lastText = (*itr)->selectedText();
 			int lastLength = lastText.length();
@@ -1042,12 +1052,18 @@ void TextView::insertText(const QString &text, bool tab)
 											: (*(itr-1))->selectedText();
 				const int d = text.length() - lastLength;		//	増減値
 				document()->insertText(**itr, text, /*select::=*/true);
+				print(v);
 				for(std::vector<ViewTextCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
+					(*k)->setAnchor((*k)->anchor() + d);
+					(*k)->setPosition((*k)->position() + d, TextCursor::KeepAnchor);
+#if 0
 					if( (*k)->anchor() < (*k)->position() )
 						(*k)->setPosition((*k)->position() + d);
 					else if( (*k)->position() < (*k)->anchor() )
 						(*k)->setAnchor((*k)->anchor() + d);
+#endif
 				}
+				print(v);
 				if( itr == v.begin() ) break;
 				lastLength = text.length();
 				--itr;
@@ -1058,8 +1074,8 @@ void TextView::insertText(const QString &text, bool tab)
 			{
 				const size_t sz = insertText(**itr, text);
 				for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
-					(*k)->setPosition((*k)->position() + sz);
 					(*k)->setAnchor((*k)->anchor() + sz);
+					(*k)->setPosition((*k)->position() + sz, TextCursor::KeepAnchor);
 				}
 			}
 		document()->closeUndoBlock();

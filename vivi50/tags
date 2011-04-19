@@ -74,7 +74,7 @@ KeepAnchor	.\textCursor.h	/^		KeepAnchor,$/;"	e	enum:TextCursor::__anon1
 LF	.\charEncoding.h	/^		LF,$/;"	e	enum:CharEncoding::__anon2
 Left	.\textCursor.h	/^		Left,$/;"	e	enum:TextCursor::__anon2
 MAINWINDOW_H	.\mainwindow.h	24;"	d
-MARGIN_LEFT	.\TextView.cpp	46;"	d	file:
+MARGIN_LEFT	.\TextView.cpp	55;"	d	file:
 MARGIN_LEFT	.\PlainTextEdit.cpp	32;"	d	file:
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
@@ -642,6 +642,7 @@ prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const
 prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
 prevBlockData	.\PlainTextEdit.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:PlainTextEdit
 prevCharsCount	.\textCursor.cpp	/^int TextCursor::prevCharsCount() const$/;"	f	class:TextCursor
+print	.\TextView.cpp	/^void print(const std::vector<ViewTextCursor*> &v)$/;"	f
 printBuffer	.\mainwindowTest.cpp	/^void MainWindow::printBuffer()$/;"	f	class:MainWindow
 printBufferAct	.\mainwindow.h	/^	QAction	*printBufferAct;$/;"	m	class:MainWindow
 push_back	.\TextDocument.cpp	/^void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)$/;"	f	class:GVUndoMgr
