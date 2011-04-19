@@ -38,10 +38,13 @@
 # 2011/04/18 20:42:20
 + 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 + 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
+# 2011/04/19 12:41:54
++ 2011/04/19 "TextDocument.cpp" P:   undone 置換テキストもUTF8にあらかじめ変換しておく
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
 2011/04/10 "TextDocument.cpp" M:   undone 不要なヒープの解放
+2011/04/19 "TextDocument.cpp" P:   undone 置換テキストもUTF8にあらかじめ変換しておく
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 2011/04/12 "TextView.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入

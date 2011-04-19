@@ -305,6 +305,36 @@ void TextView::paintEvent(QPaintEvent * event)
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
 
+	const index_t lastBlockNumber = m_document->lastBlock().blockNumber();
+	int y = 0;
+	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
+
+	//	マルチカーソル選択状態表示
+	for(std::vector<ViewTextCursor>::const_iterator itr = m_multiCursor.begin(),
+													iend = m_multiCursor.end();
+		itr != iend; ++itr)
+	{
+		if( !itr->hasSelection() ) continue;
+		index_t selLast = itr->lastPosition();
+		if( selLast < block.position() ) continue;
+		index_t selFirst = itr->firstPosition();
+		while( y < vr.height() && block.isValid() &&
+			selFirst >= block.position() + m_document->blockSize(block.index()) )
+		{
+			y += fm.lineSpacing();
+			block = block.next();
+		}
+		if( y >= vr.height() || !block.isValid() ) break;
+		index_t nextBlockPosition = block.position() + m_document->blockSize(block.index());
+		if( selFirst < nextBlockPosition && selLast > block.position() ) {
+			//	block が選択範囲内にある場合
+			const QString text = block.text();
+			int x1 = offsetToX(text, block.charsCount(qMax(block.position(), selFirst)));
+			int x2 = offsetToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
+			painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
+		}
+	}
+
 	index_t selFirst = 0, selLast = 0;	//	選択範囲、first < last
 	if( m_textCursor->hasSelection() ) {
 		if( m_textCursor->position() < m_textCursor->anchor() ) {
@@ -315,9 +345,8 @@ void TextView::paintEvent(QPaintEvent * event)
 			selLast = m_textCursor->position();
 		}
 	}
-	index_t lastBlockNumber = m_document->lastBlock().blockNumber();
-	int y = 0;
-	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
+	y = 0;
+	block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	//qDebug() << "firstVisibleBlock.index = " << block.index();
 	//TextBlock block = m_document->firstBlock();
 	std::vector<ViewTextCursor>::const_iterator mcitr = m_multiCursor.begin();

@@ -76,6 +76,8 @@ public:
 	const TextDocument	*document() const { return m_document; }
 	index_t	position() const { return m_position; }
 	index_t	anchor() const { return m_anchor; }
+	index_t firstPosition() const { return qMin(position(), anchor()); }
+	index_t lastPosition() const { return qMax(position(), anchor()); }
 	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
 	bool	hasSelection() const { return m_position != m_anchor; }
 	bool	isNull() const { return m_document == 0; }
