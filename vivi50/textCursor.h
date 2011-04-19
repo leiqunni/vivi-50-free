@@ -15,6 +15,9 @@
 #include	<QtCore>
 #include	"textBlockData.h"
 
+//	テキストカーソルがブロック情報を含むかどうか
+#define		TEXT_CURSOR_BLOCK		1
+
 class TextDocument;
 class TextView;
 class TextBlock;
@@ -49,15 +52,20 @@ public:
 	TextCursor(TextDocument *document = 0, index_t position = 0)
 		: m_document(document), m_position(position), m_anchor(position)
 		{
+#if TEXT_CURSOR_BLOCK
 			updateBlockData();
 			m_offset = m_position - m_blockData.index();
+#endif
 		}
 	TextCursor(TextDocument *document, index_t position, index_t anchor)
 		: m_document(document), m_position(position), m_anchor(anchor)
 		{
+#if TEXT_CURSOR_BLOCK
 			updateBlockData();
 			m_offset = m_position - m_blockData.index();
+#endif
 		}
+#if TEXT_CURSOR_BLOCK
 	TextCursor(TextDocument *document, index_t position, index_t anchor,
 				TextBlockData blockData)
 		: m_document(document), m_position(position), m_anchor(anchor)
@@ -65,10 +73,13 @@ public:
 		{
 			m_offset = m_position - m_blockData.index();
 		}
+#endif
 	TextCursor(const TextCursor &x)
 		: m_document(x.m_document), m_position(x.m_position), m_anchor(x.m_anchor)
+#if TEXT_CURSOR_BLOCK
 		, m_offset(x.m_offset)
 		, m_blockData(x.m_blockData), m_anchorBlockData(x.m_anchorBlockData)
+#endif
 		{}
 	~TextCursor() {}
 
@@ -84,6 +95,7 @@ public:
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
 	bool	isOverlapped(const TextCursor &) const;
 	QString	selectedText() const;
+#if TEXT_CURSOR_BLOCK
 	TextBlock	block() const;
 	TextBlockData blockData() const { return m_blockData; }
 	TextBlockData anchorBlockData() const { return m_anchorBlockData; }
@@ -91,12 +103,13 @@ public:
 	index_t	blockPosition() const { return m_blockData.m_position; }
 	index_t	ancBlockIndex() const { return m_anchorBlockData.m_index; }
 	index_t	ancBlockPosition() const { return m_anchorBlockData.m_position; }
+#endif
 
 	bool	operator<(const TextCursor &x) const { return position() < x.position(); }
 
 public:
 	TextDocument	*document() { return m_document; }
-	void	setAnchor(index_t anchor) { m_anchor = anchor; }
+	void	setAnchor(index_t anchor);	// { m_anchor = anchor; }
 	void	clearSelection() { copyPositionToAnchor(); }
 	void	copyPositionToAnchor();
 	void	copyAnchorToPosition();
@@ -111,15 +124,19 @@ public:
 	void	deletePreviousChar();
 
 protected:
+#if TEXT_CURSOR_BLOCK
 	void	updateBlockData(uchar mode = MoveAnchor);		//	m_blockIndex, m_blockPosition 更新
+#endif
 
 protected:
 	TextDocument	*m_document;
 	index_t			m_position;		//	カーソル位置
-	index_t			m_offset;		//	行頭からのオフセット値（本来の値）
 	index_t			m_anchor;		//	アンカー位置
+#if TEXT_CURSOR_BLOCK
+	index_t			m_offset;		//	行頭からのオフセット値（本来の値）
 	TextBlockData	m_blockData;
 	TextBlockData	m_anchorBlockData;
+#endif
 };
 
 //----------------------------------------------------------------------

@@ -123,8 +123,10 @@ protected:
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
 	void	drawLineNumbers();
+	void	setTextCursor(const ViewTextCursor &cur) { *m_textCursor = cur; }
 	void	resetCursorBlinkTimer();
 	void	clearMultiCursor() { m_multiCursor.clear(); }
+	void	addToMultiCursor(const ViewTextCursor &cur) { m_multiCursor.push_back(cur); }
 	void	getAllCursor(std::vector<ViewTextCursor*> &);
 	void	buildBlocks();
 

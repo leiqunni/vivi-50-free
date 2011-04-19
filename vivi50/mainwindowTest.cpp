@@ -60,7 +60,7 @@ void MainWindow::doUnitTest()
 		ut.ut_test_equal(QString("abc"), QString("xyzzz"));
 		ut.ut_test_equal(QString("あいうえお"), QString("かきくけこ"));
 	}
-	test_TextDocument();
+	//test_TextDocument();
 	test_TextView();
 	QString temp;
 	if( !g_total_fail_count ) {
@@ -585,7 +585,7 @@ void test_TextDocument()
 			ut.ut_test_equal(i*10, d.m_position);
 		}
 	}
-	if( 0 ) {		//	findBlockIndex() テスト、キャッシュが中央にある場合
+	if( 1 ) {		//	findBlockIndex() テスト、キャッシュが中央にある場合
 		TextDocument doc;
 		TextCursor cur(&doc);		//	先頭位置
 		const QString text("123456789\n");		//	10byte テキスト
@@ -603,6 +603,15 @@ void test_TextDocument()
 			ut.ut_test_equal(i, ix);
 			ut.ut_test_equal(i*10, blockPos);
 		}
+	}
+	if( 1 ) {
+		TextDocument doc;
+		doc.setPlainText(QString("xyz\n12345\n"));
+		TextCursor cur(&doc);		//	先頭位置
+		cur.setPosition(3, TextCursor::KeepAnchor);
+		doc.insertText(cur, QString("1234567"), true);
+		ut.ut_test_equal(0, cur.anchor());
+		ut.ut_test_equal(7, cur.position());
 	}
 }
 
@@ -643,5 +652,70 @@ void test_TextView()
 		ut.ut_test_equal(15, view.blockSize(1));	//	あいうえお
 		ut.ut_test_equal(10, view.blockSize(2));	//	かきく
 		ut.ut_test_equal(0, view.blockSize(3));
+	}
+	if( 1 ) {		//	マルチカーソル：文字挿入
+		std::vector<ViewTextCursor*> v;
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("\n\n\n\n\n"));	//	改行＊５行
+		ViewTextCursor cur(&view);
+		view.addToMultiCursor(cur);			//	1行目
+		cur.movePosition(TextCursor::Down);
+		view.addToMultiCursor(cur);			//	2行目
+		cur.movePosition(TextCursor::Down);
+		view.addToMultiCursor(cur);			//	3行目
+		cur.movePosition(TextCursor::Down);
+		view.addToMultiCursor(cur);			//	4行目
+		cur.movePosition(TextCursor::Down);
+		view.setTextCursor(cur);			//	メインカーソル：5行目
+		view.insertText("=");
+		view.getAllCursor(v);
+		ut.ut_test_equal(5, v.size());
+		ut.ut_test_equal(1, v[0]->position());
+		ut.ut_test_equal(0, v[0]->blockData().index());
+		ut.ut_test_equal(0, v[0]->blockData().position());
+		ut.ut_test_equal(3, v[1]->position());
+		ut.ut_test_equal(1, v[1]->blockData().index());
+		ut.ut_test_equal(2, v[1]->blockData().position());
+		ut.ut_test_equal(5, v[2]->position());
+		ut.ut_test_equal(2, v[2]->blockData().index());
+		ut.ut_test_equal(4, v[2]->blockData().position());
+		ut.ut_test_equal(7, v[3]->position());
+		ut.ut_test_equal(3, v[3]->blockData().index());
+		ut.ut_test_equal(6, v[3]->blockData().position());
+		ut.ut_test_equal(9, v[4]->position());
+		ut.ut_test_equal(4, v[4]->blockData().index());
+		ut.ut_test_equal(8, v[4]->blockData().position());
+		ut.ut_test_equal(QString("=\n=\n=\n=\n=\n"), doc->toPlainText());
+		view.undo();
+		ut.ut_test_equal(QString("\n\n\n\n\n"), doc->toPlainText());
+		view.redo();
+		ut.ut_test_equal(QString("=\n=\n=\n=\n=\n"), doc->toPlainText());
+	}
+	if( 1 ) {		//	マルチカーソル：ローテイト
+		std::vector<ViewTextCursor*> v;
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("abc\n1234567\n"));
+		ViewTextCursor cur(&view);
+		cur.setPosition(3, TextCursor::KeepAnchor);
+		view.addToMultiCursor(cur);
+		cur.setPosition(4);
+		cur.setPosition(11, TextCursor::KeepAnchor);
+		view.setTextCursor(cur);			//	メインカーソル
+		view.insertText(QString("\t"), true);	//	ローテイト
+		view.getAllCursor(v);
+		ut.ut_test_equal(2, v.size());
+		ut.ut_test_equal(7, v[0]->position());
+		ut.ut_test_equal(0, v[0]->blockData().index());
+		ut.ut_test_equal(0, v[0]->blockData().position());
+		ut.ut_test_equal(11, v[1]->position());
+		ut.ut_test_equal(1, v[1]->blockData().index());
+		ut.ut_test_equal(8, v[1]->blockData().position());
+		ut.ut_test_equal(QString("1234567\nabc\n"), doc->toPlainText());
+		view.undo();
+		ut.ut_test_equal(QString("abc\n1234567\n"), doc->toPlainText());
+		view.redo();
+		ut.ut_test_equal(QString("1234567\nabc\n"), doc->toPlainText());
 	}
 }

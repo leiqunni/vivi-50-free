@@ -60,6 +60,7 @@ size_t getEOLOffset(const TextDocument *doc, TextBlockData d)
 	return sz;
 }
 //----------------------------------------------------------------------
+#if TEXT_CURSOR_BLOCK
 void TextCursor::updateBlockData(uchar mode)
 {
 	if( !m_document ) {
@@ -70,6 +71,7 @@ void TextCursor::updateBlockData(uchar mode)
 			m_anchorBlockData = m_blockData;
 	}
 }
+#endif
 
 QString TextCursor::selectedText() const
 {
@@ -131,17 +133,28 @@ void TextCursor::swapPositionAnchor()
 	//t = m_blockPosition; m_blockPosition = m_ancBlockPosition; m_ancBlockPosition = t;
 }
 
+void TextCursor::setAnchor(index_t anchor)
+{
+	m_anchor = anchor;
+	m_anchorBlockData = document()->findBlockData(anchor);
+}
 void TextCursor::setPosition(index_t position, uchar mode)
 {
 	if( isNull() ) return;
 	m_position = position;
+#if TEXT_CURSOR_BLOCK
 	updateBlockData(KeepAnchor);
 	m_offset = m_position - m_blockData.position();
 	if( mode == MoveAnchor ) {
 		m_anchor = m_position;
 		m_anchorBlockData = m_blockData;
 	}
+#else
+	if( mode == MoveAnchor )
+		m_anchor = m_position;
+#endif
 }
+#if TEXT_CURSOR_BLOCK
 void TextCursor::setPosition(index_t position, TextBlockData d, uchar mode)
 {
 	if( isNull() ) return;
@@ -155,6 +168,7 @@ void TextCursor::setPosition(index_t position, TextBlockData d, uchar mode)
 		//m_ancBlockPosition = m_blockPosition;
 	}
 }
+#endif
 void TextCursor::move(int d)
 {
 	if( isNull() ) return;
@@ -366,7 +380,9 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 				m_blockData.m_position = next;
 			}
 		}
+#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
+#endif
 		break;
 	case Left:
 		if( n >= m_position ) {
@@ -388,7 +404,9 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 				m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
 			}
 		}
+#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
+#endif
 		break;
 	case Up:
 		while( n != 0 ) {
@@ -397,7 +415,9 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 			m_position = m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
 			--n;
 		}
+#if TEXT_CURSOR_BLOCK
 		m_position = m_blockData.m_position + qMin(m_offset, getEOLOffset(m_document, m_blockData));
+#endif
 		break;
 	case Down:
 		while( n != 0 ) {
@@ -406,27 +426,41 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 			m_position = m_blockData.m_position += m_document->blockSize(m_blockData.m_index++);
 			--n;
 		}
+#if TEXT_CURSOR_BLOCK
 		m_position = m_blockData.m_position + qMin(m_offset, getEOLOffset(m_document, m_blockData));
+#else
+		m_position = 0;
+#endif
 		break;
 	case StartOfWord:
 		gotoStartOfWord(*this);
+#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
+#endif
 		break;
 	case EndOfWord:
 		gotoEndOfWord(*this);
+#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
+#endif
 		break;
 	case NextWord:
 		gotoNextWord(*this);
+#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
+#endif
 		break;
 	case PrevWord:
 		gotoPrevWord(*this);
+#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
+#endif
 		break;
 	case StartOfBlock:
 		m_position = m_blockData.position();
+#if TEXT_CURSOR_BLOCK
 		m_offset = 0;
+#endif
 		break;
 	case EndOfBlock:		//	‰üsˆÊ’u‚ÉˆÚ“®
 		m_position = m_blockData.position() + m_document->blockSize(m_blockData.index());
@@ -443,14 +477,18 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 		m_offset = 0xffffffff;
 		break;
 	case StartOfDocument:
-		m_position = m_offset = 0;
+		m_position = 0;
+#if TEXT_CURSOR_BLOCK
 		m_blockData = TextBlockData(0, 0);
 		m_offset = 0;
+#endif
 		break;
 	case EndOfDocument:
 		m_position = m_document->size();
+#if TEXT_CURSOR_BLOCK
 		m_blockData = m_document->prevBlockData(TextBlockData(m_document->blockCount(), m_document->size()));
 		m_offset = m_position - m_blockData.position();
+#endif
 		break;
 	default:
 		return false;
