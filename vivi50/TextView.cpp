@@ -1015,7 +1015,7 @@ void TextView::deleteChar()
 void TextView::deletePreviousChar()
 {
 	if( m_multiCursor.empty() )
-		document()->deleteChar(*m_textCursor);
+		document()->deletePreviousChar(*m_textCursor);
 	else {
 		//	undone R insertText ‚Æˆ—‚ð‹¤’Ê‰»
 		document()->openUndoBlock();
