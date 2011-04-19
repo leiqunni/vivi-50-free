@@ -849,6 +849,10 @@ TextCursor TextDocument::find(const QString &text, index_t position, ushort opti
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(text);
+	return find(ba, position, options);
+}
+TextCursor TextDocument::find(const QByteArray &ba, index_t position, ushort options)
+{
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	//	単純線形検索アルゴリズム
@@ -872,4 +876,17 @@ TextCursor TextDocument::find(const QString &text, index_t position, ushort opti
 		}
 	}
 	return TextCursor();	//	null cursor
+}
+void TextDocument::doReplaceAll(const QString &findText, ushort options,
+							const QString &replaceText)
+{
+	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+	QByteArray ba = codec->fromUnicode(findText);
+	for(index_t position = 0;;) {
+		TextCursor cur = find(ba, position, options);
+		if( cur.isNull() ) break;
+		//	undone P 置換テキストもUTF8にあらかじめ変換しておく
+		insertText(cur, replaceText);
+		position = cur.position();
+	}
 }

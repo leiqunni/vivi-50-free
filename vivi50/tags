@@ -92,8 +92,8 @@ PlainTextEdit	.\PlainTextEdit.cpp	/^PlainTextEdit::PlainTextEdit(QWidget *parent
 PlainTextEdit	.\PlainTextEdit.h	/^class PlainTextEdit : public QAbstractScrollArea$/;"	c
 PrevWord	.\textCursor.h	/^		PrevWord,$/;"	e	enum:TextCursor::__anon2
 REPLACEDLG_H	.\ReplaceDlg.h	24;"	d
-ReplaceDlg	.\ReplaceDlg.h	/^class ReplaceDlg : public QDialog$/;"	c
 ReplaceDlg	.\ReplaceDlg.cpp	/^ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)$/;"	f	class:ReplaceDlg
+ReplaceDlg	.\ReplaceDlg.h	/^class ReplaceDlg : public QDialog$/;"	c
 Right	.\textCursor.h	/^		Right,$/;"	e	enum:TextCursor::__anon2
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const QString &fileName, int lineNum, QString mess="")$/;"	f	struct:SFailedInfo
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
@@ -279,6 +279,8 @@ doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f
 doRedo	.\TextDocument.cpp	/^bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos, uint& anchor)$/;"	f	class:GVUndoMgr
 doRedo	.\TextDocument.cpp	/^void TextDocument::doRedo(index_t &pos, index_t &anchor)$/;"	f	class:TextDocument
 doReplace	.\TextView.cpp	/^void TextView::doReplace(const QString &text)$/;"	f	class:TextView
+doReplaceAll	.\TextView.cpp	/^void TextView::doReplaceAll(const QString &findText, ushort options,$/;"	f	class:TextView
+doReplaceAll	.\TextDocument.cpp	/^void TextDocument::doReplaceAll(const QString &findText, ushort options,$/;"	f	class:TextDocument
 doUndo	.\TextDocument.cpp	/^bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos, uint& anchor)$/;"	f	class:GVUndoMgr
 doUndo	.\TextDocument.cpp	/^void TextDocument::doUndo(index_t &pos, index_t &anchor)$/;"	f	class:TextDocument
 doUnitTest	.\mainwindowTest.cpp	/^void MainWindow::doUnitTest()$/;"	f	class:MainWindow
@@ -318,6 +320,7 @@ eventFilter	.\PlainTextEdit.cpp	/^bool PlainTextEdit::eventFilter(QObject *obj, 
 expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector
 fileMenu	.\mainwindow.h	/^    QMenu	*fileMenu;$/;"	m	class:MainWindow
 find	.\TextView.cpp	/^void TextView::find()$/;"	f	class:TextView
+find	.\TextDocument.cpp	/^TextCursor TextDocument::find(const QByteArray &ba, index_t position, ushort options)$/;"	f	class:TextDocument
 find	.\TextDocument.cpp	/^TextCursor TextDocument::find(const QString &text, const TextCursor &cur, ushort options)$/;"	f	class:TextDocument
 find	.\TextDocument.cpp	/^TextCursor TextDocument::find(const QString &text, index_t position, ushort options)$/;"	f	class:TextDocument
 findAct	.\mainwindow.h	/^    QAction *findAct;$/;"	m	class:MainWindow
@@ -586,6 +589,7 @@ onFindPrev	.\ReplaceDlg.cpp	/^void ReplaceDlg::onFindPrev()$/;"	f	class:ReplaceD
 onFontChanged	.\TextView.cpp	/^void TextView::onFontChanged()$/;"	f	class:TextView
 onFontChanged	.\PlainTextEdit.cpp	/^void PlainTextEdit::onFontChanged()$/;"	f	class:PlainTextEdit
 onRedo	.\ReplaceDlg.h	/^	void	onRedo() { doRedo(); }$/;"	f	class:ReplaceDlg
+onReplaceAll	.\ReplaceDlg.cpp	/^void ReplaceDlg::onReplaceAll()$/;"	f	class:ReplaceDlg
 onReplaceFind	.\ReplaceDlg.cpp	/^void ReplaceDlg::onReplaceFind()$/;"	f	class:ReplaceDlg
 onTimer	.\TextView.cpp	/^void TextView::onTimer()$/;"	f	class:TextView
 onTimer	.\PlainTextEdit.cpp	/^void PlainTextEdit::onTimer()$/;"	f	class:PlainTextEdit
@@ -621,6 +625,7 @@ position	.\textCursor.h	/^	index_t	position() const { return m_position; }$/;"	f
 position	.\textBlockData.h	/^	index_t position() const { return m_position; }$/;"	f	struct:TextBlockData
 prev	.\TextDocument.cpp	/^TextBlock TextBlock::prev() const$/;"	f	class:TextBlock
 prevBlockData	.\TextDocument.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextDocument
+prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
 prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
 prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView
 prevBlockData	.\TextView.h	/^	TextBlockData	prevBlockData(TextBlockData d) const$/;"	f	class:TextView

@@ -139,3 +139,11 @@ void ReplaceDlg::onReplaceFind()
 	emit doReplace(m_replaceStringCB->currentText());
 	doFind();
 }
+void ReplaceDlg::onReplaceAll()
+{
+	ushort options = 0;
+	if( m_caseComboBox->currentIndex() == 1 )
+		options |= MatchCase;
+	emit doReplaceAll(m_findStringCB->currentText(), options,
+						m_replaceStringCB->currentText());
+}
