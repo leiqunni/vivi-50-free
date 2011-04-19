@@ -60,7 +60,7 @@ void MainWindow::doUnitTest()
 		ut.ut_test_equal(QString("abc"), QString("xyzzz"));
 		ut.ut_test_equal(QString("‚ ‚¢‚¤‚¦‚¨"), QString("‚©‚«‚­‚¯‚±"));
 	}
-	//test_TextDocument();
+	test_TextDocument();
 	test_TextView();
 	QString temp;
 	if( !g_total_fail_count ) {

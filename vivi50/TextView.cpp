@@ -43,12 +43,17 @@ bool hasSelection(const std::vector<ViewTextCursor*> &v)
 }
 void print(const std::vector<ViewTextCursor*> &v)
 {
+#ifdef	_DEBUG
 	for(std::vector<ViewTextCursor*>::const_iterator itr = v.begin(),
 														iend = v.end();
 		itr != iend; ++itr)
 	{
-		qDebug() << "anc = " << (*itr)->anchor() << ", pos = " << (*itr)->position();
+		TextBlock block = (*itr)->block();
+		qDebug() << "anc = " << (*itr)->anchor()
+					<< ", pos = " << (*itr)->position()
+					<< ", block = " << block.index() << " " << block.position();
 	}
+#endif
 }
 //----------------------------------------------------------------------
 
@@ -1054,8 +1059,10 @@ void TextView::insertText(const QString &text, bool tab)
 				document()->insertText(**itr, text, /*select::=*/true);
 				print(v);
 				for(std::vector<ViewTextCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
-					(*k)->setAnchor((*k)->anchor() + d);
-					(*k)->setPosition((*k)->position() + d, TextCursor::KeepAnchor);
+					//	undone A BlockData ‚à—v•â³
+					(*k)->move(d);
+					//(*k)->setAnchor((*k)->anchor() + d);
+					//(*k)->setPosition((*k)->position() + d, TextCursor::KeepAnchor);
 #if 0
 					if( (*k)->anchor() < (*k)->position() )
 						(*k)->setPosition((*k)->position() + d);

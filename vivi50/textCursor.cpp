@@ -155,6 +155,17 @@ void TextCursor::setPosition(index_t position, TextBlockData d, uchar mode)
 		//m_ancBlockPosition = m_blockPosition;
 	}
 }
+void TextCursor::move(int d)
+{
+	if( isNull() ) return;
+	m_position += d;
+	m_anchor += d;
+	m_blockData = m_document->findBlockData(m_position);
+	if( m_position == m_anchor )
+		m_anchorBlockData = m_blockData;
+	else
+		m_anchorBlockData = m_document->findBlockData(m_anchor);
+}
 //----------------------------------------------------------------------
 static uchar sbCharTypeTbl[] = {
 /* 0 */	CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER, CT_OTHER,

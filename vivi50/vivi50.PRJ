@@ -46,12 +46,13 @@ memFileColumnWd = 320
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 59 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 76 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 888 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
-  "textCursor.cpp" 385 'B: ' '' undone 暫定コード
-  "textCursor.cpp" 394 'B: ' '' undone 暫定コード
-  "TextView.cpp" 645 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 990 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1011 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1070 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1076 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1081 'B: ' '' undone ブロック情報更新
+  "TextDocument.cpp" 892 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
+  "textCursor.cpp" 396 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 405 'B: ' '' undone 暫定コード
+  "TextView.cpp" 659 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1004 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1025 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1062 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1094 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1100 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1105 'B: ' '' undone ブロック情報更新

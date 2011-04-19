@@ -26,7 +26,7 @@
 #include "TextDocument.h"
 #include "charEncoding.h"
 
-#define	VERSION_STR			"5.0.006 Dev"
+#define	VERSION_STR			"5.0.007 Dev"
 
 MainWindow *pMainWindow;
 
