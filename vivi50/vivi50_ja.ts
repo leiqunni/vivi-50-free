@@ -61,7 +61,7 @@
     <message>
         <location filename="mainwindow.cpp" line="79"/>
         <source>&amp;New</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新規文書(&amp;N)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="80"/>
@@ -71,62 +71,62 @@
     <message>
         <location filename="mainwindow.cpp" line="83"/>
         <source>Create a new document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新規文書を作成</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="86"/>
         <source>&amp;Open...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">開く(&amp;O)...</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="88"/>
         <source>Open an existing file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">文書を開く</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="91"/>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">保存(&amp;S)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="93"/>
         <source>Save the document to disk</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">文書を保存</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="96"/>
         <source>Save&amp;As...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">別名保存(&amp;A)...</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="98"/>
         <source>Save the document under a new fileName</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">現文書を新しい名前で保存します。</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="101"/>
         <source>C&amp;loseAll</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">全文書を閉じる(&amp;C)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="103"/>
         <source>Close all documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">全ての文書を閉じます。</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="116"/>
         <source>Select&amp;All</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">全選択(&amp;A)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="118"/>
         <source>Select All text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">文書全体を選択します。</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="121"/>
         <source>Cu&amp;t</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">カット(&amp;T)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="124"/>
@@ -136,7 +136,7 @@
     <message>
         <location filename="mainwindow.cpp" line="127"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">コピー(&amp;C)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="129"/>
@@ -146,7 +146,7 @@
     <message>
         <location filename="mainwindow.cpp" line="132"/>
         <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ペースト(&amp;P)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="134"/>
@@ -443,12 +443,12 @@ Do you want to save your changes?</source>
     <message>
         <location filename="ReplaceDlg.cpp" line="63"/>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">順方向</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="64"/>
         <source>Backward</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">逆方向</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="74"/>
@@ -460,7 +460,7 @@ Do you want to save your changes?</source>
         <location filename="ReplaceDlg.cpp" line="77"/>
         <source>FindNext</source>
         <oldsource>Find&amp;Next</oldsource>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">次検索</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="81"/>
@@ -491,7 +491,7 @@ Do you want to save your changes?</source>
 <context>
     <name>TextView</name>
     <message>
-        <location filename="TextView.cpp" line="707"/>
+        <location filename="TextView.cpp" line="713"/>
         <source>fontPointSize:%1</source>
         <translation type="unfinished"></translation>
     </message>

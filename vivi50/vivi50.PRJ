@@ -21,27 +21,27 @@ memFileColumnWd = 320
 [globalMarks]
 [files]
   gap_vector.h	(-94.078,307.793)
-* main.cpp	(-178.304,-339.84)
-  mainwindow.cpp	(-128.265,-196.142)
+  main.cpp	(-178.304,-339.84)
+* mainwindow.cpp	(-128.265,-196.142)
   mainwindow.h	(-128.265,-229.142)
-* TextDocument.cpp	(-163.875,183.766)
-* TextDocument.h	(-163.875,150.766)
+  TextDocument.cpp	(-163.875,183.766)
+  TextDocument.h	(-163.875,150.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
   mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
   unit_test.h	(173.104,-115.746)
-* mainwindowTest.cpp	(-128.265,-130.142)
+  mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
   textBlockData.h	(-364.713,168.24)
   textCursor.cpp	(-269.316,2.9752)
   textCursor.h	(-269.316,-30.0248)
 * TextView.cpp	(67.6123,12.1353)
-* TextView.h	(67.6123,-20.8647)
-* FindDlg.cpp	(76.637,183.277)
+  TextView.h	(67.6123,-20.8647)
+  FindDlg.cpp	(76.637,183.277)
   FindDlg.h	(76.637,150.277)
   findOpt.h	(241,304)
-* ReplaceDlg.cpp	(249,189)
+  ReplaceDlg.cpp	(249,189)
   ReplaceDlg.h	(249,156)
   vivi50_ja.ts	(139,-320)
 [ToDo]
@@ -51,10 +51,10 @@ memFileColumnWd = 320
   "TextDocument.cpp" 895 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
-  "TextView.cpp" 659 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1004 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1026 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1064 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1099 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1105 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1110 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 665 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1011 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1033 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1071 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1106 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1112 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1117 'B: ' '' undone ブロック情報更新
