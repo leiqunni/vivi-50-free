@@ -787,6 +787,7 @@ void TextView::redo()
 }
 void TextView::replace()
 {
+	clearMultiCursor();
 	ReplaceDlg aDlg;
 	connect(&aDlg, SIGNAL(doFindNext(const QString &, ushort)),
 			this, SLOT(doFindNext(const QString &, ushort)));
