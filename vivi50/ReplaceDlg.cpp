@@ -34,6 +34,8 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 		QHBoxLayout *hBoxLayout = new QHBoxLayout();
 			hBoxLayout->addWidget(new QLabel(tr("Find String:")));
 			(m_findStringCB = new QComboBox)->setEditable(true);
+			QFontMetrics fm = m_findStringCB->fontMetrics();
+			m_findStringCB->setMinimumWidth(fm.width('8')*32);
 			m_findStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
 		    QStringList hist = settings.value("findStringHist").toStringList();
 		    for(int ix = hist.size(); ix != 0; )

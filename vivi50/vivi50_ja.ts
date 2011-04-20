@@ -411,19 +411,19 @@ Do you want to save your changes?</source>
     <message>
         <location filename="ReplaceDlg.cpp" line="29"/>
         <source>Replace Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">置換 Dialog</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="35"/>
         <source>Find String:</source>
         <oldsource>Find &amp;String:</oldsource>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索文字列：</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="44"/>
         <source>Replace To:</source>
         <oldsource>Replace &amp;To:</oldsource>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">置換文字列：</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="53"/>
@@ -454,23 +454,23 @@ Do you want to save your changes?</source>
         <location filename="ReplaceDlg.cpp" line="74"/>
         <source>FindPrev</source>
         <oldsource>Find&amp;Prev</oldsource>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">↑方向検索</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="77"/>
         <source>FindNext</source>
         <oldsource>Find&amp;Next</oldsource>
-        <translation type="unfinished">次検索</translation>
+        <translation type="unfinished">↓方向検索</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="81"/>
         <source>&amp;ReplaceFind</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">置換＆次検索</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="84"/>
         <source>replace&amp;All</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">全置換</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="87"/>
@@ -485,7 +485,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="ReplaceDlg.cpp" line="93"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">閉じる</translation>
     </message>
 </context>
 <context>
