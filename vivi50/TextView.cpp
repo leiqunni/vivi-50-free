@@ -1081,16 +1081,19 @@ void TextView::insertText(const QString &text, bool tab)
 			for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
 				itr != iend; ++itr)
 			{
-				const size_t sz = insertText(**itr, text);
+				const int sz = insertText(**itr, text);
+				print(v);
 				for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
-					(*k)->setAnchor((*k)->anchor() + sz);
-					(*k)->setPosition((*k)->position() + sz, TextCursor::KeepAnchor);
+					(*k)->move(sz);
+					//(*k)->setAnchor((*k)->anchor() + sz);
+					//(*k)->setPosition((*k)->position() + sz, TextCursor::KeepAnchor);
 				}
+				print(v);
 			}
 		document()->closeUndoBlock();
 	}
 }
-size_t TextView::insertText(ViewTextCursor &cur, const QString &text)
+int TextView::insertText(ViewTextCursor &cur, const QString &text)
 {
 	const size_t sz = document()->insertText(cur, text);
 	//	undone B ブロック情報更新

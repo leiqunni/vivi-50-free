@@ -692,6 +692,24 @@ void test_TextView()
 		view.redo();
 		ut.ut_test_equal(QString("=\n=\n=\n=\n=\n"), doc->toPlainText());
 	}
+	if( 1 ) {		//	マルチカーソル：選択状態文字挿入
+		std::vector<ViewTextCursor*> v;
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("abc\nxyz\n123\nABC\n"));
+		ViewTextCursor cur(&view);
+		cur.setPosition(3, TextCursor::KeepAnchor);		//	1行目 abc 選択
+		view.addToMultiCursor(cur);
+		cur.setPosition(8);
+		cur.setPosition(11, TextCursor::KeepAnchor);	//	3行目 123 選択
+		view.setTextCursor(cur);			//	メインカーソル
+		view.insertText("=");
+		ut.ut_test_equal(QString("=\nxyz\n=\nABC\n"), doc->toPlainText());
+		view.undo();
+		ut.ut_test_equal(QString("abc\nxyz\n123\nABC\n"), doc->toPlainText());
+		view.redo();
+		ut.ut_test_equal(QString("=\nxyz\n=\nABC\n"), doc->toPlainText());
+	}
 	if( 1 ) {		//	マルチカーソル：Delete 削除
 		std::vector<ViewTextCursor*> v;
 		TextView view;

@@ -338,7 +338,7 @@ public:
 	void	do_erase(index_t, index_t, ushort=0);				//	undo/redo ‘Î‰ž”Å
 	void	do_replace(index_t, index_t, const QString &);		//	undo/redo ‘Î‰ž”Å
 
-	size_t	insertText(TextCursor&, const QString &, bool = false);
+	int		insertText(TextCursor&, const QString &, bool = false);
 	size_t	deleteChar(TextCursor&);
 	size_t	deletePreviousChar(TextCursor&);
 

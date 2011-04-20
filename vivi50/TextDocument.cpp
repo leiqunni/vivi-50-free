@@ -688,7 +688,7 @@ size_t TextDocument::deletePreviousChar(TextCursor &cur)
 	emit contentsChanged();
 	return last - first;
 }
-size_t TextDocument::insertText(TextCursor &cur, const QString &text,
+int TextDocument::insertText(TextCursor &cur, const QString &text,
 								bool select)		//	挿入範囲を選択
 {
 	if( cur.isNull() || cur.document() != this )
@@ -732,7 +732,7 @@ size_t TextDocument::insertText(TextCursor &cur, const QString &text,
 	m_modified = true;
 	emit contentsChange(position, delSz, sz);
 	emit contentsChanged();
-	return sz;		//	挿入バイト数
+	return sz - delSz;		//	挿入バイト数 - 削除バイト数
 }
 void TextDocument::do_insert(index_t position, const QString &text)
 {
