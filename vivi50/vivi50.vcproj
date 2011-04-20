@@ -955,6 +955,17 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="Translation Files"
+			Filter="ts"
+			UniqueIdentifier="{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}"
+			ParseFiles="false"
+			>
+			<File
+				RelativePath=".\vivi50_ja.ts"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global

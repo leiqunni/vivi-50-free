@@ -55,7 +55,7 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 	setWindowTitle(tr("Find Dialog"));
 
 	QHBoxLayout *hBoxLayout = new QHBoxLayout();
-		QLabel *findStringLabel = new QLabel(tr("Find&String:"));
+		QLabel *findStringLabel = new QLabel(tr("FindString:"));
 		//findStringLabel->setBuddy(m_findStringEdit = new QLineEdit);
 		hBoxLayout->addWidget(findStringLabel);
 		//hBoxLayout->addWidget(m_findStringEdit);
@@ -90,7 +90,7 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 		vBoxLayoutLeft->addStretch();
 
 	QVBoxLayout *vBoxLayoutRight = new QVBoxLayout();	//	ボタン配置用
-		QPushButton *findNext = new QPushButton(tr("Find&Next"));
+		QPushButton *findNext = new QPushButton(tr("FindNext"));
 		connect(findNext, SIGNAL(clicked()), this, SLOT(onFindNext()));
 		findNext->setDefault(true);
 		vBoxLayoutRight->addWidget(findNext);

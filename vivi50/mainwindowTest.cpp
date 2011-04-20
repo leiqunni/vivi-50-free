@@ -692,6 +692,46 @@ void test_TextView()
 		view.redo();
 		ut.ut_test_equal(QString("=\n=\n=\n=\n=\n"), doc->toPlainText());
 	}
+	if( 1 ) {		//	マルチカーソル：Delete 削除
+		std::vector<ViewTextCursor*> v;
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("abc\nabc\nabc\nabc\nabc\n"));	//	５行
+		ViewTextCursor cur(&view);
+		view.addToMultiCursor(cur);			//	1行目
+		cur.movePosition(TextCursor::Down);
+		view.addToMultiCursor(cur);			//	2行目
+		cur.movePosition(TextCursor::Down);
+		view.addToMultiCursor(cur);			//	3行目
+		cur.movePosition(TextCursor::Down);
+		view.addToMultiCursor(cur);			//	4行目
+		cur.movePosition(TextCursor::Down);
+		view.setTextCursor(cur);			//	メインカーソル：5行目
+		view.deleteChar();
+		ut.ut_test_equal(QString("bc\nbc\nbc\nbc\nbc\n"), doc->toPlainText());
+		view.undo();
+		ut.ut_test_equal(QString("abc\nabc\nabc\nabc\nabc\n"), doc->toPlainText());
+		view.redo();
+		ut.ut_test_equal(QString("bc\nbc\nbc\nbc\nbc\n"), doc->toPlainText());
+	}
+	if( 1 ) {		//	マルチカーソル：Delete 選択範囲削除
+		std::vector<ViewTextCursor*> v;
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("abc\nabc\nabc\nabc\nabc\n"));	//	５行
+		ViewTextCursor cur(&view);
+		cur.setPosition(3, TextCursor::KeepAnchor);		//	1行目 abc 選択
+		view.addToMultiCursor(cur);
+		cur.setPosition(8);
+		cur.setPosition(11, TextCursor::KeepAnchor);	//	3行目 abc 選択
+		view.setTextCursor(cur);			//	メインカーソル
+		view.deleteChar();
+		ut.ut_test_equal(QString("\nabc\n\nabc\nabc\n"), doc->toPlainText());
+		view.undo();
+		ut.ut_test_equal(QString("abc\nabc\nabc\nabc\nabc\n"), doc->toPlainText());
+		view.redo();
+		ut.ut_test_equal(QString("\nabc\n\nabc\nabc\n"), doc->toPlainText());
+	}
 	if( 1 ) {		//	マルチカーソル：ローテイト
 		std::vector<ViewTextCursor*> v;
 		TextView view;

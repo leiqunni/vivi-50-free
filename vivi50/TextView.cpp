@@ -1008,10 +1008,11 @@ void TextView::deleteChar()
 		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
-			const size_t sz = document()->deleteChar(**itr);
+			const int sz = document()->deleteChar(**itr);
 			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
-				(*k)->setPosition((*k)->position() - sz);
-				(*k)->setAnchor((*k)->anchor() - sz);
+				(*k)->move(-sz);
+				//(*k)->setPosition((*k)->position() - sz);
+				//(*k)->setAnchor((*k)->anchor() - sz);
 			}
 		}
 		document()->closeUndoBlock();
@@ -1029,10 +1030,11 @@ void TextView::deletePreviousChar()
 		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
-			const size_t sz = document()->deletePreviousChar(**itr);
+			const int sz = document()->deletePreviousChar(**itr);
 			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
-				(*k)->setPosition((*k)->position() - sz);
-				(*k)->setAnchor((*k)->anchor() - sz);
+				(*k)->move(-sz);
+				//(*k)->setPosition((*k)->position() - sz);
+				//(*k)->setAnchor((*k)->anchor() - sz);
 			}
 		}
 		document()->closeUndoBlock();

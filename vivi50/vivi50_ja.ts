@@ -6,52 +6,54 @@
     <message>
         <location filename="FindDlg.cpp" line="55"/>
         <source>Find Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索 Dialog</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="58"/>
-        <source>Find&amp;String:</source>
-        <translation type="unfinished"></translation>
+        <source>FindString:</source>
+        <oldsource>Find&amp;String:</oldsource>
+        <translation type="unfinished">検索文字列：</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="72"/>
         <source>Ignore Case</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">大小文字同一視</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="73"/>
         <source>Match Case</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">大小文字区別</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="77"/>
         <source>direction</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索方向</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="80"/>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">順方向</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="81"/>
         <source>Backward</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">逆方向</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="93"/>
-        <source>Find&amp;Next</source>
-        <translation type="unfinished"></translation>
+        <source>FindNext</source>
+        <oldsource>Find&amp;Next</oldsource>
+        <translation type="unfinished">次検索</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="97"/>
         <source>&amp;FindClose</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索・閉じる</translation>
     </message>
     <message>
         <location filename="FindDlg.cpp" line="100"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">閉じる</translation>
     </message>
 </context>
 <context>
@@ -269,37 +271,37 @@
     <message>
         <location filename="mainwindow.cpp" line="194"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ファイル(&amp;F)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="209"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">編集(&amp;E)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="217"/>
         <source>Search(&amp;K)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索(&amp;K)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="224"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ビュー(&amp;V)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="226"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">設定(&amp;S)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="229"/>
         <source>&amp;Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">その他(&amp;O)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="237"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ファイル</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="242"/>
@@ -413,28 +415,30 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="35"/>
-        <source>Find &amp;String:</source>
+        <source>Find String:</source>
+        <oldsource>Find &amp;String:</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="44"/>
-        <source>Replace &amp;To:</source>
+        <source>Replace To:</source>
+        <oldsource>Replace &amp;To:</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="53"/>
         <source>Ignore Case</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">大小文字同一視</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="54"/>
         <source>Match Case</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">大小文字区別</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="59"/>
         <source>direction</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索方向</translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="63"/>
@@ -448,12 +452,14 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="74"/>
-        <source>Find&amp;Prev</source>
+        <source>FindPrev</source>
+        <oldsource>Find&amp;Prev</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ReplaceDlg.cpp" line="77"/>
-        <source>Find&amp;Next</source>
+        <source>FindNext</source>
+        <oldsource>Find&amp;Next</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>

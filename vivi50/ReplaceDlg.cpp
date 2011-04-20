@@ -32,7 +32,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 	QVBoxLayout *vBoxLayoutLeft = new QVBoxLayout();
 	{
 		QHBoxLayout *hBoxLayout = new QHBoxLayout();
-			hBoxLayout->addWidget(new QLabel(tr("Find &String:")));
+			hBoxLayout->addWidget(new QLabel(tr("Find String:")));
 			(m_findStringCB = new QComboBox)->setEditable(true);
 			m_findStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
 		    QStringList hist = settings.value("findStringHist").toStringList();
@@ -41,7 +41,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			hBoxLayout->addWidget(m_findStringCB);
 			vBoxLayoutLeft->addLayout(hBoxLayout);
 		QHBoxLayout *hBoxLayout2 = new QHBoxLayout();
-			hBoxLayout2->addWidget(new QLabel(tr("Replace &To:")));
+			hBoxLayout2->addWidget(new QLabel(tr("Replace To:")));
 			(m_replaceStringCB = new QComboBox)->setEditable(true);
 			m_replaceStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
 		    QStringList hist2 = settings.value("replaceStringHist").toStringList();
@@ -71,10 +71,10 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 		vBoxLayoutLeft->addStretch();
 	}
 	QVBoxLayout *vBoxLayoutRight = new QVBoxLayout();	//	ボタン配置用
-		QPushButton *findPrev = new QPushButton(tr("Find&Prev"));
+		QPushButton *findPrev = new QPushButton(tr("FindPrev"));
 			connect(findPrev, SIGNAL(clicked()), this, SLOT(onFindPrev()));
 			vBoxLayoutRight->addWidget(findPrev);
-		QPushButton *findNext = new QPushButton(tr("Find&Next"));
+		QPushButton *findNext = new QPushButton(tr("FindNext"));
 			connect(findNext, SIGNAL(clicked()), this, SLOT(onFindNext()));
 			findNext->setDefault(true);
 			vBoxLayoutRight->addWidget(findNext);

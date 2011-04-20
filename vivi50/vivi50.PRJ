@@ -38,16 +38,17 @@ memFileColumnWd = 320
   textCursor.h	(-309.316,-15.0248)
 * TextView.cpp	(67.6123,12.1353)
 * TextView.h	(67.6123,-20.8647)
-  FindDlg.cpp	(76.637,183.277)
+* FindDlg.cpp	(76.637,183.277)
   FindDlg.h	(76.637,150.277)
   findOpt.h	(241,304)
-  ReplaceDlg.cpp	(249,189)
+* ReplaceDlg.cpp	(249,189)
   ReplaceDlg.h	(249,156)
+  vivi50_ja.ts	(139,-320)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 59 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 76 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 894 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
+  "TextDocument.cpp" 895 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
   "TextView.cpp" 659 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入

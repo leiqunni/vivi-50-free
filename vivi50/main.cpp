@@ -25,12 +25,14 @@
 	極まりない。
 	ソースコードはソースを読み書き出来る人々の成果であり、ソースを読み
 	書き出来ない人のものではない。
+	なのにソースを読み書き出来ない人の自由を優先するってバカじゃないの？
 
 */
 
 #include "mainwindow.h"
 #include <QtGui/QApplication>
 #include <QTextCodec>
+#include <QTranslator>
 #include <QDebug>
 
 #if	0	//def	MSVC
@@ -59,6 +61,13 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	app.setOrganizationName("N.Tsuda");
 	app.setApplicationName("vivi5");
+	QString locale = QLocale::system().name();
+	QTranslator translator;
+	bool rc = translator.load(QString("vivi50_") + locale);
+	if( !rc ) {
+		qDebug() << "can't open '" << QString("vivi50_") << locale << "'";
+	}
+	app.installTranslator(&translator);
 	MainWindow w;
 	w.show();
 #if	0	//def	MSVC
