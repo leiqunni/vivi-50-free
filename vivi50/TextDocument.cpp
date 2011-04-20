@@ -888,6 +888,7 @@ void TextDocument::doReplaceAll(const QString &findText, ushort options,
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(findText);
+	openUndoBlock();
 	for(index_t position = 0;;) {
 		TextCursor cur = find(ba, position, options);
 		if( cur.isNull() ) break;
@@ -895,4 +896,5 @@ void TextDocument::doReplaceAll(const QString &findText, ushort options,
 		insertText(cur, replaceText);
 		position = cur.position();
 	}
+	closeUndoBlock();
 }
