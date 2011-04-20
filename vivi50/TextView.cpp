@@ -349,15 +349,21 @@ void TextView::paintEvent(QPaintEvent * event)
 			y += fm.lineSpacing();
 			block = block.next();
 		}
-		if( y >= vr.height() || !block.isValid() ) break;
-		index_t nextBlockPosition = block.position() + m_document->blockSize(block.index());
-		if( selFirst < nextBlockPosition && selLast > block.position() ) {
-			//	block が選択範囲内にある場合
-			const QString text = block.text();
-			int x1 = offsetToX(text, block.charsCount(qMax(block.position(), selFirst)));
-			int x2 = offsetToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
-			painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
+		for(;;) {
+			if( y >= vr.height() || !block.isValid() ) break;
+			index_t nextBlockPosition = block.position() + m_document->blockSize(block.index());
+			if( selFirst < nextBlockPosition && selLast > block.position() ) {
+				//	block が選択範囲内にある場合
+				const QString text = block.text();
+				int x1 = offsetToX(text, block.charsCount(qMax(block.position(), selFirst)));
+				int x2 = offsetToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
+				painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
+			}
+			if( selLast < nextBlockPosition ) break;
+			y += fm.lineSpacing();
+			block = block.next();
 		}
+		if( y >= vr.height() || !block.isValid() ) break;
 	}
 
 	index_t selFirst = 0, selLast = 0;	//	選択範囲、first < last
