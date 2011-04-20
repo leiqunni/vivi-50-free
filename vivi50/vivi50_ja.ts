@@ -226,17 +226,17 @@
     <message>
         <location filename="mainwindow.cpp" line="174"/>
         <source>&amp;Font...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">フォント(&amp;F)...</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="175"/>
         <source>select Font family and/or size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">フォント名・サイズ選択</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="178"/>
         <source>&amp;About ViVi</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ViVi について(&amp;A)...</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="181"/>

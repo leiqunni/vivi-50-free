@@ -191,8 +191,8 @@ public:
 		return sz;
 	}
 	void	resetModifiedFlags();	//	ドキュメントが保存された時にコールされる
-	bool	doUndo(TextDocument*, uint&, uint&);
-	bool	doRedo(TextDocument*, uint&, uint&);
+	bool	doUndo(TextDocument*, index_t&, index_t&);
+	bool	doRedo(TextDocument*, index_t&, index_t&);
 };
 //----------------------------------------------------------------------
 
@@ -217,10 +217,10 @@ public:
 	~TextBlock() {}
 
 public:
-	uint		size() const;		//	改行を含めたコード長
-	uint		length() const { return size(); }
-	uint		EOLOffset() const;
-	uint		newlineLength() const;		//	改行部分のバイト数を返す
+	size_t		size() const;		//	改行を含めたコード長
+	size_t		length() const { return size(); }
+	index_t		EOLOffset() const;
+	size_t		newlineLength() const;		//	改行部分のバイト数を返す
 	bool		isValid() const { return m_document == 0 || blockNumber() != INVALID_INDEX; }
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }

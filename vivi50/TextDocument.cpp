@@ -103,7 +103,7 @@ void GVUndoMgr::resetModifiedFlags()
 	}
 }
 //	@return		Undo の結果、モディファイフラグがＯＮの場合は TRUE を返す
-bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos, uint& anchor)
+bool GVUndoMgr::doUndo(TextDocument *bb, index_t& pos, index_t& anchor)
 {
 	if( !m_current ) return false;
 	//boost::shared_ptr<GVUndoItem> undoItem = m_items[--m_current];
@@ -148,7 +148,7 @@ bool GVUndoMgr::doUndo(TextDocument *bb, uint& pos, uint& anchor)
 	return !(ptr->m_flags & GVUNDOITEM_UNDO_MF_OFF) ? true : false;
 	//return true;
 }
-bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos, uint& anchor)
+bool GVUndoMgr::doRedo(TextDocument *bb, index_t& pos, index_t& anchor)
 {
 	if( m_current >= m_items.size() ) return false;
 	//boost::shared_ptr<GVUndoItem> undoItem = m_items[m_current];
@@ -183,7 +183,7 @@ bool GVUndoMgr::doRedo(TextDocument *bb, uint& pos, uint& anchor)
 	return !(ptr->m_flags & GVUNDOITEM_REDO_MF_OFF) ? true : false;
 }
 //----------------------------------------------------------------------
-uint TextBlock::size() const
+size_t TextBlock::size() const
 {
 #if 1
 	return m_document->blockSize(m_data.m_index);
@@ -199,7 +199,7 @@ index_t TextBlock::position() const
 {
 	return isValid() ? m_data.m_position : 0;
 }
-uint TextBlock::newlineLength() const
+size_t TextBlock::newlineLength() const
 {
 	if( !isValid() ) return 0;
 	const size_t sz = size();
@@ -217,7 +217,7 @@ uint TextBlock::newlineLength() const
 	}
 	return 0;
 }
-uint TextBlock::EOLOffset() const
+index_t TextBlock::EOLOffset() const
 {
 	if( !isValid() ) return 0;
 	return size() - newlineLength();
