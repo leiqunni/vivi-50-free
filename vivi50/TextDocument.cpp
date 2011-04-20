@@ -721,13 +721,14 @@ size_t TextDocument::insertText(TextCursor &cur, const QString &text,
 							isModified());
 		delSz = last - first;
 	}
+	m_blockData = cur.blockData();		//	キャッシュ更新
 	if( select ) {
 		cur.setAnchor(cur.position());
 		cur.setPosition(cur.position() + sz, TextCursor::KeepAnchor);
 	} else
 		cur.setPosition(cur.position() + sz);
 	//cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
-	m_blockData = cur.blockData();
+	//m_blockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(position, delSz, sz);
 	emit contentsChanged();

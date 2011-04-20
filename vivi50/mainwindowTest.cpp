@@ -704,6 +704,8 @@ void test_TextView()
 		cur.setPosition(11, TextCursor::KeepAnchor);
 		view.setTextCursor(cur);			//	メインカーソル
 		view.insertText(QString("\t"), true);	//	ローテイト
+		ut.ut_test_equal(8, doc->blockSize(0));
+		ut.ut_test_equal(4, doc->blockSize(1));
 		view.getAllCursor(v);
 		ut.ut_test_equal(2, v.size());
 		ut.ut_test_equal(7, v[0]->position());
