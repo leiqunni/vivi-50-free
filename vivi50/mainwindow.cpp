@@ -642,7 +642,7 @@ void MainWindow::showAboutDlg()
 	QMessageBox msgBox;
 	msgBox.setIconPixmap(QPixmap(":vivi/Resources/images/ayabu-001.png"));
 	msgBox.setText(tr("<div align=center><b><font size=5>ViVi</font></b> version %1</div>").arg(VERSION_STR));
-	msgBox.setInformativeText(QString("<div align=center>Copyright (C) 2011 by N.Tsuda<br>"
+	msgBox.setInformativeText(QString("<br><br><div align=center>Copyright (C) 2011 by N.Tsuda<br>"
 								"mailto:ntsuda@master.email.ne.jp<br>"
 								"<a href=\"http://vivi.dyndns.org/?from=vivi%1\">http://vivi.dyndns.org/</a><br><br>"
 								"Powered by <a href=\"http://qt.nokia.com/\">Qt</a>"
