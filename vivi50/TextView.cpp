@@ -1139,7 +1139,7 @@ void TextView::buildBlocks()
 						pos += nlLength;
 						break;
 					}
-					buf += text[ix];
+					buf += text.at(ix);
 					if( fm.width(buf) > m_viewportWidth ) break;
 					++ix;
 					pos += UTF8CharSize((*document())[pos]);
