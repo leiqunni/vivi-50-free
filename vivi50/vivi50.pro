@@ -11,7 +11,7 @@ DEFINES += QT_LARGEFILE_SUPPORT
 INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
     . \
-	/dev/boost_1_46_1
+	/usr/boost/boost_1_46_1
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug
