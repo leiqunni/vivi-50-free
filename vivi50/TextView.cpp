@@ -757,7 +757,25 @@ void TextView::cut()
 {
 	if( !m_textCursor->hasSelection() ) return;
 	copy();
-	m_textCursor->deleteChar();
+	if( !hasMultiCursor() ) {
+		if( m_textCursor->hasSelection() )
+			m_textCursor->deleteChar();
+	} else {
+		document()->openUndoBlock();
+		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		getAllCursor(v);
+		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+			itr != iend; ++itr)
+		{
+			if( (*itr)->hasSelection() ) {
+				const int sz = document()->deleteChar(**itr);
+				for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
+					(*k)->move(-sz);
+				}
+			}
+		}
+		document()->closeUndoBlock();
+	}
 	viewport()->update();
 }
 void TextView::paste()
@@ -1015,7 +1033,7 @@ void TextView::getAllCursor(std::vector<ViewTextCursor*> &v)
 }
 void TextView::deleteChar()
 {
-	if( m_multiCursor.empty() )
+	if( !hasMultiCursor() )
 		document()->deleteChar(*m_textCursor);
 	else {
 		//	undone R insertText と処理を共通化
@@ -1037,7 +1055,7 @@ void TextView::deleteChar()
 }
 void TextView::deletePreviousChar()
 {
-	if( m_multiCursor.empty() )
+	if( !hasMultiCursor() )
 		document()->deletePreviousChar(*m_textCursor);
 	else {
 		//	undone R insertText と処理を共通化
@@ -1059,7 +1077,7 @@ void TextView::deletePreviousChar()
 }
 void TextView::insertText(const QString &text, bool tab)
 {
-	if( m_multiCursor.empty() )
+	if( !hasMultiCursor() )
 		insertText(*m_textCursor, text);
 	else {
 		document()->openUndoBlock();

@@ -67,6 +67,7 @@ public:
 	uchar	charEncoding() const;
 	bool	withBOM() const;
 	bool	isModified() const;
+	bool	hasMultiCursor() const { return !m_multiCursor.empty(); }
 	QString	toPlainText() const;
 	const TextDocument	*document() const { return m_document; }
 	size_t blockCount() const { return m_blocks.size(); }

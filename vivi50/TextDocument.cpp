@@ -42,6 +42,8 @@ void GVUndoMgr::openUndoBlock()
 void GVUndoMgr::closeUndoBlock()
 {
 	if( !m_undoBlockLevel ) return;
+	if( m_toSetBlockFlag )
+		return;		//	openUndoBlock() å„Ç…àÍìxÇ‡ UndoItem Ç™í«â¡Ç≥ÇÍÇ»Ç©Ç¡ÇΩèÍçá
 	if( !--m_undoBlockLevel && !m_toSetBlockFlag && !m_items.empty() )
 		m_items[m_items.size() - 1].m_flags ^= GVUNDOITEM_BLOCK;
 }
