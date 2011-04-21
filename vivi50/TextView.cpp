@@ -747,8 +747,20 @@ void TextView::selectAll()
 }
 void TextView::copy()
 {
-	if( !m_textCursor->hasSelection() ) return;
-	const QString text = m_textCursor->selectedText();
+	QString text;
+	if( !hasMultiCursor() ) {
+		if( m_textCursor->hasSelection() )
+			text = m_textCursor->selectedText();
+	} else {
+		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		getAllCursor(v);
+		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+			itr != iend; ++itr)
+		{
+			if( (*itr)->hasSelection() )
+				text += (*itr)->selectedText();
+		}
+	}
 	if( text.isEmpty() ) return;
 	QClipboard *clipboard = QApplication::clipboard();
 	clipboard->setText(text);
