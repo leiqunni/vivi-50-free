@@ -590,14 +590,17 @@ void TextDocument::updateBlocksAtErase(index_t first, index_t last)
 void TextDocument::erase(index_t first, index_t last)
 {
 	if( last > size() ) last = size();
-	updateBlocksAtErase(first, findBlockData(first), last);
+	TextBlockData d = findBlockData(first);
+	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
+	m_blockData = d;	//	キャッシュ更新
 }
 void TextDocument::erase(index_t first, TextBlockData d, index_t last)
 {
 	if( last > size() ) last = size();
 	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
+	m_blockData = d;	//	キャッシュ更新
 }
 void TextDocument::insert(index_t position, TextBlockData d, const QString &text)
 {
@@ -607,6 +610,7 @@ void TextDocument::insert(index_t position, TextBlockData d, const QString &text
 	const uchar *ptr = (const uchar *)(ba.data());
 	if( position > m_buffer.size() ) position = m_buffer.size();
 	m_buffer.insert(position, ptr, ptr + sz);
+	m_blockData = d;	//	キャッシュ更新
 	updateBlocksAtInsert(position, d, sz);
 }
 void TextDocument::insert(index_t position, const QString &text)
@@ -619,6 +623,7 @@ void TextDocument::insert(index_t ix, TextBlockData d,
 							cuchar *first, cuchar *last)
 {
 	m_buffer.insert(ix, first, last);
+	m_blockData = d;	//	キャッシュ更新
 	updateBlocksAtInsert(ix, d, last - first);
 }
 void TextDocument::insert(index_t ix, cuchar *first, cuchar *last)
