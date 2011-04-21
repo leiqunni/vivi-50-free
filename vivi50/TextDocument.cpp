@@ -91,7 +91,7 @@ void GVUndoMgr::push_back(GVUndoItem *ptr, bool modified)
 void GVUndoMgr::resetModifiedFlags()
 {
 	bool before = true;
-	for(int ix = 0; ix < m_items.size(); ++ix) {
+	for(size_t ix = 0; ix < m_items.size(); ++ix) {
 		if( ix == m_current ) before = false;
 		GVUndoItem *undoItem = &m_items[ix];
 		undoItem->m_beforeSave = before;

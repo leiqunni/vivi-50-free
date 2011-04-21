@@ -23,6 +23,7 @@
 #ifndef PLAINTEXTEDIT_H
 #define PLAINTEXTEDIT_H
 
+#include <deque>
 #include <QAbstractScrollArea>
 #include	"gap_vector.h"
 #include	"textBlockData.h"
@@ -36,6 +37,23 @@ class TextBlock;
 //class QElapsedTimer;
 class QTimer;
 
+struct ViewLine
+{
+public:
+	index_t	m_position;		//	行頭文字位置
+	index_t	m_blockIndex;	//	ブロックインデックス
+
+public:
+	ViewLine(index_t position, index_t blockIndex)
+		: m_position(position), m_blockIndex(blockIndex)
+		{}
+};
+
+class ViewTextBlock
+{
+private:
+	TextView	*m_view;
+};
 
 class TextView : public QAbstractScrollArea
 {
@@ -60,12 +78,13 @@ public:
 		if( !d.m_index )
 			return TextBlockData(INVALID_INDEX, 0);
 		else {
-			size_t sz = m_blocks[d.m_index - 1].m_size;
+			//size_t sz = m_blocks[d.m_index - 1].m_size;
 			return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
 		}
 	}
 	size_t	size() const;	// { return document()->size(); }
 	size_t	blockSize(index_t ix) const { return m_blocks[ix].m_size; }
+	size_t	lineCount() const;
 
 public:
 	TextDocument	*document() { return m_document; }
@@ -130,6 +149,7 @@ protected:
 	void	addToMultiCursor(const ViewTextCursor &cur) { m_multiCursor.push_back(cur); }
 	void	getAllCursor(std::vector<ViewTextCursor*> &);
 	void	buildBlocks();
+	void	buildLines(TextBlock, int wd, int ht);
 
     void	removeOverlappedCursor();
     TextBlock	firstVisibleBlock() const;
@@ -163,6 +183,10 @@ private:
 	QTimer	*m_timer;					//	タイマーオブジェクト
 	mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		//	ブロック配列
 	mutable TextBlockData	m_blockData;			//	カレントブロック情報
+
+	size_t	m_firstViewLine;
+	size_t	m_lastViewLine;
+	mutable std::deque<ViewLine>	m_viewLines;
 
 	friend void test_TextView();
 };

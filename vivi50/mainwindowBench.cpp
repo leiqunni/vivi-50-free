@@ -51,7 +51,7 @@ void v_findBlockByNumber(uint n)
 	for(uint i = 0; i < n; ++i)
 		c.insertText(text);
 	boost::timer tm;
-	for(int i = 0; i < doc.blockCount(); ++i)
+	for(size_t i = 0; i < doc.blockCount(); ++i)
 		TextBlock block = doc.findBlockByNumber(i);
 	const double dur = tm.elapsed();
 	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));

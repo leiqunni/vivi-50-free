@@ -221,7 +221,7 @@ public:
 	size_t		length() const { return size(); }
 	index_t		EOLOffset() const;
 	size_t		newlineLength() const;		//	改行部分のバイト数を返す
-	bool		isValid() const { return m_document == 0 || blockNumber() != INVALID_INDEX; }
+	bool		isValid() const { return m_document != 0 && blockNumber() != INVALID_INDEX; }
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
@@ -287,7 +287,7 @@ public:
 		if( !d.m_index )
 			return TextBlockData(INVALID_INDEX, 0);
 		else {
-			size_t sz = m_blocks[d.m_index - 1].m_size;
+			//size_t sz = m_blocks[d.m_index - 1].m_size;
 			return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
 		}
 	}

@@ -358,7 +358,7 @@ public:
 	const_reference operator[](size_type n) const { return *get_pointer(n); }
 	//Type operator[](size_type n) const { return *get_pointer(n); }
 public:
-	bool	empty() const { return !m_first || m_first == m_gapBegin && m_gapEnd == m_last; }
+	bool	empty() const { return !m_first || (m_first == m_gapBegin && m_gapEnd == m_last); }
 	size_type	size() const { return !m_first ? 0 : (m_gapBegin - m_first) + (m_last - m_gapEnd); }
 	size_type	capacity() const { return /*!m_first ? 0 :*/ m_last - m_first; }
 	const_pointer get_first() const { return m_first; }

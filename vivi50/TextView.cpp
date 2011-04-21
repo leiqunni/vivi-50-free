@@ -67,6 +67,8 @@ TextView::TextView(QWidget *parent)
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
 	m_wordWrapLongLines = false;
+	m_firstViewLine = 0;
+	m_lastViewLine = 0;
 	//m_lineNumberWidth = 6;
 	viewport()->setCursor(Qt::IBeamCursor);
 
@@ -102,6 +104,11 @@ TextView::~TextView()
 size_t TextView::size() const
 {
 	return document()->size();
+}
+size_t TextView::lineCount() const
+{
+	return document()->blockCount() - (m_lastViewLine - m_firstViewLine)
+			+ m_viewLines.size();
 }
 TextBlockData TextView::findBlockData(index_t position) const
 {
@@ -333,7 +340,8 @@ void TextView::paintEvent(QPaintEvent * event)
 
 	const index_t lastBlockNumber = m_document->lastBlock().blockNumber();
 	int y = 0;
-	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
+	TextBlock block = firstVisibleBlock();
+		//m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 
 	//	マルチカーソル選択状態表示
 	for(std::vector<ViewTextCursor>::const_iterator itr = m_multiCursor.begin(),
@@ -378,7 +386,8 @@ void TextView::paintEvent(QPaintEvent * event)
 		}
 	}
 	y = 0;
-	block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
+	block = firstVisibleBlock();
+		//m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	//qDebug() << "firstVisibleBlock.index = " << block.index();
 	//TextBlock block = m_document->firstBlock();
 	std::vector<ViewTextCursor>::const_iterator mcitr = m_multiCursor.begin();
@@ -1058,7 +1067,7 @@ void TextView::insertText(const QString &text, bool tab)
 		getAllCursor(v);
 		if( tab && hasSelection(v) ) {
 			//	選択領域がある場合はローテイト
-			print(v);
+			//print(v);
 			std::vector<ViewTextCursor*>::iterator itr = v.end() - 1;
 			const QString lastText = (*itr)->selectedText();
 			int lastLength = lastText.length();
@@ -1067,7 +1076,7 @@ void TextView::insertText(const QString &text, bool tab)
 											: (*(itr-1))->selectedText();
 				const int d = text.length() - lastLength;		//	増減値
 				document()->insertText(**itr, text, /*select::=*/true);
-				print(v);
+				//print(v);
 				for(std::vector<ViewTextCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
 					//	undone A BlockData も要補正
 					(*k)->move(d);
@@ -1080,7 +1089,7 @@ void TextView::insertText(const QString &text, bool tab)
 						(*k)->setAnchor((*k)->anchor() + d);
 #endif
 				}
-				print(v);
+				//print(v);
 				if( itr == v.begin() ) break;
 				lastLength = text.length();
 				--itr;
@@ -1090,13 +1099,13 @@ void TextView::insertText(const QString &text, bool tab)
 				itr != iend; ++itr)
 			{
 				const int sz = insertText(**itr, text);
-				print(v);
+				//print(v);
 				for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
 					(*k)->move(sz);
 					//(*k)->setAnchor((*k)->anchor() + sz);
 					//(*k)->setPosition((*k)->position() + sz, TextCursor::KeepAnchor);
 				}
-				print(v);
+				//print(v);
 			}
 		document()->closeUndoBlock();
 	}
@@ -1156,4 +1165,43 @@ void TextView::onWordWrap(bool b)
 {
 	m_wordWrapLongLines = b;
 	viewport()->update();
+}
+void TextView::buildLines(TextBlock block, int wd, int ht)
+{
+	QFontMetrics fm = fontMetrics();
+	m_viewLines.clear();
+	//m_blocks.push_back(ViewTextBlockItem(0));
+	//TextBlock block = document()->firstBlock();
+	index_t blockIndex = block.index();
+	m_firstViewLine = blockIndex;
+	while( block.isValid() ) {
+		index_t pos = block.position();
+		index_t blockPos = pos;
+		QString text = block.text();
+		const size_t nlLength = block.newlineLength();
+		index_t ixEOL = text.length() - nlLength;		//	改行コードは１バイトと仮定
+		if( !ixEOL )
+			m_viewLines.push_back(ViewLine(pos, blockIndex));
+		else {
+			index_t ix = 0;
+			while( ix < ixEOL ) {
+				QString buf;
+				for(;;) {
+					if( ix == ixEOL ) {
+						pos += nlLength;
+						break;
+					}
+					buf += text.at(ix);
+					if( fm.width(buf) > wd ) break;
+					++ix;
+					pos += UTF8CharSize((*document())[pos]);
+				}
+				m_viewLines.push_back(ViewLine(blockPos, blockIndex));
+				blockPos = pos;
+			}
+		}
+		++blockIndex;
+		block = block.next();
+	}
+	m_lastViewLine = blockIndex;
 }

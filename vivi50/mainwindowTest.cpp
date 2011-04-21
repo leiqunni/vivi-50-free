@@ -60,7 +60,7 @@ void MainWindow::doUnitTest()
 		ut.ut_test_equal(QString("abc"), QString("xyzzz"));
 		ut.ut_test_equal(QString("あいうえお"), QString("かきくけこ"));
 	}
-	test_TextDocument();
+	//test_TextDocument();
 	test_TextView();
 	QString temp;
 	if( !g_total_fail_count ) {
@@ -596,7 +596,7 @@ void test_TextDocument()
 		doc.m_blockData.m_index = block.blockNumber();
 		doc.m_blockData.m_position = block.position();
 		index_t blockPos;
-		index_t ix = doc.findBlockIndex(26*10, &blockPos);
+		//index_t ix = doc.findBlockIndex(26*10, &blockPos);
 		for(int i = 0; i <= nLines; ++i) {
 			index_t blockPos;
 			index_t ix = doc.findBlockIndex(i*10, &blockPos);
@@ -777,5 +777,18 @@ void test_TextView()
 		ut.ut_test_equal(QString("abc\n1234567\n"), doc->toPlainText());
 		view.redo();
 		ut.ut_test_equal(QString("1234567\nabc\n"), doc->toPlainText());
+	}
+	if( 1 ) {		//	buildLines テスト
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("123\r\nあいうえおかきく\nあいうえおあいうえおかきく\n"));
+		ut.ut_test_equal(4, view.lineCount());
+		QFontMetrics fm = view.fontMetrics();
+		const int wd = fm.width(QString("あいうえお"));
+		const int ht = fm.lineSpacing() * 10;
+		TextCursor cur(doc);
+		view.buildLines(cur.block(), wd, ht);		//	最初からレイアウト
+		ut.ut_test_equal(7, view.lineCount());
+
 	}
 }
