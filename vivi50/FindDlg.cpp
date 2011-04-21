@@ -23,10 +23,12 @@
 #include <QtGui>
 #include "FindDlg.h"
 
-void getLastFindString(/*ushort &opt,*/ QString &text)
+#define		HIST_LIMIT		30
+
+void getStringFromHist(const QString &key, QString &text)
 {
     QSettings settings;
-    QStringList hist = settings.value("findStringHist").toStringList();
+    QStringList hist = settings.value(key).toStringList();
 	if( hist.isEmpty() )
 		text = QString();
 	else {
@@ -34,19 +36,27 @@ void getLastFindString(/*ushort &opt,*/ QString &text)
 		text = *itr;	//	最後の要素が最新検索文字列
 	}
 }
-void addFindStringHist(/*ushort opt,*/ const QString &text)
+void addStringToHist(const QString &key, const QString &text)
 {
     QSettings settings;
-    QStringList hist = settings.value("findStringHist").toStringList();
+    QStringList hist = settings.value(key).toStringList();
 	if( !hist.isEmpty() ) {
 		int ix = hist.indexOf(text);
 		if( ix >= 0 )
 			hist.erase(hist.begin() + ix);		//	重複削除
 	}
 	hist.push_back(text);
-	if( hist.size() > 30 )
-		hist.erase(hist.begin());		//	要素数が30を超えた場合は古いものを削除
-	settings.setValue("findStringHist", hist);
+	if( hist.size() > HIST_LIMIT )
+		hist.erase(hist.begin());		//	要素数がHIST_LIMITを超えた場合は古いものを削除
+	settings.setValue(key, hist);
+}
+void getLastFindString(/*ushort &opt,*/ QString &text)
+{
+	getStringFromHist("findStringHist", text);
+}
+void addFindStringHist(/*ushort opt,*/ const QString &text)
+{
+	addStringToHist("findStringHist", text);
 }
 
 FindDlg::FindDlg(QWidget *parent, ushort matchCase)

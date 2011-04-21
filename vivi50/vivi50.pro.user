@@ -7,7 +7,7 @@
  <data>
   <variable>ProjectExplorer.Project.EditorSettings</variable>
   <valuemap type="QVariantMap">
-   <value key="EditorConfiguration.Codec" type="QByteArray">Default</value>
+   <value key="EditorConfiguration.Codec" type="QByteArray">Shift_JIS</value>
   </valuemap>
  </data>
  <data>

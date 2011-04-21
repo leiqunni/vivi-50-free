@@ -66,6 +66,7 @@ TextView::TextView(QWidget *parent)
 	m_mouseCaptured = false;
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
+	m_wordWrapLongLines = false;
 	//m_lineNumberWidth = 6;
 	viewport()->setCursor(Qt::IBeamCursor);
 
@@ -1150,4 +1151,9 @@ void TextView::buildBlocks()
 		}
 		block = block.next();
 	}
+}
+void TextView::onWordWrap(bool b)
+{
+	m_wordWrapLongLines = b;
+	viewport()->update();
 }

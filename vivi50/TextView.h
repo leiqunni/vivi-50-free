@@ -99,6 +99,7 @@ public slots:
 	void	setFontPointSize(int);
 	void	setFontFamily(const QString &);
 	void	makeFontBigger(bool);
+	void	onWordWrap(bool);
 
 protected:
 	int		offsetToX(const QString &, int) const;		//	第２引数は文字数
@@ -146,6 +147,7 @@ private:
 	bool	m_mouseCaptured;
 	bool	m_toDeleteIMEPreeditText;
 	bool	m_drawCursor;
+	bool	m_wordWrapLongLines;					//	右端で折り返し
 	ViewTextCursor	m_viewTextCursor;
 	std::vector<ViewTextCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる

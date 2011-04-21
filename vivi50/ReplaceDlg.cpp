@@ -139,6 +139,7 @@ void ReplaceDlg::onReplaceFind()
 	emit isMatched(b, findString, options);
 	if( !b ) return;
 	emit doReplace(m_replaceStringCB->currentText());
+	addStringToHist("replaceStringHist", m_replaceStringCB->currentText());
 	doFind();
 }
 void ReplaceDlg::onReplaceAll()
@@ -148,4 +149,5 @@ void ReplaceDlg::onReplaceAll()
 		options |= MatchCase;
 	emit doReplaceAll(m_findStringCB->currentText(), options,
 						m_replaceStringCB->currentText());
+	addStringToHist("replaceStringHist", m_replaceStringCB->currentText());
 }

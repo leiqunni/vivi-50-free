@@ -171,6 +171,12 @@ void MainWindow::createActions()
     replaceAct->setStatusTip(tr("replace strings..."));
     connect(replaceAct, SIGNAL(triggered()), m_view, SLOT(replace()));
 
+	wordwrapAct = new QAction(tr("&WordWrapLongLines"), this);
+    wordwrapAct->setStatusTip(tr("word wrap long lines"));
+    wordwrapAct->setCheckable(true);
+    wordwrapAct->setChecked(false);
+    connect(wordwrapAct, SIGNAL(toggled(bool)), m_view, SLOT(onWordWrap(bool)));
+
 	fontAct = new QAction(/*QIcon(":vivi/Resources/images/editredo.png"),*/ tr("&Font..."), this);
     fontAct->setStatusTip(tr("select Font family and/or size"));
     connect(fontAct, SIGNAL(triggered()), this, SLOT(font()));
@@ -222,6 +228,7 @@ void MainWindow::createMenus()
     searchMenu->addAction(replaceAct);
 
     viewMenu = menuBar()->addMenu(tr("&View"));
+    viewMenu->addAction(wordwrapAct);
 
     settingsMenu = menuBar()->addMenu(tr("&Settings"));
 	settingsMenu->addAction(fontAct);

@@ -33,6 +33,8 @@ class QGroupBox;
 class QRadioButton;
 
 
+void getStringFromHist(const QString &key, QString &text);
+void addStringToHist(const QString &key, const QString &text);
 void addFindStringHist(/*ushort,*/ const QString &);
 void getLastFindString(/*ushort &,*/ QString&);
 
