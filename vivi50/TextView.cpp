@@ -72,7 +72,7 @@ TextView::TextView(QWidget *parent)
 	//m_lineNumberWidth = 6;
 	viewport()->setCursor(Qt::IBeamCursor);
 
-	m_blocks.push_back(ViewTextBlockItem(0));
+	//m_blocks.push_back(ViewTextBlockItem(0));
 	m_document = new TextDocument();
 	m_textCursor = new ViewCursor(this);
 	m_preeditPosCursor = new ViewCursor(this);
@@ -110,8 +110,18 @@ size_t TextView::blockCount() const
 	return document()->blockCount() - (m_lastViewLine - m_firstViewLine)
 			+ m_viewLines.size();
 }
+bool TextView::isLayouted(index_t docBlockIx) const
+{
+	return firstViewLine() <= docBlockIx && docBlockIx < lastViewLine();
+}
+size_t TextView::blockSize(index_t ix) const
+{
+	return 0;
+}
 BlockData TextView::findBlockData(index_t position) const
 {
+	return BlockData(0, 0);		//	Žb’èƒR[ƒh
+#if 0
 	if( m_blocks.size() == 1 )
 		return BlockData(0, 0);
 	BlockData data(0, 0), next;
@@ -155,6 +165,7 @@ BlockData TextView::findBlockData(index_t position) const
 		}
 	}
 	return data;
+#endif
 }
 #if 0
 void TextView::resetCursorBlinkTimer()
@@ -1200,11 +1211,11 @@ void TextView::onWordWrap(bool b)
 }
 ViewBlock TextView::firstBlock()
 {
-	return ViewBlock(this, document()->firstBlock());
+	return ViewBlock(this, document()->firstBlock(), BlockData(0, 0));
 }
 ViewBlock TextView::lastBlock()
 {
-	return ViewBlock(this, document()->lastBlock());
+	return ViewBlock(this, document()->lastBlock(), BlockData(0, 0));
 }
 void TextView::buildBlocks(DocBlock block, int wd, int ht)
 {

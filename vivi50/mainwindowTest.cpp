@@ -787,17 +787,22 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("123\r\nあいうえおかきく\nあいうえおあいうえおかきく\n"));
 		ut.ut_test_equal(4, view.blockCount());
+		ViewBlock block = view.firstBlock();
+		ut.ut_test( !block.isLayouted() );
+
 		QFontMetrics fm = view.fontMetrics();
 		const int wd = fm.width(QString("あいうえお"));
 		const int ht = fm.lineSpacing() * 10;
 		DocCursor cur(doc);
 		view.buildBlocks(cur.block(), wd, ht);		//	最初からレイアウト
 		ut.ut_test_equal(7, view.blockCount());
-		ViewBlock block = view.firstBlock();
+		block = view.firstBlock();
+		ut.ut_test( block.isLayouted() );
 		ut.ut_test( block.isValid() );
 		ut.ut_test_equal(QString("123\r\n"), block.text());
-		//block = block.next();
+		block = block.next();
 		ut.ut_test( block.isValid() );
+		ut.ut_test( block.isLayouted() );
 		ut.ut_test_equal(QString("あいうえお"), block.text());
 	}
 	if( 1 ) {		//	buildBlocks テスト

@@ -75,9 +75,10 @@ public:
 	const TextDocument	*document() const { return m_document; }
 	//size_t blockCount() const { return m_blocks.size(); }
 	BlockData	findBlockData(index_t position) const;
-	BlockData	nextBlockData(BlockData d) const
-	{ return BlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
-	BlockData	prevBlockData(BlockData d) const
+	BlockData	nextBlockData(BlockData d) const;
+	//{ return BlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
+	BlockData	prevBlockData(BlockData d) const;
+#if 0
 	{
 		if( !d.m_index )
 			return BlockData(INVALID_INDEX, 0);
@@ -86,9 +87,13 @@ public:
 			return BlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
 		}
 	}
+#endif
 	size_t	size() const;	// { return document()->size(); }
-	size_t	blockSize(index_t ix) const { return m_blocks[ix].m_size; }
+	bool	isLayouted(index_t ix) const;
+	size_t	blockSize(index_t ix) const;	// { return m_blocks[ix].m_size; }
 	size_t	blockCount() const;
+	index_t	firstViewLine() const { return m_firstViewLine; }
+	index_t	lastViewLine() const { return m_lastViewLine; }
 
 public:
 	TextDocument	*document() { return m_document; }
@@ -188,7 +193,7 @@ private:
 	int		m_lineNumberWidth;
 	//int		m_lineNumberNDigits;		//	桁数
 	QTimer	*m_timer;					//	タイマーオブジェクト
-	mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		//	ブロック配列
+	//mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		//	ブロック配列
 	mutable BlockData	m_blockData;			//	カレントブロック情報
 
 	size_t	m_firstViewLine;

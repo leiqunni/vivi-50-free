@@ -87,15 +87,20 @@ private:
 class ViewBlock : public DocBlock
 {
 public:
-	ViewBlock(TextView *view, const DocBlock &);
+	ViewBlock(TextView *view, const DocBlock &, BlockData);
 
 public:
 	//index_t		index() const { return m_index; }
+	bool		isLayouted() const;
+	size_t		size() const;
+	ViewBlock	next() const;
+	ViewBlock	prev() const;
 	QString		text() const;
 
 private:
 	TextView	*m_view;
-	BlockData	m_viewBlock;
+	BlockData	m_viewBlock;		//	m_position	行頭文字位置
+									//	m_index		ビュー行番号（0..*）
 };
 
 
