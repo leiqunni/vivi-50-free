@@ -28,12 +28,12 @@
 //#include	<boost/pool/object_pool.hpp>
 #include	"gap_vector.h"
 //#include	"buffer.h"
-#include	"textBlockData.h"
+#include	"textBlock.h"
 
 typedef unsigned char uchar;
 typedef const unsigned char cuchar;
 
-#define		INVALID_INDEX		0xffffffff
+//#define		INVALID_INDEX		0xffffffff
 class DocCursor;
 
 //typedef std::gap_vector<uchar> GV_utf8;
@@ -196,6 +196,7 @@ public:
 };
 //----------------------------------------------------------------------
 
+#if 0
 class DocBlock
 {
 public:
@@ -244,14 +245,15 @@ private:
 	TextDocument	*m_document;
 	TextBlockData	m_data;
 };
+#endif
 
 //----------------------------------------------------------------------
 //	現状はブロックサイズのみだが、近未来に フラグ類を追加する
-struct TextBlockItem
+struct DocBlockItem
 {
 	size_t		m_size;		//	ブロック内文字サイズ
 public:
-	TextBlockItem(size_t size = 0) : m_size(size) {}
+	DocBlockItem(size_t size = 0) : m_size(size) {}
 };
 //----------------------------------------------------------------------
 class TextDocument : public QObject
@@ -378,7 +380,7 @@ private:
 	bool	m_modified;
 	mutable std::gap_vector<uchar>	m_buffer;
 	//mutable std::gap_vector<size_t>	m_blocks;		//	ブロックサイズ配列
-	mutable std::gap_vector<TextBlockItem>	m_blocks;		//	ブロック配列
+	mutable std::gap_vector<DocBlockItem>	m_blocks;		//	ブロック配列
 	mutable TextBlockData	m_blockData;			//	カレントブロック情報
 	//index_t		m_blockIndex;		//	カレントブロック情報
 	//index_t		m_blockPosition;	//	カレントブロック情報

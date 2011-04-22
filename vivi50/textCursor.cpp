@@ -644,3 +644,7 @@ ViewCursor &ViewCursor::operator=(const DocCursor &x)
 		m_viewAnchorBlockData = m_viewBlockData;
 	return *this;
 }
+ViewBlock ViewCursor::block() const
+{
+	return ViewBlock(m_view, DocCursor::block());
+}

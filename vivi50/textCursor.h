@@ -13,7 +13,7 @@
 #define		_HEADER_TEXTCURSOR_H
 
 #include	<QtCore>
-#include	"textBlockData.h"
+#include	"textBlock.h"
 
 //	テキストカーソルがブロック情報を含むかどうか
 #define		TEXT_CURSOR_BLOCK		1
@@ -21,6 +21,7 @@
 class TextDocument;
 class TextView;
 class DocBlock;
+class ViewBlock;
 
 typedef size_t index_t;
 
@@ -162,6 +163,7 @@ public:
 
 public:
 	const TextView	*view() const { return m_view; }
+	ViewBlock	block() const;
 
 public:
 	TextView	*view() { return m_view; }

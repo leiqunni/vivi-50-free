@@ -191,6 +191,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\textBlock.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\textCursor.cpp"
 				>
 			</File>
@@ -303,7 +307,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\textBlockData.h"
+				RelativePath=".\textBlock.h"
 				>
 			</File>
 			<File

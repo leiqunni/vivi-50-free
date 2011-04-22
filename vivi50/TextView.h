@@ -26,7 +26,7 @@
 #include <deque>
 #include <QAbstractScrollArea>
 #include	"gap_vector.h"
-#include	"textBlockData.h"
+#include	"textBlock.h"
 #include	"textCursor.h"
 
 class TextView;
@@ -49,11 +49,14 @@ public:
 		{}
 };
 
-class ViewTextBlock
+
+#if 0
+class ViewBlock : public DocBlock;
 {
 private:
 	TextView	*m_view;
 };
+#endif
 
 class TextView : public QAbstractScrollArea
 {

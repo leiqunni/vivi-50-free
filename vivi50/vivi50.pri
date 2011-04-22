@@ -13,7 +13,7 @@ HEADERS += ./charEncoding.h \
     ./gap_vector.h \
     ./mainwindow.h \
     ./ReplaceDlg.h \
-    ./textBlockData.h \
+    ./textBlock.h \
     ./textCursor.h \
     ./TextDocument.h \
     ./TextView.h \
@@ -28,6 +28,8 @@ SOURCES += ./charEncoding.cpp \
     ./textCursor.cpp \
     ./TextDocument.cpp \
     ./TextView.cpp \
-    ./unit_test.cpp
+    ./unit_test.cpp \
+    ./textBlock.cpp
 FORMS += ./mainwindow.ui
+TRANSLATIONS += ./vivi50_ja.ts
 RESOURCES += ./mainwindow.qrc

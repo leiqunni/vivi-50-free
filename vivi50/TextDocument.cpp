@@ -310,7 +310,7 @@ void TextDocument::init()
 	m_modified = false;
 	m_buffer.clear();
 	m_blocks.clear();
-	m_blocks.push_back(TextBlockItem(0));
+	m_blocks.push_back(DocBlockItem(0));
 	m_blockData = TextBlockData(0, 0);
 	//m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
@@ -491,17 +491,17 @@ void TextDocument::buildBlocks()
 	while( ix < m_buffer.size() ) {
 		uchar ch = m_buffer[ix++];
 		if( ch == '\n' ) {
-			m_blocks.push_back(TextBlockItem(ix - offset));
+			m_blocks.push_back(DocBlockItem(ix - offset));
 			offset = ix;
 		} else if( ch == '\r' ) {
 			if( ix < m_buffer.size() && m_buffer[ix] == '\n' )
 				++ix;
-			m_blocks.push_back(TextBlockItem(ix - offset));
+			m_blocks.push_back(DocBlockItem(ix - offset));
 			offset = ix;
 		}
 	}
 	//if( ix != offset )
-		m_blocks.push_back(TextBlockItem(ix - offset));		//	EOF s
+		m_blocks.push_back(DocBlockItem(ix - offset));		//	EOF s
 	emit blockCountChanged();
 }
 void TextDocument::updateBlocksAtInsert(index_t first,
@@ -526,7 +526,7 @@ void TextDocument::updateBlocksAtInsert(index_t first,
 			}
 		} else
 			continue;
-		m_blocks.insert(d.index(), TextBlockItem(first - d.position()));
+		m_blocks.insert(d.index(), DocBlockItem(first - d.position()));
 		bcChanged = true;
 		++d.m_index;
 		d.m_position = first;
