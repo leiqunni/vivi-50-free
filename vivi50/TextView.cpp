@@ -31,9 +31,9 @@
 
 size_t UTF8CharSize(uchar ch);
 
-bool hasSelection(const std::vector<ViewTextCursor*> &v)
+bool hasSelection(const std::vector<ViewCursor*> &v)
 {
-	for(std::vector<ViewTextCursor*>::const_iterator itr = v.begin(),
+	for(std::vector<ViewCursor*>::const_iterator itr = v.begin(),
 														iend = v.end();
 		itr != iend; ++itr)
 	{
@@ -41,10 +41,10 @@ bool hasSelection(const std::vector<ViewTextCursor*> &v)
 	}
 	return false;
 }
-void print(const std::vector<ViewTextCursor*> &v)
+void print(const std::vector<ViewCursor*> &v)
 {
 #ifdef	_DEBUG
-	for(std::vector<ViewTextCursor*>::const_iterator itr = v.begin(),
+	for(std::vector<ViewCursor*>::const_iterator itr = v.begin(),
 														iend = v.end();
 		itr != iend; ++itr)
 	{
@@ -74,8 +74,8 @@ TextView::TextView(QWidget *parent)
 
 	m_blocks.push_back(ViewTextBlockItem(0));
 	m_document = new TextDocument();
-	m_textCursor = new ViewTextCursor(this);
-	m_preeditPosCursor = new ViewTextCursor(this);
+	m_textCursor = new ViewCursor(this);
+	m_preeditPosCursor = new ViewCursor(this);
 	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
 
 	m_lineNumberArea = new QWidget(this);
@@ -344,7 +344,7 @@ void TextView::paintEvent(QPaintEvent * event)
 		//m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 
 	//	マルチカーソル選択状態表示
-	for(std::vector<ViewTextCursor>::const_iterator itr = m_multiCursor.begin(),
+	for(std::vector<ViewCursor>::const_iterator itr = m_multiCursor.begin(),
 													iend = m_multiCursor.end();
 		itr != iend; ++itr)
 	{
@@ -390,8 +390,8 @@ void TextView::paintEvent(QPaintEvent * event)
 		//m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	//qDebug() << "firstVisibleBlock.index = " << block.index();
 	//DocBlock block = m_document->firstBlock();
-	std::vector<ViewTextCursor>::const_iterator mcitr = m_multiCursor.begin();
-	std::vector<ViewTextCursor>::const_iterator mciend = m_multiCursor.end();
+	std::vector<ViewCursor>::const_iterator mcitr = m_multiCursor.begin();
+	std::vector<ViewCursor>::const_iterator mciend = m_multiCursor.end();
 	while( y < vr.height() && block.isValid() ) {
 		const QString text = block.text();
 		index_t nextBlockPosition = block.position() + m_document->blockSize(block.index());
@@ -498,7 +498,7 @@ void TextView::ensureCursorVisible()
 }
 void TextView::removeOverlappedCursor()
 {
-	for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
+	for(std::vector<ViewCursor>::iterator itr = m_multiCursor.begin(),
 												iend = m_multiCursor.end();
 		itr != iend; ++itr)
 	{
@@ -752,9 +752,9 @@ void TextView::copy()
 		if( m_textCursor->hasSelection() )
 			text = m_textCursor->selectedText();
 	} else {
-		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		std::vector<ViewCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
 		getAllCursor(v);
-		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+		for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
 			if( (*itr)->hasSelection() )
@@ -774,14 +774,14 @@ void TextView::cut()
 			m_textCursor->deleteChar();
 	} else {
 		document()->openUndoBlock();
-		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		std::vector<ViewCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
 		getAllCursor(v);
-		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+		for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
 			if( (*itr)->hasSelection() ) {
 				const int sz = document()->deleteChar(**itr);
-				for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
+				for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 					(*k)->move(-sz);
 				}
 			}
@@ -959,7 +959,7 @@ void TextView::drawLineNumbers()
 }
 void TextView::doJump(int lineNum)
 {
-	ViewTextCursor cur(this);
+	ViewCursor cur(this);
 	if( cur.movePosition(DocCursor::Down, DocCursor::MoveAnchor, lineNum - 1) ) {
 		*m_textCursor = cur;
 		ensureCursorVisible();
@@ -982,13 +982,13 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 	//qDebug() << "block index = " << block.index();
 	int offset = xToOffset(block.text(), event->x());
 	//qDebug() << "offset = " << offset;
-	ViewTextCursor cur(*m_textCursor);
+	ViewCursor cur(*m_textCursor);
 	cur.setPosition(block.position());
 	if( offset != 0 )
 		cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, offset);
 	if( ctrl ) {
-		std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin();
-		std::vector<ViewTextCursor>::iterator iend = m_multiCursor.end();
+		std::vector<ViewCursor>::iterator itr = m_multiCursor.begin();
+		std::vector<ViewCursor>::iterator iend = m_multiCursor.end();
 		while( itr != iend && itr->position() < m_textCursor->position() )
 			++itr;
 		m_multiCursor.insert(itr, *m_textCursor);
@@ -1025,12 +1025,12 @@ void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
 	removeOverlappedCursor();
 	viewport()->update();
 }
-void TextView::getAllCursor(std::vector<ViewTextCursor*> &v)
+void TextView::getAllCursor(std::vector<ViewCursor*> &v)
 {
 	v.clear();
 	v.reserve(m_multiCursor.size() + 1);
 	bool inserted = false;
-	for(std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin(),
+	for(std::vector<ViewCursor>::iterator itr = m_multiCursor.begin(),
 														iend = m_multiCursor.end();
 		itr != iend; ++itr)
 	{
@@ -1050,13 +1050,13 @@ void TextView::deleteChar()
 	else {
 		//	undone R insertText と処理を共通化
 		document()->openUndoBlock();
-		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		std::vector<ViewCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
 		getAllCursor(v);
-		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+		for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
 			const int sz = document()->deleteChar(**itr);
-			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
+			for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 				(*k)->move(-sz);
 				//(*k)->setPosition((*k)->position() - sz);
 				//(*k)->setAnchor((*k)->anchor() - sz);
@@ -1072,13 +1072,13 @@ void TextView::deletePreviousChar()
 	else {
 		//	undone R insertText と処理を共通化
 		document()->openUndoBlock();
-		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		std::vector<ViewCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
 		getAllCursor(v);
-		for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+		for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
 			const int sz = document()->deletePreviousChar(**itr);
-			for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
+			for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 				(*k)->move(-sz);
 				//(*k)->setPosition((*k)->position() - sz);
 				//(*k)->setAnchor((*k)->anchor() - sz);
@@ -1093,12 +1093,12 @@ void TextView::insertText(const QString &text, bool tab)
 		insertText(*m_textCursor, text);
 	else {
 		document()->openUndoBlock();
-		std::vector<ViewTextCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+		std::vector<ViewCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
 		getAllCursor(v);
 		if( tab && hasSelection(v) ) {
 			//	選択領域がある場合はローテイト
 			//print(v);
-			std::vector<ViewTextCursor*>::iterator itr = v.end() - 1;
+			std::vector<ViewCursor*>::iterator itr = v.end() - 1;
 			const QString lastText = (*itr)->selectedText();
 			int lastLength = lastText.length();
 			for(;;) {
@@ -1107,7 +1107,7 @@ void TextView::insertText(const QString &text, bool tab)
 				const int d = text.length() - lastLength;		//	増減値
 				document()->insertText(**itr, text, /*select::=*/true);
 				//print(v);
-				for(std::vector<ViewTextCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
+				for(std::vector<ViewCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
 					//	undone A BlockData も要補正
 					(*k)->move(d);
 					//(*k)->setAnchor((*k)->anchor() + d);
@@ -1125,12 +1125,12 @@ void TextView::insertText(const QString &text, bool tab)
 				--itr;
 			}
 		} else
-			for(std::vector<ViewTextCursor*>::iterator itr = v.begin(), iend = v.end();
+			for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 				itr != iend; ++itr)
 			{
 				const int sz = insertText(**itr, text);
 				//print(v);
-				for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
+				for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 					(*k)->move(sz);
 					//(*k)->setAnchor((*k)->anchor() + sz);
 					//(*k)->setPosition((*k)->position() + sz, DocCursor::KeepAnchor);
@@ -1140,18 +1140,18 @@ void TextView::insertText(const QString &text, bool tab)
 		document()->closeUndoBlock();
 	}
 }
-int TextView::insertText(ViewTextCursor &cur, const QString &text)
+int TextView::insertText(ViewCursor &cur, const QString &text)
 {
 	const size_t sz = document()->insertText(cur, text);
 	//	undone B ブロック情報更新
 	return sz;
 }
-void TextView::deleteChar(ViewTextCursor &cur)
+void TextView::deleteChar(ViewCursor &cur)
 {
 	document()->deleteChar(cur);
 	//	undone B ブロック情報更新
 }
-void TextView::deletePreviousChar(ViewTextCursor &cur)
+void TextView::deletePreviousChar(ViewCursor &cur)
 {
 	document()->deletePreviousChar(cur);
 	//	undone B ブロック情報更新

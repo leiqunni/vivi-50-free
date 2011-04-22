@@ -563,30 +563,30 @@ void DocCursor::deletePreviousChar()
 }
 
 //----------------------------------------------------------------------
-ViewTextCursor::ViewTextCursor(TextView *view, index_t position)
+ViewCursor::ViewCursor(TextView *view, index_t position)
 	: m_view(view), DocCursor(view ? view->document() : 0, position)
 {
 	DocCursor::updateBlockData();
 	updateBlockData();
 }
-ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor)
+ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor)
 	: m_view(view), DocCursor(view ? view->document() : 0, position, anchor)
 {
 	DocCursor::updateBlockData();
 	updateBlockData();
 }
-ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor,
+ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor,
 			TextBlockData blockData)
 	: m_view(view), DocCursor(view ? view->document() : 0, position, anchor, blockData)
 {
 	DocCursor::updateBlockData();
 	updateBlockData();
 }
-ViewTextCursor::ViewTextCursor(const ViewTextCursor &x)
+ViewCursor::ViewCursor(const ViewCursor &x)
 	: m_view(x.m_view), DocCursor(x)
 {
 }
-void ViewTextCursor::setPosition(index_t position, uchar mode)
+void ViewCursor::setPosition(index_t position, uchar mode)
 {
 	if( isNull() ) return;
 	m_position = position;
@@ -598,7 +598,7 @@ void ViewTextCursor::setPosition(index_t position, uchar mode)
 		m_viewAnchorBlockData = m_viewBlockData;
 	}
 }
-void ViewTextCursor::updateBlockData(uchar mode)
+void ViewCursor::updateBlockData(uchar mode)
 {
 	if( !m_view ) {
 		m_viewBlockData = m_viewAnchorBlockData = TextBlockData(0, 0);
@@ -610,27 +610,27 @@ void ViewTextCursor::updateBlockData(uchar mode)
 		}
 	}
 }
-void ViewTextCursor::insertText(const QString &text)
+void ViewCursor::insertText(const QString &text)
 {
 	if( isNull() ) return;
 	m_view->insertText(*this, text);
 }
-void ViewTextCursor::deleteChar()
+void ViewCursor::deleteChar()
 {
 	if( isNull() ) return;
 	m_view->deleteChar(*this);
 }
-void ViewTextCursor::deletePreviousChar()
+void ViewCursor::deletePreviousChar()
 {
 	if( isNull() ) return;
 	m_view->deletePreviousChar(*this);
 }
-bool ViewTextCursor::movePosition(uchar move, uchar mode, uint n)
+bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 {
 	if( !DocCursor::movePosition(move, mode, n) ) return false;
 	return true;
 }
-ViewTextCursor &ViewTextCursor::operator=(const DocCursor &x)
+ViewCursor &ViewCursor::operator=(const DocCursor &x)
 {
 	if( isNull() ) return *this;
 	m_position = x.position();

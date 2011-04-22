@@ -30,7 +30,7 @@
 #include	"textCursor.h"
 
 class TextView;
-class ViewTextCursor;
+class ViewCursor;
 class TextDocument;
 class DocCursor;
 class DocBlock;
@@ -96,9 +96,9 @@ public:
 	void	deleteChar();
 	void	deletePreviousChar();
 	void	insertText(const QString &, bool = false);
-	int		insertText(ViewTextCursor &, const QString &);
-	void	deleteChar(ViewTextCursor &);
-	void	deletePreviousChar(ViewTextCursor &);
+	int		insertText(ViewCursor &, const QString &);
+	void	deleteChar(ViewCursor &);
+	void	deletePreviousChar(ViewCursor &);
 
 public slots:
 	void	copy();
@@ -144,11 +144,11 @@ protected:
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
 	void	drawLineNumbers();
-	void	setTextCursor(const ViewTextCursor &cur) { *m_textCursor = cur; }
+	void	setTextCursor(const ViewCursor &cur) { *m_textCursor = cur; }
 	void	resetCursorBlinkTimer();
 	void	clearMultiCursor() { m_multiCursor.clear(); }
-	void	addToMultiCursor(const ViewTextCursor &cur) { m_multiCursor.push_back(cur); }
-	void	getAllCursor(std::vector<ViewTextCursor*> &);
+	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); }
+	void	getAllCursor(std::vector<ViewCursor*> &);
 	void	buildBlocks();
 	void	buildLines(DocBlock, int wd, int ht);
 
@@ -169,13 +169,13 @@ private:
 	bool	m_toDeleteIMEPreeditText;
 	bool	m_drawCursor;
 	bool	m_wordWrapLongLines;					//	右端で折り返し
-	ViewTextCursor	m_viewTextCursor;
-	std::vector<ViewTextCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
+	ViewCursor	m_viewTextCursor;
+	std::vector<ViewCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる
 	DocCursor	*m_preeditPosCursor;
 	QString	m_preeditString;
 	TextDocument	*m_document;
-	ViewTextCursor	*m_textCursor;		//	ビュー用カーソル
+	ViewCursor	*m_textCursor;		//	ビュー用カーソル
 	int		m_viewportWidth;
 	QWidget	*m_lineNumberArea;
 	int		m_lineNumberAreaWidth;

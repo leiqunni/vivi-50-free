@@ -149,16 +149,16 @@ public:
 };
 
 //----------------------------------------------------------------------
-class ViewTextCursor : public DocCursor
+class ViewCursor : public DocCursor
 {
 public:
-	ViewTextCursor(TextView *view = 0, index_t position = 0);
-	ViewTextCursor(TextView *view, index_t position, index_t anchor);
-	ViewTextCursor(TextView *view, index_t position, index_t anchor,
+	ViewCursor(TextView *view = 0, index_t position = 0);
+	ViewCursor(TextView *view, index_t position, index_t anchor);
+	ViewCursor(TextView *view, index_t position, index_t anchor,
 				TextBlockData blockData);
-	ViewTextCursor(const ViewTextCursor &x);
-	//ViewTextCursor(const DocCursor &x);
-	~ViewTextCursor() {}
+	ViewCursor(const ViewCursor &x);
+	//ViewCursor(const DocCursor &x);
+	~ViewCursor() {}
 
 public:
 	const TextView	*view() const { return m_view; }
@@ -174,7 +174,7 @@ public:
 	void	deleteChar();
 	void	deletePreviousChar();
 
-	ViewTextCursor &operator=(const DocCursor &);
+	ViewCursor &operator=(const DocCursor &);
 
 protected:
 	void	updateBlockData(uchar mode = MoveAnchor);		//	m_blockIndex, m_blockPosition çXêV

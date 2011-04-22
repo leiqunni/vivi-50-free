@@ -624,7 +624,7 @@ void test_TextView()
 		ut.ut_test( doc->isEmpty() );
 		ut.ut_test_equal(0, doc->size());
 		ut.ut_test_equal(1, view.blockCount());
-		ViewTextCursor cur(&view);
+		ViewCursor cur(&view);
 		cur.insertText(QString("123\r\nあいう\n"));
 		view.buildBlocks();
 		ut.ut_test_equal(3, view.blockCount());
@@ -654,11 +654,11 @@ void test_TextView()
 		ut.ut_test_equal(0, view.blockSize(3));
 	}
 	if( 1 ) {		//	マルチカーソル：文字挿入
-		std::vector<ViewTextCursor*> v;
+		std::vector<ViewCursor*> v;
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("\n\n\n\n\n"));	//	改行＊５行
-		ViewTextCursor cur(&view);
+		ViewCursor cur(&view);
 		view.addToMultiCursor(cur);			//	1行目
 		cur.movePosition(DocCursor::Down);
 		view.addToMultiCursor(cur);			//	2行目
@@ -693,11 +693,11 @@ void test_TextView()
 		ut.ut_test_equal(QString("=\n=\n=\n=\n=\n"), doc->toPlainText());
 	}
 	if( 1 ) {		//	マルチカーソル：選択状態文字挿入
-		std::vector<ViewTextCursor*> v;
+		std::vector<ViewCursor*> v;
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\nxyz\n123\nABC\n"));
-		ViewTextCursor cur(&view);
+		ViewCursor cur(&view);
 		cur.setPosition(3, DocCursor::KeepAnchor);		//	1行目 abc 選択
 		view.addToMultiCursor(cur);
 		cur.setPosition(8);
@@ -711,11 +711,11 @@ void test_TextView()
 		ut.ut_test_equal(QString("=\nxyz\n=\nABC\n"), doc->toPlainText());
 	}
 	if( 1 ) {		//	マルチカーソル：Delete 削除
-		std::vector<ViewTextCursor*> v;
+		std::vector<ViewCursor*> v;
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\nabc\nabc\nabc\nabc\n"));	//	５行
-		ViewTextCursor cur(&view);
+		ViewCursor cur(&view);
 		view.addToMultiCursor(cur);			//	1行目
 		cur.movePosition(DocCursor::Down);
 		view.addToMultiCursor(cur);			//	2行目
@@ -733,11 +733,11 @@ void test_TextView()
 		ut.ut_test_equal(QString("bc\nbc\nbc\nbc\nbc\n"), doc->toPlainText());
 	}
 	if( 1 ) {		//	マルチカーソル：Delete 選択範囲削除
-		std::vector<ViewTextCursor*> v;
+		std::vector<ViewCursor*> v;
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\nabc\nabc\nabc\nabc\n"));	//	５行
-		ViewTextCursor cur(&view);
+		ViewCursor cur(&view);
 		cur.setPosition(3, DocCursor::KeepAnchor);		//	1行目 abc 選択
 		view.addToMultiCursor(cur);
 		cur.setPosition(8);
@@ -751,11 +751,11 @@ void test_TextView()
 		ut.ut_test_equal(QString("\nabc\n\nabc\nabc\n"), doc->toPlainText());
 	}
 	if( 1 ) {		//	マルチカーソル：ローテイト
-		std::vector<ViewTextCursor*> v;
+		std::vector<ViewCursor*> v;
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\n1234567\n"));
-		ViewTextCursor cur(&view);
+		ViewCursor cur(&view);
 		cur.setPosition(3, DocCursor::KeepAnchor);
 		view.addToMultiCursor(cur);
 		cur.setPosition(4);
