@@ -574,7 +574,7 @@ void test_TextDocument()
 			cur.insertText(text);
 		doc.m_blockData.m_index = 0;	//	キャッシュ無し
 		for(int i = 0; i <= nLines; ++i) {
-			TextBlockData d = doc.findBlockData(i*10);
+			BlockData d = doc.findBlockData(i*10);
 			ut.ut_test_equal(i, d.m_index);
 			ut.ut_test_equal(i*10, d.m_position);
 		}
@@ -582,7 +582,7 @@ void test_TextDocument()
 		doc.m_blockData.m_index = block.blockNumber();		//	キャッシュ有り
 		doc.m_blockData.m_position = block.position();
 		for(int i = 0; i <= nLines; ++i) {
-			TextBlockData d = doc.findBlockData(i*10);
+			BlockData d = doc.findBlockData(i*10);
 			ut.ut_test_equal(i, d.m_index);
 			ut.ut_test_equal(i*10, d.m_position);
 		}
@@ -620,6 +620,7 @@ void test_TextDocument()
 void test_TextView()
 {
 	CUnitTest ut("TextView");
+#if 0
 	if( 1 ) {
 		TextView view;
 		TextDocument *doc = view.document();
@@ -655,6 +656,7 @@ void test_TextView()
 		ut.ut_test_equal(10, view.blockSize(2));	//	かきく
 		ut.ut_test_equal(0, view.blockSize(3));
 	}
+#endif
 	if( 1 ) {		//	マルチカーソル：文字挿入
 		std::vector<ViewCursor*> v;
 		TextView view;
@@ -780,17 +782,36 @@ void test_TextView()
 		view.redo();
 		ut.ut_test_equal(QString("1234567\nabc\n"), doc->toPlainText());
 	}
-	if( 1 ) {		//	buildLines テスト
+	if( 1 ) {		//	buildBlocks テスト
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("123\r\nあいうえおかきく\nあいうえおあいうえおかきく\n"));
-		ut.ut_test_equal(4, view.lineCount());
+		ut.ut_test_equal(4, view.blockCount());
 		QFontMetrics fm = view.fontMetrics();
 		const int wd = fm.width(QString("あいうえお"));
 		const int ht = fm.lineSpacing() * 10;
 		DocCursor cur(doc);
-		view.buildLines(cur.block(), wd, ht);		//	最初からレイアウト
-		ut.ut_test_equal(7, view.lineCount());
+		view.buildBlocks(cur.block(), wd, ht);		//	最初からレイアウト
+		ut.ut_test_equal(7, view.blockCount());
+		ViewBlock block = view.firstBlock();
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal(QString("123\r\n"), block.text());
+		//block = block.next();
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal(QString("あいうえお"), block.text());
+	}
+	if( 1 ) {		//	buildBlocks テスト
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("123\nあいうえおかきく\nあいうえおあいうえおかきく\n"));
+		ut.ut_test_equal(4, view.blockCount());
+		QFontMetrics fm = view.fontMetrics();
+		const int wd = fm.width(QString("あいうえお"));
+		const int ht = fm.lineSpacing() * 2;		//	2行分
+		DocCursor cur(doc);
+		cur.setPosition(4);							//	2行目先頭
+		view.buildBlocks(cur.block(), wd, ht);		//	最初からレイアウト
+		ut.ut_test_equal(5, view.blockCount());
 
 	}
 }

@@ -105,23 +105,23 @@ size_t TextView::size() const
 {
 	return document()->size();
 }
-size_t TextView::lineCount() const
+size_t TextView::blockCount() const
 {
 	return document()->blockCount() - (m_lastViewLine - m_firstViewLine)
 			+ m_viewLines.size();
 }
-TextBlockData TextView::findBlockData(index_t position) const
+BlockData TextView::findBlockData(index_t position) const
 {
 	if( m_blocks.size() == 1 )
-		return TextBlockData(0, 0);
-	TextBlockData data(0, 0), next;
+		return BlockData(0, 0);
+	BlockData data(0, 0), next;
 	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( position <= size() / 2 ) {
 			while( data.m_index < m_blocks.size() - 1 &&
 					position >= (next = nextBlockData(data)).position() )
 				data = next;
 		} else {
-			data = TextBlockData(m_blocks.size(), size());
+			data = BlockData(m_blocks.size(), size());
 			do {
 				data = prevBlockData(data);
 			} while( data.position() > position );
@@ -147,7 +147,7 @@ TextBlockData TextView::findBlockData(index_t position) const
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
 			} else {
-				data = TextBlockData(m_blocks.size(), size());
+				data = BlockData(m_blocks.size(), size());
 				do {
 					data = prevBlockData(data);
 				} while( data.position() > position );
@@ -1156,6 +1156,7 @@ void TextView::deletePreviousChar(ViewCursor &cur)
 	document()->deletePreviousChar(cur);
 	//	undone B ブロック情報更新
 }
+#if 0
 void TextView::buildBlocks()
 {
 	QFontMetrics fm = fontMetrics();
@@ -1191,28 +1192,39 @@ void TextView::buildBlocks()
 		block = block.next();
 	}
 }
+#endif
 void TextView::onWordWrap(bool b)
 {
 	m_wordWrapLongLines = b;
 	viewport()->update();
 }
-void TextView::buildLines(DocBlock block, int wd, int ht)
+ViewBlock TextView::firstBlock()
+{
+	return ViewBlock(this, document()->firstBlock());
+}
+ViewBlock TextView::lastBlock()
+{
+	return ViewBlock(this, document()->lastBlock());
+}
+void TextView::buildBlocks(DocBlock block, int wd, int ht)
 {
 	QFontMetrics fm = fontMetrics();
 	m_viewLines.clear();
 	//m_blocks.push_back(ViewTextBlockItem(0));
 	//DocBlock block = document()->firstBlock();
-	index_t blockIndex = block.index();
+	index_t blockIndex = block.index();		//	doc block index
 	m_firstViewLine = blockIndex;
-	while( block.isValid() ) {
+	int y = 0;
+	while( block.isValid() && y < ht ) {
 		index_t pos = block.position();
 		index_t blockPos = pos;
 		QString text = block.text();
 		const size_t nlLength = block.newlineLength();
 		index_t ixEOL = text.length() - nlLength;		//	改行コードは１バイトと仮定
-		if( !ixEOL )
+		if( !ixEOL ) {
 			m_viewLines.push_back(ViewLine(pos, blockIndex));
-		else {
+			y += fm.lineSpacing();
+		} else {
 			index_t ix = 0;
 			while( ix < ixEOL ) {
 				QString buf;
@@ -1227,6 +1239,7 @@ void TextView::buildLines(DocBlock block, int wd, int ht)
 					pos += UTF8CharSize((*document())[pos]);
 				}
 				m_viewLines.push_back(ViewLine(blockPos, blockIndex));
+				y += fm.lineSpacing();
 				blockPos = pos;
 			}
 		}

@@ -23,13 +23,13 @@ class TextDocument;
 class TextView;
 
 //----------------------------------------------------------------------
-struct TextBlockData
+struct BlockData
 {
 public:
 	index_t		m_index;
 	index_t		m_position;
 public:
-	TextBlockData(index_t index = 0, index_t position = 0)
+	BlockData(index_t index = 0, index_t position = 0)
 		: m_index(index), m_position(position)
 		{}
 
@@ -42,9 +42,9 @@ class DocBlock
 {
 public:
 	DocBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)
-		: m_document(document), m_data(TextBlockData(blockNumber, blockPosition))
+		: m_document(document), m_data(BlockData(blockNumber, blockPosition))
 		{}
-	DocBlock(TextDocument *document, TextBlockData block)
+	DocBlock(TextDocument *document, BlockData block)
 		: m_document(document), m_data(block)
 		{}
 	DocBlock(const DocBlock &x)
@@ -64,7 +64,7 @@ public:
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
-	TextBlockData	data() const { return m_data; }
+	BlockData	data() const { return m_data; }
 	QString		text() const;
 	int			charsCount(index_t) const;		//	s“ª‚©‚çw’èˆÊ’u‚Ü‚Å‚Ì•¶š”‚ğ•Ô‚·
 
@@ -81,7 +81,7 @@ public:
 
 private:
 	TextDocument	*m_document;
-	TextBlockData	m_data;
+	BlockData	m_data;
 };
 
 class ViewBlock : public DocBlock
@@ -89,8 +89,13 @@ class ViewBlock : public DocBlock
 public:
 	ViewBlock(TextView *view, const DocBlock &);
 
+public:
+	//index_t		index() const { return m_index; }
+	QString		text() const;
+
 private:
 	TextView	*m_view;
+	BlockData	m_viewBlock;
 };
 
 

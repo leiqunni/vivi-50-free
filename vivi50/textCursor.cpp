@@ -41,7 +41,7 @@ int getEOLOffset(const QString text)
 	}
 	return ix;
 }
-size_t getEOLOffset(const TextDocument *doc, TextBlockData d)
+size_t getEOLOffset(const TextDocument *doc, BlockData d)
 {
 	if( doc == 0 ) return 0;
 	const size_t sz = doc->blockSize(d.m_index);
@@ -64,7 +64,7 @@ size_t getEOLOffset(const TextDocument *doc, TextBlockData d)
 void DocCursor::updateBlockData(uchar mode)
 {
 	if( !m_document ) {
-		m_blockData = TextBlockData(0, 0);
+		m_blockData = BlockData(0, 0);
 	} else {
 		m_blockData = m_document->findBlockData(m_position);
 		if( mode == MoveAnchor )
@@ -127,7 +127,7 @@ void DocCursor::swapPositionAnchor()
 {
 	index_t t;
 	t = m_position; m_position = m_anchor; m_anchor = t;
-	TextBlockData b;
+	BlockData b;
 	b = m_blockData; m_blockData = m_anchorBlockData; m_anchorBlockData = b;
 	//t = m_blockIndex; m_blockIndex = m_ancBlockIndex; m_ancBlockIndex = t;
 	//t = m_blockPosition; m_blockPosition = m_ancBlockPosition; m_ancBlockPosition = t;
@@ -155,7 +155,7 @@ void DocCursor::setPosition(index_t position, uchar mode)
 #endif
 }
 #if TEXT_CURSOR_BLOCK
-void DocCursor::setPosition(index_t position, TextBlockData d, uchar mode)
+void DocCursor::setPosition(index_t position, BlockData d, uchar mode)
 {
 	if( isNull() ) return;
 	m_position = position;
@@ -354,7 +354,7 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 		if( m_document->size() - m_position <= n ) {
 			//	1•¶Žš==1byte ‚Æ‚ÍŒÀ‚ç‚È‚¢‚Ì‚Å‚±‚Ìˆ—‚¾‚¯‚Å‚Í•s\•ª
 			m_position = m_document->size();
-			m_blockData = m_document->prevBlockData(TextBlockData(m_document->blockCount(), m_position));
+			m_blockData = m_document->prevBlockData(BlockData(m_document->blockCount(), m_position));
 			//updateBlockData(KeepAnchor);
 		} else {
 			//	for UTF-8
@@ -479,14 +479,14 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 	case StartOfDocument:
 		m_position = 0;
 #if TEXT_CURSOR_BLOCK
-		m_blockData = TextBlockData(0, 0);
+		m_blockData = BlockData(0, 0);
 		m_offset = 0;
 #endif
 		break;
 	case EndOfDocument:
 		m_position = m_document->size();
 #if TEXT_CURSOR_BLOCK
-		m_blockData = m_document->prevBlockData(TextBlockData(m_document->blockCount(), m_document->size()));
+		m_blockData = m_document->prevBlockData(BlockData(m_document->blockCount(), m_document->size()));
 		m_offset = m_position - m_blockData.position();
 #endif
 		break;
@@ -576,7 +576,7 @@ ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor)
 	updateBlockData();
 }
 ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor,
-			TextBlockData blockData)
+			BlockData blockData)
 	: m_view(view), DocCursor(view ? view->document() : 0, position, anchor, blockData)
 {
 	DocCursor::updateBlockData();
@@ -601,7 +601,7 @@ void ViewCursor::setPosition(index_t position, uchar mode)
 void ViewCursor::updateBlockData(uchar mode)
 {
 	if( !m_view ) {
-		m_viewBlockData = m_viewAnchorBlockData = TextBlockData(0, 0);
+		m_viewBlockData = m_viewAnchorBlockData = BlockData(0, 0);
 	} else {
 		m_viewBlockData = m_view->findBlockData(m_position);
 		if( mode == MoveAnchor ) {

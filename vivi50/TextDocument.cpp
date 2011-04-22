@@ -275,7 +275,7 @@ DocBlock DocBlock::next() const
 {
 	if( !isValid() ) return *this;
 #if 1
-	TextBlockData d = m_document->nextBlockData(m_data);
+	BlockData d = m_document->nextBlockData(m_data);
 	if( d.index() >= m_document->blockCount() )
 		d.m_index = INVALID_INDEX;
 	return DocBlock(m_document, d);
@@ -290,7 +290,7 @@ DocBlock DocBlock::next() const
 DocBlock DocBlock::prev() const
 {
 	if( !isValid() ) return *this;
-	TextBlockData d = m_document->prevBlockData(m_data);
+	BlockData d = m_document->prevBlockData(m_data);
 	return DocBlock(m_document, d);
 }
 //----------------------------------------------------------------------
@@ -311,7 +311,7 @@ void TextDocument::init()
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(DocBlockItem(0));
-	m_blockData = TextBlockData(0, 0);
+	m_blockData = BlockData(0, 0);
 	//m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
 }
@@ -329,18 +329,18 @@ QString TextDocument::toPlainText() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
-TextBlockData TextDocument::findBlockData(index_t position) const
+BlockData TextDocument::findBlockData(index_t position) const
 {
 	if( m_blocks.size() == 1 )
-		return TextBlockData(0, 0);
-	TextBlockData data(0, 0), next;
+		return BlockData(0, 0);
+	BlockData data(0, 0), next;
 	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( position <= size() / 2 ) {
 			while( data.m_index < m_blocks.size() - 1 &&
 					position >= (next = nextBlockData(data)).position() )
 				data = next;
 		} else {
-			data = TextBlockData(m_blocks.size(), size());
+			data = BlockData(m_blocks.size(), size());
 			do {
 				data = prevBlockData(data);
 			} while( data.position() > position );
@@ -366,7 +366,7 @@ TextBlockData TextDocument::findBlockData(index_t position) const
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
 			} else {
-				data = TextBlockData(m_blocks.size(), size());
+				data = BlockData(m_blocks.size(), size());
 				do {
 					data = prevBlockData(data);
 				} while( data.position() > position );
@@ -377,7 +377,7 @@ TextBlockData TextDocument::findBlockData(index_t position) const
 }
 index_t	TextDocument::findBlockIndex(index_t position, index_t *pBlockPos) const
 {
-	TextBlockData d = findBlockData(position);
+	BlockData d = findBlockData(position);
 	if( pBlockPos != 0 )
 		*pBlockPos = d.position();
 	return d.index();
@@ -396,7 +396,7 @@ DocBlock TextDocument::findBlock(index_t position) const
 	if( position > size() ) return DocBlock(const_cast<TextDocument*>(this), INVALID_INDEX, 0);
 	index_t blockPosition;
 	//const index_t ix = findBlockIndex(position, &blockPosition);
-	TextBlockData d = findBlockData(position);
+	BlockData d = findBlockData(position);
 	return DocBlock(const_cast<TextDocument*>(this), d);
 }
 DocBlock TextDocument::findBlockByNumberRaw(index_t blockIndex) const
@@ -505,7 +505,7 @@ void TextDocument::buildBlocks()
 	emit blockCountChanged();
 }
 void TextDocument::updateBlocksAtInsert(index_t first,
-						TextBlockData d, /*index_t blockIndex, index_t blockPosition,*/
+						BlockData d, /*index_t blockIndex, index_t blockPosition,*/
 						size_t sz)
 {
 	bool bcChanged = false;
@@ -543,14 +543,14 @@ void TextDocument::updateBlocksAtInsert(index_t first, size_t sz)
 {
 	//index_t blockPos = 0;
 	//index_t bix = findBlockIndex(first, &blockPos);
-	TextBlockData d = findBlockData(first);
+	BlockData d = findBlockData(first);
 	updateBlocksAtInsert(first, bix, blockPos, sz);
 }
 #endif
 //	erase 処理が行われる直前にコールされ、
 //	m_blocks を更新
 void TextDocument::updateBlocksAtErase(index_t first,
-					TextBlockData d, /*index_t blockIndex, index_t blockPosition,*/
+					BlockData d, /*index_t blockIndex, index_t blockPosition,*/
 					index_t last)
 {
 	size_t sz = last - first;
@@ -592,19 +592,19 @@ void TextDocument::updateBlocksAtErase(index_t first, index_t last)
 void TextDocument::erase(index_t first, index_t last)
 {
 	if( last > size() ) last = size();
-	TextBlockData d = findBlockData(first);
+	BlockData d = findBlockData(first);
 	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
 	m_blockData = d;	//	キャッシュ更新
 }
-void TextDocument::erase(index_t first, TextBlockData d, index_t last)
+void TextDocument::erase(index_t first, BlockData d, index_t last)
 {
 	if( last > size() ) last = size();
 	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
 	m_blockData = d;	//	キャッシュ更新
 }
-void TextDocument::insert(index_t position, TextBlockData d, const QString &text)
+void TextDocument::insert(index_t position, BlockData d, const QString &text)
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(text);
@@ -621,7 +621,7 @@ void TextDocument::insert(index_t position, const QString &text)
 	//index_t blockIndex = findBlockIndex(position, &blockPosition);
 	insert(position, findBlockData(position), text);
 }
-void TextDocument::insert(index_t ix, TextBlockData d,
+void TextDocument::insert(index_t ix, BlockData d,
 							cuchar *first, cuchar *last)
 {
 	m_buffer.insert(ix, first, last);
@@ -749,7 +749,7 @@ void TextDocument::do_insert(index_t position, const QString &text)
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	//index_t hp_ix = m_undoMgr.addToHeap(ptr, ptr + sz);		//	undone P データはundo時に格納すべき
-	TextBlockData d = findBlockData(position);		//	編集によりキャッシュが無効になる前に取得しておく
+	BlockData d = findBlockData(position);		//	編集によりキャッシュが無効になる前に取得しておく
 	m_buffer.insert(position, ptr, ptr + sz);
 	updateBlocksAtInsert(position, d, sz);
 #if 1
@@ -783,7 +783,7 @@ void TextDocument::do_replace(index_t first, index_t last, const QString &text)
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
 	const index_t hp_ix = m_undoMgr.addToHeap(m_buffer.begin() + first, m_buffer.begin() + last);
-	TextBlockData d = findBlockData(first);
+	BlockData d = findBlockData(first);
 	erase(first, last);
 	m_buffer.insert(first, ptr, ptr + sz);
 	updateBlocksAtInsert(first, d, sz);

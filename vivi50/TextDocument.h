@@ -204,9 +204,9 @@ public:
 	//	: m_document(document), m_blockNumber(blockNumber)
 	//	{}
 	DocBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)
-		: m_document(document), m_data(TextBlockData(blockNumber, blockPosition))
+		: m_document(document), m_data(BlockData(blockNumber, blockPosition))
 		{}
-	DocBlock(TextDocument *document, TextBlockData block)
+	DocBlock(TextDocument *document, BlockData block)
 		: m_document(document), m_data(block)
 		{}
 	DocBlock(const DocBlock &x)
@@ -226,7 +226,7 @@ public:
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
-	TextBlockData	data() const { return m_data; }
+	BlockData	data() const { return m_data; }
 	QString		text() const;
 	int			charsCount(index_t) const;		//	行頭から指定位置までの文字数を返す
 
@@ -243,7 +243,7 @@ public:
 
 private:
 	TextDocument	*m_document;
-	TextBlockData	m_data;
+	BlockData	m_data;
 };
 #endif
 
@@ -279,18 +279,18 @@ public:
 	bool	isMatchIgnoreCase(index_t, cuchar *, cuchar *) const;		//	単純比較関数
 	uchar	charEncoding() const { return m_charEncoding; }
 	bool	withBOM() const { return m_withBOM; }
-	TextBlockData blockData() const { return m_blockData; }
+	BlockData blockData() const { return m_blockData; }
 
-	TextBlockData	findBlockData(index_t position) const;
-	TextBlockData	nextBlockData(TextBlockData d) const
-	{ return TextBlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
-	TextBlockData	prevBlockData(TextBlockData d) const
+	BlockData	findBlockData(index_t position) const;
+	BlockData	nextBlockData(BlockData d) const
+	{ return BlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
+	BlockData	prevBlockData(BlockData d) const
 	{
 		if( !d.m_index )
-			return TextBlockData(INVALID_INDEX, 0);
+			return BlockData(INVALID_INDEX, 0);
 		else {
 			//size_t sz = m_blocks[d.m_index - 1].m_size;
-			return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
+			return BlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
 		}
 	}
 
@@ -324,17 +324,17 @@ public:
 	DocBlock	findBlockByNumberRaw(index_t) const;		//	ブロック番号（0..*）からブロックを取得
 
 	void	erase(index_t, index_t);
-	void	erase(index_t, TextBlockData, index_t);
+	void	erase(index_t, BlockData, index_t);
 	void	insert(index_t, const QString &);
 	void	insert(index_t ix, cuchar *first, cuchar *last);
-	void	insert(index_t, TextBlockData, const QString &);
-	void	insert(index_t ix, TextBlockData, cuchar *first, cuchar *last);
+	void	insert(index_t, BlockData, const QString &);
+	void	insert(index_t ix, BlockData, cuchar *first, cuchar *last);
 	void	setPlainText(const QString &);
 	//void	append(const QByteArray &);		//	UTF-8 配列
 	//void	updateBlocksAtInsert(index_t, size_t);
-	void	updateBlocksAtInsert(index_t, TextBlockData, size_t);
+	void	updateBlocksAtInsert(index_t, BlockData, size_t);
 	//void	updateBlocksAtErase(index_t, index_t);
-	void	updateBlocksAtErase(index_t, TextBlockData, index_t);
+	void	updateBlocksAtErase(index_t, BlockData, index_t);
 
 	void	do_insert(index_t, const QString &);	//	undo/redo 対応版
 	void	do_erase(index_t, index_t, ushort=0);				//	undo/redo 対応版
@@ -381,7 +381,7 @@ private:
 	mutable std::gap_vector<uchar>	m_buffer;
 	//mutable std::gap_vector<size_t>	m_blocks;		//	ブロックサイズ配列
 	mutable std::gap_vector<DocBlockItem>	m_blocks;		//	ブロック配列
-	mutable TextBlockData	m_blockData;			//	カレントブロック情報
+	mutable BlockData	m_blockData;			//	カレントブロック情報
 	//index_t		m_blockIndex;		//	カレントブロック情報
 	//index_t		m_blockPosition;	//	カレントブロック情報
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ

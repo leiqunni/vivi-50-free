@@ -68,7 +68,7 @@ public:
 		}
 #if TEXT_CURSOR_BLOCK
 	DocCursor(TextDocument *document, index_t position, index_t anchor,
-				TextBlockData blockData)
+				BlockData blockData)
 		: m_document(document), m_position(position), m_anchor(anchor)
 		, m_blockData(blockData)
 		{
@@ -98,8 +98,8 @@ public:
 	QString	selectedText() const;
 #if TEXT_CURSOR_BLOCK
 	DocBlock	block() const;
-	TextBlockData blockData() const { return m_blockData; }
-	TextBlockData anchorBlockData() const { return m_anchorBlockData; }
+	BlockData blockData() const { return m_blockData; }
+	BlockData anchorBlockData() const { return m_anchorBlockData; }
 	index_t	blockIndex() const { return m_blockData.m_index; }
 	index_t	blockPosition() const { return m_blockData.m_position; }
 	index_t	ancBlockIndex() const { return m_anchorBlockData.m_index; }
@@ -116,7 +116,7 @@ public:
 	void	copyAnchorToPosition();
 	void	swapPositionAnchor();
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
-	void	setPosition(index_t position, TextBlockData, uchar mode = MoveAnchor);
+	void	setPosition(index_t position, BlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
 	void	move(int);
 
@@ -135,8 +135,8 @@ protected:
 	index_t			m_anchor;		//	アンカー位置
 #if TEXT_CURSOR_BLOCK
 	index_t			m_offset;		//	行頭からのオフセット値（本来の値）
-	TextBlockData	m_blockData;
-	TextBlockData	m_anchorBlockData;
+	BlockData	m_blockData;
+	BlockData	m_anchorBlockData;
 #endif
 };
 
@@ -156,7 +156,7 @@ public:
 	ViewCursor(TextView *view = 0, index_t position = 0);
 	ViewCursor(TextView *view, index_t position, index_t anchor);
 	ViewCursor(TextView *view, index_t position, index_t anchor,
-				TextBlockData blockData);
+				BlockData blockData);
 	ViewCursor(const ViewCursor &x);
 	//ViewCursor(const DocCursor &x);
 	~ViewCursor() {}
@@ -169,7 +169,7 @@ public:
 	TextView	*view() { return m_view; }
 	//void	assign(const DocCursor &);
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
-	void	setPosition(index_t position, TextBlockData, uchar mode = MoveAnchor);
+	void	setPosition(index_t position, BlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
 
 	void	insertText(const QString &);
@@ -183,8 +183,8 @@ protected:
 
 private:
 	TextView	*m_view;
-	TextBlockData	m_viewBlockData;
-	TextBlockData	m_viewAnchorBlockData;
+	BlockData	m_viewBlockData;
+	BlockData	m_viewAnchorBlockData;
 };
 
 #endif		//_HEADER_TEXTCURSOR_H

@@ -73,22 +73,22 @@ public:
 	bool	hasMultiCursor() const { return !m_multiCursor.empty(); }
 	QString	toPlainText() const;
 	const TextDocument	*document() const { return m_document; }
-	size_t blockCount() const { return m_blocks.size(); }
-	TextBlockData	findBlockData(index_t position) const;
-	TextBlockData	nextBlockData(TextBlockData d) const
-	{ return TextBlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
-	TextBlockData	prevBlockData(TextBlockData d) const
+	//size_t blockCount() const { return m_blocks.size(); }
+	BlockData	findBlockData(index_t position) const;
+	BlockData	nextBlockData(BlockData d) const
+	{ return BlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
+	BlockData	prevBlockData(BlockData d) const
 	{
 		if( !d.m_index )
-			return TextBlockData(INVALID_INDEX, 0);
+			return BlockData(INVALID_INDEX, 0);
 		else {
 			//size_t sz = m_blocks[d.m_index - 1].m_size;
-			return TextBlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
+			return BlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
 		}
 	}
 	size_t	size() const;	// { return document()->size(); }
 	size_t	blockSize(index_t ix) const { return m_blocks[ix].m_size; }
-	size_t	lineCount() const;
+	size_t	blockCount() const;
 
 public:
 	TextDocument	*document() { return m_document; }
@@ -96,6 +96,9 @@ public:
 	void	onFontChanged();
 
 public:
+	ViewBlock	firstBlock();
+	ViewBlock	lastBlock();
+
 	void	deleteChar();
 	void	deletePreviousChar();
 	void	insertText(const QString &, bool = false);
@@ -152,8 +155,8 @@ protected:
 	void	clearMultiCursor() { m_multiCursor.clear(); }
 	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); }
 	void	getAllCursor(std::vector<ViewCursor*> &);
-	void	buildBlocks();
-	void	buildLines(DocBlock, int wd, int ht);
+	//void	buildBlocks();
+	void	buildBlocks(DocBlock, int wd, int ht);
 
     void	removeOverlappedCursor();
     DocBlock	firstVisibleBlock() const;
@@ -186,7 +189,7 @@ private:
 	//int		m_lineNumberNDigits;		//	桁数
 	QTimer	*m_timer;					//	タイマーオブジェクト
 	mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		//	ブロック配列
-	mutable TextBlockData	m_blockData;			//	カレントブロック情報
+	mutable BlockData	m_blockData;			//	カレントブロック情報
 
 	size_t	m_firstViewLine;
 	size_t	m_lastViewLine;

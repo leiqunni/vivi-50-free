@@ -14,3 +14,9 @@ ViewBlock::ViewBlock(TextView *view, const DocBlock &block)
 {
 }
 
+QString ViewBlock::text() const
+{
+	if( !isValid() ) return QString();
+	//if( index()
+	return QString();
+}
