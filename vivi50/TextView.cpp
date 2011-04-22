@@ -576,7 +576,7 @@ void TextView::inputMethodEvent ( QInputMethodEvent * event )
 		//qDebug() << "  insertText " << peText;
 		m_preeditPosCursor->setAnchor(m_textCursor->position());
 		insertText(*m_textCursor, m_preeditString);
-		m_preeditPosCursor->setPosition(m_textCursor->position(), TextCursor::KeepAnchor);
+		m_preeditPosCursor->setPosition(m_textCursor->position(), DocCursor::KeepAnchor);
 		m_toDeleteIMEPreeditText = true;
 		viewport()->update();
 	}
@@ -587,50 +587,50 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 	Qt::KeyboardModifiers mod = keyEvent->modifiers();
 	const bool ctrl = (mod & Qt::ControlModifier) != 0;
 	const bool shift = (mod & Qt::ShiftModifier) != 0;
-	const uchar mvMode = shift ? TextCursor::KeepAnchor : TextCursor::MoveAnchor;
+	const uchar mvMode = shift ? DocCursor::KeepAnchor : DocCursor::MoveAnchor;
 	uchar move = 0;
 	uint repCount = 1;
 	switch( keyEvent->key() ) {
 	case Qt::Key_Home:
 		if( ctrl )
-			move = TextCursor::StartOfDocument;
+			move = DocCursor::StartOfDocument;
 		else
-			move = TextCursor::StartOfBlock;
+			move = DocCursor::StartOfBlock;
 		break;;
 	case Qt::Key_End:
 		if( ctrl )
-			move = TextCursor::EndOfDocument;
+			move = DocCursor::EndOfDocument;
 		else
-			move = TextCursor::EndOfBlock;
+			move = DocCursor::EndOfBlock;
 		break;
 	case Qt::Key_Right:
 		if( ctrl )
-			move = TextCursor::NextWord;
+			move = DocCursor::NextWord;
 		else
-			move = TextCursor::Right;
+			move = DocCursor::Right;
 		break;
 	case Qt::Key_Left:
 		if( ctrl )
-			move = TextCursor::PrevWord;
+			move = DocCursor::PrevWord;
 		else
-			move = TextCursor::Left;
+			move = DocCursor::Left;
 		break;
 	case Qt::Key_Up:
-		move = TextCursor::Up;
+		move = DocCursor::Up;
 		break;
 	case Qt::Key_Down:
-		move = TextCursor::Down;
+		move = DocCursor::Down;
 		break;
 	case Qt::Key_PageUp:
 		repCount = verticalScrollBar()->pageStep();
 		verticalScrollBar()->setValue( qMax(0,
 								(int)(verticalScrollBar()->value() - repCount)));
-		move = TextCursor::Up;
+		move = DocCursor::Up;
 		break;
 	case Qt::Key_PageDown:
 		repCount = verticalScrollBar()->pageStep();
 		verticalScrollBar()->setValue( verticalScrollBar()->value() + repCount);
-		move = TextCursor::Down;
+		move = DocCursor::Down;
 		break;
 	case Qt::Key_Backspace:
 		if( !ctrl && !shift )
@@ -638,11 +638,11 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		else {
 			if( !m_textCursor->hasSelection() ) {
 				if( ctrl ) {
-					m_textCursor->movePosition(TextCursor::PrevWord, TextCursor::KeepAnchor);
+					m_textCursor->movePosition(DocCursor::PrevWord, DocCursor::KeepAnchor);
 					if( !m_textCursor->hasSelection() )
 						return;
 				} else if( shift ) {
-					m_textCursor->movePosition(TextCursor::StartOfBlock, TextCursor::KeepAnchor);
+					m_textCursor->movePosition(DocCursor::StartOfBlock, DocCursor::KeepAnchor);
 					if( !m_textCursor->hasSelection() )
 						return;
 				}
@@ -658,11 +658,11 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		else {
 			if( !m_textCursor->hasSelection() ) {
 				if( ctrl ) {
-					m_textCursor->movePosition(TextCursor::NextWord, TextCursor::KeepAnchor);
+					m_textCursor->movePosition(DocCursor::NextWord, DocCursor::KeepAnchor);
 					if( !m_textCursor->hasSelection() )
 						return;
 				} else if( shift ) {
-					m_textCursor->movePosition(TextCursor::EndOfBlock, TextCursor::KeepAnchor);
+					m_textCursor->movePosition(DocCursor::EndOfBlock, DocCursor::KeepAnchor);
 					if( !m_textCursor->hasSelection() )
 						return;
 				}
@@ -740,8 +740,8 @@ void TextView::setFontFamily(const QString &name)
 }
 void TextView::selectAll()
 {
-	m_textCursor->movePosition(TextCursor::StartOfDocument);
-	m_textCursor->movePosition(TextCursor::EndOfDocument, TextCursor::KeepAnchor);
+	m_textCursor->movePosition(DocCursor::StartOfDocument);
+	m_textCursor->movePosition(DocCursor::EndOfDocument, DocCursor::KeepAnchor);
 	ensureCursorVisible();
 	viewport()->update();
 }
@@ -810,7 +810,7 @@ void TextView::undo()
 		m_textCursor->setPosition(pos);
 	else {
 		m_textCursor->setPosition(anchor);
-		m_textCursor->setPosition(pos, TextCursor::KeepAnchor);
+		m_textCursor->setPosition(pos, DocCursor::KeepAnchor);
 	}
 	ensureCursorVisible();
 	viewport()->update();
@@ -851,7 +851,7 @@ void TextView::find()
 void TextView::doFindNext(const QString &text, ushort options)
 {
 	if( text.isEmpty() ) return;
-	TextCursor c = document()->find(text, *m_textCursor, options);
+	DocCursor c = document()->find(text, *m_textCursor, options);
 	if( !c.isNull() ) {
 		*m_textCursor = c;
 		ensureCursorVisible();
@@ -883,8 +883,8 @@ void TextView::findPrev()
 void TextView::findCurWord()
 {
 	if( !m_textCursor->hasSelection() ) {
-		m_textCursor->movePosition(TextCursor::StartOfWord);
-		m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
+		m_textCursor->movePosition(DocCursor::StartOfWord);
+		m_textCursor->movePosition(DocCursor::EndOfWord, DocCursor::KeepAnchor);
 	}
 	if( m_textCursor->hasSelection() ) {
 		QString text = m_textCursor->selectedText();
@@ -960,7 +960,7 @@ void TextView::drawLineNumbers()
 void TextView::doJump(int lineNum)
 {
 	ViewTextCursor cur(this);
-	if( cur.movePosition(TextCursor::Down, TextCursor::MoveAnchor, lineNum - 1) ) {
+	if( cur.movePosition(DocCursor::Down, DocCursor::MoveAnchor, lineNum - 1) ) {
 		*m_textCursor = cur;
 		ensureCursorVisible();
 		viewport()->update();
@@ -985,7 +985,7 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 	ViewTextCursor cur(*m_textCursor);
 	cur.setPosition(block.position());
 	if( offset != 0 )
-		cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, offset);
+		cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, offset);
 	if( ctrl ) {
 		std::vector<ViewTextCursor>::iterator itr = m_multiCursor.begin();
 		std::vector<ViewTextCursor>::iterator iend = m_multiCursor.end();
@@ -1011,17 +1011,17 @@ void TextView::mouseMoveEvent ( QMouseEvent * event )
 		if( !block.isValid() )
 			block = document()->lastBlock();
 		int offset = xToOffset(block.text(), event->x());
-		m_textCursor->setPosition(block.position(), TextCursor::KeepAnchor);
+		m_textCursor->setPosition(block.position(), DocCursor::KeepAnchor);
 		if( offset != 0 )
-			m_textCursor->movePosition(TextCursor::Right, TextCursor::KeepAnchor, offset);
+			m_textCursor->movePosition(DocCursor::Right, DocCursor::KeepAnchor, offset);
 		removeOverlappedCursor();
 		viewport()->update();
 	}
 }
 void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
 {
-	m_textCursor->movePosition(TextCursor::StartOfWord);
-	m_textCursor->movePosition(TextCursor::EndOfWord, TextCursor::KeepAnchor);
+	m_textCursor->movePosition(DocCursor::StartOfWord);
+	m_textCursor->movePosition(DocCursor::EndOfWord, DocCursor::KeepAnchor);
 	removeOverlappedCursor();
 	viewport()->update();
 }
@@ -1111,7 +1111,7 @@ void TextView::insertText(const QString &text, bool tab)
 					//	undone A BlockData ‚à—v•â³
 					(*k)->move(d);
 					//(*k)->setAnchor((*k)->anchor() + d);
-					//(*k)->setPosition((*k)->position() + d, TextCursor::KeepAnchor);
+					//(*k)->setPosition((*k)->position() + d, DocCursor::KeepAnchor);
 #if 0
 					if( (*k)->anchor() < (*k)->position() )
 						(*k)->setPosition((*k)->position() + d);
@@ -1133,7 +1133,7 @@ void TextView::insertText(const QString &text, bool tab)
 				for(std::vector<ViewTextCursor*>::iterator k = itr; ++k != iend; ) {
 					(*k)->move(sz);
 					//(*k)->setAnchor((*k)->anchor() + sz);
-					//(*k)->setPosition((*k)->position() + sz, TextCursor::KeepAnchor);
+					//(*k)->setPosition((*k)->position() + sz, DocCursor::KeepAnchor);
 				}
 				//print(v);
 			}

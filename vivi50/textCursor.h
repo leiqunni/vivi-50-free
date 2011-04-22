@@ -26,7 +26,7 @@ typedef size_t index_t;
 
 #define		INVALID_INDEX		0xffffffff
 
-class TextCursor
+class DocCursor
 {
 public:
 	enum {
@@ -49,7 +49,7 @@ public:
 		EndOfDocument,
 	};
 public:
-	TextCursor(TextDocument *document = 0, index_t position = 0)
+	DocCursor(TextDocument *document = 0, index_t position = 0)
 		: m_document(document), m_position(position), m_anchor(position)
 		{
 #if TEXT_CURSOR_BLOCK
@@ -57,7 +57,7 @@ public:
 			m_offset = m_position - m_blockData.index();
 #endif
 		}
-	TextCursor(TextDocument *document, index_t position, index_t anchor)
+	DocCursor(TextDocument *document, index_t position, index_t anchor)
 		: m_document(document), m_position(position), m_anchor(anchor)
 		{
 #if TEXT_CURSOR_BLOCK
@@ -66,7 +66,7 @@ public:
 #endif
 		}
 #if TEXT_CURSOR_BLOCK
-	TextCursor(TextDocument *document, index_t position, index_t anchor,
+	DocCursor(TextDocument *document, index_t position, index_t anchor,
 				TextBlockData blockData)
 		: m_document(document), m_position(position), m_anchor(anchor)
 		, m_blockData(blockData)
@@ -74,14 +74,14 @@ public:
 			m_offset = m_position - m_blockData.index();
 		}
 #endif
-	TextCursor(const TextCursor &x)
+	DocCursor(const DocCursor &x)
 		: m_document(x.m_document), m_position(x.m_position), m_anchor(x.m_anchor)
 #if TEXT_CURSOR_BLOCK
 		, m_offset(x.m_offset)
 		, m_blockData(x.m_blockData), m_anchorBlockData(x.m_anchorBlockData)
 #endif
 		{}
-	~TextCursor() {}
+	~DocCursor() {}
 
 public:
 	const TextDocument	*document() const { return m_document; }
@@ -93,7 +93,7 @@ public:
 	bool	hasSelection() const { return m_position != m_anchor; }
 	bool	isNull() const { return m_document == 0; }
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
-	bool	isOverlapped(const TextCursor &) const;
+	bool	isOverlapped(const DocCursor &) const;
 	QString	selectedText() const;
 #if TEXT_CURSOR_BLOCK
 	DocBlock	block() const;
@@ -105,7 +105,7 @@ public:
 	index_t	ancBlockPosition() const { return m_anchorBlockData.m_position; }
 #endif
 
-	bool	operator<(const TextCursor &x) const { return position() < x.position(); }
+	bool	operator<(const DocCursor &x) const { return position() < x.position(); }
 
 public:
 	TextDocument	*document() { return m_document; }
@@ -149,7 +149,7 @@ public:
 };
 
 //----------------------------------------------------------------------
-class ViewTextCursor : public TextCursor
+class ViewTextCursor : public DocCursor
 {
 public:
 	ViewTextCursor(TextView *view = 0, index_t position = 0);
@@ -157,7 +157,7 @@ public:
 	ViewTextCursor(TextView *view, index_t position, index_t anchor,
 				TextBlockData blockData);
 	ViewTextCursor(const ViewTextCursor &x);
-	//ViewTextCursor(const TextCursor &x);
+	//ViewTextCursor(const DocCursor &x);
 	~ViewTextCursor() {}
 
 public:
@@ -165,7 +165,7 @@ public:
 
 public:
 	TextView	*view() { return m_view; }
-	//void	assign(const TextCursor &);
+	//void	assign(const DocCursor &);
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
 	void	setPosition(index_t position, TextBlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
@@ -174,7 +174,7 @@ public:
 	void	deleteChar();
 	void	deletePreviousChar();
 
-	ViewTextCursor &operator=(const TextCursor &);
+	ViewTextCursor &operator=(const DocCursor &);
 
 protected:
 	void	updateBlockData(uchar mode = MoveAnchor);		//	m_blockIndex, m_blockPosition XV

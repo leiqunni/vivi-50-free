@@ -61,7 +61,7 @@ size_t getEOLOffset(const TextDocument *doc, TextBlockData d)
 }
 //----------------------------------------------------------------------
 #if TEXT_CURSOR_BLOCK
-void TextCursor::updateBlockData(uchar mode)
+void DocCursor::updateBlockData(uchar mode)
 {
 	if( !m_document ) {
 		m_blockData = TextBlockData(0, 0);
@@ -73,7 +73,7 @@ void TextCursor::updateBlockData(uchar mode)
 }
 #endif
 
-QString TextCursor::selectedText() const
+QString DocCursor::selectedText() const
 {
 	if( isNull() || !hasSelection() )
 		return QString();
@@ -92,7 +92,7 @@ QString TextCursor::selectedText() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
-int TextCursor::prevCharsCount() const
+int DocCursor::prevCharsCount() const
 {
 	if( isNull() ) return 0;
 	int cnt = 0;
@@ -103,19 +103,19 @@ int TextCursor::prevCharsCount() const
 	}
 	return cnt;
 }
-DocBlock TextCursor::block() const
+DocBlock DocCursor::block() const
 {
 	return DocBlock(m_document, m_blockData);
 }
 
-void TextCursor::copyPositionToAnchor()
+void DocCursor::copyPositionToAnchor()
 {
 	m_anchor = m_position;
 	m_anchorBlockData = m_blockData;
 	//m_ancBlockIndex = m_blockIndex;
 	//m_ancBlockPosition = m_blockPosition;
 }
-void TextCursor::copyAnchorToPosition()
+void DocCursor::copyAnchorToPosition()
 {
 	m_position = m_anchor;
 	m_blockData = m_anchorBlockData;
@@ -123,7 +123,7 @@ void TextCursor::copyAnchorToPosition()
 	//m_blockPosition = m_ancBlockPosition;
 }
 
-void TextCursor::swapPositionAnchor()
+void DocCursor::swapPositionAnchor()
 {
 	index_t t;
 	t = m_position; m_position = m_anchor; m_anchor = t;
@@ -133,12 +133,12 @@ void TextCursor::swapPositionAnchor()
 	//t = m_blockPosition; m_blockPosition = m_ancBlockPosition; m_ancBlockPosition = t;
 }
 
-void TextCursor::setAnchor(index_t anchor)
+void DocCursor::setAnchor(index_t anchor)
 {
 	m_anchor = anchor;
 	m_anchorBlockData = document()->findBlockData(anchor);
 }
-void TextCursor::setPosition(index_t position, uchar mode)
+void DocCursor::setPosition(index_t position, uchar mode)
 {
 	if( isNull() ) return;
 	m_position = position;
@@ -155,7 +155,7 @@ void TextCursor::setPosition(index_t position, uchar mode)
 #endif
 }
 #if TEXT_CURSOR_BLOCK
-void TextCursor::setPosition(index_t position, TextBlockData d, uchar mode)
+void DocCursor::setPosition(index_t position, TextBlockData d, uchar mode)
 {
 	if( isNull() ) return;
 	m_position = position;
@@ -169,7 +169,7 @@ void TextCursor::setPosition(index_t position, TextBlockData d, uchar mode)
 	}
 }
 #endif
-void TextCursor::move(int d)
+void DocCursor::move(int d)
 {
 	if( isNull() ) return;
 	m_position += d;
@@ -216,16 +216,16 @@ uchar getCharType(QChar ch)
 }
 
 //----------------------------------------------------------------------
-bool gotoNextWord(TextCursor &cur, int n = 1, bool cdy = false);
-bool gotoPrevWord(TextCursor &cur, int n = 1);
-bool gotoStartOfWord(TextCursor &cur);
-bool gotoEndOfWord(TextCursor &cur);
+bool gotoNextWord(DocCursor &cur, int n = 1, bool cdy = false);
+bool gotoPrevWord(DocCursor &cur, int n = 1);
+bool gotoStartOfWord(DocCursor &cur);
+bool gotoEndOfWord(DocCursor &cur);
 inline bool isTabOrSpace(const QChar ch)
 {
 	return ch == '\t' || ch == ' ';
 }
 
-bool gotoNextWord(TextCursor &cur, int n, bool cdy)
+bool gotoNextWord(DocCursor &cur, int n, bool cdy)
 {
 	const TextDocument *doc = cur.document();
 	DocBlock block = cur.block();
@@ -251,7 +251,7 @@ bool gotoNextWord(TextCursor &cur, int n, bool cdy)
 					break;
 				DocBlock nb = block.next();
 				if( !nb.isValid() ) {
-					cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
+					cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 					return true;
 				}
 				block = nb;
@@ -264,10 +264,10 @@ bool gotoNextWord(TextCursor &cur, int n, bool cdy)
 			}
 		}
 	}
-	cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
+	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
-bool gotoPrevWord(TextCursor &cur, int n)
+bool gotoPrevWord(DocCursor &cur, int n)
 {
 	const TextDocument *doc = cur.document();
 	DocBlock block = cur.block();
@@ -281,7 +281,7 @@ bool gotoPrevWord(TextCursor &cur, int n)
 			if( !ix ) {
 				DocBlock pb = block.prev();
 				if( !pb.isValid() ) {
-					cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
+					cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 					return true;
 				}
 				block = pb;
@@ -303,10 +303,10 @@ bool gotoPrevWord(TextCursor &cur, int n)
 			}
 		}
 	}
-	cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
+	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
-bool gotoStartOfWord(TextCursor &cur)
+bool gotoStartOfWord(DocCursor &cur)
 {
 	const TextDocument *doc = cur.document();
 	DocBlock block = cur.block();
@@ -322,10 +322,10 @@ bool gotoStartOfWord(TextCursor &cur)
 			do { } while( !isUTF8FirstChar((*doc)[--pos]) );
 		}
 	}
-	cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
+	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
-bool gotoEndOfWord(TextCursor &cur)
+bool gotoEndOfWord(DocCursor &cur)
 {
 	const TextDocument *doc = cur.document();
 	DocBlock block = cur.block();
@@ -343,10 +343,10 @@ bool gotoEndOfWord(TextCursor &cur)
 			pos += UTF8CharSize((*doc)[pos]);
 		}
 	}
-	cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
+	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
-bool TextCursor::movePosition(uchar move, uchar mode, uint n)
+bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 {
 	if( isNull() ) return false;
 	switch( move ) {
@@ -501,11 +501,11 @@ bool TextCursor::movePosition(uchar move, uchar mode, uint n)
 	}
 	return true;
 }
-bool TextCursor::atEnd() const
+bool DocCursor::atEnd() const
 {
 	return isNull() || m_position >= m_document->size();
 }
-bool TextCursor::isOverlapped(const TextCursor &x) const
+bool DocCursor::isOverlapped(const DocCursor &x) const
 {
 	if( !hasSelection() ) {
 		if( !x.hasSelection() )
@@ -524,7 +524,7 @@ bool TextCursor::isOverlapped(const TextCursor &x) const
 		return (last >= xfirst && xlast >= first);
 	}
 }
-size_t TextCursor::insertText(const QString &text)
+size_t DocCursor::insertText(const QString &text)
 {
 	if( isNull() ) return 0;
 	return m_document->insertText(*this, text);
@@ -551,12 +551,12 @@ size_t TextCursor::insertText(const QString &text)
 	movePosition(Right, MoveAnchor, text.length());
 #endif
 }
-void TextCursor::deleteChar()
+void DocCursor::deleteChar()
 {
 	if( isNull() ) return;
 	m_document->deleteChar(*this);
 }
-void TextCursor::deletePreviousChar()
+void DocCursor::deletePreviousChar()
 {
 	if( isNull() ) return;
 	m_document->deletePreviousChar(*this);
@@ -564,33 +564,33 @@ void TextCursor::deletePreviousChar()
 
 //----------------------------------------------------------------------
 ViewTextCursor::ViewTextCursor(TextView *view, index_t position)
-	: m_view(view), TextCursor(view ? view->document() : 0, position)
+	: m_view(view), DocCursor(view ? view->document() : 0, position)
 {
-	TextCursor::updateBlockData();
+	DocCursor::updateBlockData();
 	updateBlockData();
 }
 ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor)
-	: m_view(view), TextCursor(view ? view->document() : 0, position, anchor)
+	: m_view(view), DocCursor(view ? view->document() : 0, position, anchor)
 {
-	TextCursor::updateBlockData();
+	DocCursor::updateBlockData();
 	updateBlockData();
 }
 ViewTextCursor::ViewTextCursor(TextView *view, index_t position, index_t anchor,
 			TextBlockData blockData)
-	: m_view(view), TextCursor(view ? view->document() : 0, position, anchor, blockData)
+	: m_view(view), DocCursor(view ? view->document() : 0, position, anchor, blockData)
 {
-	TextCursor::updateBlockData();
+	DocCursor::updateBlockData();
 	updateBlockData();
 }
 ViewTextCursor::ViewTextCursor(const ViewTextCursor &x)
-	: m_view(x.m_view), TextCursor(x)
+	: m_view(x.m_view), DocCursor(x)
 {
 }
 void ViewTextCursor::setPosition(index_t position, uchar mode)
 {
 	if( isNull() ) return;
 	m_position = position;
-	TextCursor::updateBlockData(KeepAnchor);
+	DocCursor::updateBlockData(KeepAnchor);
 	updateBlockData(KeepAnchor);
 	if( mode == MoveAnchor ) {
 		m_anchor = m_position;
@@ -627,10 +627,10 @@ void ViewTextCursor::deletePreviousChar()
 }
 bool ViewTextCursor::movePosition(uchar move, uchar mode, uint n)
 {
-	if( !TextCursor::movePosition(move, mode, n) ) return false;
+	if( !DocCursor::movePosition(move, mode, n) ) return false;
 	return true;
 }
-ViewTextCursor &ViewTextCursor::operator=(const TextCursor &x)
+ViewTextCursor &ViewTextCursor::operator=(const DocCursor &x)
 {
 	if( isNull() ) return *this;
 	m_position = x.position();

@@ -126,64 +126,64 @@ void test_TextDocument()
 	if( 1 ) {
 		TextDocument doc;
 		doc.setPlainText(QString("123\nあいう\nかきくけこ\r\n漢字\r"));
-		TextCursor cur(&doc);		//	先頭位置
+		DocCursor cur(&doc);		//	先頭位置
 		ut.ut_test_equal(0, cur.position());
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(1, cur.position());
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(2, cur.position());
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(3, cur.position());		//	\n
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(4, cur.position());		//	あ
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(7, cur.position());		//	い
 
 	}
 	if( 1 ) {
 		TextDocument doc;
 		doc.setPlainText(QString("1x() File: hoge\nxyzあいう漢字\r"));
-		TextCursor cur(&doc);		//	先頭位置
+		DocCursor cur(&doc);		//	先頭位置
 		ut.ut_test_equal(0, cur.position());
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(2, cur.position());		//	(
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(5, cur.position());		//	File
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(9, cur.position());		//	:
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(11, cur.position());		//	h
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(15, cur.position());		//	\n
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(16, cur.position());		//	x
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(19, cur.position());		//	あ
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(28, cur.position());		//	漢
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(34, cur.position());		//	\r
-		cur.movePosition(TextCursor::NextWord);
+		cur.movePosition(DocCursor::NextWord);
 		ut.ut_test_equal(35, cur.position());		//	EOF
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(34, cur.position());		//	\r
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(28, cur.position());		//	漢
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(19, cur.position());		//	あ
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(16, cur.position());		//	x
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(15, cur.position());		//	\n
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(11, cur.position());		//	h
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(9, cur.position());		//	:
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(5, cur.position());		//	File
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(2, cur.position());		//	(
-		cur.movePosition(TextCursor::PrevWord);
+		cur.movePosition(DocCursor::PrevWord);
 		ut.ut_test_equal(0, cur.position());		//	1
 	}
 	if( 1 ) {
@@ -333,15 +333,15 @@ void test_TextDocument()
 		doc.do_insert(0, "123\nxyzzz\nxyZZZ\n");
 		ut.ut_test( doc.find(QString("abc")).isNull() );
 		ut.ut_test( !doc.find(QString("xyZ")).isNull() );
-		TextCursor c = doc.find(QString("xyZ"), 0, MatchCase);
+		DocCursor c = doc.find(QString("xyZ"), 0, MatchCase);
 		ut.ut_test_equal(10, c.anchor() );
 		ut.ut_test_equal(13, c.position() );
 	}
-	if( 1 ) {		//	TextCursor::insert() テスト
+	if( 1 ) {		//	DocCursor::insert() テスト
 		TextDocument doc;
 		doc.setPlainText(QString("0123\n"));
 		ut.ut_test_equal(5, doc.firstBlock().size());
-		TextCursor cur(&doc);
+		DocCursor cur(&doc);
 		cur.setPosition(1);
 		cur.insertText(QString("XYZ"));
 		ut.ut_test_equal(4, cur.position());
@@ -358,7 +358,7 @@ void test_TextDocument()
 		ut.ut_test_equal(QString("0XYZ123\n"), doc.firstBlock().text());
 
 		cur.setPosition(1);
-		cur.setPosition(4, TextCursor::KeepAnchor);		//	[1, 4) を選択
+		cur.setPosition(4, DocCursor::KeepAnchor);		//	[1, 4) を選択
 		cur.insertText(QString("7"));
 		ut.ut_test_equal(2, cur.position());
 		ut.ut_test_equal(6, doc.firstBlock().size());
@@ -374,7 +374,7 @@ void test_TextDocument()
 	}
 	if( 1 ) {
 		TextDocument doc;
-		TextCursor cur(&doc);
+		DocCursor cur(&doc);
 		cur.insertText("abc\n");
 		ut.ut_test_equal(4, cur.position());
 		ut.ut_test_equal(1, cur.blockData().index());
@@ -385,7 +385,7 @@ void test_TextDocument()
 	}
 	if( 1 ) {
 		TextDocument doc;
-		TextCursor cur(&doc);
+		DocCursor cur(&doc);
 		cur.insertText("abc");
 		cur.insertText("\n");
 		ut.ut_test_equal(4, cur.position());
@@ -398,39 +398,39 @@ void test_TextDocument()
 	if( 1 ) {
 		TextDocument doc;
 		doc.setPlainText(QString("12\r\nxyzzz\n"));
-		TextCursor cur(&doc);
-		cur.movePosition(TextCursor::Right);
+		DocCursor cur(&doc);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(1, cur.position());		//	2
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(2, cur.position());		//	\r\n
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(4, cur.position());		//	x
-		cur.movePosition(TextCursor::Left);
+		cur.movePosition(DocCursor::Left);
 		ut.ut_test_equal(2, cur.position());		//	\r\n
-		cur.movePosition(TextCursor::Left);
+		cur.movePosition(DocCursor::Left);
 		ut.ut_test_equal(1, cur.position());		//	2
 	}
 	if( 1 ) {		//	カーソル上下移動テスト
 		TextDocument doc;
 		doc.setPlainText(QString("12\r\nxyzzz\n"));
-		TextCursor cur(&doc);
-		cur.movePosition(TextCursor::Down);
+		DocCursor cur(&doc);
+		cur.movePosition(DocCursor::Down);
 		ut.ut_test_equal(4, cur.position());		//	x
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		ut.ut_test_equal(10, cur.position());		//	EOF
-		cur.movePosition(TextCursor::Up);
+		cur.movePosition(DocCursor::Up);
 		ut.ut_test_equal(4, cur.position());		//	x
-		cur.movePosition(TextCursor::Up);
+		cur.movePosition(DocCursor::Up);
 		ut.ut_test_equal(0, cur.position());		//	1
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(1, cur.position());		//	2
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		ut.ut_test_equal(5, cur.position());		//	y
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		ut.ut_test_equal(10, cur.position());		//	EOF
-		cur.movePosition(TextCursor::Up);
+		cur.movePosition(DocCursor::Up);
 		ut.ut_test_equal(5, cur.position());		//	y
-		cur.movePosition(TextCursor::Up);
+		cur.movePosition(DocCursor::Up);
 		ut.ut_test_equal(1, cur.position());		//	2
 	}
 	if( 1 ) {
@@ -438,9 +438,9 @@ void test_TextDocument()
 		doc->setPlainText(QString("12345\n98765\n"));
 		ut.ut_test_equal(QString("12345\n"), doc->firstBlock().text());
 		ut.ut_test_equal(6, doc->firstBlock().size());
-		TextCursor cur(doc);
+		DocCursor cur(doc);
 		cur.setPosition(5);
-		cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 		cur.insertText("abcde");
 		ut.ut_test_equal(QString("12345abcde765\n"), doc->firstBlock().text());
 		ut.ut_test_equal(14, doc->firstBlock().size());
@@ -451,12 +451,12 @@ void test_TextDocument()
 		doc->setPlainText(QString("12345\n98765\n"));
 		ut.ut_test_equal(QString("12345\n"), doc->firstBlock().text());
 		ut.ut_test_equal(6, doc->firstBlock().size());
-		TextCursor cur(doc);
-		cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+		DocCursor cur(doc);
+		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 		cur.insertText("XYZ");
-		cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, 2);	//	２文字進める
+		cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 2);	//	２文字進める
 		ut.ut_test_equal(5, cur.position());
-		cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 		cur.insertText("ABCDE");
 		ut.ut_test_equal(QString("XYZ45ABCDE765\n"), doc->firstBlock().text());
 		ut.ut_test_equal(14, doc->firstBlock().size());
@@ -467,29 +467,29 @@ void test_TextDocument()
 		doc->setPlainText(QString("0123456789\n9876543210\n"));
 		ut.ut_test_equal(QString("0123456789\n"), doc->firstBlock().text());
 		ut.ut_test_equal(11, doc->firstBlock().size());
-		TextCursor cur(doc);
+		DocCursor cur(doc);
 		if( !cur.atEnd() ) {
-			cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 			cur.insertText("abcde");
 			ut.ut_test_equal(QString("abcde3456789\n"), doc->firstBlock().text());
 			ut.ut_test_equal(13, doc->firstBlock().size());
 			ut.ut_test_equal(5, cur.position());
-			cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, 2);	//	２文字進める
+			cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 2);	//	２文字進める
 			ut.ut_test_equal(7, cur.position());
 		}
 		if( !cur.atEnd() ) {
-			cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 			cur.insertText("abcde");
 			ut.ut_test_equal(QString("abcde34abcde89\n"), doc->firstBlock().text());
 			ut.ut_test_equal(15, doc->firstBlock().size());
 			ut.ut_test_equal(12, cur.position());
-			cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, 2);	//	２文字進める
+			cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 2);	//	２文字進める
 			ut.ut_test_equal(14, cur.position());
 			ut.ut_test_equal(0, cur.blockIndex());
 			ut.ut_test_equal(0, cur.blockPosition());
 		}
 		if( !cur.atEnd() ) {
-			cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 			ut.ut_test_equal(1, cur.blockIndex());
 			ut.ut_test_equal(15, cur.blockPosition());
 			ut.ut_test_equal(3, doc->blockCount());
@@ -499,34 +499,34 @@ void test_TextDocument()
 			ut.ut_test_equal(28, doc->firstBlock().size());
 			ut.ut_test_equal(QString("abcde34abcde89ABCDE76543210\n"), doc->firstBlock().text());
 			ut.ut_test_equal(19, cur.position());
-			cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, 2);	//	２文字進める
+			cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 2);	//	２文字進める
 			ut.ut_test_equal(21, cur.position());
 		}
 		if( !cur.atEnd() ) {
-			cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 			cur.insertText("abcde");
 			ut.ut_test_equal(26, cur.position());
-			cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, 2);	//	２文字進める
+			cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 2);	//	２文字進める
 			ut.ut_test_equal(28, cur.position());
 		}
 		if( !cur.atEnd() ) {
-			cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 			cur.insertText("abcde");
 			ut.ut_test_equal(33, cur.position());
-			cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, 2);	//	２文字進める
+			cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 2);	//	２文字進める
 			ut.ut_test( cur.atEnd() );
 			ut.ut_test_equal(33, cur.position());
 		}
 		if( !cur.atEnd() ) {
-			cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 			cur.insertText("abcde");
-			cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, 2);	//	２文字進める
+			cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 2);	//	２文字進める
 		}
 		delete doc;
 	}
 	if( 1 ) {		//	findBlockByNumber() テスト
 		TextDocument doc;
-		TextCursor cur(&doc);		//	先頭位置
+		DocCursor cur(&doc);		//	先頭位置
 		const QString text("123456789\n");
 		const int nLines = 100;
 		for(int i = 0; i < nLines; ++i)
@@ -549,7 +549,7 @@ void test_TextDocument()
 	}
 	if( 1 ) {		//	findBlockByNumber() テスト、編集操作後
 		TextDocument doc;
-		TextCursor cur(&doc);		//	先頭位置
+		DocCursor cur(&doc);		//	先頭位置
 		const QString text("123456789\n");
 		const int nLines = 100;
 		for(int i = 0; i < nLines; ++i)
@@ -565,7 +565,7 @@ void test_TextDocument()
 	}
 	if( 1 ) {		//	findBlockData() テスト、キャッシュが中央にある場合
 		TextDocument doc;
-		TextCursor cur(&doc);		//	先頭位置
+		DocCursor cur(&doc);		//	先頭位置
 		const QString text("123456789\n");		//	10byte テキスト
 		const int nLines = 30;
 		for(int i = 0; i < nLines; ++i)
@@ -587,7 +587,7 @@ void test_TextDocument()
 	}
 	if( 1 ) {		//	findBlockIndex() テスト、キャッシュが中央にある場合
 		TextDocument doc;
-		TextCursor cur(&doc);		//	先頭位置
+		DocCursor cur(&doc);		//	先頭位置
 		const QString text("123456789\n");		//	10byte テキスト
 		const int nLines = 100;
 		for(int i = 0; i < nLines; ++i)
@@ -607,8 +607,8 @@ void test_TextDocument()
 	if( 1 ) {
 		TextDocument doc;
 		doc.setPlainText(QString("xyz\n12345\n"));
-		TextCursor cur(&doc);		//	先頭位置
-		cur.setPosition(3, TextCursor::KeepAnchor);
+		DocCursor cur(&doc);		//	先頭位置
+		cur.setPosition(3, DocCursor::KeepAnchor);
 		doc.insertText(cur, QString("1234567"), true);
 		ut.ut_test_equal(0, cur.anchor());
 		ut.ut_test_equal(7, cur.position());
@@ -637,7 +637,7 @@ void test_TextView()
 		cur.setPosition(0);
 		ut.ut_test_equal(0, cur.position());
 		ut.ut_test_equal(0, cur.anchor());
-		cur.movePosition(TextCursor::Right);
+		cur.movePosition(DocCursor::Right);
 		ut.ut_test_equal(1, cur.position());
 	}
 	if( 1 ) {
@@ -660,13 +660,13 @@ void test_TextView()
 		doc->setPlainText(QString("\n\n\n\n\n"));	//	改行＊５行
 		ViewTextCursor cur(&view);
 		view.addToMultiCursor(cur);			//	1行目
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		view.addToMultiCursor(cur);			//	2行目
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		view.addToMultiCursor(cur);			//	3行目
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		view.addToMultiCursor(cur);			//	4行目
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		view.setTextCursor(cur);			//	メインカーソル：5行目
 		view.insertText("=");
 		view.getAllCursor(v);
@@ -698,10 +698,10 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\nxyz\n123\nABC\n"));
 		ViewTextCursor cur(&view);
-		cur.setPosition(3, TextCursor::KeepAnchor);		//	1行目 abc 選択
+		cur.setPosition(3, DocCursor::KeepAnchor);		//	1行目 abc 選択
 		view.addToMultiCursor(cur);
 		cur.setPosition(8);
-		cur.setPosition(11, TextCursor::KeepAnchor);	//	3行目 123 選択
+		cur.setPosition(11, DocCursor::KeepAnchor);	//	3行目 123 選択
 		view.setTextCursor(cur);			//	メインカーソル
 		view.insertText("=");
 		ut.ut_test_equal(QString("=\nxyz\n=\nABC\n"), doc->toPlainText());
@@ -717,13 +717,13 @@ void test_TextView()
 		doc->setPlainText(QString("abc\nabc\nabc\nabc\nabc\n"));	//	５行
 		ViewTextCursor cur(&view);
 		view.addToMultiCursor(cur);			//	1行目
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		view.addToMultiCursor(cur);			//	2行目
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		view.addToMultiCursor(cur);			//	3行目
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		view.addToMultiCursor(cur);			//	4行目
-		cur.movePosition(TextCursor::Down);
+		cur.movePosition(DocCursor::Down);
 		view.setTextCursor(cur);			//	メインカーソル：5行目
 		view.deleteChar();
 		ut.ut_test_equal(QString("bc\nbc\nbc\nbc\nbc\n"), doc->toPlainText());
@@ -738,10 +738,10 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\nabc\nabc\nabc\nabc\n"));	//	５行
 		ViewTextCursor cur(&view);
-		cur.setPosition(3, TextCursor::KeepAnchor);		//	1行目 abc 選択
+		cur.setPosition(3, DocCursor::KeepAnchor);		//	1行目 abc 選択
 		view.addToMultiCursor(cur);
 		cur.setPosition(8);
-		cur.setPosition(11, TextCursor::KeepAnchor);	//	3行目 abc 選択
+		cur.setPosition(11, DocCursor::KeepAnchor);	//	3行目 abc 選択
 		view.setTextCursor(cur);			//	メインカーソル
 		view.deleteChar();
 		ut.ut_test_equal(QString("\nabc\n\nabc\nabc\n"), doc->toPlainText());
@@ -756,10 +756,10 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\n1234567\n"));
 		ViewTextCursor cur(&view);
-		cur.setPosition(3, TextCursor::KeepAnchor);
+		cur.setPosition(3, DocCursor::KeepAnchor);
 		view.addToMultiCursor(cur);
 		cur.setPosition(4);
-		cur.setPosition(11, TextCursor::KeepAnchor);
+		cur.setPosition(11, DocCursor::KeepAnchor);
 		view.setTextCursor(cur);			//	メインカーソル
 		view.insertText(QString("\t"), true);	//	ローテイト
 		ut.ut_test_equal(8, doc->blockSize(0));
@@ -786,7 +786,7 @@ void test_TextView()
 		QFontMetrics fm = view.fontMetrics();
 		const int wd = fm.width(QString("あいうえお"));
 		const int ht = fm.lineSpacing() * 10;
-		TextCursor cur(doc);
+		DocCursor cur(doc);
 		view.buildLines(cur.block(), wd, ht);		//	最初からレイアウト
 		ut.ut_test_equal(7, view.lineCount());
 

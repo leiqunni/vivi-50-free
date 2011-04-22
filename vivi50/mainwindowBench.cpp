@@ -46,7 +46,7 @@ void q_findBlockByNumber(uint n)
 void v_findBlockByNumber(uint n)
 {
 	TextDocument doc;
-	TextCursor c(&doc);
+	DocCursor c(&doc);
 	QString text = "XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。\n";
 	for(uint i = 0; i < n; ++i)
 		c.insertText(text);
@@ -76,16 +76,16 @@ void q_replace35_mv7(uint n)
 void do_replace35_mv7(uint n)
 {
 	TextDocument doc;
-	TextCursor c(&doc);
+	DocCursor c(&doc);
 	QString text = "XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。\n";
 	for(uint i = 0; i < n; ++i)
 		c.insertText(text);
 	boost::timer tm;
-	TextCursor cur(&doc);
+	DocCursor cur(&doc);
 	while( !cur.atEnd() ) {
-		cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor, 3);	//	３文字選択
+		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, 3);	//	３文字選択
 		cur.insertText("abcde");
-		cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, 7);
+		cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 7);
 	}
 	const double dur = tm.elapsed();
 	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));
@@ -116,14 +116,14 @@ void q_replace_XYZ_Abcde(uint n)
 void d_replace_XYZ_Abcde(uint n)
 {
 	TextDocument doc;
-	TextCursor c(&doc);
+	DocCursor c(&doc);
 	QString text = "XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。\n";
 	for(uint i = 0; i < n; ++i)
 		c.insertText(text);
 	boost::timer tm;
-	TextCursor cur(&doc);
+	DocCursor cur(&doc);
 	for(;;) {
-		TextCursor c = doc.find("XYZ", cur);
+		DocCursor c = doc.find("XYZ", cur);
 		if( c.isNull() ) break;
 		c.insertText("Abcde");
 		cur = c;
@@ -162,14 +162,14 @@ void q_replace_Abcde_XYZ(uint n)
 void d_replace_Abcde_XYZ(uint n)
 {
 	TextDocument doc;
-	TextCursor c(&doc);
+	DocCursor c(&doc);
 	QString text = "Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。\n";
 	for(uint i = 0; i < n; ++i)
 		c.insertText(text);
 	boost::timer tm;
-	TextCursor cur(&doc);
+	DocCursor cur(&doc);
 	for(;;) {
-		TextCursor c = doc.find("Abcde", cur);
+		DocCursor c = doc.find("Abcde", cur);
 		if( c.isNull() ) break;
 		c.insertText("XYZ");
 		cur = c;
@@ -212,7 +212,7 @@ void MainWindow::doBenchmark()
 #endif
 
 #if 0
-	doOutput("seq-access by TextCursor:\n");
+	doOutput("seq-access by DocCursor:\n");
 	doOutput("  QTextDocument:\n");
 	q_seqAccessByCursor(1000);
 	q_seqAccessByCursor(10000);

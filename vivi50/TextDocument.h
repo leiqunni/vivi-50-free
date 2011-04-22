@@ -34,7 +34,7 @@ typedef unsigned char uchar;
 typedef const unsigned char cuchar;
 
 #define		INVALID_INDEX		0xffffffff
-class TextCursor;
+class DocCursor;
 
 //typedef std::gap_vector<uchar> GV_utf8;
 
@@ -338,17 +338,17 @@ public:
 	void	do_erase(index_t, index_t, ushort=0);				//	undo/redo ‘Î‰ž”Å
 	void	do_replace(index_t, index_t, const QString &);		//	undo/redo ‘Î‰ž”Å
 
-	int		insertText(TextCursor&, const QString &, bool = false);
-	size_t	deleteChar(TextCursor&);
-	size_t	deletePreviousChar(TextCursor&);
+	int		insertText(DocCursor&, const QString &, bool = false);
+	size_t	deleteChar(DocCursor&);
+	size_t	deletePreviousChar(DocCursor&);
 
 	void	doUndo(index_t &pos, index_t &); //{ m_undoMgr.doUndo(this, pos); }
 	void	doRedo(index_t &pos, index_t &); //{ m_undoMgr.doRedo(this, pos); }
 
-	TextCursor	find(const QString &, index_t = 0, ushort=0);
-	TextCursor	find(const QString &, const TextCursor &, ushort=0);
-	TextCursor	find(const QByteArray &, index_t = 0, ushort=0);
-	bool	isMatched(const QString &, const TextCursor &, ushort=0);
+	DocCursor	find(const QString &, index_t = 0, ushort=0);
+	DocCursor	find(const QString &, const DocCursor &, ushort=0);
+	DocCursor	find(const QByteArray &, index_t = 0, ushort=0);
+	bool	isMatched(const QString &, const DocCursor &, ushort=0);
 	void	doReplaceAll(const QString &, ushort, const QString &);
 	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }
 	void	setWithBOM(bool b) { m_withBOM = b; }

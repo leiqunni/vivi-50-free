@@ -32,7 +32,7 @@
 class TextView;
 class ViewTextCursor;
 class TextDocument;
-class TextCursor;
+class DocCursor;
 class DocBlock;
 //class QElapsedTimer;
 class QTimer;
@@ -172,7 +172,7 @@ private:
 	ViewTextCursor	m_viewTextCursor;
 	std::vector<ViewTextCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる
-	TextCursor	*m_preeditPosCursor;
+	DocCursor	*m_preeditPosCursor;
 	QString	m_preeditString;
 	TextDocument	*m_document;
 	ViewTextCursor	*m_textCursor;		//	ビュー用カーソル

@@ -655,13 +655,13 @@ void TextDocument::append(const QByteArray &utf8)
 	buildBlocks();
 }
 #endif
-size_t TextDocument::deleteChar(TextCursor &cur)
+size_t TextDocument::deleteChar(DocCursor &cur)
 {
 	if( cur.isNull() || cur.document() != this )
 		return 0;
 	ushort flags = 0;		//
 	if( !cur.hasSelection() )
-		cur.movePosition(TextCursor::Right, TextCursor::KeepAnchor);
+		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor);
 	else if( cur.position() < cur.anchor() )
 		cur.swapPositionAnchor();
 	else
@@ -677,13 +677,13 @@ size_t TextDocument::deleteChar(TextCursor &cur)
 	emit contentsChanged();
 	return last - first;
 }
-size_t TextDocument::deletePreviousChar(TextCursor &cur)
+size_t TextDocument::deletePreviousChar(DocCursor &cur)
 {
 	if( cur.isNull() || cur.document() != this )
 		return 0;
 	if( cur.hasSelection() )
 		return deleteChar(cur);
-	cur.movePosition(TextCursor::Left, TextCursor::KeepAnchor);
+	cur.movePosition(DocCursor::Left, DocCursor::KeepAnchor);
 	index_t first = cur.position();
 	index_t last = cur.anchor();
 	if( first == last ) return 0;
@@ -695,7 +695,7 @@ size_t TextDocument::deletePreviousChar(TextCursor &cur)
 	emit contentsChanged();
 	return last - first;
 }
-int TextDocument::insertText(TextCursor &cur, const QString &text,
+int TextDocument::insertText(DocCursor &cur, const QString &text,
 								bool select)		//	挿入範囲を選択
 {
 	if( cur.isNull() || cur.document() != this )
@@ -731,10 +731,10 @@ int TextDocument::insertText(TextCursor &cur, const QString &text,
 	m_blockData = cur.blockData();		//	キャッシュ更新
 	if( select ) {
 		cur.setAnchor(cur.position());
-		cur.setPosition(cur.position() + sz, TextCursor::KeepAnchor);
+		cur.setPosition(cur.position() + sz, DocCursor::KeepAnchor);
 	} else
 		cur.setPosition(cur.position() + sz);
-	//cur.movePosition(TextCursor::Right, TextCursor::MoveAnchor, text.length());
+	//cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, text.length());
 	//m_blockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(position, delSz, sz);
@@ -838,7 +838,7 @@ bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *la
 	}
 	return true;
 }
-bool TextDocument::isMatched(const QString &text, const TextCursor &cur, ushort options)
+bool TextDocument::isMatched(const QString &text, const DocCursor &cur, ushort options)
 {
 	if( text.isEmpty() ) return false;
 	if( !cur.hasSelection() ) return false;		//	とりあえず選択領域とのみ比較する
@@ -848,7 +848,7 @@ bool TextDocument::isMatched(const QString &text, const TextCursor &cur, ushort 
 	else
 		return 0 == text.compare(buf, Qt::CaseInsensitive);
 }
-TextCursor TextDocument::find(const QString &text, const TextCursor &cur, ushort options)
+DocCursor TextDocument::find(const QString &text, const DocCursor &cur, ushort options)
 {
 	if( cur.hasSelection() &&
 		((options & FindBackWard) == 0 && cur.anchor() > cur.position() ||
@@ -858,13 +858,13 @@ TextCursor TextDocument::find(const QString &text, const TextCursor &cur, ushort
 	}
 	return find(text, cur.position(), options);
 }
-TextCursor TextDocument::find(const QString &text, index_t position, ushort options)
+DocCursor TextDocument::find(const QString &text, index_t position, ushort options)
 {
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(text);
 	return find(ba, position, options);
 }
-TextCursor TextDocument::find(const QByteArray &ba, index_t position, ushort options)
+DocCursor TextDocument::find(const QByteArray &ba, index_t position, ushort options)
 {
 	const int sz = ba.length();
 	const uchar *ptr = (const uchar *)(ba.data());
@@ -872,8 +872,8 @@ TextCursor TextDocument::find(const QByteArray &ba, index_t position, ushort opt
 	if( (options & FindBackWard) == 0 ) {
 		while( position < size() ) {
 			if( isMatch(position, ptr, ptr + sz, options) ) {
-				TextCursor c(this, position);
-				c.setPosition(position + sz, TextCursor::KeepAnchor);
+				DocCursor c(this, position);
+				c.setPosition(position + sz, DocCursor::KeepAnchor);
 				return c;
 			}
 			++position;
@@ -882,13 +882,13 @@ TextCursor TextDocument::find(const QByteArray &ba, index_t position, ushort opt
 		while( position > 0 ) {
 			--position;
 			if( isMatchIgnoreCase(position, ptr, ptr + sz) ) {
-				TextCursor c(this, position);
-				c.setPosition(position + sz, TextCursor::KeepAnchor);
+				DocCursor c(this, position);
+				c.setPosition(position + sz, DocCursor::KeepAnchor);
 				return c;
 			}
 		}
 	}
-	return TextCursor();	//	null cursor
+	return DocCursor();	//	null cursor
 }
 void TextDocument::doReplaceAll(const QString &findText, ushort options,
 							const QString &replaceText)
@@ -897,7 +897,7 @@ void TextDocument::doReplaceAll(const QString &findText, ushort options,
 	QByteArray ba = codec->fromUnicode(findText);
 	openUndoBlock();
 	for(index_t position = 0;;) {
-		TextCursor cur = find(ba, position, options);
+		DocCursor cur = find(ba, position, options);
 		if( cur.isNull() ) break;
 		//	undone P 置換テキストもUTF8にあらかじめ変換しておく
 		insertText(cur, replaceText);
