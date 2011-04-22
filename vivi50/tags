@@ -96,7 +96,7 @@ MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QW
 MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^    class MainWindowClass: public Ui_MainWindowClass {};$/;"	c	namespace:Ui
 MatchCase	.\findOpt.h	/^	MatchCase = 0x01,$/;"	e	enum:__anon4
-MaxRecentFiles	.\mainwindow.h	/^    enum { MaxRecentFiles = 10 };$/;"	e	enum:MainWindow::__anon5
+MaxRecentFiles	.\mainwindow.h	/^    enum { MaxRecentFiles = 10 };$/;"	e	enum:MainWindow::__anon1
 MoveAnchor	.\textCursor.h	/^		MoveAnchor = 0,$/;"	e	enum:DocCursor::__anon6
 NextWord	.\textCursor.h	/^		NextWord,$/;"	e	enum:DocCursor::__anon7
 NoMove	.\textCursor.h	/^		NoMove = 0,$/;"	e	enum:DocCursor::__anon7
@@ -285,8 +285,8 @@ doFindNext	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNe
 doFindNext	.\GeneratedFiles\Release\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg
 doFindNext	.\GeneratedFiles\Release\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:ReplaceDlg
 doFindNext	.\TextView.cpp	/^void TextView::doFindNext(const QString &text, ushort options)$/;"	f	class:TextView
-doJump	.\TextView.cpp	/^void TextView::doJump(int lineNum)$/;"	f	class:TextView
 doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
+doJump	.\TextView.cpp	/^void TextView::doJump(int lineNum)$/;"	f	class:TextView
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
 doRedo	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doRedo()$/;"	f	class:ReplaceDlg
 doRedo	.\GeneratedFiles\Release\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doRedo()$/;"	f	class:ReplaceDlg
@@ -329,8 +329,8 @@ erase	.\gap_vector.h	/^	iterator erase(const iterator &itr)$/;"	f	class:std::gap
 erase	.\gap_vector.h	/^	void erase(index_type first, index_type last)$/;"	f	class:std::gap_vector
 erase	.\gap_vector.h	/^	void erase(index_type ix)$/;"	f	class:std::gap_vector
 event	.\TextView.cpp	/^bool TextView::event ( QEvent * event )$/;"	f	class:TextView
-eventFilter	.\TextView.cpp	/^bool TextView::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:TextView
 eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
+eventFilter	.\TextView.cpp	/^bool TextView::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:TextView
 expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector
 fileMenu	.\mainwindow.h	/^    QMenu	*fileMenu;$/;"	m	class:MainWindow
 find	.\TextDocument.cpp	/^DocCursor TextDocument::find(const QByteArray &ba, index_t position, ushort options)$/;"	f	class:TextDocument
@@ -408,8 +408,8 @@ index_t	.\gap_vector.h	/^typedef size_t index_t;$/;"	t
 index_t	.\textBlock.h	/^typedef size_t index_t;$/;"	t
 index_t	.\textCursor.h	/^typedef size_t index_t;$/;"	t
 index_type	.\gap_vector.h	/^	typedef uint index_type;			\/\/	バッファインデックス [0, size()]$/;"	t	class:std::gap_vector
-init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
 init	.\mainwindow.cpp	/^void MainWindow::init()$/;"	f	class:MainWindow
+init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
 inputMethodEvent	.\TextView.cpp	/^void TextView::inputMethodEvent ( QInputMethodEvent * event )$/;"	f	class:TextView
 inputMethodQuery	.\TextView.cpp	/^QVariant TextView::inputMethodQuery ( Qt::InputMethodQuery query ) const$/;"	f	class:TextView
 insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t ix, TextBlockData d,$/;"	f	class:TextDocument
@@ -456,8 +456,8 @@ lastPosition	.\textCursor.h	/^	index_t lastPosition() const { return qMax(positi
 length	.\textBlock.h	/^	size_t		length() const { return size(); }$/;"	f	class:DocBlock
 lineCount	.\TextView.cpp	/^size_t TextView::lineCount() const$/;"	f	class:TextView
 lineNumberLength	.\TextView.cpp	/^int TextView::lineNumberLength() const$/;"	f	class:TextView
-loadFile	.\charEncoding.cpp	/^bool loadFile(const QString &fileName, QString &buffer, QString &errorString,$/;"	f
 loadFile	.\mainwindow.cpp	/^void MainWindow::loadFile(const QString &fileName, int lineNum)$/;"	f	class:MainWindow
+loadFile	.\charEncoding.cpp	/^bool loadFile(const QString &fileName, QString &buffer, QString &errorString,$/;"	f
 m_absFilePath	.\mainwindow.h	/^	QString	m_absFilePath;$/;"	m	class:MainWindow
 m_anchor	.\textCursor.h	/^	index_t			m_anchor;		\/\/	アンカー位置$/;"	m	class:DocCursor
 m_anchorBlockData	.\textCursor.h	/^	TextBlockData	m_anchorBlockData;$/;"	m	class:DocCursor
@@ -539,6 +539,8 @@ m_type	.\TextDocument.h	/^	uchar	m_type;$/;"	m	struct:GVUndoItem
 m_undoBlockLevel	.\TextDocument.h	/^	uint	m_undoBlockLevel;$/;"	m	class:GVUndoMgr
 m_undoMgr	.\TextDocument.h	/^	GVUndoMgr	m_undoMgr;$/;"	m	class:TextDocument
 m_unitName	.\unit_test.h	/^	QString	m_unitName;$/;"	m	class:CUnitTest
+m_unitTestDoc	.\mainwindow.h	/^	bool	m_unitTestDoc;$/;"	m	class:MainWindow
+m_unitTestView	.\mainwindow.h	/^	bool	m_unitTestView;$/;"	m	class:MainWindow
 m_view	.\mainwindow.h	/^	TextView	*m_view;$/;"	m	class:MainWindow
 m_view	.\textBlock.h	/^	TextView	*m_view;$/;"	m	class:ViewBlock
 m_view	.\textCursor.h	/^	TextView	*m_view;$/;"	m	class:ViewCursor
@@ -596,6 +598,8 @@ onReplaceAll	.\ReplaceDlg.cpp	/^void ReplaceDlg::onReplaceAll()$/;"	f	class:Repl
 onReplaceFind	.\ReplaceDlg.cpp	/^void ReplaceDlg::onReplaceFind()$/;"	f	class:ReplaceDlg
 onTimer	.\TextView.cpp	/^void TextView::onTimer()$/;"	f	class:TextView
 onUndo	.\ReplaceDlg.h	/^	void	onUndo() { doUndo(); }$/;"	f	class:ReplaceDlg
+onUnitTestDoc	.\mainwindow.cpp	/^void MainWindow::onUnitTestDoc(bool b)$/;"	f	class:MainWindow
+onUnitTestView	.\mainwindow.cpp	/^void MainWindow::onUnitTestView(bool b)$/;"	f	class:MainWindow
 onWordWrap	.\TextView.cpp	/^void TextView::onWordWrap(bool b)$/;"	f	class:TextView
 open	.\mainwindow.cpp	/^void MainWindow::open()$/;"	f	class:MainWindow
 open	.\mainwindow.cpp	/^void MainWindow::open(const QString &fileName)$/;"	f	class:MainWindow
@@ -726,9 +730,9 @@ setWithBOM	.\TextDocument.h	/^	void	setWithBOM(bool b) { m_withBOM = b; }$/;"	f	
 settingsMenu	.\mainwindow.h	/^    QMenu	*settingsMenu;$/;"	m	class:MainWindow
 setupUi	.\GeneratedFiles\ui_mainwindow.h	/^    void setupUi(QMainWindow *MainWindowClass)$/;"	f	class:Ui_MainWindowClass
 showAboutDlg	.\mainwindow.cpp	/^void MainWindow::showAboutDlg()$/;"	f	class:MainWindow
+showMessage	.\mainwindow.cpp	/^void MainWindow::showMessage(const QString & text)$/;"	f	class:MainWindow
 showMessage	.\GeneratedFiles\Debug\moc_TextView.cpp	/^void TextView::showMessage(const QString & _t1)$/;"	f	class:TextView
 showMessage	.\GeneratedFiles\Release\moc_TextView.cpp	/^void TextView::showMessage(const QString & _t1)$/;"	f	class:TextView
-showMessage	.\mainwindow.cpp	/^void MainWindow::showMessage(const QString & text)$/;"	f	class:MainWindow
 size	.\TextDocument.cpp	/^size_t DocBlock::size() const$/;"	f	class:DocBlock
 size	.\TextDocument.h	/^	size_t	size() const { return m_buffer.size(); }$/;"	f	class:TextDocument
 size	.\TextView.cpp	/^size_t TextView::size() const$/;"	f	class:TextView
@@ -761,6 +765,8 @@ uint	.\unit_test.h	/^typedef unsigned int uint;$/;"	t
 undo	.\TextView.cpp	/^void TextView::undo()$/;"	f	class:TextView
 undoAct	.\mainwindow.h	/^    QAction *undoAct;$/;"	m	class:MainWindow
 unitTestAct	.\mainwindow.h	/^    QAction	*unitTestAct;$/;"	m	class:MainWindow
+unitTestDocAct	.\mainwindow.h	/^    QAction	*unitTestDocAct;$/;"	m	class:MainWindow
+unitTestViewAct	.\mainwindow.h	/^    QAction	*unitTestViewAct;$/;"	m	class:MainWindow
 unit_test	.\unit_test.cpp	/^namespace unit_test {$/;"	n	file:
 unit_test	.\unit_test.h	/^namespace unit_test {$/;"	n
 updateBlockData	.\textCursor.cpp	/^void DocCursor::updateBlockData(uchar mode)$/;"	f	class:DocCursor

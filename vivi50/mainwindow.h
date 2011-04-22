@@ -81,8 +81,10 @@ private slots:
 	void	showMessage(const QString & text);
 	void	printBuffer();
 	void	font();
-	void doUnitTest();
-	void doBenchmark();
+	void	doUnitTest();
+	void	onUnitTestDoc(bool);
+	void	onUnitTestView(bool);
+	void	doBenchmark();
 
 private:
 	TextView	*m_view;
@@ -91,6 +93,8 @@ private:
 	QString	m_absFilePath;
 	bool	m_isUntitled;
 	bool	m_isModified;
+	bool	m_unitTestDoc;
+	bool	m_unitTestView;
 
     QMenu	*fileMenu;
     QMenu	*editMenu;
@@ -121,6 +125,8 @@ private:
 
 	QAction	*printBufferAct;
     QAction	*unitTestAct;
+    QAction	*unitTestDocAct;
+    QAction	*unitTestViewAct;
     QAction	*benchmarkAct;
 
     QAction *separatorMRUAct;

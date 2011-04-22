@@ -53,6 +53,8 @@ void MainWindow::init()
 {
 	m_isUntitled = true;
 	m_isModified = false;
+	m_unitTestDoc = true;
+	m_unitTestView = true;
 	m_view = new TextView;
     QSettings settings;    const QString fontName = settings.value("fontName", "").toString();
     const int fontSize = settings.value("fontSize", 0).toInt();
@@ -194,6 +196,15 @@ void MainWindow::createActions()
     benchmarkAct = new QAction(QIcon(":vivi/Resources/images/Clock.png"), tr("&Benchmark"), this);
     benchmarkAct->setStatusTip(tr("benchmark Tests"));
     connect(benchmarkAct, SIGNAL(triggered()), this, SLOT(doBenchmark()));
+
+	unitTestDocAct = new QAction(tr("unitTest&Document"), this);
+    unitTestDocAct->setCheckable(true);
+    unitTestDocAct->setChecked(true);
+    connect(unitTestDocAct, SIGNAL(toggled(bool)), this, SLOT(onUnitTestDoc(bool)));
+	unitTestViewAct = new QAction(tr("unitTest&View"), this);
+    unitTestViewAct->setCheckable(true);
+    unitTestViewAct->setChecked(true);
+    connect(unitTestViewAct, SIGNAL(toggled(bool)), this, SLOT(onUnitTestView(bool)));
 }
 void MainWindow::createMenus()
 {
@@ -237,6 +248,10 @@ void MainWindow::createMenus()
 	otherMenu->addAction(aboutAct);
 	otherMenu->addAction(printBufferAct);
 	otherMenu->addAction(unitTestAct);
+	QMenu *unitTestOpt = new QMenu("unitTestOptions");
+		unitTestOpt->addAction(unitTestDocAct);
+		unitTestOpt->addAction(unitTestViewAct);
+	otherMenu->addMenu(unitTestOpt);
 	otherMenu->addAction(benchmarkAct);
 }
 void MainWindow::createToolBars()
@@ -278,6 +293,16 @@ void MainWindow::createDockWindows()
     viewMenu->addAction(dock->toggleViewAction());
 	m_output->viewport()->installEventFilter(this);
 }
+void MainWindow::onUnitTestDoc(bool b)
+{
+    QSettings settings;
+    settings.setValue("unitTestDoc", m_unitTestDoc = b);
+}
+void MainWindow::onUnitTestView(bool b)
+{
+    QSettings settings;
+    settings.setValue("unitTestView", m_unitTestView = b);
+}
 void MainWindow::readSettings()
 {
     QSettings settings;
@@ -285,6 +310,10 @@ void MainWindow::readSettings()
     QSize size = settings.value("size", QSize(400, 400)).toSize();
     move(pos);
     resize(size);
+    m_unitTestDoc = settings.value("unitTestDoc", true).toBool();
+    unitTestDocAct->setChecked(m_unitTestDoc);
+    m_unitTestView = settings.value("unitTestView", true).toBool();
+    unitTestViewAct->setChecked(m_unitTestView);
 }
 void MainWindow::writeSettings()
 {

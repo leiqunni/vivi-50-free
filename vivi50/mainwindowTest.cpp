@@ -60,8 +60,10 @@ void MainWindow::doUnitTest()
 		ut.ut_test_equal(QString("abc"), QString("xyzzz"));
 		ut.ut_test_equal(QString("あいうえお"), QString("かきくけこ"));
 	}
-	test_TextDocument();
-	test_TextView();
+	if( m_unitTestDoc )
+		test_TextDocument();
+	if( m_unitTestView )
+		test_TextView();
 	QString temp;
 	if( !g_total_fail_count ) {
 		temp = QString("おめでとぉ、テスト失敗がひとつもありませんでした。(%1 tested)\n")
