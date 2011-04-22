@@ -60,7 +60,7 @@ enum {
 };
 
 class TextDocument;
-class TextBlock;
+class DocBlock;
 
 //----------------------------------------------------------------------
 //	undo/redo 文字列の格納にヒープを用い、undoItem クラスは継承をやめ、type でディスパッチする
@@ -196,25 +196,25 @@ public:
 };
 //----------------------------------------------------------------------
 
-class TextBlock
+class DocBlock
 {
 public:
-	//TextBlock(TextDocument *document, index_t blockNumber)
+	//DocBlock(TextDocument *document, index_t blockNumber)
 	//	: m_document(document), m_blockNumber(blockNumber)
 	//	{}
-	TextBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)
+	DocBlock(TextDocument *document, index_t blockNumber, index_t blockPosition)
 		: m_document(document), m_data(TextBlockData(blockNumber, blockPosition))
 		{}
-	TextBlock(TextDocument *document, TextBlockData block)
+	DocBlock(TextDocument *document, TextBlockData block)
 		: m_document(document), m_data(block)
 		{}
-	TextBlock(const TextBlock &x)
+	DocBlock(const DocBlock &x)
 		: m_document(x.m_document)
 #if	BLOCK_HAS_SIZE
 		, m_data(x.m_data)
 #endif
 		{}
-	~TextBlock() {}
+	~DocBlock() {}
 
 public:
 	size_t		size() const;		//	改行を含めたコード長
@@ -229,16 +229,16 @@ public:
 	QString		text() const;
 	int			charsCount(index_t) const;		//	行頭から指定位置までの文字数を返す
 
-	bool	operator==(const TextBlock &x) const
+	bool	operator==(const DocBlock &x) const
 	{ return m_document == x.m_document && blockNumber() == x.blockNumber(); }
-	bool	operator!=(const TextBlock &x) const
+	bool	operator!=(const DocBlock &x) const
 	{ return !this->operator==(x); }
-	bool	operator<(const TextBlock &x) const
+	bool	operator<(const DocBlock &x) const
 	{ return m_document == x.m_document && blockNumber() < x.blockNumber(); }
 
 public:
-	TextBlock	next() const;
-	TextBlock	prev() const;
+	DocBlock	next() const;
+	DocBlock	prev() const;
 
 private:
 	TextDocument	*m_document;
@@ -306,20 +306,20 @@ public:
 	void	closeUndoBlock() { m_undoMgr.closeUndoBlock(); }
 
 #if BLOCK_HAS_SIZE
-	TextBlock	firstBlock() { return TextBlock(this, 0, 0); }
-	TextBlock	lastBlock()
+	DocBlock	firstBlock() { return DocBlock(this, 0, 0); }
+	DocBlock	lastBlock()
 	{
-		return TextBlock(this, blockCount() - 1,
+		return DocBlock(this, blockCount() - 1,
 						size() - m_blocks[blockCount() - 1].m_size);
 	}
 #else
-	TextBlock	firstBlock() { return TextBlock(this, 0); }
-	TextBlock	lastBlock() { return TextBlock(this, blockCount() - 1); }
+	DocBlock	firstBlock() { return DocBlock(this, 0); }
+	DocBlock	lastBlock() { return DocBlock(this, blockCount() - 1); }
 #endif
-	TextBlock	findBlock(index_t) const;
+	DocBlock	findBlock(index_t) const;
 	index_t		findBlockIndex(index_t position, index_t *pBlockPos = 0) const;
-	TextBlock	findBlockByNumber(index_t) const;		//	ブロック番号（0..*）からブロックを取得
-	TextBlock	findBlockByNumberRaw(index_t) const;		//	ブロック番号（0..*）からブロックを取得
+	DocBlock	findBlockByNumber(index_t) const;		//	ブロック番号（0..*）からブロックを取得
+	DocBlock	findBlockByNumberRaw(index_t) const;		//	ブロック番号（0..*）からブロックを取得
 
 	void	erase(index_t, index_t);
 	void	erase(index_t, TextBlockData, index_t);

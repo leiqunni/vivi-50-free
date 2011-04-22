@@ -13,12 +13,12 @@ memFileColumnWd = 320
 #define HIST_LIMIT 30
 #define MARGIN_LEFT 4
 #define INVALID_INDEX 0
-#define PTR_ALLOCATOR 0
 #define TEXT_CURSOR_BLOCK 1
+#define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define GV_USE_ITR_FACADE 1
 #define BLOCK_HAS_SIZE 1
+#define GV_USE_ITR_FACADE 1
 [globalMarks]
 [files]
   gap_vector.h	(-94.078,307.793)
@@ -26,17 +26,17 @@ memFileColumnWd = 320
   mainwindow.cpp	(-128.265,-196.142)
   mainwindow.h	(-128.265,-229.142)
 * TextDocument.cpp	(-163.875,183.766)
-  TextDocument.h	(-163.875,150.766)
-* C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
-  mainwindowBench.cpp	(-128.265,-163.142)
+* TextDocument.h	(-163.875,150.766)
+  C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
+* mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
   unit_test.h	(173.104,-115.746)
-  mainwindowTest.cpp	(-128.265,-130.142)
+* mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
   textBlockData.h	(-364.713,168.24)
-  textCursor.cpp	(-269.316,2.9752)
-  textCursor.h	(-269.316,-30.0248)
+* textCursor.cpp	(-269.316,2.9752)
+* textCursor.h	(-269.316,-30.0248)
 * TextView.cpp	(67.6123,12.1353)
 * TextView.h	(67.6123,-20.8647)
   FindDlg.cpp	(76.637,183.277)

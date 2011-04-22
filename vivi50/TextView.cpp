@@ -48,7 +48,7 @@ void print(const std::vector<ViewTextCursor*> &v)
 														iend = v.end();
 		itr != iend; ++itr)
 	{
-		TextBlock block = (*itr)->block();
+		DocBlock block = (*itr)->block();
 		qDebug() << "anc = " << (*itr)->anchor()
 					<< ", pos = " << (*itr)->position()
 					<< ", block = " << block.index() << " " << block.position();
@@ -291,14 +291,14 @@ int TextView::offsetToX(const QString &text, int offset) const
 	return x;
 }
 
-TextBlock TextView::yToTextBlock(int py) const
+DocBlock TextView::yToTextBlock(int py) const
 {
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
 	QFontMetrics fm = fontMetrics();
 
 	int y = 0;
-	TextBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
+	DocBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	while( y < vr.height() && block.isValid() ) {
 		const int nextY = y + fm.lineSpacing();
 		if( py < nextY )
@@ -308,14 +308,14 @@ TextBlock TextView::yToTextBlock(int py) const
 	}
 	return block;
 }
-TextBlock TextView::firstVisibleBlock() const
+DocBlock TextView::firstVisibleBlock() const
 {
 	//QFontMetrics fm = fontMetrics();
 	return m_document->findBlockByNumber(verticalScrollBar()->value());
 }
-int TextView::textBlockToY(const TextBlock &block) const
+int TextView::textBlockToY(const DocBlock &block) const
 {
-	TextBlock fvBlock = firstVisibleBlock();
+	DocBlock fvBlock = firstVisibleBlock();
 	if( block < fvBlock ) return -1;
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
@@ -340,7 +340,7 @@ void TextView::paintEvent(QPaintEvent * event)
 
 	const index_t lastBlockNumber = m_document->lastBlock().blockNumber();
 	int y = 0;
-	TextBlock block = firstVisibleBlock();
+	DocBlock block = firstVisibleBlock();
 		//m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 
 	//	マルチカーソル選択状態表示
@@ -389,7 +389,7 @@ void TextView::paintEvent(QPaintEvent * event)
 	block = firstVisibleBlock();
 		//m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	//qDebug() << "firstVisibleBlock.index = " << block.index();
-	//TextBlock block = m_document->firstBlock();
+	//DocBlock block = m_document->firstBlock();
 	std::vector<ViewTextCursor>::const_iterator mcitr = m_multiCursor.begin();
 	std::vector<ViewTextCursor>::const_iterator mciend = m_multiCursor.end();
 	while( y < vr.height() && block.isValid() ) {
@@ -476,8 +476,8 @@ void TextView::paintEvent(QPaintEvent * event)
 }
 void TextView::ensureCursorVisible()
 {
-	TextBlock fvBlock = firstVisibleBlock();
-	TextBlock curBlock = m_textCursor->block();
+	DocBlock fvBlock = firstVisibleBlock();
+	DocBlock curBlock = m_textCursor->block();
 	if( curBlock.blockNumber() < fvBlock.blockNumber() ) {
 		verticalScrollBar()->setValue(/*fm.lineSpacing() **/ curBlock.blockNumber());
 		viewport()->update();
@@ -538,7 +538,7 @@ bool TextView::event ( QEvent * event )
 QVariant TextView::inputMethodQuery ( Qt::InputMethodQuery query ) const
 {
 	if( query == Qt::ImMicroFocus ) {
-		TextBlock block = m_textCursor->block();
+		DocBlock block = m_textCursor->block();
 		int x = offsetToX(block.text(), block.charsCount(m_preeditPosCursor->anchor()));
 		int y = textBlockToY(block);
 		return QVariant(QRect(m_lineNumberAreaWidth + x, y, 20, 20));
@@ -935,7 +935,7 @@ void TextView::drawLineNumbers()
 	painter.fillRect(ar, Qt::lightGray);
 	//const int ht = fontMetrics().height();
 	//QTextCursor cur = textCursor();
-	TextBlock block = firstVisibleBlock();
+	DocBlock block = firstVisibleBlock();
     int lineNumber = block.blockNumber() + 1;
 	QFontMetrics fm = fontMetrics();
     int y = 0;
@@ -976,7 +976,7 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 	Qt::KeyboardModifiers mod = event->modifiers();
 	const bool ctrl = (mod & Qt::ControlModifier) != 0;
 	const bool shift = (mod & Qt::ShiftModifier) != 0;
-	TextBlock block = yToTextBlock(event->y());
+	DocBlock block = yToTextBlock(event->y());
 	if( !block.isValid() )
 		block = document()->lastBlock();
 	//qDebug() << "block index = " << block.index();
@@ -1007,7 +1007,7 @@ void TextView::mouseReleaseEvent ( QMouseEvent * event )
 void TextView::mouseMoveEvent ( QMouseEvent * event )
 {
 	if( m_mouseCaptured ) {
-		TextBlock block = yToTextBlock(event->y());
+		DocBlock block = yToTextBlock(event->y());
 		if( !block.isValid() )
 			block = document()->lastBlock();
 		int offset = xToOffset(block.text(), event->x());
@@ -1161,7 +1161,7 @@ void TextView::buildBlocks()
 	QFontMetrics fm = fontMetrics();
 	m_blocks.clear();
 	//m_blocks.push_back(ViewTextBlockItem(0));
-	TextBlock block = document()->firstBlock();
+	DocBlock block = document()->firstBlock();
 	while( block.isValid() ) {
 		index_t pos = block.position();
 		index_t blockPos = pos;
@@ -1196,12 +1196,12 @@ void TextView::onWordWrap(bool b)
 	m_wordWrapLongLines = b;
 	viewport()->update();
 }
-void TextView::buildLines(TextBlock block, int wd, int ht)
+void TextView::buildLines(DocBlock block, int wd, int ht)
 {
 	QFontMetrics fm = fontMetrics();
 	m_viewLines.clear();
 	//m_blocks.push_back(ViewTextBlockItem(0));
-	//TextBlock block = document()->firstBlock();
+	//DocBlock block = document()->firstBlock();
 	index_t blockIndex = block.index();
 	m_firstViewLine = blockIndex;
 	while( block.isValid() ) {

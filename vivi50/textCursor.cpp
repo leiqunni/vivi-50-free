@@ -103,9 +103,9 @@ int TextCursor::prevCharsCount() const
 	}
 	return cnt;
 }
-TextBlock TextCursor::block() const
+DocBlock TextCursor::block() const
 {
-	return TextBlock(m_document, m_blockData);
+	return DocBlock(m_document, m_blockData);
 }
 
 void TextCursor::copyPositionToAnchor()
@@ -228,7 +228,7 @@ inline bool isTabOrSpace(const QChar ch)
 bool gotoNextWord(TextCursor &cur, int n, bool cdy)
 {
 	const TextDocument *doc = cur.document();
-	TextBlock block = cur.block();
+	DocBlock block = cur.block();
 	//int blockPos = block.position();
 	QString text = block.text();
 	int pos = cur.position();
@@ -249,7 +249,7 @@ bool gotoNextWord(TextCursor &cur, int n, bool cdy)
 			if( ix == text.length() ) {
 				if( cdy && !n )	//	cdy が前置されている場合は、最後の改行はスキップしない
 					break;
-				TextBlock nb = block.next();
+				DocBlock nb = block.next();
 				if( !nb.isValid() ) {
 					cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
 					return true;
@@ -270,7 +270,7 @@ bool gotoNextWord(TextCursor &cur, int n, bool cdy)
 bool gotoPrevWord(TextCursor &cur, int n)
 {
 	const TextDocument *doc = cur.document();
-	TextBlock block = cur.block();
+	DocBlock block = cur.block();
 	//int blockPos = block.position();
 	QString text = block.text();
 	int pos = cur.position();
@@ -279,7 +279,7 @@ bool gotoPrevWord(TextCursor &cur, int n)
 		//	ひとつ前の文字が空白類 or 行頭なら文書先頭方向に移動
 		while( !ix || isTabOrSpace(text[ix-1]) ) {
 			if( !ix ) {
-				TextBlock pb = block.prev();
+				DocBlock pb = block.prev();
 				if( !pb.isValid() ) {
 					cur.setPosition(pos, block.data(), TextCursor::KeepAnchor);
 					return true;
@@ -309,7 +309,7 @@ bool gotoPrevWord(TextCursor &cur, int n)
 bool gotoStartOfWord(TextCursor &cur)
 {
 	const TextDocument *doc = cur.document();
-	TextBlock block = cur.block();
+	DocBlock block = cur.block();
 	QString text = block.text();
 	int pos = cur.position();
 	int ix = cur.prevCharsCount();
@@ -328,7 +328,7 @@ bool gotoStartOfWord(TextCursor &cur)
 bool gotoEndOfWord(TextCursor &cur)
 {
 	const TextDocument *doc = cur.document();
-	TextBlock block = cur.block();
+	DocBlock block = cur.block();
 	//int blockPos = block.position();
 	QString text = block.text();
 	int pos = cur.position();
@@ -530,7 +530,7 @@ size_t TextCursor::insertText(const QString &text)
 	return m_document->insertText(*this, text);
 #if 0
 	{
-		TextBlock bk = block();
+		DocBlock bk = block();
 		size_t len = bk.length();
 	}
 	if( hasSelection() ) { 		//	done B 選択状態の場合
@@ -545,7 +545,7 @@ size_t TextCursor::insertText(const QString &text)
 	} else
 		m_document->do_insert(m_position, text);
 	{
-		TextBlock bk = block();
+		DocBlock bk = block();
 		size_t len = bk.length();
 	}
 	movePosition(Right, MoveAnchor, text.length());

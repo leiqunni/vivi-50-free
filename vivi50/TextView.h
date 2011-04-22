@@ -33,7 +33,7 @@ class TextView;
 class ViewTextCursor;
 class TextDocument;
 class TextCursor;
-class TextBlock;
+class DocBlock;
 //class QElapsedTimer;
 class QTimer;
 
@@ -124,8 +124,8 @@ public slots:
 protected:
 	int		offsetToX(const QString &, int) const;		//	第２引数は文字数
 	int		xToOffset(const QString &, int) const;		//	
-	TextBlock	yToTextBlock(int) const;
-	int		textBlockToY(const TextBlock&) const;		//	垂直スクロールを考慮した、block Y座標を返す
+	DocBlock	yToTextBlock(int) const;
+	int		textBlockToY(const DocBlock&) const;		//	垂直スクロールを考慮した、block Y座標を返す
 														//	画面外の場合は -1 を返す
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);
@@ -150,10 +150,10 @@ protected:
 	void	addToMultiCursor(const ViewTextCursor &cur) { m_multiCursor.push_back(cur); }
 	void	getAllCursor(std::vector<ViewTextCursor*> &);
 	void	buildBlocks();
-	void	buildLines(TextBlock, int wd, int ht);
+	void	buildLines(DocBlock, int wd, int ht);
 
     void	removeOverlappedCursor();
-    TextBlock	firstVisibleBlock() const;
+    DocBlock	firstVisibleBlock() const;
     void	ensureCursorVisible();
 	int		lineNumberLength() const;			//	最大行番号桁数
 

@@ -60,7 +60,7 @@ void MainWindow::doUnitTest()
 		ut.ut_test_equal(QString("abc"), QString("xyzzz"));
 		ut.ut_test_equal(QString("あいうえお"), QString("かきくけこ"));
 	}
-	//test_TextDocument();
+	test_TextDocument();
 	test_TextView();
 	QString temp;
 	if( !g_total_fail_count ) {
@@ -90,7 +90,7 @@ void test_TextDocument()
 		ut.ut_test_equal(17, doc.size());
 		ut.ut_test_equal(4, doc.blockCount());
 
-		TextBlock block = doc.firstBlock();
+		DocBlock block = doc.firstBlock();
 		ut.ut_test_equal(4, block.size());			//	改行を含めたサイズ
 		ut.ut_test_equal("123\n", block.text());	//	改行を含めたテキスト
 		block = block.next();
@@ -532,17 +532,17 @@ void test_TextDocument()
 		for(int i = 0; i < nLines; ++i)
 			cur.insertText(text);
 		for(int i = 0; i < nLines; ++i) {
-			TextBlock block = doc.findBlockByNumber(i);
+			DocBlock block = doc.findBlockByNumber(i);
 			ut.ut_test_equal(i*10, block.position());
 			ut.ut_test_equal(i, block.blockNumber());
 		}
 		for(int i = 0; i < nLines; i += 2) {
-			TextBlock block = doc.findBlockByNumber(i);
+			DocBlock block = doc.findBlockByNumber(i);
 			ut.ut_test_equal(i*10, block.position());
 			ut.ut_test_equal(i, block.blockNumber());
 		}
 		for(int i = nLines; --i >= 0;) {
-			TextBlock block = doc.findBlockByNumber(i);
+			DocBlock block = doc.findBlockByNumber(i);
 			ut.ut_test_equal(i*10, block.position());
 			ut.ut_test_equal(i, block.blockNumber());
 		}
@@ -554,7 +554,7 @@ void test_TextDocument()
 		const int nLines = 100;
 		for(int i = 0; i < nLines; ++i)
 			cur.insertText(text);
-		TextBlock block = doc.findBlockByNumber(50);
+		DocBlock block = doc.findBlockByNumber(50);
 		ut.ut_test_equal(50*10, block.position());
 		ut.ut_test_equal(50, block.blockNumber());
 		cur.setPosition(0);
@@ -576,7 +576,7 @@ void test_TextDocument()
 			ut.ut_test_equal(i, d.m_index);
 			ut.ut_test_equal(i*10, d.m_position);
 		}
-		TextBlock block = doc.findBlockByNumber(15);
+		DocBlock block = doc.findBlockByNumber(15);
 		doc.m_blockData.m_index = block.blockNumber();		//	キャッシュ有り
 		doc.m_blockData.m_position = block.position();
 		for(int i = 0; i <= nLines; ++i) {
@@ -592,7 +592,7 @@ void test_TextDocument()
 		const int nLines = 100;
 		for(int i = 0; i < nLines; ++i)
 			cur.insertText(text);
-		TextBlock block = doc.findBlockByNumber(50);
+		DocBlock block = doc.findBlockByNumber(50);
 		doc.m_blockData.m_index = block.blockNumber();
 		doc.m_blockData.m_position = block.position();
 		index_t blockPos;

@@ -52,7 +52,7 @@ void v_findBlockByNumber(uint n)
 		c.insertText(text);
 	boost::timer tm;
 	for(size_t i = 0; i < doc.blockCount(); ++i)
-		TextBlock block = doc.findBlockByNumber(i);
+		DocBlock block = doc.findBlockByNumber(i);
 	const double dur = tm.elapsed();
 	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));
 }
@@ -130,7 +130,7 @@ void d_replace_XYZ_Abcde(uint n)
 	}
 	const double dur = tm.elapsed();
 	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));
-	TextBlock block = doc.firstBlock();
+	DocBlock block = doc.firstBlock();
 	for(uint i = 0; i < n; ++i, block = block.next()) {
 		if( block.text() != "Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。Abcde入ってる。\n" )
 			pMainWindow->doOutput(QString("\tfailed at line %1\n").arg(i + 1));
@@ -176,7 +176,7 @@ void d_replace_Abcde_XYZ(uint n)
 	}
 	const double dur = tm.elapsed();
 	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));
-	TextBlock block = doc.firstBlock();
+	DocBlock block = doc.firstBlock();
 	for(uint i = 0; i < n; ++i, block = block.next()) {
 		if( block.text() != "XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。XYZ入ってる。\n" )
 			pMainWindow->doOutput(QString("\tfailed at line %1\n").arg(i + 1));
@@ -224,7 +224,7 @@ void MainWindow::doBenchmark()
 #endif
 
 #if 0
-	doOutput("seq-access by TextBlock:\n");
+	doOutput("seq-access by DocBlock:\n");
 	doOutput("  QTextDocument:\n");
 	q_seqAccessByBlock(100000);
 	doOutput("  TextDocument:\n");

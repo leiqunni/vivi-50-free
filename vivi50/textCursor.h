@@ -20,7 +20,7 @@
 
 class TextDocument;
 class TextView;
-class TextBlock;
+class DocBlock;
 
 typedef size_t index_t;
 
@@ -96,7 +96,7 @@ public:
 	bool	isOverlapped(const TextCursor &) const;
 	QString	selectedText() const;
 #if TEXT_CURSOR_BLOCK
-	TextBlock	block() const;
+	DocBlock	block() const;
 	TextBlockData blockData() const { return m_blockData; }
 	TextBlockData anchorBlockData() const { return m_anchorBlockData; }
 	index_t	blockIndex() const { return m_blockData.m_index; }

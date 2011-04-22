@@ -185,7 +185,7 @@ bool GVUndoMgr::doRedo(TextDocument *bb, index_t& pos, index_t& anchor)
 	return !(ptr->m_flags & GVUNDOITEM_REDO_MF_OFF) ? true : false;
 }
 //----------------------------------------------------------------------
-size_t TextBlock::size() const
+size_t DocBlock::size() const
 {
 #if 1
 	return m_document->blockSize(m_data.m_index);
@@ -197,11 +197,11 @@ size_t TextBlock::size() const
 		return m_document->blockPosition(m_index + 1) - m_document->blockPosition(m_index);
 #endif
 }
-index_t TextBlock::position() const
+index_t DocBlock::position() const
 {
 	return isValid() ? m_data.m_position : 0;
 }
-size_t TextBlock::newlineLength() const
+size_t DocBlock::newlineLength() const
 {
 	if( !isValid() ) return 0;
 	const size_t sz = size();
@@ -219,7 +219,7 @@ size_t TextBlock::newlineLength() const
 	}
 	return 0;
 }
-index_t TextBlock::EOLOffset() const
+index_t DocBlock::EOLOffset() const
 {
 	if( !isValid() ) return 0;
 	return size() - newlineLength();
@@ -241,7 +241,7 @@ index_t TextBlock::EOLOffset() const
 #endif
 }
 
-int TextBlock::charsCount(index_t position) const
+int DocBlock::charsCount(index_t position) const
 {
 	if( !isValid() || position <= m_data.position() ||
 		position > m_data.position() + m_document->blockSize(m_data.index()) )
@@ -257,7 +257,7 @@ int TextBlock::charsCount(index_t position) const
 	return cnt;
 }
 	
-QString TextBlock::text() const
+QString DocBlock::text() const
 {
 	if( !isValid() ) return QString();
 	/*const*/ size_t sz = size();
@@ -271,27 +271,27 @@ QString TextBlock::text() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
-TextBlock TextBlock::next() const
+DocBlock DocBlock::next() const
 {
 	if( !isValid() ) return *this;
 #if 1
 	TextBlockData d = m_document->nextBlockData(m_data);
 	if( d.index() >= m_document->blockCount() )
 		d.m_index = INVALID_INDEX;
-	return TextBlock(m_document, d);
+	return DocBlock(m_document, d);
 #else
 	index_t blockPosition = m_data.m_position + m_document->blockSize(m_data.m_index);
 	int ix = m_data.m_index + 1;
 	if( ix >= m_document->blockCount() )
 		ix = INVALID_INDEX;
-	return TextBlock(m_document, ix, blockPosition);
+	return DocBlock(m_document, ix, blockPosition);
 #endif
 }
-TextBlock TextBlock::prev() const
+DocBlock DocBlock::prev() const
 {
 	if( !isValid() ) return *this;
 	TextBlockData d = m_document->prevBlockData(m_data);
-	return TextBlock(m_document, d);
+	return DocBlock(m_document, d);
 }
 //----------------------------------------------------------------------
 TextDocument::TextDocument(QObject *parent)
@@ -391,15 +391,15 @@ size_t TextDocument::blockPosition(index_t ix) const
 	return pos;
 }
 
-TextBlock TextDocument::findBlock(index_t position) const
+DocBlock TextDocument::findBlock(index_t position) const
 {
-	if( position > size() ) return TextBlock(const_cast<TextDocument*>(this), INVALID_INDEX, 0);
+	if( position > size() ) return DocBlock(const_cast<TextDocument*>(this), INVALID_INDEX, 0);
 	index_t blockPosition;
 	//const index_t ix = findBlockIndex(position, &blockPosition);
 	TextBlockData d = findBlockData(position);
-	return TextBlock(const_cast<TextDocument*>(this), d);
+	return DocBlock(const_cast<TextDocument*>(this), d);
 }
-TextBlock TextDocument::findBlockByNumberRaw(index_t blockIndex) const
+DocBlock TextDocument::findBlockByNumberRaw(index_t blockIndex) const
 {
 	index_t blockPosition = 0;
 	index_t ix = 0;
@@ -412,14 +412,14 @@ TextBlock TextDocument::findBlockByNumberRaw(index_t blockIndex) const
 		while( ix > blockIndex )
 			blockPosition -= m_blocks[--ix].m_size;
 	}
-	return TextBlock(const_cast<TextDocument*>(this), ix, blockPosition);
+	return DocBlock(const_cast<TextDocument*>(this), ix, blockPosition);
 }
-TextBlock TextDocument::findBlockByNumber(index_t blockIndex) const
+DocBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 {
 	if( blockIndex >= blockCount() - 1 ) {
 		m_blockData.m_index = blockCount() - 1;
 		m_blockData.m_position = size() - blockSize(m_blockData.m_index);
-		return TextBlock(const_cast<TextDocument*>(this), m_blockData);
+		return DocBlock(const_cast<TextDocument*>(this), m_blockData);
 	}
 	index_t blockPosition = 0;
 	index_t ix = 0;
@@ -435,12 +435,12 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 		}
 	} else {
 		if( blockIndex == m_blockData.m_index )
-			return TextBlock(const_cast<TextDocument*>(this), m_blockData.m_index, m_blockData.m_position);
+			return DocBlock(const_cast<TextDocument*>(this), m_blockData.m_index, m_blockData.m_position);
 		if( blockIndex < m_blockData.m_index ) {
 #if 0	//	逆方向シーケンシャルアクセス頻度は低いのでコメントアウトしておく
 			if( blockIndex == m_blockIndex - 1 ) {
 				m_blockPosition -= m_blocks[--m_blockIndex].m_size;
-				return TextBlock(this, m_blockIndex, m_blockPosition);
+				return DocBlock(this, m_blockIndex, m_blockPosition);
 			}
 #endif
 			if( blockIndex <= m_blockData.m_index / 2 ) {
@@ -455,7 +455,7 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 		} else {	//	m_blockData.m_index < blockIndex < m_blocks.size() の場合
 			if( blockIndex == m_blockData.m_index + 1 ) {
 				m_blockData.m_position += m_blocks[m_blockData.m_index++].m_size;
-				return TextBlock(const_cast<TextDocument*>(this), m_blockData);
+				return DocBlock(const_cast<TextDocument*>(this), m_blockData);
 			}
 			if( blockIndex <= m_blockData.m_index + (m_blocks.size() - m_blockData.m_index) / 2 ) {
 				blockPosition = m_blockData.m_position;
@@ -480,7 +480,7 @@ TextBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 	}
 	m_blockData.m_index = ix;
 	m_blockData.m_position = blockPosition;
-	return TextBlock(const_cast<TextDocument*>(this), ix, blockPosition);
+	return DocBlock(const_cast<TextDocument*>(this), ix, blockPosition);
 }
 
 void TextDocument::buildBlocks()
