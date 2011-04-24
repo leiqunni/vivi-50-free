@@ -96,6 +96,8 @@ private:
 	bool	m_unitTestDoc;
 	bool	m_unitTestView;
 
+	QDockWidget	*m_outputDock;
+
     QMenu	*fileMenu;
     QMenu	*editMenu;
     QMenu	*searchMenu;

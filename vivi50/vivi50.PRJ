@@ -26,7 +26,7 @@ memFileColumnWd = 320
 * mainwindow.cpp	(-128.265,-196.142)
   mainwindow.h	(-128.265,-229.142)
 * TextDocument.cpp	(-152.875,65.766)
-  TextDocument.h	(-152.875,32.766)
+* TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
   mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
@@ -41,8 +41,8 @@ memFileColumnWd = 320
   FindDlg.cpp	(49.637,199.277)
   FindDlg.h	(49.637,166.277)
   findOpt.h	(241,304)
-  ReplaceDlg.cpp	(249,189)
-  ReplaceDlg.h	(249,156)
+  ReplaceDlg.cpp	(236,78)
+  ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(139,-320)
 * textBlock.cpp	(-244,329)
 * textBlock.h	(-244,296)
@@ -53,6 +53,7 @@ memFileColumnWd = 320
   "TextDocument.cpp" 794 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 634 'B: ' '' undone 未コーディング
   "TextView.cpp" 713 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 1084 'R: ' '' undone insertText と処理を共通化
   "TextView.cpp" 1106 'R: ' '' undone insertText と処理を共通化
@@ -61,3 +62,4 @@ memFileColumnWd = 320
   "TextView.cpp" 1185 'B: ' '' undone ブロック情報更新
   "TextView.cpp" 1190 'B: ' '' undone ブロック情報更新
   "TextView.cpp" 1240 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1253 'B: ' '' undone 未コーディング

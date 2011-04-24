@@ -284,13 +284,13 @@ void MainWindow::createToolBars()
 }
 void MainWindow::createDockWindows()
 {
-    QDockWidget *dock = new QDockWidget(tr("Output"), this);
-    dock->setAllowedAreas(Qt::AllDockWidgetAreas);
-    m_output = new QTextEdit(dock);
+    m_outputDock = new QDockWidget(tr("Output"), this);
+    m_outputDock->setAllowedAreas(Qt::AllDockWidgetAreas);
+    m_output = new QTextEdit(m_outputDock);
     m_output->setReadOnly(true);
-    dock->setWidget(m_output);
-    addDockWidget(Qt::BottomDockWidgetArea, dock);
-    viewMenu->addAction(dock->toggleViewAction());
+    m_outputDock->setWidget(m_output);
+    addDockWidget(Qt::BottomDockWidgetArea, m_outputDock);
+    viewMenu->addAction(m_outputDock->toggleViewAction());
 	m_output->viewport()->installEventFilter(this);
 }
 void MainWindow::onUnitTestDoc(bool b)
@@ -375,6 +375,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 }
 void MainWindow::doOutput(const QString &text)
 {
+	m_outputDock->show();
 	QTextCursor cur = m_output->textCursor();
 	cur.movePosition(QTextCursor::End);
 	cur.insertText(text);
