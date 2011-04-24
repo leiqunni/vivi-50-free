@@ -647,5 +647,5 @@ ViewCursor &ViewCursor::operator=(const DocCursor &x)
 ViewBlock ViewCursor::block() const
 {
 	return ViewBlock(m_view, DocCursor::block(),
-						BlockData(0, 0));		//	undone B 暫定コーディング
+						m_viewBlockData);		//	
 }

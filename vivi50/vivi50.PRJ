@@ -35,7 +35,7 @@ memFileColumnWd = 320
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
 * textCursor.cpp	(-335.316,-33.0248)
-  textCursor.h	(-335.316,-66.0248)
+* textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
 * TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
@@ -53,11 +53,11 @@ memFileColumnWd = 320
   "TextDocument.cpp" 794 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
-  "TextView.cpp" 708 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1085 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1107 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1145 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1180 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1186 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1191 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1241 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 713 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1084 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1106 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1144 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1179 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1185 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1190 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1240 'B: ' '' undone 垂直スクロールバー位置更新

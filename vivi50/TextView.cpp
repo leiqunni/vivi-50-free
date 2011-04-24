@@ -105,6 +105,11 @@ TextView::~TextView()
 	delete m_document;
 	delete m_textCursor;
 }
+void TextView::resetCursorBlink()
+{
+	m_drawCursor = true;
+	m_timer->start();		//	タイマーリスタート
+}
 size_t TextView::size() const
 {
 	return document()->size();
@@ -726,8 +731,9 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		m_textCursor->movePosition(move, mvMode, repCount);
 		removeOverlappedCursor();
 		ensureCursorVisible();
-		m_drawCursor = true;
-		m_timer->start();		//	タイマーリスタート
+		resetCursorBlink();
+		//m_drawCursor = true;
+		//m_timer->start();		//	タイマーリスタート
 		viewport()->update();
 		return;
 	}
@@ -1022,7 +1028,8 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 		clearMultiCursor();
 	*m_textCursor = cur;
 	removeOverlappedCursor();
-	m_timer->start();		//	タイマーリスタート
+	resetCursorBlink();
+	//m_timer->start();		//	タイマーリスタート
 	viewport()->update();
 	m_mouseCaptured = true;
 }

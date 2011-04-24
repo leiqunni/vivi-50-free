@@ -97,12 +97,21 @@ public:
 	bool		isLayouted() const;
 	size_t		size() const;
 	index_t		position() const;
+	index_t		docPosition() const { return DocBlock::position(); };
 	index_t		docIndex() const { return DocBlock::index(); }
+	index_t		index() const { return m_viewBlock.m_index; }
+	index_t		blockNumber() const { return m_viewBlock.m_index; }
 	ViewBlock	next() const;
 	ViewBlock	prev() const;
 	QString		text() const;
 	const TextView	*view() const { return m_view; }
 
+	bool	operator==(const ViewBlock &x) const
+	{ return m_view == x.m_view && blockNumber() == x.blockNumber(); }
+	bool	operator!=(const ViewBlock &x) const
+	{ return !this->operator==(x); }
+	bool	operator<(const ViewBlock &x) const
+	{ return m_view == x.m_view && blockNumber() < x.blockNumber(); }
 protected:
 	TextView	*m_view;
 	BlockData	m_viewBlock;		//	m_position	s“ª•¶ŽšˆÊ’u

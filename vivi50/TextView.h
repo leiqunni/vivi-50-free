@@ -169,6 +169,7 @@ protected:
 	void	clearBlocks();
 	void	buildBlocks(DocBlock, int wd, int ht);
 
+	void	resetCursorBlink();
     void	removeOverlappedCursor();
     ViewBlock	firstVisibleBlock() const;
     void	ensureCursorVisible();
