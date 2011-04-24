@@ -93,8 +93,10 @@ public:
 
 public:
 	//index_t		index() const { return m_index; }
+	bool		isFirstBlock() const;	//	DocBlock ÇÃç≈èâÇÃçsÇ©ÅH
 	bool		isLayouted() const;
 	size_t		size() const;
+	index_t		position() const;
 	index_t		docIndex() const { return DocBlock::index(); }
 	ViewBlock	next() const;
 	ViewBlock	prev() const;

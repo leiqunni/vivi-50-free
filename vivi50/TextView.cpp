@@ -336,10 +336,12 @@ DocBlock TextView::yToTextBlock(int py) const
 	}
 	return block;
 }
-DocBlock TextView::firstVisibleBlock() const
+ViewBlock TextView::firstVisibleBlock() const
 {
 	//QFontMetrics fm = fontMetrics();
-	return m_document->findBlockByNumber(verticalScrollBar()->value());
+	DocBlock d = m_document->findBlockByNumber(verticalScrollBar()->value());
+	BlockData b(0, 0);
+	return ViewBlock((TextView*)this, d, b);
 }
 int TextView::textBlockToY(const DocBlock &block) const
 {
@@ -358,6 +360,9 @@ void TextView::paintEvent(QPaintEvent * event)
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
 	//qDebug() << verticalScrollBar()->value();
 
+	if( m_wordWrapLongLines )
+		ensureBlockLayout();		//	未レイアウトの場合はレイアウト処理
+
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
 	QPainter painter(vp);
@@ -368,7 +373,7 @@ void TextView::paintEvent(QPaintEvent * event)
 
 	const index_t lastBlockNumber = m_document->lastBlock().blockNumber();
 	int y = 0;
-	DocBlock block = firstVisibleBlock();
+	ViewBlock block = firstVisibleBlock();
 		//m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 
 	//	マルチカーソル選択状態表示
@@ -935,6 +940,7 @@ void TextView::doReplaceAll(const QString &findText, ushort options,
 void TextView::resizeEvent(QResizeEvent *event)
 {
 	QAbstractScrollArea::resizeEvent(event);
+	clearBlocks();		//	レイアウト情報クリア
 	updateLineNumberAreaSize();
 	//onBlockCountChanged();
 	updateScrollBarData();
@@ -963,24 +969,16 @@ void TextView::drawLineNumbers()
 	painter.fillRect(ar, Qt::lightGray);
 	//const int ht = fontMetrics().height();
 	//QTextCursor cur = textCursor();
-	DocBlock block = firstVisibleBlock();
+	ViewBlock block = firstVisibleBlock();
     int lineNumber = block.blockNumber() + 1;
 	QFontMetrics fm = fontMetrics();
     int y = 0;
 	while( block.isValid() && y < ar.height() ) {
-		QString number = QString::number(lineNumber);
-		painter.drawText(0, y, m_lineNumberWidth, fm.height(), Qt::AlignRight, number);
-#if 0
-		cur.setPosition(block.position());
-		QRect r = cursorRect(cur);
-		int y = r.bottom();
-	    //const int y = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
-	    //if( y >= ar.bottom() ) break;
-		QString number = QString::number(lineNumber);
-		painter.drawText(0, r.top(), m_lineNumberWidth, r.height(), Qt::AlignRight, number);
-	    if( y >= ar.bottom() ) break;
-#endif
-		++lineNumber;
+		if( block.isFirstBlock() ) {
+			QString number = QString::number(lineNumber);
+			painter.drawText(0, y, m_lineNumberWidth, fm.height(), Qt::AlignRight, number);
+			++lineNumber;
+		}
 		block = block.next();
 		y += fm.lineSpacing();
 	}
@@ -1184,6 +1182,12 @@ void TextView::deletePreviousChar(ViewCursor &cur)
 	document()->deletePreviousChar(cur);
 	//	undone B ブロック情報更新
 }
+void TextView::clearBlocks()
+{
+	m_blockSize.clear();
+	m_firstUnlayoutedBlockCount = 0;
+	m_layoutedBlockCount = 0;
+}
 #if 0
 void TextView::buildBlocks()
 {
@@ -1224,6 +1228,10 @@ void TextView::buildBlocks()
 void TextView::onWordWrap(bool b)
 {
 	m_wordWrapLongLines = b;
+	if( !m_wordWrapLongLines ) {
+		clearBlocks();
+		//	undone B 垂直スクロールバー位置更新
+	}
 	viewport()->update();
 }
 ViewBlock TextView::firstBlock()
@@ -1233,6 +1241,13 @@ ViewBlock TextView::firstBlock()
 ViewBlock TextView::lastBlock()
 {
 	return ViewBlock(this, document()->lastBlock(), BlockData(0, 0));
+}
+void TextView::ensureBlockLayout()
+{
+	QWidget *vp = viewport();
+	QRect vr = vp->rect();
+	DocBlock d = m_document->findBlockByNumber(verticalScrollBar()->value());
+	buildBlocks(d, vr.width(), vr.height());
 }
 void TextView::buildBlocks(DocBlock block, int wd, int ht)
 {

@@ -42,6 +42,8 @@
 + 2011/04/19 "TextDocument.cpp" P:   undone 置換テキストもUTF8にあらかじめ変換しておく
 # 2011/04/19 19:33:52
 + 2011/04/19 "TextView.cpp" A:   undone BlockData も要補正
+# 2011/04/24 14:09:31
++ 2011/04/24 "TextView.cpp" B:   undone 垂直スクロールバー位置更新
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -56,3 +58,4 @@
 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
+2011/04/24 "TextView.cpp" B:   undone 垂直スクロールバー位置更新

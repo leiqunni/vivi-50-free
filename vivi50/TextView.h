@@ -165,11 +165,12 @@ protected:
 	void	clearMultiCursor() { m_multiCursor.clear(); }
 	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); }
 	void	getAllCursor(std::vector<ViewCursor*> &);
-	//void	buildBlocks();
+	void	ensureBlockLayout();
+	void	clearBlocks();
 	void	buildBlocks(DocBlock, int wd, int ht);
 
     void	removeOverlappedCursor();
-    DocBlock	firstVisibleBlock() const;
+    ViewBlock	firstVisibleBlock() const;
     void	ensureCursorVisible();
 	int		lineNumberLength() const;			//	ç≈ëÂçsî‘çÜåÖêî
 

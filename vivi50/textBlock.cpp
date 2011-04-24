@@ -132,6 +132,19 @@ ViewBlock::ViewBlock(TextView *view, const DocBlock &block, BlockData d)
 {
 }
 
+index_t ViewBlock::position() const
+{
+	if( !isLayouted() )
+		return DocBlock::position();
+	else
+		return m_viewBlock.m_position;
+}
+bool ViewBlock::isFirstBlock() const
+{
+	if( !isLayouted() ) return true;
+	return DocBlock::position() == m_viewBlock.m_position;
+}
+
 bool ViewBlock::isLayouted() const
 {
 	if( !isValid() ) return false;
