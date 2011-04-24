@@ -376,7 +376,7 @@ void TextView::paintEvent(QPaintEvent * event)
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
 
-	const index_t lastBlockNumber = m_document->lastBlock().blockNumber();
+	const index_t lastBlockNumber = lastBlock().blockNumber();
 	int y = 0;
 	ViewBlock block = firstVisibleBlock();
 		//m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
@@ -1247,7 +1247,12 @@ ViewBlock TextView::firstBlock()
 }
 ViewBlock TextView::lastBlock()
 {
-	return ViewBlock(this, document()->lastBlock(), BlockData(0, 0));
+	DocBlock d = document()->lastBlock();
+	if( !isLayoutedDocBlock(d.index()) )
+		return ViewBlock(this, d, d.data());
+	//	undone B 未コーディング
+	return ViewBlock(this, d,
+						BlockData(blockCount() - 1, size() - m_blockSize[m_blockSize.size() - 1]));
 }
 void TextView::ensureBlockLayout()
 {
