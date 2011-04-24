@@ -89,11 +89,16 @@ public:
 	}
 #endif
 	size_t	size() const;	// { return document()->size(); }
-	bool	isLayouted(index_t ix) const;
+	bool	isLayoutedDocBlock(index_t ix) const;
+	bool	isLayoutedViewBlock(index_t ix) const;
 	size_t	blockSize(index_t ix) const;	// { return m_blocks[ix].m_size; }
 	size_t	blockCount() const;
+	size_t	firstUnlayoutedBlockCount() const { return m_firstUnlayoutedBlockCount; }
+	size_t	layoutedBlockCount() const { return m_layoutedBlockCount; }
+#if 0
 	index_t	firstViewLine() const { return m_firstViewLine; }
 	index_t	lastViewLine() const { return m_lastViewLine; }
+#endif
 
 public:
 	TextDocument	*document() { return m_document; }
@@ -196,9 +201,14 @@ private:
 	//mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		//	ブロック配列
 	mutable BlockData	m_blockData;			//	カレントブロック情報
 
+	size_t	m_firstUnlayoutedBlockCount;		//	前半未レイアウト部分のDocBlock数
+	size_t	m_layoutedBlockCount;				//	レイアウト済み行のDocBlock数
+	mutable std::gap_vector<uint>	m_blockSize;	//	レイアウト済み行の行長
+#if 0
 	size_t	m_firstViewLine;
 	size_t	m_lastViewLine;
 	mutable std::deque<ViewLine>	m_viewLines;
+#endif
 
 	friend void test_TextView();
 };

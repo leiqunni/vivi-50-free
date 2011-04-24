@@ -67,8 +67,12 @@ TextView::TextView(QWidget *parent)
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
 	m_wordWrapLongLines = false;
+	m_firstUnlayoutedBlockCount = 0;
+	m_layoutedBlockCount = 0;
+#if 0
 	m_firstViewLine = 0;
 	m_lastViewLine = 0;
+#endif
 	//m_lineNumberWidth = 6;
 	viewport()->setCursor(Qt::IBeamCursor);
 
@@ -107,16 +111,29 @@ size_t TextView::size() const
 }
 size_t TextView::blockCount() const
 {
+	return document()->blockCount() - layoutedBlockCount() + m_blockSize.size();
+#if 0
 	return document()->blockCount() - (m_lastViewLine - m_firstViewLine)
 			+ m_viewLines.size();
+#endif
 }
-bool TextView::isLayouted(index_t docBlockIx) const
+bool TextView::isLayoutedDocBlock(index_t ix) const
 {
-	return firstViewLine() <= docBlockIx && docBlockIx < lastViewLine();
+	return ix >= m_firstUnlayoutedBlockCount &&
+			ix < m_firstUnlayoutedBlockCount + m_layoutedBlockCount;
 }
-size_t TextView::blockSize(index_t ix) const
+bool TextView::isLayoutedViewBlock(index_t ix) const
 {
-	return 0;
+	return ix >= m_firstUnlayoutedBlockCount &&
+			ix < m_firstUnlayoutedBlockCount + m_blockSize.size();
+}
+size_t TextView::blockSize(index_t ix) const	//	ix はビュー行番号（0..*）
+{
+	if( ix < m_firstUnlayoutedBlockCount )
+		return document()->blockSize(ix);
+	if( ix - m_firstUnlayoutedBlockCount < m_blockSize.size() )
+		return m_blockSize[ix - m_firstUnlayoutedBlockCount];
+	return document()->blockSize(ix - m_blockSize.size() + m_layoutedBlockCount);
 }
 BlockData TextView::findBlockData(index_t position) const
 {
@@ -1220,11 +1237,14 @@ ViewBlock TextView::lastBlock()
 void TextView::buildBlocks(DocBlock block, int wd, int ht)
 {
 	QFontMetrics fm = fontMetrics();
-	m_viewLines.clear();
+	m_blockSize.clear();
+	m_layoutedBlockCount = 0;
+	m_firstUnlayoutedBlockCount = block.index();		//	doc block index
+	//m_viewLines.clear();
 	//m_blocks.push_back(ViewTextBlockItem(0));
 	//DocBlock block = document()->firstBlock();
-	index_t blockIndex = block.index();		//	doc block index
-	m_firstViewLine = blockIndex;
+	//index_t blockIndex = block.index();		//	doc block index
+	//m_firstViewLine = blockIndex;
 	int y = 0;
 	while( block.isValid() && y < ht ) {
 		index_t pos = block.position();
@@ -1233,7 +1253,8 @@ void TextView::buildBlocks(DocBlock block, int wd, int ht)
 		const size_t nlLength = block.newlineLength();
 		index_t ixEOL = text.length() - nlLength;		//	改行コードは１バイトと仮定
 		if( !ixEOL ) {
-			m_viewLines.push_back(ViewLine(pos, blockIndex));
+			m_blockSize.push_back(block.size());
+			//m_viewLines.push_back(ViewLine(pos, blockIndex));
 			y += fm.lineSpacing();
 		} else {
 			index_t ix = 0;
@@ -1249,13 +1270,15 @@ void TextView::buildBlocks(DocBlock block, int wd, int ht)
 					++ix;
 					pos += UTF8CharSize((*document())[pos]);
 				}
-				m_viewLines.push_back(ViewLine(blockPos, blockIndex));
+				m_blockSize.push_back(pos - blockPos);
+				//m_viewLines.push_back(ViewLine(blockPos, blockIndex));
 				y += fm.lineSpacing();
 				blockPos = pos;
 			}
 		}
-		++blockIndex;
+		//++blockIndex;
+		++m_layoutedBlockCount;
 		block = block.next();
 	}
-	m_lastViewLine = blockIndex;
+	//m_lastViewLine = blockIndex;
 }

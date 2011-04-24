@@ -60,13 +60,15 @@ public:
 	size_t		length() const { return size(); }
 	index_t		EOLOffset() const;
 	size_t		newlineLength() const;		//	改行部分のバイト数を返す
-	bool		isValid() const { return m_document != 0 && blockNumber() != INVALID_INDEX; }
+	bool		isValid() const;
+	//{ return m_document != 0 && blockNumber() >= m_document->blockCount(); }
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
 	BlockData	data() const { return m_data; }
 	QString		text() const;
 	int			charsCount(index_t) const;		//	行頭から指定位置までの文字数を返す
+	const TextDocument	*document() const { return m_document; }
 
 	bool	operator==(const DocBlock &x) const
 	{ return m_document == x.m_document && blockNumber() == x.blockNumber(); }
@@ -79,7 +81,7 @@ public:
 	DocBlock	next() const;
 	DocBlock	prev() const;
 
-private:
+protected:
 	TextDocument	*m_document;
 	BlockData	m_data;
 };
@@ -93,11 +95,13 @@ public:
 	//index_t		index() const { return m_index; }
 	bool		isLayouted() const;
 	size_t		size() const;
+	index_t		docIndex() const { return DocBlock::index(); }
 	ViewBlock	next() const;
 	ViewBlock	prev() const;
 	QString		text() const;
+	const TextView	*view() const { return m_view; }
 
-private:
+protected:
 	TextView	*m_view;
 	BlockData	m_viewBlock;		//	m_position	行頭文字位置
 									//	m_index		ビュー行番号（0..*）

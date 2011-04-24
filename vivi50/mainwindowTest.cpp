@@ -789,6 +789,8 @@ void test_TextView()
 		ut.ut_test_equal(4, view.blockCount());
 		ViewBlock block = view.firstBlock();
 		ut.ut_test( !block.isLayouted() );
+		ut.ut_test_equal(5, block.size());
+		ut.ut_test_equal(QString("123\r\n"), block.text());
 
 		QFontMetrics fm = view.fontMetrics();
 		const int wd = fm.width(QString("‚ ‚¢‚¤‚¦‚¨"));
@@ -799,11 +801,48 @@ void test_TextView()
 		block = view.firstBlock();
 		ut.ut_test( block.isLayouted() );
 		ut.ut_test( block.isValid() );
+		ut.ut_test_equal(0, block.docIndex());
+		ut.ut_test_equal(5, block.size());
 		ut.ut_test_equal(QString("123\r\n"), block.text());
 		block = block.next();
 		ut.ut_test( block.isValid() );
 		ut.ut_test( block.isLayouted() );
+		ut.ut_test_equal(1, block.docIndex());
+		ut.ut_test_equal(15, block.size());
 		ut.ut_test_equal(QString("‚ ‚¢‚¤‚¦‚¨"), block.text());
+		block = block.next();
+		ut.ut_test( block.isValid() );
+		ut.ut_test( block.isLayouted() );
+		ut.ut_test_equal(1, block.docIndex());
+		ut.ut_test_equal(10, block.size());
+		ut.ut_test_equal(QString("‚©‚«‚­\n"), block.text());
+		block = block.next();
+		ut.ut_test( block.isValid() );
+		ut.ut_test( block.isLayouted() );
+		ut.ut_test_equal(2, block.docIndex());
+		ut.ut_test_equal(15, block.size());
+		ut.ut_test_equal(QString("‚ ‚¢‚¤‚¦‚¨"), block.text());
+		block = block.next();
+		ut.ut_test( block.isValid() );
+		ut.ut_test( block.isLayouted() );
+		ut.ut_test_equal(2, block.docIndex());
+		ut.ut_test_equal(15, block.size());
+		ut.ut_test_equal(QString("‚ ‚¢‚¤‚¦‚¨"), block.text());
+		block = block.next();
+		ut.ut_test( block.isValid() );
+		ut.ut_test( block.isLayouted() );
+		ut.ut_test_equal(2, block.docIndex());
+		ut.ut_test_equal(10, block.size());
+		ut.ut_test_equal(QString("‚©‚«‚­\n"), block.text());
+		block = block.next();
+		ut.ut_test( block.isValid() );
+		ut.ut_test( block.isLayouted() );
+		ut.ut_test_equal(3, block.docIndex());
+		ut.ut_test_equal(0, block.size());
+		ut.ut_test_equal(QString(""), block.text());
+		block = block.next();
+		ut.ut_test_equal(4, block.docIndex());
+		ut.ut_test( !block.isValid() );
 	}
 	if( 1 ) {		//	buildBlocks ƒeƒXƒg
 		TextView view;

@@ -56,7 +56,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="qtmain.lib QtCore4.lib QtGui4.lib"
-				OutputFile="$(OutDir)\vivi.exe"
+				OutputFile="$(OutDir)\vivi5.exe"
 				AdditionalLibraryDirectories="$(QTDIR)\lib"
 				GenerateDebugInformation="false"
 				GenerateMapFile="true"
@@ -126,7 +126,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="qtmaind.lib QtCored4.lib QtGuid4.lib"
-				OutputFile="$(OutDir)\$(ProjectName).exe"
+				OutputFile="$(OutDir)\vivi5.exe"
 				AdditionalLibraryDirectories="$(QTDIR)\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
