@@ -13,18 +13,18 @@ memFileColumnWd = 320
 #define HIST_LIMIT 30
 #define MARGIN_LEFT 4
 #define INVALID_INDEX 0
-#define TEXT_CURSOR_BLOCK 1
 #define PTR_ALLOCATOR 0
+#define TEXT_CURSOR_BLOCK 1
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define BLOCK_HAS_SIZE 1
 #define GV_USE_ITR_FACADE 1
+#define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
   gap_vector.h	(-94.078,307.793)
   main.cpp	(-178.304,-339.84)
-* mainwindow.cpp	(-128.265,-196.142)
-* mainwindow.h	(-128.265,-229.142)
+  mainwindow.cpp	(-128.265,-196.142)
+  mainwindow.h	(-128.265,-229.142)
 * TextDocument.cpp	(-152.875,65.766)
 * TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
@@ -34,7 +34,7 @@ memFileColumnWd = 320
 * mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
-* textCursor.cpp	(-335.316,-33.0248)
+  textCursor.cpp	(-335.316,-33.0248)
   textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
 * TextView.h	(44.6123,-64.8647)
@@ -45,7 +45,7 @@ memFileColumnWd = 320
   ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(139,-320)
   textBlock.cpp	(-244,329)
-* textBlock.h	(-244,296)
+  textBlock.h	(-244,296)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
@@ -54,12 +54,12 @@ memFileColumnWd = 320
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
   "textCursor.cpp" 634 'B: ' '' undone 未コーディング
-  "TextView.cpp" 719 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1090 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1112 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1150 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1185 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1191 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1196 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1246 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1259 'B: ' '' undone 未コーディング
+  "TextView.cpp" 790 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1161 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1183 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1221 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1256 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1262 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1267 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1317 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1330 'B: ' '' undone 未コーディング

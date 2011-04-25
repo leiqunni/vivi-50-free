@@ -108,6 +108,7 @@ public:
 public:
 	ViewBlock	firstBlock();
 	ViewBlock	lastBlock();
+	ViewBlock	findBlock(index_t) const;
 
 	void	deleteChar();
 	void	deletePreviousChar();

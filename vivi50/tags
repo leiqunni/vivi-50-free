@@ -315,9 +315,9 @@ docBlock	.\TextView.cpp	/^DocBlock TextView::docBlock(BlockData v) const$/;"	f	c
 docBlockData	.\TextView.cpp	/^BlockData TextView::docBlockData(BlockData v) const$/;"	f	class:TextView
 docIndex	.\textBlock.h	/^	index_t		docIndex() const { return DocBlock::index(); }$/;"	f	class:ViewBlock
 docPosition	.\textBlock.h	/^	index_t		docPosition() const { return DocBlock::position(); };$/;"	f	class:ViewBlock
-document	.\textBlock.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:DocBlock
 document	.\TextView.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:TextView
 document	.\TextView.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:TextView
+document	.\textBlock.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:DocBlock
 document	.\textCursor.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:DocCursor
 document	.\textCursor.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:DocCursor
 documentWasModified	.\mainwindow.cpp	/^void MainWindow::documentWasModified()$/;"	f	class:MainWindow
@@ -347,6 +347,7 @@ find	.\TextDocument.cpp	/^DocCursor TextDocument::find(const QByteArray &ba, ind
 find	.\TextDocument.cpp	/^DocCursor TextDocument::find(const QString &text, const DocCursor &cur, ushort options)$/;"	f	class:TextDocument
 find	.\TextDocument.cpp	/^DocCursor TextDocument::find(const QString &text, index_t position, ushort options)$/;"	f	class:TextDocument
 findAct	.\mainwindow.h	/^    QAction *findAct;$/;"	m	class:MainWindow
+findBlock	.\TextView.cpp	/^ViewBlock TextView::findBlock(index_t position) const$/;"	f	class:TextView
 findBlock	.\TextDocument.cpp	/^DocBlock TextDocument::findBlock(index_t position) const$/;"	f	class:TextDocument
 findBlockByNumber	.\TextView.cpp	/^ViewBlock TextView::findBlockByNumber(index_t bn) const$/;"	f	class:TextView
 findBlockByNumber	.\TextDocument.cpp	/^DocBlock TextDocument::findBlockByNumber(index_t blockIndex) const$/;"	f	class:TextDocument
@@ -494,8 +495,8 @@ m_curFile	.\mainwindow.h	/^	QString	m_curFile;$/;"	m	class:MainWindow
 m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	ÉIÉuÉWÉFÉNÉgÇéüÇ…ì¸ÇÍÇÈà íuÅi0..*Åj$/;"	m	class:GVUndoMgr
 m_data	.\textBlock.h	/^	BlockData	m_data;$/;"	m	class:DocBlock
 m_dirGroup	.\FindDlg.h	/^	QGroupBox	*m_dirGroup;$/;"	m	class:FindDlg
-m_document	.\textBlock.h	/^	TextDocument	*m_document;$/;"	m	class:DocBlock
 m_document	.\TextView.h	/^	TextDocument	*m_document;$/;"	m	class:TextView
+m_document	.\textBlock.h	/^	TextDocument	*m_document;$/;"	m	class:DocBlock
 m_document	.\textCursor.h	/^	TextDocument	*m_document;$/;"	m	class:DocCursor
 m_drawCursor	.\TextView.h	/^	bool	m_drawCursor;$/;"	m	class:TextView
 m_failCount	.\unit_test.h	/^	int		m_failCount;		\/\/	é∏îsâÒêî$/;"	m	class:CUnitTest
@@ -537,8 +538,8 @@ m_multiCursor	.\TextView.h	/^	std::vector<ViewCursor>	m_multiCursor;		\/\/	ïõÉJÅ
 m_offset	.\textCursor.h	/^	index_t			m_offset;		\/\/	çsì™Ç©ÇÁÇÃÉIÉtÉZÉbÉgílÅiñ{óàÇÃílÅj$/;"	m	class:DocCursor
 m_output	.\mainwindow.h	/^	QTextEdit	*m_output;$/;"	m	class:MainWindow
 m_outputDock	.\mainwindow.h	/^	QDockWidget	*m_outputDock;$/;"	m	class:MainWindow
-m_position	.\textBlock.h	/^	index_t		m_position;$/;"	m	struct:BlockData
 m_position	.\TextView.h	/^	index_t	m_position;		\/\/	çsì™ï∂éöà íu$/;"	m	struct:ViewLine
+m_position	.\textBlock.h	/^	index_t		m_position;$/;"	m	struct:BlockData
 m_position	.\textCursor.h	/^	index_t			m_position;		\/\/	ÉJÅ[É\Éãà íu$/;"	m	class:DocCursor
 m_preeditPosCursor	.\TextView.h	/^	DocCursor	*m_preeditPosCursor;$/;"	m	class:TextView
 m_preeditString	.\TextView.h	/^	QString	m_preeditString;$/;"	m	class:TextView

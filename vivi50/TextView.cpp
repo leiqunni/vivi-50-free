@@ -164,6 +164,18 @@ DocBlock TextView::docBlock(BlockData v) const
 	else
 		return document()->findBlock(v.position());
 }
+ViewBlock TextView::findBlock(index_t position) const
+{
+	if( position > size() ) {
+		BlockData b(INVALID_INDEX, 0);
+		return ViewBlock(const_cast<TextView*>(this),
+							DocBlock((TextDocument*)document(), b), b);
+	}
+	index_t blockPosition;
+	//const index_t ix = findBlockIndex(position, &blockPosition);
+	BlockData d = findBlockData(position);
+	return ViewBlock(const_cast<TextView*>(this), docBlock(d), d);
+}
 
 //	ブロック番号（0..*）からブロックを取得
 ViewBlock TextView::findBlockByNumber(index_t bn) const

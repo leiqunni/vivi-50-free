@@ -871,4 +871,28 @@ void test_TextView()
 		ut.ut_test_equal(5, view.blockCount());
 
 	}
+	if( 1 ) {
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("123\nabcde\r\nxyzzz\r"));
+		ut.ut_test_equal(0, view.findBlock(0).blockNumber());
+		ut.ut_test_equal(0, view.findBlock(1).blockNumber());
+		ut.ut_test_equal(0, view.findBlock(2).blockNumber());
+		ut.ut_test_equal(0, view.findBlock(3).blockNumber());
+		ut.ut_test_equal(1, view.findBlock(4).blockNumber());
+		ut.ut_test_equal(1, view.findBlock(5).blockNumber());
+		ut.ut_test_equal(1, view.findBlock(6).blockNumber());
+		ut.ut_test_equal(1, view.findBlock(7).blockNumber());
+		ut.ut_test_equal(1, view.findBlock(8).blockNumber());
+		ut.ut_test_equal(1, view.findBlock(9).blockNumber());
+		ut.ut_test_equal(1, view.findBlock(10).blockNumber());
+		ut.ut_test_equal(2, view.findBlock(11).blockNumber());
+		ut.ut_test_equal(2, view.findBlock(12).blockNumber());
+		ut.ut_test_equal(2, view.findBlock(13).blockNumber());
+		ut.ut_test_equal(2, view.findBlock(14).blockNumber());
+		ut.ut_test_equal(2, view.findBlock(15).blockNumber());
+		ut.ut_test_equal(2, view.findBlock(16).blockNumber());
+		ut.ut_test_equal(3, view.findBlock(17).blockNumber());
+		ut.ut_test_equal(INVALID_INDEX, view.findBlock(18).blockNumber());
+	}
 }
