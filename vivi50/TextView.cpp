@@ -1342,9 +1342,12 @@ void TextView::ensureBlockLayout()
 	DocBlock d = m_document->findBlockByNumber(verticalScrollBar()->value());
 	buildBlocks(d, vr.width(), vr.height());
 }
-void TextView::buildBlocks(DocBlock block, int wd, int ht)
+void TextView::buildBlocks(DocBlock block, int wdLimit, int ht)
 {
 	QFontMetrics fm = fontMetrics();
+	const int spaceWidth = fm.width(QChar(' '));
+	const int tabWidth = spaceWidth * 4;		//	‚Æ‚è‚ ‚¦‚¸‹ó”’4•¶Žš•ª‚ÉŒÅ’è
+
 	m_blockSize.clear();
 	m_layoutedBlockCount = 0;
 	m_firstUnlayoutedBlockCount = block.index();		//	doc block index
@@ -1367,16 +1370,22 @@ void TextView::buildBlocks(DocBlock block, int wd, int ht)
 		} else {
 			index_t ix = 0;
 			while( ix < ixEOL ) {
-				QString buf;
+				//QString buf;
+				int width = 0;		//	Œ»Ý•
 				for(;;) {
 					if( ix == ixEOL ) {
 						pos += nlLength;
 						break;
 					}
-					buf += text.at(ix);
-					if( fm.width(buf) > wd ) break;
+					QChar qch = text.at(ix);
+					if( qch == '\t' ) {
+						width = (width / tabWidth + 1) * tabWidth;
+						pos += 1;
+					} else {
+						if( (width += fm.width(qch)) > wdLimit ) break;
+						pos += UTF8CharSize((*document())[pos]);
+					}
 					++ix;
-					pos += UTF8CharSize((*document())[pos]);
 				}
 				m_blockSize.push_back(pos - blockPos);
 				//m_viewLines.push_back(ViewLine(blockPos, blockIndex));
