@@ -167,6 +167,7 @@ protected:
 	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); }
 	void	getAllCursor(std::vector<ViewCursor*> &);
 	void	ensureBlockLayout();
+	void	updateBlocks();
 	void	clearBlocks();
 	void	buildBlocks(DocBlock, int wd, int ht);
 
@@ -187,7 +188,7 @@ private:
 	bool	m_mouseCaptured;
 	bool	m_toDeleteIMEPreeditText;
 	bool	m_drawCursor;
-	bool	m_wordWrapLongLines;					//	右端で折り返し
+	bool	m_lineBreakMode;					//	右端で折り返し
 	ViewCursor	m_viewTextCursor;
 	std::vector<ViewCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる

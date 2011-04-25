@@ -66,7 +66,7 @@ TextView::TextView(QWidget *parent)
 	m_mouseCaptured = false;
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
-	m_wordWrapLongLines = false;
+	m_lineBreakMode = false;
 	m_firstUnlayoutedBlockCount = 0;
 	m_layoutedBlockCount = 0;
 	m_blockData = BlockData(0, 0);
@@ -446,8 +446,8 @@ void TextView::paintEvent(QPaintEvent * event)
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
 	//qDebug() << verticalScrollBar()->value();
 
-	if( m_wordWrapLongLines )
-		ensureBlockLayout();		//	未レイアウトの場合はレイアウト処理
+	//if( m_wordWrapLongLines )
+	//	ensureBlockLayout();		//	未レイアウトの場合はレイアウト処理
 
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
@@ -1027,7 +1027,8 @@ void TextView::doReplaceAll(const QString &findText, ushort options,
 void TextView::resizeEvent(QResizeEvent *event)
 {
 	QAbstractScrollArea::resizeEvent(event);
-	clearBlocks();		//	レイアウト情報クリア
+	updateBlocks();
+	//clearBlocks();		//	レイアウト情報クリア
 	updateLineNumberAreaSize();
 	//onBlockCountChanged();
 	updateScrollBarData();
@@ -1315,11 +1316,20 @@ void TextView::buildBlocks()
 #endif
 void TextView::onWordWrap(bool b)
 {
-	m_wordWrapLongLines = b;
-	if( !m_wordWrapLongLines ) {
+	m_lineBreakMode = b;
+	updateBlocks();
+}
+
+void TextView::updateBlocks()
+{
+	if( !m_lineBreakMode ) {
 		clearBlocks();
-		//	undone B 垂直スクロールバー位置更新
+	} else {
+		const QRect vr = viewport()->rect();
+		int width = vr.width() - fontMetrics().width(' ') * 4;
+		buildBlocks(document()->firstBlock(), width, 0);
 	}
+	//	undone B 垂直スクロールバー位置更新
 	viewport()->update();
 }
 ViewBlock TextView::firstBlock()
@@ -1357,7 +1367,7 @@ void TextView::buildBlocks(DocBlock block, int wdLimit, int ht)
 	//index_t blockIndex = block.index();		//	doc block index
 	//m_firstViewLine = blockIndex;
 	int y = 0;
-	while( block.isValid() && y < ht ) {
+	while( block.isValid() && (!ht || y < ht) ) {
 		index_t pos = block.position();
 		index_t blockPos = pos;
 		QString text = block.text();
