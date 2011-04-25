@@ -69,6 +69,7 @@ TextView::TextView(QWidget *parent)
 	m_wordWrapLongLines = false;
 	m_firstUnlayoutedBlockCount = 0;
 	m_layoutedBlockCount = 0;
+	m_blockData = BlockData(0, 0);
 #if 0
 	m_firstViewLine = 0;
 	m_lastViewLine = 0;
@@ -140,20 +141,87 @@ size_t TextView::blockSize(index_t ix) const	//	ix はビュー行番号（0..*）
 		return m_blockSize[ix - m_firstUnlayoutedBlockCount];
 	return document()->blockSize(ix - m_blockSize.size() + m_layoutedBlockCount);
 }
+#if 0
+BlockData TextView::prevBlockData(BlockData d) const
+{
+	if( !d.m_index )
+		return BlockData();
+}
+#endif
+
+//	ビューブロックデータに対応するドキュメントのブロックデータを返す
+BlockData TextView::docBlockData(BlockData v) const
+{
+	if( !isLayoutedViewBlock(v.index()) )
+		return v;
+	else
+		return document()->findBlock(v.position()).data();
+}
+DocBlock TextView::docBlock(BlockData v) const
+{
+	if( !isLayoutedViewBlock(v.index()) )
+		return DocBlock((TextDocument*)document(), v);
+	else
+		return document()->findBlock(v.position());
+}
+
+//	ブロック番号（0..*）からブロックを取得
+ViewBlock TextView::findBlockByNumber(index_t bn) const
+{
+	BlockData data(0, 0), next;
+	const size_t bc = blockCount();
+	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
+		if( bn <= bc / 2 ) {
+			while( data.m_index < bc - 1 &&
+					bn >= (next = nextBlockData(data)).index() )
+				data = next;
+		} else {
+			data = BlockData(bc, size());
+			do {
+				data = prevBlockData(data);
+			} while( data.index() > bn );
+		}
+	} else {
+		if( bn < m_blockData.index() ) {
+			if( bn <= m_blockData.index() / 2 ) {
+				while( data.m_index < m_blockData.index() - 1 &&
+						bn >= (next = nextBlockData(data)).index() )
+					data = next;
+			} else {
+				data = m_blockData;
+				do {
+					data = prevBlockData(data);
+				} while( data.index() > bn );
+			}
+		} else {
+			next = nextBlockData(m_blockData);
+			if( m_blockData.index() <= bn && bn < next.index() )
+				return ViewBlock((TextView*)this, docBlock(m_blockData), m_blockData);
+			if( bn <= m_blockData.index() + (size() - m_blockData.index()) / 2 ) {
+				while( data.m_index < bc - 1 &&
+						bn >= (next = nextBlockData(data)).index() )
+					data = next;
+			} else {
+				data = BlockData(bc, size());
+				do {
+					data = prevBlockData(data);
+				} while( data.index() > bn );
+			}
+		}
+	}
+	return ViewBlock((TextView*)this, docBlock(data), data);
+}
 BlockData TextView::findBlockData(index_t position) const
 {
-	return BlockData(0, 0);		//	暫定コード
-#if 0
-	if( m_blocks.size() == 1 )
-		return BlockData(0, 0);
 	BlockData data(0, 0), next;
+	const size_t bc = blockCount();
 	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( position <= size() / 2 ) {
-			while( data.m_index < m_blocks.size() - 1 &&
+			while( data.m_index < bc - 1 &&
 					position >= (next = nextBlockData(data)).position() )
 				data = next;
 		} else {
-			data = BlockData(m_blocks.size(), size());
+			data = BlockData(bc, size());
 			do {
 				data = prevBlockData(data);
 			} while( data.position() > position );
@@ -175,11 +243,11 @@ BlockData TextView::findBlockData(index_t position) const
 			if( m_blockData.position() <= position && position < next.position() )
 				return m_blockData;
 			if( position <= m_blockData.position() + (size() - m_blockData.position()) / 2 ) {
-				while( data.m_index < m_blocks.size() - 1 &&
+				while( data.m_index < bc - 1 &&
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
 			} else {
-				data = BlockData(m_blocks.size(), size());
+				data = BlockData(bc, size());
 				do {
 					data = prevBlockData(data);
 				} while( data.position() > position );
@@ -187,7 +255,6 @@ BlockData TextView::findBlockData(index_t position) const
 		}
 	}
 	return data;
-#endif
 }
 #if 0
 void TextView::resetCursorBlinkTimer()
@@ -344,9 +411,11 @@ DocBlock TextView::yToTextBlock(int py) const
 ViewBlock TextView::firstVisibleBlock() const
 {
 	//QFontMetrics fm = fontMetrics();
-	DocBlock d = m_document->findBlockByNumber(verticalScrollBar()->value());
-	BlockData b(0, 0);
-	return ViewBlock((TextView*)this, d, b);
+	const index_t v = verticalScrollBar()->value();
+
+	//DocBlock d = m_document->findBlockByNumber();
+	BlockData b = findBlockByNumber(v).data();
+	return ViewBlock((TextView*)this, docBlock(b), b);
 }
 int TextView::textBlockToY(const DocBlock &block) const
 {

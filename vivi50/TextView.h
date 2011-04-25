@@ -74,20 +74,20 @@ public:
 	QString	toPlainText() const;
 	const TextDocument	*document() const { return m_document; }
 	//size_t blockCount() const { return m_blocks.size(); }
+	BlockData	docBlockData(BlockData) const;
+	DocBlock	docBlock(BlockData) const;
+	ViewBlock	findBlockByNumber(index_t) const;		//	ブロック番号（0..*）からブロックを取得
 	BlockData	findBlockData(index_t position) const;
-	BlockData	nextBlockData(BlockData d) const;
-	//{ return BlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
-	BlockData	prevBlockData(BlockData d) const;
-#if 0
+	BlockData	nextBlockData(BlockData d) const
+	{ return BlockData(d.m_index + 1, d.m_position + blockSize(d.m_index)); }
+	BlockData	prevBlockData(BlockData d) const
 	{
 		if( !d.m_index )
 			return BlockData(INVALID_INDEX, 0);
 		else {
-			//size_t sz = m_blocks[d.m_index - 1].m_size;
-			return BlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
+			return BlockData(d.m_index - 1, d.m_position - blockSize(d.m_index - 1));
 		}
 	}
-#endif
 	size_t	size() const;	// { return document()->size(); }
 	bool	isLayoutedDocBlock(index_t ix) const;
 	bool	isLayoutedViewBlock(index_t ix) const;
