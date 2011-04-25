@@ -164,6 +164,7 @@ public:
 public:
 	const TextView	*view() const { return m_view; }
 	ViewBlock	block() const;
+	BlockData	viewBlockData() const { return m_viewBlockData; }
 
 public:
 	TextView	*view() { return m_view; }

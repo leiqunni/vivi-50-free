@@ -105,6 +105,7 @@ public:
 	ViewBlock	next() const;
 	ViewBlock	prev() const;
 	QString		text() const;
+	int			charsCount(index_t) const;		//	s“ª‚©‚çw’èˆÊ’u‚Ü‚Å‚Ì•¶š”‚ğ•Ô‚·
 	const TextView	*view() const { return m_view; }
 
 	bool	operator==(const ViewBlock &x) const

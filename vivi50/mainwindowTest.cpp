@@ -895,4 +895,23 @@ void test_TextView()
 		ut.ut_test_equal(3, view.findBlock(17).blockNumber());
 		ut.ut_test_equal(INVALID_INDEX, view.findBlock(18).blockNumber());
 	}
+	if( 1 ) {		//	ViewCursor::movePosition() テスト
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("あいうえおかきく\nあいうえおあいうえおかきく\n"));
+		QFontMetrics fm = view.fontMetrics();
+		const int wd = fm.width(QString("あいうえお"));
+		const int ht = fm.lineSpacing() * 10;
+		DocCursor dcur(doc);
+		view.buildBlocks(dcur.block(), wd, ht);		//	最初から最後までレイアウト
+		ut.ut_test_equal(6, view.blockCount());
+		ViewCursor cur(&view);
+		ut.ut_test_equal(0, cur.position());
+		ut.ut_test_equal(0, cur.viewBlockData().position());
+		ut.ut_test_equal(0, cur.viewBlockData().index());
+		cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, 5);
+		ut.ut_test_equal(15, cur.position());
+		ut.ut_test_equal(15, cur.viewBlockData().position());
+		ut.ut_test_equal(1, cur.viewBlockData().index());
+	}
 }

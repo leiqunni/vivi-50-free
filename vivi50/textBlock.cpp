@@ -206,3 +206,18 @@ QString ViewBlock::text() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
+int ViewBlock::charsCount(index_t position) const
+{
+	if( !isValid() || position <= m_viewBlock.position() ||
+		position > m_viewBlock.position() + view()->blockSize(m_viewBlock.index()) )
+	{
+		return 0;
+	}
+	int cnt = 0;
+	int ix = m_viewBlock.position();
+	while( ix < position ) {
+		++cnt;
+		ix += UTF8CharSize((*m_document)[ix]);
+	}
+	return cnt;
+}

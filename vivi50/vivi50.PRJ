@@ -34,8 +34,8 @@ memFileColumnWd = 320
 * mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
-  textCursor.cpp	(-335.316,-33.0248)
-  textCursor.h	(-335.316,-66.0248)
+* textCursor.cpp	(-335.316,-33.0248)
+* textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
 * TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
@@ -53,7 +53,6 @@ memFileColumnWd = 320
   "TextDocument.cpp" 794 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
-  "textCursor.cpp" 634 'B: ' '' undone 未コーディング
   "TextView.cpp" 794 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 1165 'R: ' '' undone insertText と処理を共通化
   "TextView.cpp" 1187 'R: ' '' undone insertText と処理を共通化

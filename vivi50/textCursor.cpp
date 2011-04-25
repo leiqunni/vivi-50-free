@@ -631,7 +631,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 	if( !m_view->isLayoutedDocBlock(blockIndex()) )
 		m_viewBlockData = blockData();
 	else {
-		//	undone B 未コーディング
+		m_viewBlockData = view()->findBlockData(position());
 	}
 	return true;
 }
