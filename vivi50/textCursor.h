@@ -165,6 +165,8 @@ public:
 	const TextView	*view() const { return m_view; }
 	ViewBlock	block() const;
 	BlockData	viewBlockData() const { return m_viewBlockData; }
+	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
+	int		x() const { return m_x; }
 
 public:
 	TextView	*view() { return m_view; }
@@ -180,10 +182,13 @@ public:
 	ViewCursor &operator=(const DocCursor &);
 
 protected:
+	void	copyPositionToAnchor();
+	void	copyAnchorToPosition();
 	void	updateBlockData(uchar mode = MoveAnchor);		//	m_blockIndex, m_blockPosition 更新
 
 private:
 	TextView	*m_view;
+	int			m_x;
 	BlockData	m_viewBlockData;
 	BlockData	m_viewAnchorBlockData;
 };

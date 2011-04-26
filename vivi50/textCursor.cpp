@@ -565,12 +565,14 @@ void DocCursor::deletePreviousChar()
 //----------------------------------------------------------------------
 ViewCursor::ViewCursor(TextView *view, index_t position)
 	: m_view(view), DocCursor(view ? view->document() : 0, position)
+	, m_x(0)
 {
 	DocCursor::updateBlockData();
 	updateBlockData();
 }
 ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor)
 	: m_view(view), DocCursor(view ? view->document() : 0, position, anchor)
+	, m_x(0)
 {
 	DocCursor::updateBlockData();
 	updateBlockData();
@@ -578,12 +580,14 @@ ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor)
 ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor,
 			BlockData blockData)
 	: m_view(view), DocCursor(view ? view->document() : 0, position, anchor, blockData)
+	, m_x(0)
 {
 	DocCursor::updateBlockData();
 	updateBlockData();
 }
 ViewCursor::ViewCursor(const ViewCursor &x)
 	: m_view(x.m_view), DocCursor(x)
+	, m_x(x.m_x)
 {
 }
 void ViewCursor::setPosition(index_t position, uchar mode)
@@ -625,22 +629,72 @@ void ViewCursor::deletePreviousChar()
 	if( isNull() ) return;
 	m_view->deletePreviousChar(*this);
 }
+int ViewCursor::prevCharsCount() const
+{
+	if( isNull() ) return 0;
+	int cnt = 0;
+	index_t pos = m_viewBlockData.position();
+	while( pos < m_position ) {
+		++cnt;
+		pos += UTF8CharSize((*m_document)[pos]);
+	}
+	return cnt;
+}
+void ViewCursor::copyPositionToAnchor()
+{
+	m_anchor = m_position;
+	m_anchorBlockData = m_blockData;
+	m_viewAnchorBlockData = m_viewBlockData;
+}
+void ViewCursor::copyAnchorToPosition()
+{
+	m_position = m_anchor;
+	m_blockData = m_anchorBlockData;
+	m_viewBlockData = m_viewAnchorBlockData;
+}
 bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 {
+	if( isNull() || !n ) return false;
 	switch( move ) {
 	case Up:
+		while( n != 0 ) {
+			if( !m_viewBlockData.m_index ) break;
+			m_viewBlockData.m_position -= view()->blockSize(--m_viewBlockData.m_index);
+			--n;
+		}
+		m_position = m_viewBlockData.m_position;
+		m_position += view()->xToOffset(block().text(), m_x);
+		//movePosition(Right, KeepAnchor, view()->xToOffset(block().text(), m_x));
+		m_blockData = view()->docBlockData(m_viewBlockData);
+		if( mode == MoveAnchor )
+			copyPositionToAnchor();
 		break;
 	case Down:
+		while( n != 0 ) {
+			if( m_viewBlockData.m_index >= view()->blockCount() - 1 ) break;
+			m_viewBlockData.m_position += view()->blockSize(m_viewBlockData.m_index++);
+			--n;
+		}
+		m_position = m_viewBlockData.m_position;
+		m_position += view()->xToOffset(block().text(), m_x);
+		//movePosition(Right, KeepAnchor, view()->xToOffset(block().text(), m_x));
+		m_blockData = view()->docBlockData(m_viewBlockData);
+		if( mode == MoveAnchor )
+			copyPositionToAnchor();
 		break;
 	default:
 		if( !DocCursor::movePosition(move, mode, n) )
 			return false;
+		if( !m_view->isLayoutedDocBlock(blockIndex()) )
+			m_viewBlockData = blockData();
+		else
+			m_viewBlockData = view()->findBlockData(position());
+		if( move == EndOfBlock )
+			m_x = -1;
+		else
+			m_x = view()->offsetToX(block().text(), prevCharsCount());
 		break;
 	}
-	if( !m_view->isLayoutedDocBlock(blockIndex()) )
-		m_viewBlockData = blockData();
-	else
-		m_viewBlockData = view()->findBlockData(position());
 	return true;
 }
 ViewCursor &ViewCursor::operator=(const DocCursor &x)

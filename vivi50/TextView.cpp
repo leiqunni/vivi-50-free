@@ -221,6 +221,7 @@ ViewBlock TextView::findBlockByNumber(index_t bn) const
 			}
 		}
 	}
+	m_blockData = data;
 	return ViewBlock((TextView*)this, docBlock(data), data);
 }
 BlockData TextView::findBlockData(index_t position) const
@@ -266,6 +267,7 @@ BlockData TextView::findBlockData(index_t position) const
 			}
 		}
 	}
+	m_blockData = data;
 	return data;
 }
 #if 0
@@ -799,11 +801,14 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		m_textCursor->clearSelection();
 		clearMultiCursor();
 		viewport()->update();
-		emit showMessage( QString("%1 cur=(%2 %3 %4) blockData=(%5 %6)")
+		emit showMessage( QString("%1 cur=(%2 %3 %4 %5 %6 %7) blockData=(%8 %9)")
 							.arg(QDir::currentPath())
 							.arg(m_textCursor->position())
 							.arg(m_textCursor->blockData().index())
 							.arg(m_textCursor->blockData().position())
+							.arg(m_textCursor->viewBlockData().index())
+							.arg(m_textCursor->viewBlockData().position())
+							.arg(m_textCursor->x())
 							.arg(m_document->blockData().index())
 							.arg(m_document->blockData().position()) );
 		return;

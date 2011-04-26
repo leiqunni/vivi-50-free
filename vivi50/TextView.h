@@ -100,6 +100,8 @@ public:
 	index_t	firstViewLine() const { return m_firstViewLine; }
 	index_t	lastViewLine() const { return m_lastViewLine; }
 #endif
+	int		offsetToX(const QString &, int) const;		//	第２引数は文字数
+	int		xToOffset(const QString &, int) const;		//	
 
 public:
 	TextDocument	*document() { return m_document; }
@@ -142,8 +144,6 @@ public slots:
 	void	onLineBreak(bool);
 
 protected:
-	int		offsetToX(const QString &, int) const;		//	第２引数は文字数
-	int		xToOffset(const QString &, int) const;		//	
 	ViewBlock	yToTextBlock(int) const;
 	int		textBlockToY(const DocBlock&) const;		//	垂直スクロールを考慮した、block Y座標を返す
 														//	画面外の場合は -1 を返す
