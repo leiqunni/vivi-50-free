@@ -595,8 +595,8 @@ void TextView::paintEvent(QPaintEvent * event)
 }
 void TextView::ensureCursorVisible()
 {
-	DocBlock fvBlock = firstVisibleBlock();
-	DocBlock curBlock = m_textCursor->block();
+	ViewBlock fvBlock = firstVisibleBlock();
+	ViewBlock curBlock = m_textCursor->block();
 	if( curBlock.blockNumber() < fvBlock.blockNumber() ) {
 		verticalScrollBar()->setValue(/*fm.lineSpacing() **/ curBlock.blockNumber());
 		viewport()->update();
@@ -1314,7 +1314,7 @@ void TextView::buildBlocks()
 	}
 }
 #endif
-void TextView::onWordWrap(bool b)
+void TextView::onLineBreak(bool b)
 {
 	m_lineBreakMode = b;
 	updateBlocks();

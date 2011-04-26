@@ -71,6 +71,7 @@ public:
 	bool	withBOM() const;
 	bool	isModified() const;
 	bool	hasMultiCursor() const { return !m_multiCursor.empty(); }
+	bool	lineBreakMode() const { return m_lineBreakMode; }
 	QString	toPlainText() const;
 	const TextDocument	*document() const { return m_document; }
 	//size_t blockCount() const { return m_blocks.size(); }
@@ -110,6 +111,8 @@ public:
 	ViewBlock	lastBlock();
 	ViewBlock	findBlock(index_t) const;
 
+	void	setLineBreakMode(bool b) { onLineBreak(b); }
+
 	void	deleteChar();
 	void	deletePreviousChar();
 	void	insertText(const QString &, bool = false);
@@ -136,7 +139,7 @@ public slots:
 	void	setFontPointSize(int);
 	void	setFontFamily(const QString &);
 	void	makeFontBigger(bool);
-	void	onWordWrap(bool);
+	void	onLineBreak(bool);
 
 protected:
 	int		offsetToX(const QString &, int) const;		//	ëÊÇQà¯êîÇÕï∂éöêî

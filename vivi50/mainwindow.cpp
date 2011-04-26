@@ -173,11 +173,11 @@ void MainWindow::createActions()
     replaceAct->setStatusTip(tr("replace strings..."));
     connect(replaceAct, SIGNAL(triggered()), m_view, SLOT(replace()));
 
-	wordwrapAct = new QAction(tr("&WordWrapLongLines"), this);
-    wordwrapAct->setStatusTip(tr("word wrap long lines"));
-    wordwrapAct->setCheckable(true);
-    wordwrapAct->setChecked(false);
-    connect(wordwrapAct, SIGNAL(toggled(bool)), m_view, SLOT(onWordWrap(bool)));
+	linebreakAct = new QAction(tr("&Linebreak at right edge"), this);
+    linebreakAct->setStatusTip(tr("Linebreak long lines at right edge"));
+    linebreakAct->setCheckable(true);
+    linebreakAct->setChecked(false);
+    connect(linebreakAct, SIGNAL(toggled(bool)), m_view, SLOT(onLineBreak(bool)));
 
 	fontAct = new QAction(/*QIcon(":vivi/Resources/images/editredo.png"),*/ tr("&Font..."), this);
     fontAct->setStatusTip(tr("select Font family and/or size"));
@@ -239,7 +239,7 @@ void MainWindow::createMenus()
     searchMenu->addAction(replaceAct);
 
     viewMenu = menuBar()->addMenu(tr("&View"));
-    viewMenu->addAction(wordwrapAct);
+    viewMenu->addAction(linebreakAct);
 
     settingsMenu = menuBar()->addMenu(tr("&Settings"));
 	settingsMenu->addAction(fontAct);
@@ -314,12 +314,15 @@ void MainWindow::readSettings()
     unitTestDocAct->setChecked(m_unitTestDoc);
     m_unitTestView = settings.value("unitTestView", true).toBool();
     unitTestViewAct->setChecked(m_unitTestView);
+    m_view->setLineBreakMode(settings.value("linebreak", false).toBool());
+    linebreakAct->setChecked(m_view->lineBreakMode());
 }
 void MainWindow::writeSettings()
 {
     QSettings settings;
     settings.setValue("pos", pos());
     settings.setValue("size", size());
+    settings.setValue("linebreak", m_view->lineBreakMode());
 }
 bool MainWindow::maybeSave()
 {
