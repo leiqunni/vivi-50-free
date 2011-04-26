@@ -1090,9 +1090,9 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 	Qt::KeyboardModifiers mod = event->modifiers();
 	const bool ctrl = (mod & Qt::ControlModifier) != 0;
 	const bool shift = (mod & Qt::ShiftModifier) != 0;
-	DocBlock block = yToTextBlock(event->y());
+	ViewBlock block = yToTextBlock(event->y());
 	if( !block.isValid() )
-		block = document()->lastBlock();
+		block = lastBlock();
 	//qDebug() << "block index = " << block.index();
 	int offset = xToOffset(block.text(), event->x());
 	//qDebug() << "offset = " << offset;
@@ -1122,9 +1122,9 @@ void TextView::mouseReleaseEvent ( QMouseEvent * event )
 void TextView::mouseMoveEvent ( QMouseEvent * event )
 {
 	if( m_mouseCaptured ) {
-		DocBlock block = yToTextBlock(event->y());
+		ViewBlock block = yToTextBlock(event->y());
 		if( !block.isValid() )
-			block = document()->lastBlock();
+			block = lastBlock();
 		int offset = xToOffset(block.text(), event->x());
 		m_textCursor->setPosition(block.position(), DocCursor::KeepAnchor);
 		if( offset != 0 )
