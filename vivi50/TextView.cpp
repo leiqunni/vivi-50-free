@@ -479,7 +479,7 @@ void TextView::paintEvent(QPaintEvent * event)
 		}
 		for(;;) {
 			if( y >= vr.height() || !block.isValid() ) break;
-			index_t nextBlockPosition = block.position() + m_document->blockSize(block.index());
+			index_t nextBlockPosition = block.position() + blockSize(block.index());
 			if( selFirst < nextBlockPosition && selLast > block.position() ) {
 				//	block ‚ª‘I‘ğ”ÍˆÍ“à‚É‚ ‚éê‡
 				const QString text = block.text();
@@ -513,7 +513,7 @@ void TextView::paintEvent(QPaintEvent * event)
 	std::vector<ViewCursor>::const_iterator mciend = m_multiCursor.end();
 	while( y < vr.height() && block.isValid() ) {
 		const QString text = block.text();
-		index_t nextBlockPosition = block.position() + m_document->blockSize(block.index());
+		index_t nextBlockPosition = block.position() + blockSize(block.index());
 		if( m_textCursor->hasSelection() &&
 			selFirst < nextBlockPosition && selLast > block.position() )
 		{
