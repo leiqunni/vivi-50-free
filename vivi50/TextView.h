@@ -141,7 +141,7 @@ public slots:
 protected:
 	int		offsetToX(const QString &, int) const;		//	第２引数は文字数
 	int		xToOffset(const QString &, int) const;		//	
-	DocBlock	yToTextBlock(int) const;
+	ViewBlock	yToTextBlock(int) const;
 	int		textBlockToY(const DocBlock&) const;		//	垂直スクロールを考慮した、block Y座標を返す
 														//	画面外の場合は -1 を返す
 protected:

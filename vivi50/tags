@@ -826,7 +826,7 @@ withBOM	.\TextDocument.h	/^	bool	withBOM() const { return m_withBOM; }$/;"	f	cla
 wordwrapAct	.\mainwindow.h	/^    QAction *wordwrapAct;		\/\/	âEí[Ç≈ê‹ÇËï‘Çµ$/;"	m	class:MainWindow
 writeSettings	.\mainwindow.cpp	/^void MainWindow::writeSettings()$/;"	f	class:MainWindow
 xToOffset	.\TextView.cpp	/^int TextView::xToOffset(const QString &text, int x) const$/;"	f	class:TextView
-yToTextBlock	.\TextView.cpp	/^DocBlock TextView::yToTextBlock(int py) const$/;"	f	class:TextView
+yToTextBlock	.\TextView.cpp	/^ViewBlock TextView::yToTextBlock(int py) const$/;"	f	class:TextView
 ~CUnitTest	.\unit_test.cpp	/^CUnitTest::~CUnitTest(void)$/;"	f	class:CUnitTest
 ~DocBlock	.\textBlock.h	/^	~DocBlock() {}$/;"	f	class:DocBlock
 ~DocCursor	.\textCursor.h	/^	~DocCursor() {}$/;"	f	class:DocCursor

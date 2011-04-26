@@ -627,12 +627,20 @@ void ViewCursor::deletePreviousChar()
 }
 bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 {
-	if( !DocCursor::movePosition(move, mode, n) ) return false;
+	switch( move ) {
+	case Up:
+		break;
+	case Down:
+		break;
+	default:
+		if( !DocCursor::movePosition(move, mode, n) )
+			return false;
+		break;
+	}
 	if( !m_view->isLayoutedDocBlock(blockIndex()) )
 		m_viewBlockData = blockData();
-	else {
+	else
 		m_viewBlockData = view()->findBlockData(position());
-	}
 	return true;
 }
 ViewCursor &ViewCursor::operator=(const DocCursor &x)

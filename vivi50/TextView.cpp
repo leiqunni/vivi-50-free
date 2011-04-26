@@ -403,14 +403,14 @@ int TextView::offsetToX(const QString &text, int offset) const
 	return x;
 }
 
-DocBlock TextView::yToTextBlock(int py) const
+ViewBlock TextView::yToTextBlock(int py) const
 {
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
 	QFontMetrics fm = fontMetrics();
 
 	int y = 0;
-	DocBlock block = m_document->findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
+	ViewBlock block = findBlockByNumber(verticalScrollBar()->value() /*/ fm.lineSpacing()*/);
 	while( y < vr.height() && block.isValid() ) {
 		const int nextY = y + fm.lineSpacing();
 		if( py < nextY )
