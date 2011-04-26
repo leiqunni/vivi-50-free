@@ -353,7 +353,17 @@ void TextView::focusInEvent ( QFocusEvent * event )
 	}
 }
 
-int TextView::xToOffset(const QString &text, int x) const
+index_t TextView::movePositionByCharCount(index_t pos, int n) const
+{
+	if( n > 0 ) {
+		while( --n >= 0 && pos != size() )
+			pos += UTF8CharSize(document()->at(pos));
+	} else {
+	}
+	return pos;
+}
+
+int TextView::xToCharCount(const QString &text, int x) const
 {
 	const QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
@@ -369,13 +379,13 @@ int TextView::xToOffset(const QString &text, int x) const
 		} else {
 			width += fm.width(qch);
 		}
-		if( x <= width - limit )	//	
+		if( x < width - limit )	//	
 			break;
 		++ix;
 	}
 	return ix;
 }
-int TextView::offsetToX(const QString &text, int offset) const
+int TextView::charCountToX(const QString &text, int offset) const
 {
 	offset = qMin(offset, text.length());
 	const QFontMetrics fm = fontMetrics();
@@ -485,8 +495,8 @@ void TextView::paintEvent(QPaintEvent * event)
 			if( selFirst < nextBlockPosition && selLast > block.position() ) {
 				//	block が選択範囲内にある場合
 				const QString text = block.text();
-				int x1 = offsetToX(text, block.charsCount(qMax(block.position(), selFirst)));
-				int x2 = offsetToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
+				int x1 = charCountToX(text, block.charsCount(qMax(block.position(), selFirst)));
+				int x2 = charCountToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
 				painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
 			}
 			if( selLast < nextBlockPosition ) break;
@@ -520,15 +530,15 @@ void TextView::paintEvent(QPaintEvent * event)
 			selFirst < nextBlockPosition && selLast > block.position() )
 		{
 			//	block が選択範囲内にある場合
-			int x1 = offsetToX(text, block.charsCount(qMax(block.position(), selFirst)));
-			int x2 = offsetToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
+			int x1 = charCountToX(text, block.charsCount(qMax(block.position(), selFirst)));
+			int x2 = charCountToX(text, block.charsCount(qMin(nextBlockPosition, selLast)));
 			painter.fillRect(QRect(x1 + MARGIN_LEFT + 1, y+2, x2 - x1, fm.height()), Qt::lightGray);
 		}
 		if( m_drawCursor ) {
 			if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
 				const int offset = qMin(block.charsCount(m_textCursor->position()),
 											text.length());
-				int x = offsetToX(text, offset);
+				int x = charCountToX(text, offset);
 				painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::red);
 			}
 			while( mcitr != mciend && mcitr->block() < block )
@@ -536,7 +546,7 @@ void TextView::paintEvent(QPaintEvent * event)
 			while( mcitr != mciend && mcitr->block() == block) {		//	カーソルがブロック内にある場合
 				const int offset = qMin(block.charsCount(mcitr->position()),
 											text.length());
-				int x = offsetToX(text, offset);
+				int x = charCountToX(text, offset);
 				painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::green);
 				++mcitr;
 			}
@@ -577,14 +587,14 @@ void TextView::paintEvent(QPaintEvent * event)
 		}
 		if( block.blockNumber() == lastBlockNumber ) {
 			painter.setPen(Qt::blue);
-			const int x = offsetToX(text, text.length());
+			const int x = charCountToX(text, text.length());
 			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), "[EOF]");
 			break;
 		}
 		if( !m_preeditString.isEmpty() && block.index() == m_preeditPosCursor->block().index() ) {
 			painter.setPen(Qt::blue);
-			int x1 = offsetToX(text, block.charsCount(m_preeditPosCursor->anchor())) + MARGIN_LEFT;
-			int x2 = offsetToX(text, block.charsCount(m_preeditPosCursor->position())) + MARGIN_LEFT;
+			int x1 = charCountToX(text, block.charsCount(m_preeditPosCursor->anchor())) + MARGIN_LEFT;
+			int x2 = charCountToX(text, block.charsCount(m_preeditPosCursor->position())) + MARGIN_LEFT;
 			const int uy = y + fm.ascent() + 1;
 			painter.drawLine(x1, uy, x2, uy);
 		}
@@ -660,7 +670,7 @@ QVariant TextView::inputMethodQuery ( Qt::InputMethodQuery query ) const
 {
 	if( query == Qt::ImMicroFocus ) {
 		DocBlock block = m_textCursor->block();
-		int x = offsetToX(block.text(), block.charsCount(m_preeditPosCursor->anchor()));
+		int x = charCountToX(block.text(), block.charsCount(m_preeditPosCursor->anchor()));
 		int y = textBlockToY(block);
 		return QVariant(QRect(m_lineNumberAreaWidth + x, y, 20, 20));
 	}
@@ -1099,7 +1109,7 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 	if( !block.isValid() )
 		block = lastBlock();
 	//qDebug() << "block index = " << block.index();
-	int offset = xToOffset(block.text(), event->x());
+	int offset = xToCharCount(block.text(), event->x());
 	//qDebug() << "offset = " << offset;
 	ViewCursor cur(*m_textCursor);
 	cur.setPosition(block.position());
@@ -1130,7 +1140,7 @@ void TextView::mouseMoveEvent ( QMouseEvent * event )
 		ViewBlock block = yToTextBlock(event->y());
 		if( !block.isValid() )
 			block = lastBlock();
-		int offset = xToOffset(block.text(), event->x());
+		int offset = xToCharCount(block.text(), event->x());
 		m_textCursor->setPosition(block.position(), DocCursor::KeepAnchor);
 		if( offset != 0 )
 			m_textCursor->movePosition(DocCursor::Right, DocCursor::KeepAnchor, offset);

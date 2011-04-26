@@ -663,8 +663,9 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 			--n;
 		}
 		m_position = m_viewBlockData.m_position;
-		m_position += view()->xToOffset(block().text(), m_x);
-		//movePosition(Right, KeepAnchor, view()->xToOffset(block().text(), m_x));
+		m_position = view()->movePositionByCharCount(m_position,
+									view()->xToCharCount(block().text(), m_x));
+		//movePosition(Right, KeepAnchor, view()->xToCharCount(block().text(), m_x));
 		m_blockData = view()->docBlockData(m_viewBlockData);
 		if( mode == MoveAnchor )
 			copyPositionToAnchor();
@@ -676,8 +677,9 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 			--n;
 		}
 		m_position = m_viewBlockData.m_position;
-		m_position += view()->xToOffset(block().text(), m_x);
-		//movePosition(Right, KeepAnchor, view()->xToOffset(block().text(), m_x));
+		m_position = view()->movePositionByCharCount(m_position,
+									view()->xToCharCount(block().text(), m_x));
+		//movePosition(Right, KeepAnchor, view()->xToCharCount(block().text(), m_x));
 		m_blockData = view()->docBlockData(m_viewBlockData);
 		if( mode == MoveAnchor )
 			copyPositionToAnchor();
@@ -692,7 +694,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		if( move == EndOfBlock )
 			m_x = -1;
 		else
-			m_x = view()->offsetToX(block().text(), prevCharsCount());
+			m_x = view()->charCountToX(block().text(), prevCharsCount());
 		break;
 	}
 	return true;

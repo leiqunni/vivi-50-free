@@ -24,7 +24,7 @@ memFileColumnWd = 320
   gap_vector.h	(-94.078,307.793)
   main.cpp	(-178.304,-339.84)
 * mainwindow.cpp	(-128.265,-196.142)
-  mainwindow.h	(-128.265,-229.142)
+* mainwindow.h	(-128.265,-229.142)
   TextDocument.cpp	(-152.875,65.766)
   TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
@@ -53,12 +53,12 @@ memFileColumnWd = 320
   "TextDocument.cpp" 794 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
-  "TextView.cpp" 794 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1166 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1188 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1226 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1261 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1267 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 796 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1171 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1193 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1231 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1266 'B: ' '' undone ブロック情報更新
   "TextView.cpp" 1272 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1332 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1344 'B: ' '' undone 未コーディング
+  "TextView.cpp" 1277 'B: ' '' undone ブロック情報更新
+  "TextView.cpp" 1337 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1349 'B: ' '' undone 未コーディング

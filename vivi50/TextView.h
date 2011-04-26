@@ -100,8 +100,9 @@ public:
 	index_t	firstViewLine() const { return m_firstViewLine; }
 	index_t	lastViewLine() const { return m_lastViewLine; }
 #endif
-	int		offsetToX(const QString &, int) const;		//	‘æ‚Qˆø”‚Í•¶š”
-	int		xToOffset(const QString &, int) const;		//	
+	int		charCountToX(const QString &, int) const;		//	‘æ‚Qˆø”‚Í•¶š”
+	int		xToCharCount(const QString &, int) const;		//	‚˜À•W‚É‘Î‰‚·‚é•¶š”‚ğ•Ô‚·
+	index_t	movePositionByCharCount(index_t, int n) const;	//	n •¶š•ªˆÚ“®
 
 public:
 	TextDocument	*document() { return m_document; }
