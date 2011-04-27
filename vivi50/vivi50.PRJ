@@ -57,8 +57,6 @@ memFileColumnWd = 320
   "TextView.cpp" 1182 'R: ' '' undone insertText と処理を共通化
   "TextView.cpp" 1204 'R: ' '' undone insertText と処理を共通化
   "TextView.cpp" 1242 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1277 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1313 'B: ' '' undone ブロック情報更新
-  "TextView.cpp" 1324 'D: ' '' undone [first, last) はレイアウト済みと仮定
-  "TextView.cpp" 1397 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1409 'B: ' '' undone 未コーディング
+  "TextView.cpp" 1331 'D: ' '' undone [first, last) はレイアウト済みと仮定
+  "TextView.cpp" 1404 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1416 'B: ' '' undone 未コーディング

@@ -644,6 +644,9 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
 	m_view->document()->setCharEncodeing(ce);
 	m_view->document()->setWithBOM(withBOM);
 	QApplication::restoreOverrideCursor();
+    QSettings settings;
+    m_view->setLineBreakMode(settings.value("linebreak", false).toBool());
+    linebreakAct->setChecked(m_view->lineBreakMode());
 	m_view->doJump(lineNum);
 	m_view->viewport()->update();
 
