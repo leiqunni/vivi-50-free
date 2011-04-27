@@ -1044,6 +1044,7 @@ void TextView::resizeEvent(QResizeEvent *event)
 {
 	QAbstractScrollArea::resizeEvent(event);
 	updateBlocks();
+	m_textCursor->updateViewBlock();
 	//clearBlocks();		//	レイアウト情報クリア
 	updateLineNumberAreaSize();
 	//onBlockCountChanged();
@@ -1403,6 +1404,7 @@ void TextView::onLineBreak(bool b)
 
 void TextView::updateBlocks()
 {
+	m_blockData = BlockData(0, 0);
 	if( !m_lineBreakMode ) {
 		clearBlocks();
 	} else {
