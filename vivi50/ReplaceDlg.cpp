@@ -40,6 +40,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 		    QStringList hist = settings.value("findStringHist").toStringList();
 		    for(int ix = hist.size(); ix != 0; )
 		    	m_findStringCB->addItem(hist[--ix]);
+			m_findStringCB->lineEdit()->selectAll();
 			hBoxLayout->addWidget(m_findStringCB);
 			vBoxLayoutLeft->addLayout(hBoxLayout);
 		QHBoxLayout *hBoxLayout2 = new QHBoxLayout();

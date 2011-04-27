@@ -77,6 +77,7 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 	    QStringList hist = settings.value("findStringHist").toStringList();
 	    for(int ix = hist.size(); ix != 0; )
 	    	m_findStringCB->addItem(hist[--ix]);
+		m_findStringCB->lineEdit()->selectAll();
 		hBoxLayout->addWidget(m_findStringCB);
 	QHBoxLayout *hBoxLayout2 = new QHBoxLayout();
 		QVBoxLayout *vBoxLayout2 = new QVBoxLayout();
