@@ -1273,8 +1273,19 @@ void TextView::insertText(const QString &text, bool tab)
 }
 int TextView::insertText(ViewCursor &cur, const QString &text)
 {
+	if( !m_lineBreakMode )
+		return document()->insertText(cur, text);
+	if( cur.anchor() < cur.position() )
+		cur.swapPositionAnchor();
+	DocBlock block = cur.docBlock();
+	DocBlock lastBlock = cur.docAnchorBlock();
+	index_t firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
+	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());		//	次のブロック
+	index_t lastBlockPosition = lastBlockData.position();
+	index_t lastViewBlockNumber = findBlockData(lastBlockData.position()).m_index;
+	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
 	const int sz = document()->insertText(cur, text);
-	//	undone B ブロック情報更新
+	reLayoutBlocks(block, lastBlockPosition + sz, firstViewBlockNumber);
 	return sz;
 }
 size_t TextView::deleteChar(ViewCursor &cur)
