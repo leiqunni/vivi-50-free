@@ -101,6 +101,7 @@ public:
 	index_t		docIndex() const { return DocBlock::index(); }
 	index_t		index() const { return m_viewBlock.m_index; }
 	index_t		blockNumber() const { return m_viewBlock.m_index; }
+	index_t		viewBlockNumber() const { return m_viewBlock.index(); }
 	BlockData	data() const { return m_viewBlock; }
 	ViewBlock	next() const;
 	ViewBlock	prev() const;

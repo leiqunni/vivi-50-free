@@ -167,6 +167,7 @@ public:
 	BlockData	viewBlockData() const { return m_viewBlockData; }
 	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
 	int		x() const { return m_x; }
+	index_t	viewBlockNumber() const { return m_viewBlockData.index(); }
 
 public:
 	TextView	*view() { return m_view; }

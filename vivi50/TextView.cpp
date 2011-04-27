@@ -335,7 +335,7 @@ void TextView::updateScrollBarData()
 
 	verticalScrollBar()->setPageStep(areaSize.height() / fm.lineSpacing());
 	verticalScrollBar()->setSingleStep(1);
-	verticalScrollBar()->setRange(0, document()->blockCount() - areaSize.height() / fm.lineSpacing());
+	verticalScrollBar()->setRange(0, blockCount() - areaSize.height() / fm.lineSpacing());
 	//horizontalScrollBar()->setPageStep(widgetSize.width());
 	//horizontalScrollBar()->setRange(0, widgetSize.width() - areaSize.width());
 	//updateWidgetPosition();
@@ -617,14 +617,15 @@ void TextView::ensureCursorVisible()
 	QRect vr = viewport()->rect();
 	QFontMetrics fm = fontMetrics();
 	const int nLines = vr.height() / fm.lineSpacing();
-	const int t = curBlock.blockNumber() - fvBlock.blockNumber() - nLines;
+	const int t = curBlock.viewBlockNumber() - fvBlock.viewBlockNumber() - nLines;
 	if( t < 0 ) return;		//	画面内
 	index_t bn;
 	if( t < 4 )
-		bn = fvBlock.blockNumber() + t + 1;
+		bn = fvBlock.viewBlockNumber() + t + 1;
 	else
-		bn = qMin( curBlock.blockNumber(), (size_t)verticalScrollBar()->maximum() );
-	verticalScrollBar()->setValue(/*fm.lineSpacing() **/ bn);
+		bn = qMin( curBlock.viewBlockNumber(), (size_t)verticalScrollBar()->maximum() );
+	verticalScrollBar()->setValue(bn);
+	const index_t v = verticalScrollBar()->value();
 	viewport()->update();
 }
 void TextView::removeOverlappedCursor()
@@ -1278,6 +1279,11 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 }
 void TextView::deleteChar(ViewCursor &cur)
 {
+	if( !cur.hasSelection() )
+		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor);
+	BlockData firstBlockData = cur.position() < cur.anchor() ? cur.blockData() : cur.anchorBlockData();
+	BlockData lastBlockData = cur.position() < cur.anchor() ? cur.anchorBlockData() : cur.blockData();
+	lastBlockData.m_position += document()->blockSize(lastBlockData.m_index++);
 	document()->deleteChar(cur);
 	//	undone B ブロック情報更新
 }
@@ -1367,7 +1373,42 @@ void TextView::ensureBlockLayout()
 	DocBlock d = m_document->findBlockByNumber(verticalScrollBar()->value());
 	buildBlocks(d, vr.width(), vr.height());
 }
-void TextView::buildBlocks(DocBlock block, int wdLimit, int ht)
+void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdLimit, int tabWidth)
+{
+	v.clear();
+	index_t pos = block.position();
+	index_t blockPos = pos;
+	QString text = block.text();
+	const size_t nlLength = block.newlineLength();
+	index_t ixEOL = text.length() - nlLength;		//	改行コードは１バイトと仮定
+	if( !ixEOL ) {
+		v.push_back(block.size());
+	} else {
+		index_t ix = 0;
+		while( ix < ixEOL ) {
+			int width = 0;		//	現在幅
+			for(;;) {
+				if( ix == ixEOL ) {
+					pos += nlLength;
+					break;
+				}
+				QChar qch = text.at(ix);
+				if( qch == '\t' ) {
+					width = (width / tabWidth + 1) * tabWidth;
+					pos += 1;
+				} else {
+					if( (width += fontMetrics().width(qch)) > wdLimit ) break;
+					pos += UTF8CharSize((*document())[pos]);
+				}
+				++ix;
+			}
+			v.push_back(pos - blockPos);
+			blockPos = pos;
+		}
+	}
+}
+void TextView::buildBlocks(DocBlock block, int wdLimit, int ht,
+							index_t diLimit)	//	レイアウト範囲
 {
 	QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
@@ -1381,8 +1422,18 @@ void TextView::buildBlocks(DocBlock block, int wdLimit, int ht)
 	//DocBlock block = document()->firstBlock();
 	//index_t blockIndex = block.index();		//	doc block index
 	//m_firstViewLine = blockIndex;
+	std::vector<index_t> v;
 	int y = 0;
-	while( block.isValid() && (!ht || y < ht) ) {
+	while( block.isValid() && (!ht || y < ht) && (!diLimit || block.index() < diLimit) ) {
+#if 1
+		layoutText(v, block, wdLimit, tabWidth);
+		for(std::vector<index_t>::const_iterator itr = v.begin(), iend = v.end();
+			itr != iend; ++itr)
+		{
+			m_blockSize.push_back(*itr);
+		}
+		y += fm.lineSpacing() * v.size();
+#else
 		index_t pos = block.position();
 		index_t blockPos = pos;
 		QString text = block.text();
@@ -1419,6 +1470,7 @@ void TextView::buildBlocks(DocBlock block, int wdLimit, int ht)
 			}
 		}
 		//++blockIndex;
+#endif
 		++m_layoutedBlockCount;
 		block = block.next();
 	}

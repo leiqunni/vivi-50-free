@@ -173,7 +173,8 @@ protected:
 	void	ensureBlockLayout();
 	void	updateBlocks();
 	void	clearBlocks();
-	void	buildBlocks(DocBlock, int wd, int ht);
+	void	buildBlocks(DocBlock, int wd, int ht, index_t = 0);
+	void	layoutText(std::vector<size_t> &, const DocBlock &, int wd, int tabWidth);
 
 	void	resetCursorBlink();
     void	removeOverlappedCursor();
