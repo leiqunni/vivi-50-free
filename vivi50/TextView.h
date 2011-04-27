@@ -103,6 +103,7 @@ public:
 	int		charCountToX(const QString &, int) const;		//	‘æ‚Qˆø”‚Í•¶š”
 	int		xToCharCount(const QString &, int) const;		//	‚˜À•W‚É‘Î‰‚·‚é•¶š”‚ğ•Ô‚·
 	index_t	movePositionByCharCount(index_t, int n) const;	//	n •¶š•ªˆÚ“®
+	BlockData blockData() const { return m_blockData; }
 
 public:
 	TextDocument	*document() { return m_document; }

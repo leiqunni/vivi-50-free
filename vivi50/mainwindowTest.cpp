@@ -36,7 +36,7 @@ void q_output(const QString &mess)
 void MainWindow::printBuffer()
 {
 	const TextDocument *doc = m_view->document();
-	doOutput(QString("document size = %1 blockCount = %2\n")
+	doOutput(QString("\ndocument size = %1 blockCount = %2\n")
 				.arg(doc->size()).arg(doc->blockCount()));
 	for(size_t ix = 0; ix < doc->blockCount(); ++ix) {
 		doOutput(QString("block[%1].m_size = %2\n")
@@ -47,6 +47,11 @@ void MainWindow::printBuffer()
 		doOutput(QString("block[%1].m_size = %2\n")
 				.arg(ix).arg(m_view->blockSize(ix)) );
 	}
+	doOutput(QString("cache block doc = (%1 %2) view = (%3 %4)\n")
+				.arg(doc->blockData().m_index)
+				.arg(doc->blockData().m_position)
+				.arg(m_view->blockData().m_index)
+				.arg(m_view->blockData().m_position));
 }
 
 void test_TextDocument();

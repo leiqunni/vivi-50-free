@@ -1286,6 +1286,7 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
 	const int sz = document()->insertText(cur, text);
 	reLayoutBlocks(block, lastBlockPosition + sz, firstViewBlockNumber);
+	cur.updateViewBlock();
 	return sz;
 }
 size_t TextView::deleteChar(ViewCursor &cur)
@@ -1306,6 +1307,7 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
 	const size_t delSize = document()->deleteChar(cur);
 	reLayoutBlocks(block, lastBlockPosition - delSize, firstViewBlockNumber);
+	cur.updateViewBlock();
 	return delSize;
 }
 size_t TextView::deletePreviousChar(ViewCursor &cur)
@@ -1332,6 +1334,8 @@ void TextView::eraseBlocks(index_t first, index_t last)
 }
 void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIndex)
 {
+	m_blockData.m_index = 0;
+	bool set = false;
 	QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	‚Æ‚è‚ ‚¦‚¸‹ó”’4•¶Žš•ª‚ÉŒÅ’è
@@ -1344,6 +1348,11 @@ void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIn
 			itr != iend; ++itr, ++vbIndex)
 		{
 			m_blockSize.insert(vbIndex, *itr);
+			if( !set ) {
+				set = true;
+				m_blockData.m_index = vbIndex;
+				m_blockData.m_position = block.position();
+			}
 		}
 		m_layoutedBlockCount += v.size();
 		block = block.next();

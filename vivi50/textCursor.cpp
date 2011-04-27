@@ -722,3 +722,11 @@ DocBlock ViewCursor::docAnchorBlock() const
 {
 	return DocBlock(m_view->document(), anchorBlockData());
 }
+void ViewCursor::updateViewBlock()
+{
+	m_viewBlockData = m_view->findBlockData(position());
+	if( hasSelection() )
+		m_viewAnchorBlockData = m_view->findBlockData(anchor());
+	else
+		m_viewAnchorBlockData = m_viewBlockData;
+}
