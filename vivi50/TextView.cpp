@@ -779,7 +779,7 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 						return;
 				}
 			}
-			m_textCursor->deletePreviousChar();
+			deletePreviousChar();
 		}
 		ensureCursorVisible();
 		viewport()->update();
@@ -1199,7 +1199,7 @@ void TextView::deleteChar()
 void TextView::deletePreviousChar()
 {
 	if( !hasMultiCursor() )
-		document()->deletePreviousChar(*m_textCursor);
+		deletePreviousChar(*m_textCursor);
 	else {
 		//	undone R insertText と処理を共通化
 		document()->openUndoBlock();
@@ -1208,7 +1208,7 @@ void TextView::deletePreviousChar()
 		for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
-			const int sz = document()->deletePreviousChar(**itr);
+			const int sz = deletePreviousChar(**itr);
 			for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 				(*k)->move(-sz);
 				//(*k)->setPosition((*k)->position() - sz);
@@ -1273,7 +1273,7 @@ void TextView::insertText(const QString &text, bool tab)
 }
 int TextView::insertText(ViewCursor &cur, const QString &text)
 {
-	const size_t sz = document()->insertText(cur, text);
+	const int sz = document()->insertText(cur, text);
 	//	undone B ブロック情報更新
 	return sz;
 }
@@ -1281,8 +1281,11 @@ size_t TextView::deleteChar(ViewCursor &cur)
 {
 	if( !m_lineBreakMode )
 		return document()->deleteChar(cur);
-	if( !cur.hasSelection() )
+	if( !cur.hasSelection() ) {
 		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor);
+		if( !cur.hasSelection() )
+			return 0;
+	}
 	DocBlock block = cur.position() < cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
 	DocBlock lastBlock = cur.position() > cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
 	index_t firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
@@ -1294,10 +1297,16 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	reLayoutBlocks(block, lastBlockPosition - delSize, firstViewBlockNumber);
 	return delSize;
 }
-void TextView::deletePreviousChar(ViewCursor &cur)
+size_t TextView::deletePreviousChar(ViewCursor &cur)
 {
-	document()->deletePreviousChar(cur);
-	//	undone B ブロック情報更新
+	if( !m_lineBreakMode )
+		return document()->deletePreviousChar(cur);
+	if( !cur.hasSelection() ) {
+		cur.movePosition(DocCursor::Left, DocCursor::KeepAnchor);
+		if( !cur.hasSelection() )
+			return 0;
+	}
+	return deleteChar(cur);
 }
 void TextView::clearBlocks()
 {

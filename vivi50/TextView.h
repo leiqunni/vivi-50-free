@@ -121,7 +121,7 @@ public:
 	void	insertText(const QString &, bool = false);
 	int		insertText(ViewCursor &, const QString &);
 	size_t	deleteChar(ViewCursor &);
-	void	deletePreviousChar(ViewCursor &);
+	size_t	deletePreviousChar(ViewCursor &);
 
 public slots:
 	void	copy();
