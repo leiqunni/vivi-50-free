@@ -1177,7 +1177,7 @@ void TextView::getAllCursor(std::vector<ViewCursor*> &v)
 void TextView::deleteChar()
 {
 	if( !hasMultiCursor() )
-		document()->deleteChar(*m_textCursor);
+		deleteChar(*m_textCursor);
 	else {
 		//	undone R insertText と処理を共通化
 		document()->openUndoBlock();
@@ -1277,15 +1277,22 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 	//	undone B ブロック情報更新
 	return sz;
 }
-void TextView::deleteChar(ViewCursor &cur)
+size_t TextView::deleteChar(ViewCursor &cur)
 {
+	if( !m_lineBreakMode )
+		return document()->deleteChar(cur);
 	if( !cur.hasSelection() )
 		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor);
-	BlockData firstBlockData = cur.position() < cur.anchor() ? cur.blockData() : cur.anchorBlockData();
-	BlockData lastBlockData = cur.position() < cur.anchor() ? cur.anchorBlockData() : cur.blockData();
-	lastBlockData.m_position += document()->blockSize(lastBlockData.m_index++);
-	document()->deleteChar(cur);
-	//	undone B ブロック情報更新
+	DocBlock block = cur.position() < cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
+	DocBlock lastBlock = cur.position() > cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
+	index_t firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
+	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());		//	次のブロック
+	index_t lastBlockPosition = lastBlockData.position();
+	index_t lastViewBlockNumber = findBlockData(lastBlockData.position()).m_index;
+	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
+	const size_t delSize = document()->deleteChar(cur);
+	reLayoutBlocks(block, lastBlockPosition - delSize, firstViewBlockNumber);
+	return delSize;
 }
 void TextView::deletePreviousChar(ViewCursor &cur)
 {
@@ -1297,6 +1304,30 @@ void TextView::clearBlocks()
 	m_blockSize.clear();
 	m_firstUnlayoutedBlockCount = 0;
 	m_layoutedBlockCount = 0;
+}
+void TextView::eraseBlocks(index_t first, index_t last)
+{
+	m_blockSize.erase(first - m_firstUnlayoutedBlockCount, last - m_firstUnlayoutedBlockCount);
+	m_layoutedBlockCount -= last - first;		//	undone D [first, last) はレイアウト済みと仮定
+}
+void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIndex)
+{
+	QFontMetrics fm = fontMetrics();
+	const int spaceWidth = fm.width(QChar(' '));
+	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
+	const QRect vr = viewport()->rect();
+	int wdLimit = vr.width() - fm.width(' ') * 4;
+	std::vector<index_t> v;
+	while( block.isValid() && block.position() < lastPosition ) {
+		layoutText(v, block, wdLimit, tabWidth);
+		for(std::vector<index_t>::const_iterator itr = v.begin(), iend = v.end();
+			itr != iend; ++itr, ++vbIndex)
+		{
+			m_blockSize.insert(vbIndex, *itr);
+		}
+		m_layoutedBlockCount += v.size();
+		block = block.next();
+	}
 }
 #if 0
 void TextView::buildBlocks()
@@ -1425,7 +1456,6 @@ void TextView::buildBlocks(DocBlock block, int wdLimit, int ht,
 	std::vector<index_t> v;
 	int y = 0;
 	while( block.isValid() && (!ht || y < ht) && (!diLimit || block.index() < diLimit) ) {
-#if 1
 		layoutText(v, block, wdLimit, tabWidth);
 		for(std::vector<index_t>::const_iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
@@ -1433,44 +1463,6 @@ void TextView::buildBlocks(DocBlock block, int wdLimit, int ht,
 			m_blockSize.push_back(*itr);
 		}
 		y += fm.lineSpacing() * v.size();
-#else
-		index_t pos = block.position();
-		index_t blockPos = pos;
-		QString text = block.text();
-		const size_t nlLength = block.newlineLength();
-		index_t ixEOL = text.length() - nlLength;		//	改行コードは１バイトと仮定
-		if( !ixEOL ) {
-			m_blockSize.push_back(block.size());
-			//m_viewLines.push_back(ViewLine(pos, blockIndex));
-			y += fm.lineSpacing();
-		} else {
-			index_t ix = 0;
-			while( ix < ixEOL ) {
-				//QString buf;
-				int width = 0;		//	現在幅
-				for(;;) {
-					if( ix == ixEOL ) {
-						pos += nlLength;
-						break;
-					}
-					QChar qch = text.at(ix);
-					if( qch == '\t' ) {
-						width = (width / tabWidth + 1) * tabWidth;
-						pos += 1;
-					} else {
-						if( (width += fm.width(qch)) > wdLimit ) break;
-						pos += UTF8CharSize((*document())[pos]);
-					}
-					++ix;
-				}
-				m_blockSize.push_back(pos - blockPos);
-				//m_viewLines.push_back(ViewLine(blockPos, blockIndex));
-				y += fm.lineSpacing();
-				blockPos = pos;
-			}
-		}
-		//++blockIndex;
-#endif
 		++m_layoutedBlockCount;
 		block = block.next();
 	}

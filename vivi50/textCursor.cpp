@@ -718,3 +718,7 @@ ViewBlock ViewCursor::block() const
 	return ViewBlock(m_view, DocCursor::block(),
 						m_viewBlockData);		//	
 }
+DocBlock ViewCursor::docAnchorBlock() const
+{
+	return DocBlock(m_view->document(), anchorBlockData());
+}

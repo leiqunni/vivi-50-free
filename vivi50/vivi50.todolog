@@ -49,6 +49,9 @@
 + 2011/04/24 "TextView.cpp" B:   undone 未コーディング
 # 2011/04/25 21:02:57
 - 2011/04/24 "textCursor.cpp" B:   undone 未コーディング
+# 2011/04/27 15:57:26
+- 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
++ 2011/04/27 "TextView.cpp" D:   undone [first, last) はレイアウト済みと仮定
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -62,6 +65,6 @@
 2011/04/19 "TextView.cpp" A:   undone BlockData も要補正
 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
-2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
+2011/04/27 "TextView.cpp" D:   undone [first, last) はレイアウト済みと仮定
 2011/04/24 "TextView.cpp" B:   undone 垂直スクロールバー位置更新
 2011/04/24 "TextView.cpp" B:   undone 未コーディング

@@ -42,6 +42,11 @@ void MainWindow::printBuffer()
 		doOutput(QString("block[%1].m_size = %2\n")
 				.arg(ix).arg(doc->blockSize(ix)) );
 	}
+	doOutput(QString("TextView blockCount = %1\n").arg(m_view->blockCount()));
+	for(size_t ix = 0; ix < m_view->blockCount(); ++ix) {
+		doOutput(QString("block[%1].m_size = %2\n")
+				.arg(ix).arg(m_view->blockSize(ix)) );
+	}
 }
 
 void test_TextDocument();

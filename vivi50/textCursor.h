@@ -163,11 +163,15 @@ public:
 
 public:
 	const TextView	*view() const { return m_view; }
+	DocBlock	docBlock() const { return DocCursor::block(); }
+	DocBlock	docAnchorBlock() const;
+	//DocBlockData	docBlockData() const { return DocBlock::blockData(); }
 	ViewBlock	block() const;
 	BlockData	viewBlockData() const { return m_viewBlockData; }
 	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
 	int		x() const { return m_x; }
 	index_t	viewBlockNumber() const { return m_viewBlockData.index(); }
+	index_t	viewAnchorBlockNumber() const { return m_viewAnchorBlockData.index(); }
 
 public:
 	TextView	*view() { return m_view; }

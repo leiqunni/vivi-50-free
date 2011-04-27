@@ -120,7 +120,7 @@ public:
 	void	deletePreviousChar();
 	void	insertText(const QString &, bool = false);
 	int		insertText(ViewCursor &, const QString &);
-	void	deleteChar(ViewCursor &);
+	size_t	deleteChar(ViewCursor &);
 	void	deletePreviousChar(ViewCursor &);
 
 public slots:
@@ -173,7 +173,9 @@ protected:
 	void	ensureBlockLayout();
 	void	updateBlocks();
 	void	clearBlocks();
+	void	eraseBlocks(index_t, index_t);
 	void	buildBlocks(DocBlock, int wd, int ht, index_t = 0);
+	void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
 	void	layoutText(std::vector<size_t> &, const DocBlock &, int wd, int tabWidth);
 
 	void	resetCursorBlink();
