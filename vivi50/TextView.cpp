@@ -1307,14 +1307,17 @@ size_t TextView::deleteChar(ViewCursor &cur)
 		if( !cur.hasSelection() )
 			return 0;
 	}
+	//	undone B 改行まで削除する場合は次の行まで再レイアウトが必要
 	DocBlock block = cur.position() < cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
 	DocBlock lastBlock = cur.position() > cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
 	index_t firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
 	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());		//	次のブロック
+	//if( lastBlockData.position() == qMax(cur.position(), cur.anchor()))			//	改行まで削除の場合
+	//	lastBlockData = document()->nextBlockData(lastBlockData);		//	次のブロック
 	index_t lastBlockPosition = lastBlockData.position();
 	index_t lastViewBlockNumber = findBlockData(lastBlockData.position()).m_index;
-	m_layoutedDocBlockCount -= lastBlockData.index() - block.index();
-	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
+	m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
+	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber + 1);
 	const size_t delSize = document()->deleteChar(cur);
 	reLayoutBlocks(block, lastBlockPosition - delSize, firstViewBlockNumber);
 	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
@@ -1355,7 +1358,7 @@ void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIn
 	const QRect vr = viewport()->rect();
 	int wdLimit = vr.width() - fm.width(' ') * 4;
 	std::vector<index_t> v;
-	while( block.isValid() && block.position() < lastPosition ) {
+	while( block.isValid() && block.position() <= lastPosition ) {
 		layoutText(v, block, wdLimit, tabWidth);
 		for(std::vector<index_t>::const_iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)

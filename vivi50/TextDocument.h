@@ -284,7 +284,7 @@ public:
 
 	BlockData	findBlockData(index_t position) const;
 	BlockData	nextBlockData(BlockData d) const
-	{ return BlockData(d.m_index + 1, d.m_position + m_blocks[d.m_index].m_size); }
+	{ return BlockData(d.m_index + 1, d.m_index < m_blocks.size() ? d.m_position + m_blocks[d.m_index].m_size : size()); }
 	BlockData	prevBlockData(BlockData d) const
 	{
 		if( !d.m_index )

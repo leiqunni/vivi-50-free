@@ -979,4 +979,26 @@ void test_TextView()
 		ut.ut_test_equal(0, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 	}
+	if( 1 ) {		//	文字削除テスト EOF直前改行を削除
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("abc\n"));
+		QFontMetrics fm = view.fontMetrics();
+		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		DocCursor dcur(doc);
+		view.onLineBreak(true);		//	右端で折り返し
+		ut.ut_test_equal(4, doc->size());
+		ut.ut_test_equal(4, view.size());
+		ut.ut_test_equal(2, doc->blockCount());
+		ut.ut_test_equal(2, view.blockCount());
+		ViewCursor cur(&view);
+		cur.movePosition(DocCursor::EndOfBlock);	//	改行位置に移動
+		view.deleteChar(cur);
+		ut.ut_test_equal(3, doc->size());
+		ut.ut_test_equal(3, view.size());
+		ut.ut_test_equal(1, doc->blockCount());
+		ut.ut_test_equal(1, view.blockCount());
+		ut.ut_test_equal(3, cur.position());
+		ut.ut_test_equal(0, cur.viewBlockNumber());
+	}
 }
