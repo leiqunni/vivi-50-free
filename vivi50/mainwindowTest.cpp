@@ -958,6 +958,36 @@ void test_TextView()
 		ut.ut_test_equal(1, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 	}
+	if( 1 ) {		//	文字挿入テスト：（文書先頭に改行挿入）＊３回
+		TextView view;
+		TextDocument *doc = view.document();
+		QFontMetrics fm = view.fontMetrics();
+		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.onLineBreak(true);		//	右端で折り返し
+		ut.ut_test_equal(1, doc->blockCount());
+		ut.ut_test_equal(1, view.blockCount());
+		ViewCursor cur(&view);
+		view.insertText(cur, QString("\n"));
+		ut.ut_test_equal(2, doc->blockCount());
+		ut.ut_test_equal(2, view.blockCount());
+		ut.ut_test_equal(1, view.blockSize(0));
+		ut.ut_test_equal(0, view.blockSize(1));
+		cur.movePosition(DocCursor::StartOfDocument);
+		view.insertText(cur, QString("\n"));
+		ut.ut_test_equal(3, doc->blockCount());
+		ut.ut_test_equal(3, view.blockCount());
+		ut.ut_test_equal(1, view.blockSize(0));
+		ut.ut_test_equal(1, view.blockSize(1));
+		ut.ut_test_equal(0, view.blockSize(2));
+		cur.movePosition(DocCursor::StartOfDocument);
+		view.insertText(cur, QString("\n"));
+		ut.ut_test_equal(4, doc->blockCount());
+		ut.ut_test_equal(4, view.blockCount());
+		ut.ut_test_equal(1, view.blockSize(0));
+		ut.ut_test_equal(1, view.blockSize(1));
+		ut.ut_test_equal(1, view.blockSize(2));
+		ut.ut_test_equal(0, view.blockSize(3));
+	}
 	if( 1 ) {		//	文字削除テスト
 		TextView view;
 		TextDocument *doc = view.document();

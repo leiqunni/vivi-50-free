@@ -1290,8 +1290,8 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 	index_t lastBlockPosition = lastBlockData.position();
 	index_t lastViewBlockNumber = lastBlockData.m_index >= document()->blockCount() ? blockCount()
 									: findBlockData(lastBlockData.position()).m_index;
-	m_layoutedDocBlockCount -= lastBlockData.m_index - block.index();
-	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
+	m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
+	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber + 1);
 	const int sz = document()->insertText(cur, text);
 	reLayoutBlocks(block, lastBlockPosition + sz, firstViewBlockNumber);
 	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlockæ“ªˆÊ’u
