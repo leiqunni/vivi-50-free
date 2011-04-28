@@ -932,9 +932,7 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		QFontMetrics fm = view.fontMetrics();
 		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
-		DocCursor dcur(doc);
 		view.onLineBreak(true);		//	右端で折り返し
-		//view.buildBlocks(dcur.block(), /*wd,*/ 0);		//	最初から最後までレイアウト
 		ut.ut_test_equal(1, view.blockCount());
 		ViewCursor cur(&view);
 		view.insertText(cur, "あ");
@@ -958,6 +956,27 @@ void test_TextView()
 		ut.ut_test_equal(1, doc->blockCount());
 		ut.ut_test_equal(2, view.blockCount());
 		ut.ut_test_equal(1, cur.position());
+		ut.ut_test_equal(0, cur.viewBlockNumber());
+	}
+	if( 1 ) {		//	文字削除テスト
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("あいうえおかきく\nあいう\n"));
+		QFontMetrics fm = view.fontMetrics();
+		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		DocCursor dcur(doc);
+		view.onLineBreak(true);		//	右端で折り返し
+		ut.ut_test_equal(35, doc->size());
+		ut.ut_test_equal(35, view.size());
+		ut.ut_test_equal(3, doc->blockCount());
+		ut.ut_test_equal(4, view.blockCount());
+		ViewCursor cur(&view);
+		cur.deleteChar();
+		ut.ut_test_equal(32, doc->size());
+		ut.ut_test_equal(32, view.size());
+		ut.ut_test_equal(3, doc->blockCount());
+		ut.ut_test_equal(4, view.blockCount());
+		ut.ut_test_equal(0, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 	}
 }

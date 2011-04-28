@@ -1313,7 +1313,7 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());		//	ŽŸ‚ÌƒuƒƒbƒN
 	index_t lastBlockPosition = lastBlockData.position();
 	index_t lastViewBlockNumber = findBlockData(lastBlockData.position()).m_index;
-	m_layoutedDocBlockCount -= lastBlock.index() - block.index();
+	m_layoutedDocBlockCount -= lastBlockData.index() - block.index();
 	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
 	const size_t delSize = document()->deleteChar(cur);
 	reLayoutBlocks(block, lastBlockPosition - delSize, firstViewBlockNumber);
