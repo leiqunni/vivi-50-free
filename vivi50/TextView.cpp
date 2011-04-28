@@ -1294,6 +1294,7 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
 	const int sz = document()->insertText(cur, text);
 	reLayoutBlocks(block, lastBlockPosition + sz, firstViewBlockNumber);
+	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlockæ“ªˆÊ’u
 	cur.updateViewBlock();
 	return sz;
 }
@@ -1316,6 +1317,7 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
 	const size_t delSize = document()->deleteChar(cur);
 	reLayoutBlocks(block, lastBlockPosition - delSize, firstViewBlockNumber);
+	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlockæ“ªˆÊ’u
 	cur.updateViewBlock();
 	return delSize;
 }

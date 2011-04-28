@@ -667,8 +667,6 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 									view()->xToCharCount(block().text(), m_x));
 		//movePosition(Right, KeepAnchor, view()->xToCharCount(block().text(), m_x));
 		m_blockData = view()->docBlockData(m_viewBlockData);
-		if( mode == MoveAnchor )
-			copyPositionToAnchor();
 		break;
 	case Down:
 		while( n != 0 ) {
@@ -681,8 +679,6 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 									view()->xToCharCount(block().text(), m_x));
 		//movePosition(Right, KeepAnchor, view()->xToCharCount(block().text(), m_x));
 		m_blockData = view()->docBlockData(m_viewBlockData);
-		if( mode == MoveAnchor )
-			copyPositionToAnchor();
 		break;
 	default:
 		if( !DocCursor::movePosition(move, mode, n) )
@@ -697,6 +693,8 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 			m_x = view()->charCountToX(block().text(), prevCharsCount());
 		break;
 	}
+	if( mode == MoveAnchor )
+		copyPositionToAnchor();
 	return true;
 }
 ViewCursor &ViewCursor::operator=(const DocCursor &x)
