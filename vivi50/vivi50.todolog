@@ -57,6 +57,8 @@
 - 2011/04/13 "TextView.cpp" B:   undone ブロック情報更新
 # 2011/04/28 11:04:59
 - 2011/04/27 "TextView.cpp" D:   undone [first, last) はレイアウト済みと仮定
+# 2011/04/28 18:09:45
++ 2011/04/28 "TextView.cpp" B:   undone 改行まで削除する場合は次の行まで再レイアウトが必要
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -68,5 +70,6 @@
 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 2011/04/19 "TextView.cpp" A:   undone BlockData も要補正
+2011/04/28 "TextView.cpp" B:   undone 改行まで削除する場合は次の行まで再レイアウトが必要
 2011/04/24 "TextView.cpp" B:   undone 垂直スクロールバー位置更新
 2011/04/24 "TextView.cpp" B:   undone 未コーディング
