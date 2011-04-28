@@ -1080,7 +1080,7 @@ void TextView::drawLineNumbers()
 	//const int ht = fontMetrics().height();
 	//QTextCursor cur = textCursor();
 	ViewBlock block = firstVisibleBlock();
-    int lineNumber = block.blockNumber() + 1;
+	int lineNumber = block.docBlockNumber() + (block.isFirstBlock() ? 1 : 2);
 	QFontMetrics fm = fontMetrics();
     int y = 0;
 	while( block.isValid() && y < ar.height() ) {

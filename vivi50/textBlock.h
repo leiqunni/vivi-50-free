@@ -99,6 +99,7 @@ public:
 	index_t		position() const;
 	index_t		docPosition() const { return DocBlock::position(); };
 	index_t		docIndex() const { return DocBlock::index(); }
+	index_t		docBlockNumber() const { return DocBlock::blockNumber(); }
 	index_t		index() const { return m_viewBlock.m_index; }
 	index_t		blockNumber() const { return m_viewBlock.m_index; }
 	index_t		viewBlockNumber() const { return m_viewBlock.index(); }
