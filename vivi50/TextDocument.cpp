@@ -223,6 +223,8 @@ QString TextDocument::toPlainText() const
 }
 BlockData TextDocument::findBlockData(index_t position) const
 {
+	//if( position >= size() )
+	//	return BlockData(blockCount(), size());
 	if( m_blocks.size() == 1 )
 		return BlockData(0, 0);
 	BlockData data(0, 0), next;

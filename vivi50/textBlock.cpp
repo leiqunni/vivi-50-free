@@ -167,7 +167,7 @@ ViewBlock ViewBlock::next() const
 	const index_t dbIndex = DocBlock::index();
 	ViewBlock b(*this);
 	if( dbIndex >= m_view->firstUnlayoutedBlockCount() &&
-		dbIndex < m_view->firstUnlayoutedBlockCount() + m_view->layoutedBlockCount() )
+		dbIndex < m_view->firstUnlayoutedBlockCount() + m_view->layoutedDocBlockCount() )
 	{
 		//	レイアウト済みブロックの場合
 		const size_t docBlockSize = document()->blockSize(b.m_data.m_index);
