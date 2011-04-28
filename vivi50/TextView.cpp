@@ -1421,9 +1421,9 @@ void TextView::updateBlocks()
 	if( !m_lineBreakMode ) {
 		clearBlocks();
 	} else {
-		const QRect vr = viewport()->rect();
-		int width = vr.width() - fontMetrics().width(' ') * 4;
-		buildBlocks(document()->firstBlock(), width, 0);
+		//const QRect vr = viewport()->rect();
+		//int width = vr.width() - fontMetrics().width(' ') * 4;
+		buildBlocks(document()->firstBlock(), /*width,*/ 0);
 	}
 	//	undone B 垂直スクロールバー位置更新
 	viewport()->update();
@@ -1446,7 +1446,7 @@ void TextView::ensureBlockLayout()
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
 	DocBlock d = m_document->findBlockByNumber(verticalScrollBar()->value());
-	buildBlocks(d, vr.width(), vr.height());
+	buildBlocks(d, /*vr.width(),*/ vr.height());
 }
 void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdLimit, int tabWidth)
 {
@@ -1482,12 +1482,14 @@ void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdL
 		}
 	}
 }
-void TextView::buildBlocks(DocBlock block, int wdLimit, int ht,
+void TextView::buildBlocks(DocBlock block, /*int wdLimit,*/ int ht,
 							index_t diLimit)	//	レイアウト範囲
 {
 	QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
+	const QRect vr = viewport()->rect();
+	int wdLimit = vr.width() - fm.width(' ') * 4;
 
 	m_blockSize.clear();
 	m_layoutedDocBlockCount = 0;

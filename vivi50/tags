@@ -212,7 +212,7 @@ blockPosition	.\TextDocument.cpp	/^size_t TextDocument::blockPosition(index_t ix
 blockPosition	.\textCursor.h	/^	index_t	blockPosition() const { return m_blockData.m_position; }$/;"	f	class:DocCursor
 blockSize	.\TextView.cpp	/^size_t TextView::blockSize(index_t ix) const	\/\/	ix はビュー行番号（0..*）$/;"	f	class:TextView
 blockSize	.\TextDocument.cpp	/^size_t TextDocument::blockSize(index_t ix) const$/;"	f	class:TextDocument
-buildBlocks	.\TextView.cpp	/^void TextView::buildBlocks(DocBlock block, int wdLimit, int ht,$/;"	f	class:TextView
+buildBlocks	.\TextView.cpp	/^void TextView::buildBlocks(DocBlock block, \/*int wdLimit,*\/ int ht,$/;"	f	class:TextView
 buildBlocks	.\TextDocument.cpp	/^void TextDocument::buildBlocks()$/;"	f	class:TextDocument
 canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_current < m_items.size(); };$/;"	f	class:GVUndoMgr
 canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_undoMgr.canRedo(); };$/;"	f	class:TextDocument
@@ -482,7 +482,7 @@ lastBlock	.\TextDocument.h	/^	DocBlock	lastBlock() { return DocBlock(this, block
 lastBlock	.\TextDocument.h	/^	DocBlock	lastBlock()$/;"	f	class:TextDocument
 lastPosition	.\textCursor.h	/^	index_t lastPosition() const { return qMax(position(), anchor()); }$/;"	f	class:DocCursor
 layoutText	.\TextView.cpp	/^void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdLimit, int tabWidth)$/;"	f	class:TextView
-layoutedBlockCount	.\TextView.h	/^	size_t	layoutedBlockCount() const { return m_layoutedBlockCount; }$/;"	f	class:TextView
+layoutedDocBlockCount	.\TextView.h	/^	size_t	layoutedDocBlockCount() const { return m_layoutedDocBlockCount; }$/;"	f	class:TextView
 length	.\textBlock.h	/^	size_t		length() const { return size(); }$/;"	f	class:DocBlock
 lineBreakMode	.\TextView.h	/^	bool	lineBreakMode() const { return m_lineBreakMode; }$/;"	f	class:TextView
 lineNumberLength	.\TextView.cpp	/^int TextView::lineNumberLength() const$/;"	f	class:TextView
@@ -537,7 +537,7 @@ m_items	.\TextDocument.h	/^	std::vector<GVUndoItem>	m_items;$/;"	m	class:GVUndoM
 m_last	.\TextDocument.h	/^	index_t	m_last;				\/\/	挿入・削除・置換前範囲$/;"	m	struct:GVUndoItem
 m_last	.\gap_vector.h	/^	pointer	m_last;			\/\/  └────┴──────┴───────┘$/;"	m	class:std::gap_vector
 m_last2	.\TextDocument.h	/^	index_t	m_last2;			\/\/	置換後の範囲$/;"	m	struct:GVUndoItem
-m_layoutedBlockCount	.\TextView.h	/^	size_t	m_layoutedBlockCount;				\/\/	レイアウト済み行のDocBlock数$/;"	m	class:TextView
+m_layoutedDocBlockCount	.\TextView.h	/^	size_t	m_layoutedDocBlockCount;				\/\/	レイアウト済み行のDocBlock数$/;"	m	class:TextView
 m_lineBreakMode	.\TextView.h	/^	bool	m_lineBreakMode;					\/\/	右端で折り返し$/;"	m	class:TextView
 m_lineNum	.\unit_test.h	/^	int				m_lineNum;$/;"	m	struct:SFailedInfo
 m_lineNumberArea	.\TextView.h	/^	QWidget	*m_lineNumberArea;$/;"	m	class:TextView

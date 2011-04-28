@@ -175,7 +175,7 @@ protected:
 	void	updateBlocks();
 	void	clearBlocks();
 	void	eraseBlocks(index_t, index_t);
-	void	buildBlocks(DocBlock, int wd, int ht, index_t = 0);
+	void	buildBlocks(DocBlock, /*int wd,*/ int ht, index_t = 0);
 	void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
 	void	layoutText(std::vector<size_t> &, const DocBlock &, int wd, int tabWidth);
 

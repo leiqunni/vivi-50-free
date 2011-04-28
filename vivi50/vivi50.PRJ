@@ -45,7 +45,7 @@ memFileColumnWd = 320
   ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(139,-320)
 * textBlock.cpp	(-244,329)
-  textBlock.h	(-244,296)
+* textBlock.h	(-244,296)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
@@ -53,9 +53,9 @@ memFileColumnWd = 320
   "TextDocument.cpp" 796 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
-  "TextView.cpp" 809 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1185 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1207 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1245 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1425 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1437 'B: ' '' undone 未コーディング
+  "TextView.cpp" 812 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1188 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1210 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1248 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1428 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1440 'B: ' '' undone 未コーディング
