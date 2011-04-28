@@ -592,6 +592,9 @@ void TextView::paintEvent(QPaintEvent * event)
 			const int x = charCountToX(text, text.length());
 			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), "[EOF]");
 			break;
+		} else if( block.next().docIndex() == block.docIndex() ) {
+			painter.setPen(Qt::lightGray);
+			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), "<");
 		}
 		if( !m_preeditString.isEmpty() && block.index() == m_preeditPosCursor->block().index() ) {
 			painter.setPen(Qt::blue);
