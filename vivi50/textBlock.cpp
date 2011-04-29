@@ -221,3 +221,36 @@ int ViewBlock::charsCount(index_t position) const
 	}
 	return cnt;
 }
+//----------------------------------------------------------------------
+size_t LaidoutBlocksMgr::docBlockCount() const
+{
+	size_t sum = 0;
+	for(std::gap_vector<LaidoutChunk>::const_iterator itr = m_chunks.begin(),
+														iend = m_chunks.end();
+		itr != iend; ++itr)
+	{
+		sum += itr->docBlockCount();
+	}
+	return sum;
+}
+size_t LaidoutBlocksMgr::viewcBlockCount() const
+{
+	size_t sum = 0;
+	for(std::gap_vector<LaidoutChunk>::const_iterator itr = m_chunks.begin(),
+														iend = m_chunks.end();
+		itr != iend; ++itr)
+	{
+		sum += itr->viewBlockCount();
+	}
+	return sum;
+}
+bool LaidoutBlocksMgr::insert(index_t docBlockNumber,		//	挿入位置
+						size_t docBlockCount,		//	レイアウト行数（ドキュメントブロック数）
+						const std::gap_vector<size_t> &v)		//	レイアウト結果
+{
+	if( m_chunks.empty() ) {
+		m_chunks.push_back(LaidoutChunk((size_t)docBlockNumber, docBlockCount, v));
+		return true;
+	}
+	return false;
+}

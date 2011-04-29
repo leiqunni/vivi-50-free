@@ -54,6 +54,7 @@ void MainWindow::init()
 	m_isUntitled = true;
 	m_isModified = false;
 	m_unitTestDoc = true;
+	m_unitTestLaidoutBlocksMgr = true;
 	m_unitTestView = true;
 	m_view = new TextView;
     QSettings settings;    const QString fontName = settings.value("fontName", "").toString();

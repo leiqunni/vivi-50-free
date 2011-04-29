@@ -80,7 +80,9 @@ public:
 	ViewBlock	findBlockByNumber(index_t) const;		//	ブロック番号（0..*）からブロックを取得
 	BlockData	findBlockData(index_t position) const;
 	BlockData	nextBlockData(BlockData d) const
-	{ return BlockData(d.m_index + 1, d.m_position + blockSize(d.m_index)); }
+	{
+		return BlockData(d.m_index + 1, d.m_position + blockSize(d.m_index));
+	}
 	BlockData	prevBlockData(BlockData d) const
 	{
 		if( !d.m_index )
@@ -175,9 +177,14 @@ protected:
 	void	updateBlocks();
 	void	clearBlocks();
 	void	eraseBlocks(index_t, index_t);
-	void	buildBlocks(DocBlock, /*int wd,*/ int ht, index_t = 0);
+	void	buildBlocks(DocBlock, /*int wd,*/ int ht = 0, index_t = 0);
 	void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
 	void	layoutText(std::vector<size_t> &, const DocBlock &, int wd, int tabWidth);
+	void	getReLayoutRange(ViewCursor cur,
+								DocBlock &block,		//	再レイアウト開始ブロック
+								index_t &lastPosition,	//	再レイアウト終了位置 [block, last)
+								index_t &firstViewBlockNumber);	//	再レイアウト開始ビューブロック番号
+								//index_t &lastViewBlockIndex);	//	再レイアウト終了位置 [first, last)
 
 	void	resetCursorBlink();
     void	removeOverlappedCursor();

@@ -590,6 +590,11 @@ ViewCursor::ViewCursor(const ViewCursor &x)
 	, m_x(x.m_x)
 {
 }
+ViewCursor::ViewCursor(TextView *view, const DocCursor &x)
+	: m_view(view), DocCursor(x)
+{
+	updateBlockData();
+}
 void ViewCursor::setPosition(index_t position, uchar mode)
 {
 	if( isNull() ) return;

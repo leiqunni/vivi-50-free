@@ -94,6 +94,7 @@ private:
 	bool	m_isUntitled;
 	bool	m_isModified;
 	bool	m_unitTestDoc;
+	bool	m_unitTestLaidoutBlocksMgr;
 	bool	m_unitTestView;
 
 	QDockWidget	*m_outputDock;

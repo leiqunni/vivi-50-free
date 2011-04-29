@@ -157,6 +157,7 @@ public:
 	ViewCursor(TextView *view, index_t position, index_t anchor);
 	ViewCursor(TextView *view, index_t position, index_t anchor,
 				BlockData blockData);
+	ViewCursor(TextView *view, const DocCursor &x);
 	ViewCursor(const ViewCursor &x);
 	//ViewCursor(const DocCursor &x);
 	~ViewCursor() {}

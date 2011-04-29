@@ -93,7 +93,7 @@ TextView::TextView(QWidget *parent)
 	//m_document->setPlainText(QString("LINE-1\nLINE-2\nLINE-3\n"));
 	m_timer = new QTimer(this);
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
-	m_timer->start(800);		//	
+	m_timer->start(500);		//	
 #if 0
 	m_timer = new QElapsedTimer;
 	m_timer->start();
@@ -953,6 +953,7 @@ void TextView::undo()
 		m_textCursor->setPosition(anchor);
 		m_textCursor->setPosition(pos, DocCursor::KeepAnchor);
 	}
+	buildBlocks(firstBlock());		//	undone B 暫定コード
 	ensureCursorVisible();
 	viewport()->update();
 }
@@ -963,6 +964,7 @@ void TextView::redo()
 	index_t pos = 0, anchor = 0;
 	m_document->doRedo(pos, anchor);
 	m_textCursor->setPosition(pos);
+	buildBlocks(firstBlock());		//	undone B 暫定コード
 	ensureCursorVisible();
 	viewport()->update();
 }
@@ -1095,9 +1097,9 @@ void TextView::drawLineNumbers()
 }
 void TextView::doJump(int lineNum)
 {
-	ViewCursor cur(this);
+	DocCursor cur(document());
 	if( cur.movePosition(DocCursor::Down, DocCursor::MoveAnchor, lineNum - 1) ) {
-		*m_textCursor = cur;
+		*m_textCursor = ViewCursor(this, cur);
 		ensureCursorVisible();
 		viewport()->update();
 	}
@@ -1277,23 +1279,52 @@ void TextView::insertText(const QString &text, bool tab)
 		document()->closeUndoBlock();
 	}
 }
+void TextView::getReLayoutRange(ViewCursor cur,
+								DocBlock &block,		//	再レイアウト開始ブロック
+								index_t &lastPosition,	//	再レイアウト終了位置 [block, last)
+								index_t &firstViewBlockNumber)	//	再レイアウト開始ビューブロック番号
+								//index_t &lastViewBlockIndex)	//	再レイアウト終了位置 [first, last)
+{
+	if( cur.anchor() < cur.position() )
+		cur.swapPositionAnchor();			//	ensure pos <= anchor
+	block = cur.docBlock();
+	DocBlock lastBlock = cur.docAnchorBlock();
+	firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
+	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());	//	次のブロック
+	lastBlockData = document()->nextBlockData(lastBlockData);				//	さらに次のブロック
+	if( (lastPosition = lastBlockData.position()) == document()->size() )	//	EOF まで再レイアウトの場合
+		++lastPosition;
+	index_t lastViewBlockNumber = lastBlockData.m_index >= document()->blockCount() ? blockCount() + 1
+									: findBlockData(lastBlockData.position()).m_index;
+	//m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
+	m_layoutedDocBlockCount -= lastBlockData.index() - block.index();
+	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
+}
 int TextView::insertText(ViewCursor &cur, const QString &text)
 {
 	if( !m_lineBreakMode )
 		return document()->insertText(cur, text);
+
+	DocBlock block = cur.docBlock();
+	index_t lastPosition, firstViewBlockNumber;
+	getReLayoutRange(cur, block, lastPosition, firstViewBlockNumber);
+#if 0
 	if( cur.anchor() < cur.position() )
 		cur.swapPositionAnchor();
 	DocBlock block = cur.docBlock();
 	DocBlock lastBlock = cur.docAnchorBlock();
 	index_t firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
 	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());		//	次のブロック
+	lastBlockData = document()->nextBlockData(blockData());		//	次のブロック
 	index_t lastBlockPosition = lastBlockData.position();
 	index_t lastViewBlockNumber = lastBlockData.m_index >= document()->blockCount() ? blockCount()
 									: findBlockData(lastBlockData.position()).m_index;
-	m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
-	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber + 1);
+	//m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
+	m_layoutedDocBlockCount -= lastBlockData.index() - block.index();
+	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
+#endif
 	const int sz = document()->insertText(cur, text);
-	reLayoutBlocks(block, lastBlockPosition + sz, firstViewBlockNumber);
+	reLayoutBlocks(block, lastPosition + sz, firstViewBlockNumber);
 	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
 	cur.updateViewBlock();
 	return sz;
@@ -1307,7 +1338,11 @@ size_t TextView::deleteChar(ViewCursor &cur)
 		if( !cur.hasSelection() )
 			return 0;
 	}
-	//	undone B 改行まで削除する場合は次の行まで再レイアウトが必要
+	DocBlock block = cur.docBlock();
+	index_t lastPosition, firstViewBlockNumber;
+	getReLayoutRange(cur, block, lastPosition, firstViewBlockNumber);
+#if 0
+	//	done B 改行まで削除する場合は次の行まで再レイアウトが必要 → 常に１行余分にレイアウトすることにする
 	DocBlock block = cur.position() < cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
 	DocBlock lastBlock = cur.position() > cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
 	index_t firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
@@ -1318,8 +1353,9 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	index_t lastViewBlockNumber = findBlockData(lastBlockData.position()).m_index;
 	m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
 	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber + 1);
+#endif
 	const size_t delSize = document()->deleteChar(cur);
-	reLayoutBlocks(block, lastBlockPosition - delSize, firstViewBlockNumber);
+	reLayoutBlocks(block, lastPosition - delSize, firstViewBlockNumber);
 	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
 	cur.updateViewBlock();
 	return delSize;
@@ -1358,7 +1394,7 @@ void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIn
 	const QRect vr = viewport()->rect();
 	int wdLimit = vr.width() - fm.width(' ') * 4;
 	std::vector<index_t> v;
-	while( block.isValid() && block.position() <= lastPosition ) {
+	while( block.isValid() && block.position() < lastPosition ) {
 		layoutText(v, block, wdLimit, tabWidth);
 		for(std::vector<index_t>::const_iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
@@ -1490,14 +1526,15 @@ void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdL
 void TextView::buildBlocks(DocBlock block, /*int wdLimit,*/ int ht,
 							index_t diLimit)	//	レイアウト範囲
 {
+	m_blockSize.clear();
+	m_layoutedDocBlockCount = m_firstUnlayoutedBlockCount = 0;
+	if( !m_lineBreakMode ) return;
 	QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
 	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
 	const QRect vr = viewport()->rect();
 	int wdLimit = vr.width() - fm.width(' ') * 4;
 
-	m_blockSize.clear();
-	m_layoutedDocBlockCount = 0;
 	m_firstUnlayoutedBlockCount = block.index();		//	doc block index
 	//m_viewLines.clear();
 	//m_blocks.push_back(ViewTextBlockItem(0));

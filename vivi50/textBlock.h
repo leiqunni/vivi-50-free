@@ -13,6 +13,7 @@
 #define		_HEADER_TESTBLOCK_H
 
 #include <QString>
+#include	"gap_vector.h"
 
 typedef size_t index_t;
 
@@ -122,5 +123,62 @@ protected:
 									//	m_index		ビュー行番号（0..*）
 };
 
+struct LaidoutChunk
+{
+	size_t	m_unLaidoutDocBlockCount;	//	先行する未レイアウトブロック数
+	size_t	m_laidoutDocBlockCount;		//	レイアウト済みドキュメントブロック数
+	std::gap_vector<size_t>	m_blocks;	//	レイアウト済みブロック長配列
+
+public:
+	LaidoutChunk()
+		: m_unLaidoutDocBlockCount(0), m_laidoutDocBlockCount(0)
+		{}
+	LaidoutChunk(size_t unLaidoutDocBlockCount,
+					size_t laidoutDocBlockCount,
+					const std::gap_vector<size_t> &blocks)
+		: m_unLaidoutDocBlockCount(unLaidoutDocBlockCount)
+		, m_laidoutDocBlockCount(laidoutDocBlockCount)
+		, m_blocks(blocks)
+		{}
+	LaidoutChunk(const LaidoutChunk &x)
+		: m_unLaidoutDocBlockCount(x.m_unLaidoutDocBlockCount)
+		, m_laidoutDocBlockCount(x.m_laidoutDocBlockCount)
+		, m_blocks(x.m_blocks)
+		{}
+
+public:
+	size_t	docBlockCount() const
+	{ return m_unLaidoutDocBlockCount + m_laidoutDocBlockCount; }
+	size_t	viewBlockCount() const
+	{ return m_unLaidoutDocBlockCount + m_blocks.size(); }
+
+public:
+	LaidoutChunk	&operator=(const LaidoutChunk &x)
+	{
+		m_unLaidoutDocBlockCount = x.m_unLaidoutDocBlockCount;
+		m_laidoutDocBlockCount = x.m_laidoutDocBlockCount;
+		m_blocks = x.m_blocks;
+		return *this;
+	}
+};
+
+class LaidoutBlocksMgr
+{
+public:
+	LaidoutBlocksMgr() {}
+
+public:
+	size_t	docBlockCount() const;
+	size_t	viewcBlockCount() const;
+	size_t	viewcBlockSize(index_t, const TextDocument *) const;
+
+public:
+	bool	insert(index_t docBlockNumber,		//	ドキュメントブロック番号（0..*）
+					size_t docBlockCount,		//	レイアウト行数（ドキュメントブロック数）
+					const std::gap_vector<size_t> &);		//	レイアウト結果
+
+private:
+	std::gap_vector<LaidoutChunk>	m_chunks;
+};
 
 #endif		//_HEADER_TESTBLOCK_H

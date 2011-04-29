@@ -56,6 +56,7 @@ void MainWindow::printBuffer()
 
 void test_TextDocument();
 void test_TextView();
+void test_LaidoutBlocksMgr();
 void MainWindow::doUnitTest()
 {
 	g_ut_output = q_output;
@@ -72,6 +73,8 @@ void MainWindow::doUnitTest()
 	}
 	if( m_unitTestDoc )
 		test_TextDocument();
+	if( m_unitTestLaidoutBlocksMgr )
+		test_LaidoutBlocksMgr();
 	if( m_unitTestView )
 		test_TextView();
 	QString temp;
@@ -813,6 +816,7 @@ void test_TextView()
 		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		const int ht = fm.lineSpacing() * 10;
 		DocCursor cur(doc);
+		view.m_lineBreakMode = true;
 		view.buildBlocks(cur.block(), /*wd,*/ ht);		//	最初から最後までレイアウト
 		ut.ut_test_equal(7, view.blockCount());
 
@@ -879,6 +883,7 @@ void test_TextView()
 		const int ht = fm.lineSpacing() * 2;		//	2行分
 		DocCursor cur(doc);
 		cur.setPosition(4);							//	2行目先頭
+		view.m_lineBreakMode = true;
 		view.buildBlocks(cur.block(), /*wd,*/ ht);		//	最初からレイアウト
 		ut.ut_test_equal(5, view.blockCount());
 
@@ -916,6 +921,7 @@ void test_TextView()
 		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		const int ht = fm.lineSpacing() * 10;
 		DocCursor dcur(doc);
+		view.m_lineBreakMode = true;
 		view.buildBlocks(dcur.block(), /*wd,*/ ht);		//	最初から最後までレイアウト
 		ut.ut_test_equal(6, view.blockCount());
 		ViewCursor cur(&view);
@@ -927,7 +933,7 @@ void test_TextView()
 		ut.ut_test_equal(15, cur.viewBlockData().position());
 		ut.ut_test_equal(1, cur.viewBlockData().index());
 	}
-	if( 1 ) {		//	文字挿入テスト
+	if( 0 ) {		//	文字挿入テスト
 		TextView view;
 		TextDocument *doc = view.document();
 		QFontMetrics fm = view.fontMetrics();
@@ -958,7 +964,7 @@ void test_TextView()
 		ut.ut_test_equal(1, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 	}
-	if( 1 ) {		//	文字挿入テスト：（文書先頭に改行挿入）＊３回
+	if( 0 ) {		//	文字挿入テスト：初期状態から（文書先頭に改行挿入）＊３回
 		TextView view;
 		TextDocument *doc = view.document();
 		QFontMetrics fm = view.fontMetrics();
@@ -988,7 +994,68 @@ void test_TextView()
 		ut.ut_test_equal(1, view.blockSize(2));
 		ut.ut_test_equal(0, view.blockSize(3));
 	}
-	if( 1 ) {		//	文字削除テスト
+	if( 0 ) {		//	再レイアウト範囲計算
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("あいうえおかきく\n"));
+		QFontMetrics fm = view.fontMetrics();
+		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.onLineBreak(true);		//	右端で折り返し
+		ut.ut_test_equal(2, doc->blockCount());
+		ut.ut_test_equal(3, view.blockCount());
+		ut.ut_test_equal(15, view.blockSize(0));
+		ut.ut_test_equal(10, view.blockSize(1));
+		ut.ut_test_equal(0, view.blockSize(2));
+		ut.ut_test_equal(3, view.m_blockSize.size());
+		ut.ut_test_equal(2, view.m_layoutedDocBlockCount);
+		ViewCursor cur(&view);
+		DocBlock block = cur.docBlock();
+		index_t lastPosition, firstViewBlockNumber;
+		view.getReLayoutRange(cur, block, lastPosition, firstViewBlockNumber);
+		ut.ut_test_equal(0, block.position());
+		ut.ut_test_equal(25+1, lastPosition);	//	+1 for EOF 行まで再レイアウト
+	}
+	if( 0 ) {		//	文字挿入テスト：折り返し行がある状態から（文書先頭に改行挿入）＊３回
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("あいうえおかきく\n"));
+		QFontMetrics fm = view.fontMetrics();
+		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.onLineBreak(true);		//	右端で折り返し
+		ut.ut_test_equal(2, doc->blockCount());
+		ut.ut_test_equal(3, view.blockCount());
+		ut.ut_test_equal(15, view.blockSize(0));
+		ut.ut_test_equal(10, view.blockSize(1));
+		ut.ut_test_equal(0, view.blockSize(2));
+		ViewCursor cur(&view);
+		view.insertText(cur, QString("\n"));
+		ut.ut_test_equal(3, doc->blockCount());
+		ut.ut_test_equal(4, view.blockCount());
+		ut.ut_test_equal(1, view.blockSize(0));
+		ut.ut_test_equal(15, view.blockSize(1));
+		ut.ut_test_equal(10, view.blockSize(2));
+		ut.ut_test_equal(0, view.blockSize(3));
+		cur.movePosition(DocCursor::StartOfDocument);
+		view.insertText(cur, QString("\n"));
+		ut.ut_test_equal(4, doc->blockCount());
+		ut.ut_test_equal(5, view.blockCount());
+		ut.ut_test_equal(1, view.blockSize(0));
+		ut.ut_test_equal(1, view.blockSize(1));
+		ut.ut_test_equal(15, view.blockSize(2));
+		ut.ut_test_equal(10, view.blockSize(3));
+		ut.ut_test_equal(0, view.blockSize(4));
+#if 0
+		cur.movePosition(DocCursor::StartOfDocument);
+		view.insertText(cur, QString("\n"));
+		ut.ut_test_equal(4, doc->blockCount());
+		ut.ut_test_equal(4, view.blockCount());
+		ut.ut_test_equal(1, view.blockSize(0));
+		ut.ut_test_equal(1, view.blockSize(1));
+		ut.ut_test_equal(1, view.blockSize(2));
+		ut.ut_test_equal(0, view.blockSize(3));
+#endif
+	}
+	if( 0 ) {		//	文字削除テスト
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("あいうえおかきく\nあいう\n"));
@@ -1009,7 +1076,7 @@ void test_TextView()
 		ut.ut_test_equal(0, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 	}
-	if( 1 ) {		//	文字削除テスト EOF直前改行を削除
+	if( 0 ) {		//	文字削除テスト EOF直前改行を削除
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\n"));
@@ -1030,5 +1097,14 @@ void test_TextView()
 		ut.ut_test_equal(1, view.blockCount());
 		ut.ut_test_equal(3, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
+	}
+}
+void test_LaidoutBlocksMgr()
+{
+	CUnitTest ut("LaidoutBlocksMgr");
+	if( 1 ) {
+		LaidoutBlocksMgr lb;
+		ut.ut_test_equal(0, lb.docBlockCount());
+		ut.ut_test_equal(0, lb.viewcBlockCount());
 	}
 }
