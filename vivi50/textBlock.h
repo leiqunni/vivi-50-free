@@ -148,9 +148,13 @@ public:
 
 public:
 	size_t	docBlockCount() const
-	{ return m_unLaidoutDocBlockCount + m_laidoutDocBlockCount; }
+	{
+		return m_unLaidoutDocBlockCount + m_laidoutDocBlockCount;
+	}
 	size_t	viewBlockCount() const
-	{ return m_unLaidoutDocBlockCount + m_blocks.size(); }
+	{
+		return m_unLaidoutDocBlockCount + m_blocks.size();
+	}
 
 public:
 	LaidoutChunk	&operator=(const LaidoutChunk &x)
@@ -165,12 +169,14 @@ public:
 class LaidoutBlocksMgr
 {
 public:
-	LaidoutBlocksMgr() {}
+	LaidoutBlocksMgr(TextDocument *document)
+		: m_document(document)
+		{}
 
 public:
 	size_t	docBlockCount() const;
-	size_t	viewcBlockCount() const;
-	size_t	viewcBlockSize(index_t, const TextDocument *) const;
+	size_t	viewBlockCount() const;
+	size_t	viewBlockSize(index_t) const;
 
 public:
 	bool	insert(index_t docBlockNumber,		//	ドキュメントブロック番号（0..*）
@@ -178,6 +184,7 @@ public:
 					const std::gap_vector<size_t> &);		//	レイアウト結果
 
 private:
+	TextDocument	*m_document;
 	std::gap_vector<LaidoutChunk>	m_chunks;
 };
 

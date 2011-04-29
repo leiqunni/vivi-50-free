@@ -1103,8 +1103,170 @@ void test_LaidoutBlocksMgr()
 {
 	CUnitTest ut("LaidoutBlocksMgr");
 	if( 1 ) {
-		LaidoutBlocksMgr lb;
-		ut.ut_test_equal(0, lb.docBlockCount());
-		ut.ut_test_equal(0, lb.viewcBlockCount());
+		TextDocument doc;
+		LaidoutBlocksMgr lbMgr(&doc);
+		ut.ut_test_equal(0, lbMgr.docBlockCount());
+		ut.ut_test_equal(0, lbMgr.viewBlockCount());
+		doc.setPlainText(QString("1234567890\n"));
+		std::gap_vector<size_t> v;
+		v.push_back(8);
+		v.push_back(3);
+		v.push_back(0);
+		lbMgr.insert(0, 2, v);
+		ut.ut_test_equal(2, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(3, lbMgr.viewBlockCount());
+		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
+		ut.ut_test_equal(0, lbMgr.viewBlockSize(2));
+	}
+	if( 1 ) {		//	重ならないレイアウトチャンクを後ろに追加
+		TextDocument doc;
+		LaidoutBlocksMgr lbMgr(&doc);
+		doc.setPlainText(QString("1234567890\n\nabcdef\n"));
+		std::gap_vector<size_t> v;
+		v.push_back(8);
+		v.push_back(3);
+		lbMgr.insert(0, 1, v);
+		ut.ut_test_equal(1, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(2, lbMgr.viewBlockCount());
+		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
+		ut.ut_test_equal(1, lbMgr.viewBlockSize(2));	//	\n
+		v.clear();
+		v.push_back(4);		//	abcd
+		v.push_back(3);		//	ef\n
+		lbMgr.insert(2, 1, v);
+		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(5, lbMgr.viewBlockCount());
+		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
+		ut.ut_test_equal(1, lbMgr.viewBlockSize(2));	//	\n
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(3));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(4));
+		ut.ut_test_equal(0, lbMgr.viewBlockSize(5));	//	EOF行
+	}
+	if( 1 ) {		//	重ならないレイアウトチャンクを前に追加
+		TextDocument doc;
+		LaidoutBlocksMgr lbMgr(&doc);
+		doc.setPlainText(QString("1234567890\n\nabcdef\n"));
+		std::gap_vector<size_t> v;
+		v.push_back(4);		//	abcd
+		v.push_back(3);		//	ef\n
+		lbMgr.insert(2, 1, v);
+		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(4, lbMgr.viewBlockCount());
+		ut.ut_test_equal(11, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(1, lbMgr.viewBlockSize(1));	//	\n
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(2));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(3));
+		v.clear();
+		v.push_back(8);
+		v.push_back(3);
+		lbMgr.insert(0, 1, v);
+		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(5, lbMgr.viewBlockCount());
+		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
+		ut.ut_test_equal(1, lbMgr.viewBlockSize(2));	//	\n
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(3));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(4));
+		ut.ut_test_equal(0, lbMgr.viewBlockSize(5));	//	EOF行
+	}
+	if( 1 ) {		//	連続するレイアウトチャンクを最後に追加
+		TextDocument doc;
+		LaidoutBlocksMgr lbMgr(&doc);
+		doc.setPlainText(QString("1234567890\n\nabcdef\n"));
+		std::gap_vector<size_t> v;
+		v.push_back(8);
+		v.push_back(3);
+		lbMgr.insert(0, 1, v);
+		v.clear();
+		v.push_back(1);		//	\n
+		v.push_back(4);		//	abcd
+		v.push_back(3);		//	ef\n
+		lbMgr.insert(1, 2, v);
+		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(5, lbMgr.viewBlockCount());
+		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
+		ut.ut_test_equal(1, lbMgr.viewBlockSize(2));	//	\n
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(3));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(4));
+		ut.ut_test_equal(0, lbMgr.viewBlockSize(5));	//	EOF行
+	}
+	if( 1 ) {		//	連続するレイアウトチャンクを最初に追加
+		TextDocument doc;
+		LaidoutBlocksMgr lbMgr(&doc);
+		doc.setPlainText(QString("1234567890\n\nabcdef\n"));
+		std::gap_vector<size_t> v;
+		v.push_back(1);		//	\n
+		v.push_back(4);		//	abcd
+		v.push_back(3);		//	ef\n
+		lbMgr.insert(1, 2, v);
+		v.clear();
+		v.push_back(8);
+		v.push_back(3);
+		lbMgr.insert(0, 1, v);
+		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(5, lbMgr.viewBlockCount());
+		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
+		ut.ut_test_equal(1, lbMgr.viewBlockSize(2));	//	\n
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(3));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(4));
+		ut.ut_test_equal(0, lbMgr.viewBlockSize(5));	//	EOF行
+	}
+	if( 1 ) {		//	連続するレイアウトチャンクを途中に追加
+		TextDocument doc;
+		LaidoutBlocksMgr lbMgr(&doc);
+		doc.setPlainText(QString("1234567890\nxyzzz\nabcdef\n"));
+		std::gap_vector<size_t> v;
+		v.push_back(8);
+		v.push_back(3);
+		ut.ut_test( lbMgr.insert(0, 1, v) );
+		v.clear();
+		v.push_back(4);		//	abcd
+		v.push_back(3);		//	ef\n
+		ut.ut_test( lbMgr.insert(2, 1, v) );
+		v.clear();
+		v.push_back(2);		//	xy
+		v.push_back(4);		//	zzz\n
+		ut.ut_test( lbMgr.insert(1, 1, v) );
+		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(6, lbMgr.viewBlockCount());
+		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
+		ut.ut_test_equal(2, lbMgr.viewBlockSize(2));	//	xy
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(3));	//	zzz\n
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(4));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(5));
+		ut.ut_test_equal(0, lbMgr.viewBlockSize(6));	//	EOF行
+	}
+	if( 1 ) {		//	直前にだけ連続するレイアウトチャンクを途中に追加
+		TextDocument doc;
+		LaidoutBlocksMgr lbMgr(&doc);
+		doc.setPlainText(QString("1234567890\nxyzzz\n\nabcdef\n"));
+		std::gap_vector<size_t> v;
+		v.push_back(8);
+		v.push_back(3);
+		ut.ut_test( lbMgr.insert(0, 1, v) );
+		v.clear();
+		v.push_back(4);		//	abcd
+		v.push_back(3);		//	ef\n
+		ut.ut_test( lbMgr.insert(3, 1, v) );
+		v.clear();
+		v.push_back(2);		//	xy
+		v.push_back(4);		//	zzz\n
+		ut.ut_test( lbMgr.insert(1, 1, v) );
+		ut.ut_test_equal(4, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		ut.ut_test_equal(7, lbMgr.viewBlockCount());
+		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
+		ut.ut_test_equal(2, lbMgr.viewBlockSize(2));	//	xy
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(3));	//	zzz\n
+		ut.ut_test_equal(1, lbMgr.viewBlockSize(4));	//	\n
+		ut.ut_test_equal(4, lbMgr.viewBlockSize(5));
+		ut.ut_test_equal(3, lbMgr.viewBlockSize(6));
+		ut.ut_test_equal(0, lbMgr.viewBlockSize(7));	//	EOF行
 	}
 }

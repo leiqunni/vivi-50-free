@@ -233,7 +233,7 @@ size_t LaidoutBlocksMgr::docBlockCount() const
 	}
 	return sum;
 }
-size_t LaidoutBlocksMgr::viewcBlockCount() const
+size_t LaidoutBlocksMgr::viewBlockCount() const
 {
 	size_t sum = 0;
 	for(std::gap_vector<LaidoutChunk>::const_iterator itr = m_chunks.begin(),
@@ -244,13 +244,76 @@ size_t LaidoutBlocksMgr::viewcBlockCount() const
 	}
 	return sum;
 }
+size_t LaidoutBlocksMgr::viewBlockSize(index_t viewBlockNumber) const
+{
+	size_t sumVBC = 0;
+	index_t docBlockNumber = 0;
+	for(std::gap_vector<LaidoutChunk>::const_iterator itr = m_chunks.begin(),
+														iend = m_chunks.end();
+		itr != iend; ++itr)
+	{
+		if( viewBlockNumber < sumVBC + itr->m_unLaidoutDocBlockCount )
+			return m_document->blockSize(viewBlockNumber - sumVBC + docBlockNumber);
+		const size_t nextVBC = sumVBC + itr->viewBlockCount();
+		if( viewBlockNumber < nextVBC )
+			return itr->m_blocks[viewBlockNumber - sumVBC - itr->m_unLaidoutDocBlockCount];
+		sumVBC = nextVBC;
+		docBlockNumber += itr->docBlockCount();
+	}
+	return m_document->blockSize(viewBlockNumber - sumVBC + docBlockNumber);
+}
 bool LaidoutBlocksMgr::insert(index_t docBlockNumber,		//	挿入位置
-						size_t docBlockCount,		//	レイアウト行数（ドキュメントブロック数）
+						size_t docLaidoutBlockCount,		//	レイアウト行数（ドキュメントブロック数）
 						const std::gap_vector<size_t> &v)		//	レイアウト結果
 {
-	if( m_chunks.empty() ) {
-		m_chunks.push_back(LaidoutChunk((size_t)docBlockNumber, docBlockCount, v));
+	const size_t dbCount = docBlockCount();
+	if( m_chunks.empty() || docBlockNumber > dbCount ) {
+		m_chunks.push_back(LaidoutChunk(docBlockNumber - dbCount, docLaidoutBlockCount, v));
 		return true;
 	}
+	if( docBlockNumber == dbCount ) {	//	最後のチャンク直後に追加の場合
+		std::gap_vector<LaidoutChunk>::iterator itr = m_chunks.end() - 1;
+		itr->m_laidoutDocBlockCount += docLaidoutBlockCount;
+		itr->m_blocks.insert(itr->m_blocks.end(), v.begin(), v.end());
+		return true;
+	}
+	if( docBlockNumber + docLaidoutBlockCount == m_chunks[0].m_unLaidoutDocBlockCount ) {
+		//	最初のチャンクの直前に追加
+		m_chunks[0].m_unLaidoutDocBlockCount -= docLaidoutBlockCount;
+		m_chunks[0].m_laidoutDocBlockCount += docLaidoutBlockCount;
+		m_chunks[0].m_blocks.insert(m_chunks[0].m_blocks.begin(), v.begin(), v.end());
+		return true;
+	}
+	if( docBlockNumber + docLaidoutBlockCount < m_chunks[0].m_unLaidoutDocBlockCount ) {
+		//	最初のチャンクの前に追加
+		m_chunks[0].m_unLaidoutDocBlockCount -= docBlockNumber + docLaidoutBlockCount;
+		m_chunks.insert(0, LaidoutChunk(docBlockNumber, docLaidoutBlockCount, v));
+		return true;
+	}
+	index_t dbn = 0;
+	for(std::gap_vector<LaidoutChunk>::iterator itr = m_chunks.begin(), iend = m_chunks.end();;)
+	{
+		std::gap_vector<LaidoutChunk>::iterator inext = itr + 1;
+		if( inext == iend ) break;
+		dbn += itr->docBlockCount();
+		if( docBlockNumber == dbn ) {		//	itr の直後に追加の場合
+			if( docLaidoutBlockCount < inext->m_unLaidoutDocBlockCount ) {
+				//	次のチャンクに連続していない場合
+				itr->m_laidoutDocBlockCount += docLaidoutBlockCount;
+				itr->m_blocks.insert(itr->m_blocks.end(), v.begin(), v.end());
+				inext->m_unLaidoutDocBlockCount -= docLaidoutBlockCount;
+			} else {
+				//	次のチャンクに連続している場合
+				itr->m_laidoutDocBlockCount += docLaidoutBlockCount + inext->m_laidoutDocBlockCount;
+				itr->m_blocks.insert(itr->m_blocks.end(), v.begin(), v.end());
+				itr->m_blocks.insert(itr->m_blocks.end(),
+										inext->m_blocks.begin(), inext->m_blocks.end());
+				m_chunks.erase(inext);
+			}
+			return true;
+		}
+		itr = inext;
+	}
+	//	undone B チャンクが連続している場合等
 	return false;
 }

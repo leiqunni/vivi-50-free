@@ -91,7 +91,7 @@ IgnoreCase	.\findOpt.h	/^	IgnoreCase = 0,$/;"	e	enum:__anon4
 IgnoreLowerCase	.\findOpt.h	/^	IgnoreLowerCase = 0x02,		\/\/	小文字のみ検索時：大文字小文字同一視$/;"	e	enum:__anon4
 KeepAnchor	.\textCursor.h	/^		KeepAnchor,$/;"	e	enum:DocCursor::__anon1
 LF	.\charEncoding.h	/^		LF,$/;"	e	enum:CharEncoding::__anon2
-LaidoutBlocksMgr	.\textBlock.h	/^	LaidoutBlocksMgr() {}$/;"	f	class:LaidoutBlocksMgr
+LaidoutBlocksMgr	.\textBlock.h	/^	LaidoutBlocksMgr(TextDocument *document)$/;"	f	class:LaidoutBlocksMgr
 LaidoutBlocksMgr	.\textBlock.h	/^class LaidoutBlocksMgr$/;"	c
 LaidoutChunk	.\textBlock.h	/^	LaidoutChunk()$/;"	f	struct:LaidoutChunk
 LaidoutChunk	.\textBlock.h	/^	LaidoutChunk(const LaidoutChunk &x)$/;"	f	struct:LaidoutChunk
@@ -522,6 +522,7 @@ m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	オブジェクトを次に入れる位置
 m_data	.\textBlock.h	/^	BlockData	m_data;$/;"	m	class:DocBlock
 m_dirGroup	.\FindDlg.h	/^	QGroupBox	*m_dirGroup;$/;"	m	class:FindDlg
 m_document	.\textBlock.h	/^	TextDocument	*m_document;$/;"	m	class:DocBlock
+m_document	.\textBlock.h	/^	TextDocument	*m_document;$/;"	m	class:LaidoutBlocksMgr
 m_document	.\TextView.h	/^	TextDocument	*m_document;$/;"	m	class:TextView
 m_document	.\textCursor.h	/^	TextDocument	*m_document;$/;"	m	class:DocCursor
 m_drawCursor	.\TextView.h	/^	bool	m_drawCursor;$/;"	m	class:TextView
@@ -855,9 +856,11 @@ view	.\textCursor.h	/^	TextView	*view() { return m_view; }$/;"	f	class:ViewCurso
 view	.\textCursor.h	/^	const TextView	*view() const { return m_view; }$/;"	f	class:ViewCursor
 viewAnchorBlockNumber	.\textCursor.h	/^	index_t	viewAnchorBlockNumber() const { return m_viewAnchorBlockData.index(); }$/;"	f	class:ViewCursor
 viewBlockCount	.\textBlock.h	/^	size_t	viewBlockCount() const$/;"	f	struct:LaidoutChunk
+viewBlockCount	.\textBlock.cpp	/^size_t LaidoutBlocksMgr::viewBlockCount() const$/;"	f	class:LaidoutBlocksMgr
 viewBlockData	.\textCursor.h	/^	BlockData	viewBlockData() const { return m_viewBlockData; }$/;"	f	class:ViewCursor
 viewBlockNumber	.\textBlock.h	/^	index_t		viewBlockNumber() const { return m_viewBlock.index(); }$/;"	f	class:ViewBlock
 viewBlockNumber	.\textCursor.h	/^	index_t	viewBlockNumber() const { return m_viewBlockData.index(); }$/;"	f	class:ViewCursor
+viewBlockSize	.\textBlock.cpp	/^size_t LaidoutBlocksMgr::viewBlockSize(index_t viewBlockNumber) const$/;"	f	class:LaidoutBlocksMgr
 viewMenu	.\mainwindow.h	/^    QMenu	*viewMenu;$/;"	m	class:MainWindow
 viewcBlockCount	.\textBlock.cpp	/^size_t LaidoutBlocksMgr::viewcBlockCount() const$/;"	f	class:LaidoutBlocksMgr
 wheelEvent	.\TextView.cpp	/^void TextView::wheelEvent ( QWheelEvent * event )$/;"	f	class:TextView

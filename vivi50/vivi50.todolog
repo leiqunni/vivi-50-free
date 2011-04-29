@@ -64,6 +64,8 @@
 # 2011/04/29 09:19:14
 + 2011/04/29 "TextView.cpp" B:   undone 暫定コード
 + 2011/04/29 "TextView.cpp" B:   undone 暫定コード
+# 2011/04/29 15:59:02
++ 2011/04/29 "textBlock.cpp" B:   undone チャンクが連続している場合等
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -79,3 +81,4 @@
 2011/04/19 "TextView.cpp" A:   undone BlockData も要補正
 2011/04/24 "TextView.cpp" B:   undone 垂直スクロールバー位置更新
 2011/04/24 "TextView.cpp" B:   undone 未コーディング
+2011/04/29 "textBlock.cpp" B:   undone チャンクが連続している場合等
