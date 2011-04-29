@@ -430,7 +430,7 @@ ViewBlock TextView::yToTextBlock(int py) const
 		if( py < nextY )
 			break;
 		y = nextY;
-		block = block.next();
+		++block;
 	}
 	return block;
 }
@@ -489,7 +489,7 @@ void TextView::paintEvent(QPaintEvent * event)
 			selFirst >= block.position() + m_document->blockSize(block.index()) )
 		{
 			y += fm.lineSpacing();
-			block = block.next();
+			++block;
 		}
 		for(;;) {
 			if( y >= vr.height() || !block.isValid() ) break;
@@ -503,7 +503,7 @@ void TextView::paintEvent(QPaintEvent * event)
 			}
 			if( selLast < nextBlockPosition ) break;
 			y += fm.lineSpacing();
-			block = block.next();
+			++block;
 		}
 		if( y >= vr.height() || !block.isValid() ) break;
 	}
@@ -603,7 +603,7 @@ void TextView::paintEvent(QPaintEvent * event)
 			const int uy = y + fm.ascent() + 1;
 			painter.drawLine(x1, uy, x2, uy);
 		}
-		block = block.next();
+		++block;
 		y += fm.lineSpacing();
 	}
 	//qDebug() << m_preeditPosCursor->block().index() << " '" << m_preeditString << "'";
@@ -1091,7 +1091,7 @@ void TextView::drawLineNumbers()
 			painter.drawText(0, y, m_lineNumberWidth, fm.height(), Qt::AlignRight, number);
 			++lineNumber;
 		}
-		block = block.next();
+		++block;
 		y += fm.lineSpacing();
 	}
 }
@@ -1408,7 +1408,7 @@ void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIn
 		}
 		++m_layoutedDocBlockCount;		//	レイアウトされたドキュメントブロック数
 		//m_layoutedDocBlockCount += v.size();
-		block = block.next();
+		++block;
 	}
 	qDebug() << "blockCount() = " << blockCount();
 	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
@@ -1446,7 +1446,7 @@ void TextView::buildBlocks()
 				blockPos = pos;
 			}
 		}
-		block = block.next();
+		++block;
 	}
 }
 #endif
@@ -1552,7 +1552,7 @@ void TextView::buildBlocks(DocBlock block, /*int wdLimit,*/ int ht,
 		}
 		y += fm.lineSpacing() * v.size();
 		++m_layoutedDocBlockCount;
-		block = block.next();
+		++block;
 	}
 	//m_lastViewLine = blockIndex;
 }

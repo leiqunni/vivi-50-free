@@ -82,6 +82,8 @@ public:
 	DocBlock	next() const;
 	DocBlock	prev() const;
 
+	DocBlock	&operator++();
+
 protected:
 	TextDocument	*m_document;
 	BlockData	m_data;
@@ -117,6 +119,10 @@ public:
 	{ return !this->operator==(x); }
 	bool	operator<(const ViewBlock &x) const
 	{ return m_view == x.m_view && blockNumber() < x.blockNumber(); }
+
+public:
+	ViewBlock	&operator++();
+
 protected:
 	TextView	*m_view;
 	BlockData	m_viewBlock;		//	m_position	s“ª•¶ŽšˆÊ’u
@@ -186,6 +192,22 @@ public:
 private:
 	TextDocument	*m_document;
 	std::gap_vector<LaidoutChunk>	m_chunks;
+
+	friend class LaidoutBlock;
+};
+
+class LaidoutBlock
+{
+public:
+	LaidoutBlock(TextView *view, LaidoutBlocksMgr *lbMgr)
+		: m_view(view), m_lbMgr(lbMgr)
+		{}
+
+private:
+	TextView	*m_view;
+	LaidoutBlocksMgr	*m_lbMgr;
+	size_t		m_chunkIndex;
+	
 };
 
 #endif		//_HEADER_TESTBLOCK_H

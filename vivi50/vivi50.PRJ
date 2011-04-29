@@ -13,15 +13,15 @@ memFileColumnWd = 320
 #define HIST_LIMIT 30
 #define MARGIN_LEFT 4
 #define INVALID_INDEX 0
-#define PTR_ALLOCATOR 0
 #define TEXT_CURSOR_BLOCK 1
+#define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LINE_HEIGHT 20
-#define GV_USE_ITR_FACADE 1
 #define BLOCK_HAS_SIZE 1
+#define GV_USE_ITR_FACADE 1
 [globalMarks]
 [files]
-* gap_vector.h	(-94.078,307.793)
+  gap_vector.h	(-94.078,307.793)
   main.cpp	(-178.304,-339.84)
   mainwindow.cpp	(-128.265,-196.142)
   mainwindow.h	(-128.265,-229.142)
@@ -36,7 +36,7 @@ memFileColumnWd = 320
   charEncoding.h	(191.416,-209.123)
   textCursor.cpp	(-335.316,-33.0248)
   textCursor.h	(-335.316,-66.0248)
-  TextView.cpp	(44.6123,-31.8647)
+* TextView.cpp	(44.6123,-31.8647)
   TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
   FindDlg.h	(49.637,166.277)
@@ -59,6 +59,6 @@ memFileColumnWd = 320
   "TextView.cpp" 1190 'R: ' '' undone insertText と処理を共通化
   "TextView.cpp" 1212 'R: ' '' undone insertText と処理を共通化
   "TextView.cpp" 1250 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1468 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1480 'B: ' '' undone 未コーディング
-  "textBlock.cpp" 313 'B: ' '' undone チャンクが連続している場合等
+  "TextView.cpp" 1469 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1481 'B: ' '' undone 未コーディング
+  "textBlock.cpp" 356 'B: ' '' undone チャンクが連続している場合等

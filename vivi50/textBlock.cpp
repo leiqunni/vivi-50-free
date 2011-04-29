@@ -104,8 +104,19 @@ QString DocBlock::text() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
+DocBlock &DocBlock::operator++()
+{
+	if( !isValid() ) return *this;
+	m_data = m_document->nextBlockData(m_data);
+	if( index() >= m_document->blockCount() )
+		m_data.m_index = INVALID_INDEX;
+	return *this;
+}
 DocBlock DocBlock::next() const
 {
+	DocBlock b(*this);
+	return ++b;
+#if 0
 	if( !isValid() ) return *this;
 #if 1
 	BlockData d = m_document->nextBlockData(m_data);
@@ -118,6 +129,7 @@ DocBlock DocBlock::next() const
 	if( ix >= m_document->blockCount() )
 		ix = INVALID_INDEX;
 	return DocBlock(m_document, ix, blockPosition);
+#endif
 #endif
 }
 DocBlock DocBlock::prev() const
@@ -162,8 +174,34 @@ size_t ViewBlock::size() const
 	return m_view->blockSize(m_viewBlock.index());
 }
 
+ViewBlock &ViewBlock::operator++()
+{
+	const index_t dbIndex = DocBlock::index();
+	if( dbIndex >= m_view->firstUnlayoutedBlockCount() &&
+		dbIndex < m_view->firstUnlayoutedBlockCount() + m_view->layoutedDocBlockCount() )
+	{
+		//	レイアウト済みブロックの場合
+		const size_t docBlockSize = document()->blockSize(m_data.m_index);
+		const index_t nextDocBlockPos = m_data.m_position + docBlockSize;
+		const size_t sz = view()->blockSize(m_viewBlock.m_index++);
+		if( !sz ||		//	空のEOF行の場合はサイズ０
+			(m_viewBlock.m_position += sz) == nextDocBlockPos )
+		{
+			m_data.m_position = nextDocBlockPos;
+			++m_data.m_index;
+		}
+	} else {	//	非レイアウトブロックの場合
+		const size_t sz = document()->blockSize(m_data.m_index++);
+		m_viewBlock.m_position = m_data.m_position += sz;
+		++m_viewBlock.m_index;
+	}
+	return *this;
+}
 ViewBlock ViewBlock::next() const
 {
+	ViewBlock b(*this);
+	return ++b;
+#if 0
 	const index_t dbIndex = DocBlock::index();
 	ViewBlock b(*this);
 	if( dbIndex >= m_view->firstUnlayoutedBlockCount() &&
@@ -185,6 +223,7 @@ ViewBlock ViewBlock::next() const
 		++b.m_viewBlock.m_index;
 	}
 	return b;
+#endif
 }
 ViewBlock ViewBlock::prev() const
 {
