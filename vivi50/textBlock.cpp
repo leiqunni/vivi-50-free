@@ -356,3 +356,66 @@ bool LaidoutBlocksMgr::insert(index_t docBlockNumber,		//	挿入位置
 	//	undone B チャンクが連続している場合等
 	return false;
 }
+//----------------------------------------------------------------------
+bool LaidoutBlock::isValid() const
+{
+	return m_docBlockData.m_index < m_lbMgr->m_document->blockCount();
+}
+size_t LaidoutBlock::size() const
+{
+	if( m_chunkIndex >= m_lbMgr->m_chunks.size() )
+		return m_lbMgr->m_document->blockSize(m_docBlockData.m_index);
+	const size_t u = m_lbMgr->m_chunks[m_chunkIndex].m_unLaidoutDocBlockCount;
+	if( m_indexInChunk < u )
+		return m_lbMgr->m_document->blockSize(m_docBlockData.m_index);
+	else
+		return m_lbMgr->m_chunks[m_chunkIndex].m_blocks[m_indexInChunk - u];
+}
+QString LaidoutBlock::text() const
+{
+	const size_t sz = size();
+	if( !sz ) return QString();
+	const index_t pos = position();
+	const TextDocument *doc = m_lbMgr->m_document;
+	if( pos >= doc->size() ) return QString();
+	QByteArray ba;
+	ba.reserve(sz);
+	for(index_t ix = pos, iend = pos + sz; ix != iend; ++ix)
+		ba += doc->at(ix);
+	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+	return codec->toUnicode(ba);
+}
+LaidoutBlock &LaidoutBlock::operator++()
+{
+	++m_viewBlockData.m_index;
+	index_t nextDocPosition = m_docBlockData.m_position +
+								m_lbMgr->m_document->blockSize(m_docBlockData.m_index);
+	if( m_chunkIndex >= m_lbMgr->m_chunks.size() ) {
+		++m_docBlockData.m_index;
+		m_viewBlockData.m_position = m_docBlockData.m_position = nextDocPosition;
+		return *this;
+	}
+	const size_t u = m_lbMgr->m_chunks[m_chunkIndex].m_unLaidoutDocBlockCount;
+	if( m_indexInChunk < u ) {
+		++m_indexInChunk;
+		++m_docBlockData.m_index;
+		m_viewBlockData.m_position = m_docBlockData.m_position = nextDocPosition;
+		return *this;
+	}
+	const size_t indexLimit = u + m_lbMgr->m_chunks[m_chunkIndex].m_blocks.size();
+	if( m_indexInChunk < indexLimit ) {
+		m_viewBlockData.m_position += m_lbMgr->m_chunks[m_chunkIndex].m_blocks[m_indexInChunk - u];
+		if( m_viewBlockData.m_position == nextDocPosition ) {
+			++m_docBlockData.m_index;
+			m_docBlockData.m_position = nextDocPosition;
+		}
+		if( ++m_indexInChunk == indexLimit ) {
+			++m_chunkIndex;
+			m_indexInChunk = 0;
+		}
+		return *this;
+	}
+	++m_chunkIndex;
+	m_indexInChunk = 0;
+	return *this;
+}

@@ -57,6 +57,7 @@ void MainWindow::printBuffer()
 void test_TextDocument();
 void test_TextView();
 void test_LaidoutBlocksMgr();
+void test_LaidoutBlock();
 void MainWindow::doUnitTest()
 {
 	g_ut_output = q_output;
@@ -73,8 +74,10 @@ void MainWindow::doUnitTest()
 	}
 	if( m_unitTestDoc )
 		test_TextDocument();
-	if( m_unitTestLaidoutBlocksMgr )
+	if( m_unitTestLaidoutBlocksMgr ) {
 		test_LaidoutBlocksMgr();
+		test_LaidoutBlock();
+	}
 	if( m_unitTestView )
 		test_TextView();
 	QString temp;
@@ -1268,5 +1271,76 @@ void test_LaidoutBlocksMgr()
 		ut.ut_test_equal(4, lbMgr.viewBlockSize(5));
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(6));
 		ut.ut_test_equal(0, lbMgr.viewBlockSize(7));	//	EOFs
+	}
+}
+void test_LaidoutBlock()
+{
+	CUnitTest ut("LaidoutBlock");
+	if( 1 ) {
+		TextView view;
+		TextDocument *doc = view.document();
+		LaidoutBlocksMgr lbMgr(doc);
+		doc->setPlainText(QString("\n1234567890\nxyzzz\n\nabcdef\n\nEOF"));
+		std::gap_vector<size_t> v;
+		v.push_back(8);
+		v.push_back(3);
+		ut.ut_test( lbMgr.insert(1, 1, v) );
+		v.clear();
+		v.push_back(4);		//	abcd
+		v.push_back(3);		//	ef\n
+		ut.ut_test( lbMgr.insert(4, 1, v) );
+		LaidoutBlock block = LaidoutBlock(&view, &lbMgr);
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( 0, block.position() );
+		ut.ut_test_equal( 0, block.index() );
+		ut.ut_test_equal( 0, block.docPosition() );
+		ut.ut_test_equal( 0, block.docIndex() );
+		ut.ut_test_equal( 1, block.size() );
+		ut.ut_test_equal( QString("\n"), block.text() );
+		++block;
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( 1, block.position() );
+		ut.ut_test_equal( 8, block.size() );
+		ut.ut_test_equal( QString("12345678"), block.text() );
+		++block;
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( 9, block.position() );
+		ut.ut_test_equal( 3, block.size() );
+		ut.ut_test_equal( QString("90\n"), block.text() );
+		++block;
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( 12, block.position() );
+		ut.ut_test_equal( 6, block.size() );
+		ut.ut_test_equal( QString("xyzzz\n"), block.text() );
+		++block;
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( 18, block.position() );
+		ut.ut_test_equal( 1, block.size() );
+		ut.ut_test_equal( QString("\n"), block.text() );
+		++block;
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( 19, block.position() );
+		ut.ut_test_equal( 4, block.size() );
+		ut.ut_test_equal( QString("abcd"), block.text() );
+		++block;
+		ut.ut_test_equal( 23, block.position() );
+		ut.ut_test_equal( 3, block.size() );
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( QString("ef\n"), block.text() );
+		++block;
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( 26, block.position() );
+		ut.ut_test_equal( 1, block.size() );
+		ut.ut_test_equal( QString("\n"), block.text() );
+		++block;
+		ut.ut_test( block.isValid() );
+		ut.ut_test_equal( 27, block.position() );
+		ut.ut_test_equal( 3, block.size() );
+		ut.ut_test_equal( QString("EOF"), block.text() );
+		++block;
+		ut.ut_test( !block.isValid() );
+		ut.ut_test_equal( 30, block.position() );
+		ut.ut_test_equal( 0, block.size() );
+		ut.ut_test_equal( QString(""), block.text() );
 	}
 }

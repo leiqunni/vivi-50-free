@@ -22,6 +22,7 @@ typedef size_t index_t;
 
 class TextDocument;
 class TextView;
+class LaidoutBlock;
 
 //----------------------------------------------------------------------
 struct BlockData
@@ -189,6 +190,9 @@ public:
 					size_t docBlockCount,		//	レイアウト行数（ドキュメントブロック数）
 					const std::gap_vector<size_t> &);		//	レイアウト結果
 
+	LaidoutBlock	begin();
+	LaidoutBlock	end();
+
 private:
 	TextDocument	*m_document;
 	std::gap_vector<LaidoutChunk>	m_chunks;
@@ -200,14 +204,34 @@ class LaidoutBlock
 {
 public:
 	LaidoutBlock(TextView *view, LaidoutBlocksMgr *lbMgr)
-		: m_view(view), m_lbMgr(lbMgr)
+		: m_viewBlockData(0, 0), m_docBlockData(0, 0)
+		, m_view(view), m_lbMgr(lbMgr)
+		, m_chunkIndex(0), m_indexInChunk(0)
 		{}
 
+public:
+	bool	isValid() const;
+	index_t	position() const { return m_viewBlockData.m_position; }
+	index_t	index() const { return m_viewBlockData.m_index; }
+	index_t	docPosition() const { return m_docBlockData.m_position; }
+	index_t	docIndex() const { return m_docBlockData.m_index; }
+
+	size_t	size() const;
+	QString	text() const;
+
+	bool	operator==(const LaidoutBlock &x) const { return index() == x.index(); }
+
+public:
+	TextDocument	*document() { return m_lbMgr->m_document; }
+	LaidoutBlock	&operator++();
+
 private:
+	BlockData	m_viewBlockData;
+	BlockData	m_docBlockData;
+	index_t		m_chunkIndex;
+	index_t		m_indexInChunk;
 	TextView	*m_view;
 	LaidoutBlocksMgr	*m_lbMgr;
-	size_t		m_chunkIndex;
-	
 };
 
 #endif		//_HEADER_TESTBLOCK_H
