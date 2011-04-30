@@ -267,17 +267,17 @@ LaidoutBlocksMgr::LaidoutBlocksMgr(TextDocument *document)
 	m_cacheBlock = new LaidoutBlock(this);
 }
 
-LaidoutBlock LaidoutBlocksMgr::begin()
+LaidoutBlock LaidoutBlocksMgr::begin() const
 {
-	return LaidoutBlock(this);
+	return LaidoutBlock((LaidoutBlocksMgr *)this);
 }
-LaidoutBlock LaidoutBlocksMgr::end()
+LaidoutBlock LaidoutBlocksMgr::end() const
 {
-	LaidoutBlock b = LaidoutBlock(this);
+	LaidoutBlock b = LaidoutBlock((LaidoutBlocksMgr *)this);
 	b.moveToEndOfDocument();
 	return b;
 }
-LaidoutBlock LaidoutBlocksMgr::findBlock(index_t pos)
+LaidoutBlock LaidoutBlocksMgr::findBlock(index_t pos) const
 {
 	LaidoutBlock b = begin();
 	if( !m_cacheBlock->position() ) {
@@ -314,7 +314,7 @@ LaidoutBlock LaidoutBlocksMgr::findBlock(index_t pos)
 	}
 	return *m_cacheBlock = b;
 }
-LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number)
+LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number) const
 {
 	LaidoutBlock b = begin();
 	if( !m_cacheBlock->position() ) {
@@ -351,6 +351,54 @@ LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number)
 		}
 	}
 	return *m_cacheBlock = b;
+}
+LaidoutBlock LaidoutBlocksMgr::findBlockByDocNumber(index_t number) const
+{
+	LaidoutBlock b = begin();
+	if( !m_cacheBlock->position() ) {
+		if( number < size() / 2 ) {
+			while( b.docIndex() < number )
+				++b;
+		} else {
+			b = end();
+			while( b.docIndex() > number )
+				--b;
+		}
+	} else {
+		if( number == m_cacheBlock->docIndex() )
+			return *m_cacheBlock;
+		if( number < m_cacheBlock->docIndex() ) {
+			if( number < m_cacheBlock->docIndex() / 2 ) {
+				while( b.docIndex() < number )
+					++b;
+			} else {
+				b = *m_cacheBlock;
+				while( b.docIndex() > number )
+					--b;
+			}
+		} else {
+			if( number < m_cacheBlock->docIndex() + (size() - m_cacheBlock->docIndex())/ 2 ) {
+				b = *m_cacheBlock;
+				while( b.docIndex() < number )
+					++b;
+			} else {
+				b = end();
+				while( b.docIndex() > number )
+					--b;
+			}
+		}
+	}
+	return *m_cacheBlock = b;
+}
+size_t LaidoutBlocksMgr::blockNumberFromDocBlockNumber(index_t number) const
+{
+	LaidoutBlock b = findBlockByDocNumber(number);
+	return b.blockNumber();
+}
+size_t LaidoutBlocksMgr::docBlockNumberFromNumber(index_t number) const
+{
+	LaidoutBlock b = findBlockByNumber(number);
+	return b.docBlockNumber();
 }
 
 size_t LaidoutBlocksMgr::docBlockCount() const

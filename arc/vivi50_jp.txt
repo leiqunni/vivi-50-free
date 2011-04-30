@@ -275,4 +275,5 @@ ViVi は「頑固爺開発モデル」を採用しています。
 0205 ◎ C  11/04/30 0.011 11/04/30 0.012│ToDo│LaidoutBlocksMgr::begin(), end() 追加
 0206 ◎ C  11/04/30 0.011 11/04/30 0.012│ToDo│LaidoutBlocksMgr::findBlockByNumber() 追加
 0207 ◎ C  11/04/30 0.011 11/04/30 0.012│ToDo│LaidoutBlock::operator--() 追加
-0208 ● C  11/04/30 0.011               │ToDo│
+0208 ● C  11/04/30 0.011               │ToDo│LaidoutBlocksMgr:ドキュメント・ビューブロック番号相互変換メソッド
+0209 ● C  11/05/01 0.011               │ToDo│

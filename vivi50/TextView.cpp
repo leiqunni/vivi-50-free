@@ -79,7 +79,9 @@ TextView::TextView(QWidget *parent)
 
 	//m_blocks.push_back(ViewTextBlockItem(0));
 	m_document = new TextDocument();
+#if LAIDOUT_BLOCKS_MGR
 	m_lbMgr = new LaidoutBlocksMgr(m_document);
+#endif
 	m_textCursor = new ViewCursor(this);
 	m_preeditPosCursor = new ViewCursor(this);
 	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
@@ -124,6 +126,8 @@ size_t TextView::blockCount() const
 			+ m_viewLines.size();
 #endif
 }
+#if LAIDOUT_BLOCKS_MGR
+#else
 bool TextView::isLayoutedDocBlock(index_t ix) const
 {
 	return ix >= m_firstUnlayoutedBlockCount &&
@@ -134,6 +138,7 @@ bool TextView::isLayoutedViewBlock(index_t ix) const
 	return ix >= m_firstUnlayoutedBlockCount &&
 			ix < m_firstUnlayoutedBlockCount + m_blockSize.size();
 }
+#endif
 size_t TextView::blockSize(index_t ix) const	//	ix はビュー行番号（0..*）
 {
 	if( ix < m_firstUnlayoutedBlockCount )
@@ -1472,16 +1477,24 @@ void TextView::updateBlocks()
 }
 ViewBlock TextView::firstBlock()
 {
+#if LAIDOUT_BLOCKS_MGR
+	return m_lbMgr->begin();
+#else
 	return ViewBlock(this, document()->firstBlock(), BlockData(0, 0));
+#endif
 }
 ViewBlock TextView::lastBlock()
 {
+#if LAIDOUT_BLOCKS_MGR
+	return m_lbMgr->end() - 1;
+#else
 	DocBlock d = document()->lastBlock();
 	if( !isLayoutedDocBlock(d.index()) )
 		return ViewBlock(this, d, d.data());
 	//	undone B 未コーディング
 	return ViewBlock(this, d,
 						BlockData(blockCount() - 1, size() - m_blockSize[m_blockSize.size() - 1]));
+#endif
 }
 void TextView::ensureBlockLayout()
 {

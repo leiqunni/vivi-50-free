@@ -23,6 +23,8 @@
 #ifndef PLAINTEXTEDIT_H
 #define PLAINTEXTEDIT_H
 
+#define		LAIDOUT_BLOCKS_MGR		0
+
 #include <deque>
 #include <QAbstractScrollArea>
 #include	"gap_vector.h"
@@ -97,8 +99,10 @@ public:
 	bool	isLayoutedViewBlock(index_t ix) const;
 	size_t	blockSize(index_t ix) const;	// { return m_blocks[ix].m_size; }
 	size_t	blockCount() const;
+#if !LAIDOUT_BLOCKS_MGR
 	size_t	firstUnlayoutedBlockCount() const { return m_firstUnlayoutedBlockCount; }
 	size_t	layoutedDocBlockCount() const { return m_layoutedDocBlockCount; }
+#endif
 #if 0
 	index_t	firstViewLine() const { return m_firstViewLine; }
 	index_t	lastViewLine() const { return m_lastViewLine; }
@@ -221,15 +225,18 @@ private:
 	//mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		//	ブロック配列
 	mutable BlockData	m_blockData;			//	カレントブロック情報
 
+#if LAIDOUT_BLOCKS_MGR
+	mutable LaidoutBlocksMgr	*m_lbMgr;
+#else
 	size_t	m_firstUnlayoutedBlockCount;		//	前半未レイアウト部分のDocBlock数
 	size_t	m_layoutedDocBlockCount;				//	レイアウト済み行のDocBlock数
 	mutable std::gap_vector<uint>	m_blockSize;	//	レイアウト済み行の行長
+#endif
 #if 0
 	size_t	m_firstViewLine;
 	size_t	m_lastViewLine;
 	mutable std::deque<ViewLine>	m_viewLines;
 #endif
-	mutable LaidoutBlocksMgr	*m_lbMgr;
 
 	friend void test_TextView();
 };

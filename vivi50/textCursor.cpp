@@ -688,9 +688,9 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 	default:
 		if( !DocCursor::movePosition(move, mode, n) )
 			return false;
-		if( !m_view->isLayoutedDocBlock(blockIndex()) )
-			m_viewBlockData = blockData();
-		else
+		//if( !m_view->isLayoutedDocBlock(blockIndex()) )
+		//	m_viewBlockData = blockData();
+		//else
 			m_viewBlockData = view()->findBlockData(position());
 		if( move == EndOfBlock )
 			m_x = -1;

@@ -186,15 +186,19 @@ public:
 	size_t	size() const;				//	ビューのトータル行数
 	size_t	viewBlockSize(index_t) const;
 
+	size_t	blockNumberFromDocBlockNumber(index_t) const;
+	size_t	docBlockNumberFromNumber(index_t) const;
+
 public:
 	bool	insert(index_t docBlockNumber,		//	ドキュメントブロック番号（0..*）
 					size_t docBlockCount,		//	レイアウト行数（ドキュメントブロック数）
 					const std::gap_vector<size_t> &);		//	レイアウト結果
 
-	LaidoutBlock	begin();
-	LaidoutBlock	end();
-	LaidoutBlock	findBlock(index_t position);
-	LaidoutBlock	findBlockByNumber(index_t);
+	LaidoutBlock	begin() const;
+	LaidoutBlock	end() const;
+	LaidoutBlock	findBlock(index_t position) const;
+	LaidoutBlock	findBlockByNumber(index_t) const;
+	LaidoutBlock	findBlockByDocNumber(index_t) const;
 
 protected:
 	const TextDocument	*document() const { return m_document; }
@@ -202,7 +206,7 @@ protected:
 
 private:
 	TextDocument	*m_document;
-	LaidoutBlock	*m_cacheBlock;
+	mutable LaidoutBlock	*m_cacheBlock;
 	std::gap_vector<LaidoutChunk>	m_chunks;
 
 	friend class LaidoutBlock;
@@ -219,10 +223,13 @@ public:
 
 public:
 	bool	isValid() const;
+	bool	isLayouted() const;
 	index_t	position() const { return m_viewBlockData.m_position; }
 	index_t	index() const { return m_viewBlockData.m_index; }
+	index_t	blockNumber() const { return m_viewBlockData.m_index; }
 	index_t	docPosition() const { return m_docBlockData.m_position; }
 	index_t	docIndex() const { return m_docBlockData.m_index; }
+	index_t	docBlockNumber() const { return m_docBlockData.m_index; }
 
 	size_t	size() const;
 	QString	text() const;
