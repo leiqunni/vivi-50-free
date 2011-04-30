@@ -271,6 +271,21 @@ LaidoutBlock LaidoutBlocksMgr::end()
 	b.moveToEndOfDocument();
 	return b;
 }
+LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number)
+{
+	if( number < size() / 2 ) {
+		LaidoutBlock b = begin();
+		while( b.index() < number )
+			++b;
+		return b;
+	} else {
+		LaidoutBlock b = end();
+		while( b.index() > number )
+			--b;
+		return b;
+	}
+}
+
 size_t LaidoutBlocksMgr::docBlockCount() const
 {
 	size_t sum = 0;
@@ -292,6 +307,11 @@ size_t LaidoutBlocksMgr::viewBlockCount() const
 		sum += itr->viewBlockCount();
 	}
 	return sum;
+}
+size_t LaidoutBlocksMgr::size() const
+{
+	size_t sz = document()->size();
+	return viewBlockCount() + sz - docBlockCount();
 }
 size_t LaidoutBlocksMgr::viewBlockSize(index_t viewBlockNumber) const
 {

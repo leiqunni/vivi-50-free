@@ -34,6 +34,7 @@ class ViewCursor;
 class TextDocument;
 class DocCursor;
 class DocBlock;
+class LaidoutBlocksMgr;
 //class QElapsedTimer;
 class QTimer;
 
@@ -228,6 +229,7 @@ private:
 	size_t	m_lastViewLine;
 	mutable std::deque<ViewLine>	m_viewLines;
 #endif
+	mutable LaidoutBlocksMgr	*m_lbMgr;
 
 	friend void test_TextView();
 };

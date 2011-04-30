@@ -79,6 +79,7 @@ TextView::TextView(QWidget *parent)
 
 	//m_blocks.push_back(ViewTextBlockItem(0));
 	m_document = new TextDocument();
+	m_lbMgr = new LaidoutBlocksMgr(m_document);
 	m_textCursor = new ViewCursor(this);
 	m_preeditPosCursor = new ViewCursor(this);
 	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));

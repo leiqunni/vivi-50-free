@@ -183,6 +183,7 @@ public:
 public:
 	size_t	docBlockCount() const;		//	LaidoutBlocksMgr が管理している行数
 	size_t	viewBlockCount() const;		//	LaidoutBlocksMgr が管理している行数
+	size_t	size() const;				//	ビューのトータル行数
 	size_t	viewBlockSize(index_t) const;
 
 public:
@@ -192,6 +193,11 @@ public:
 
 	LaidoutBlock	begin();
 	LaidoutBlock	end();
+	LaidoutBlock	findBlockByNumber(index_t);
+
+protected:
+	const TextDocument	*document() const { return m_document; }
+	TextDocument	*document() { return m_document; }
 
 private:
 	TextDocument	*m_document;
