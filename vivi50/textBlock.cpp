@@ -261,6 +261,12 @@ int ViewBlock::charsCount(index_t position) const
 	return cnt;
 }
 //----------------------------------------------------------------------
+LaidoutBlocksMgr::LaidoutBlocksMgr(TextDocument *document)
+	: m_document(document)
+{
+	m_cacheBlock = new LaidoutBlock(this);
+}
+
 LaidoutBlock LaidoutBlocksMgr::begin()
 {
 	return LaidoutBlock(this);
@@ -271,19 +277,80 @@ LaidoutBlock LaidoutBlocksMgr::end()
 	b.moveToEndOfDocument();
 	return b;
 }
+LaidoutBlock LaidoutBlocksMgr::findBlock(index_t pos)
+{
+	LaidoutBlock b = begin();
+	if( !m_cacheBlock->position() ) {
+		if( pos < document()->size() / 2 ) {
+			while( b.position() + b.size() <= pos )
+				++b;
+		} else {
+			b = end();
+			do { --b; } while( b.position() > pos );
+		}
+	} else {
+		if( pos == m_cacheBlock->position() )
+			return *m_cacheBlock;
+		if( pos < m_cacheBlock->position() ) {
+			if( pos < m_cacheBlock->position() / 2 ) {
+				while( b.position() + b.size() <= pos )
+					++b;
+			} else {
+				b = *m_cacheBlock;
+				do { --b; } while( b.position() > pos );
+			}
+		} else {
+			if( pos < m_cacheBlock->position() +
+				(document()->size() - m_cacheBlock->position())/ 2 )
+			{
+				b = *m_cacheBlock;
+				while( b.position() + b.size() <= pos )
+					++b;
+			} else {
+				b = end();
+				do { --b; } while( b.position() > pos );
+			}
+		}
+	}
+	return *m_cacheBlock = b;
+}
 LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number)
 {
-	if( number < size() / 2 ) {
-		LaidoutBlock b = begin();
-		while( b.index() < number )
-			++b;
-		return b;
+	LaidoutBlock b = begin();
+	if( !m_cacheBlock->position() ) {
+		if( number < size() / 2 ) {
+			while( b.index() < number )
+				++b;
+		} else {
+			b = end();
+			while( b.index() > number )
+				--b;
+		}
 	} else {
-		LaidoutBlock b = end();
-		while( b.index() > number )
-			--b;
-		return b;
+		if( number == m_cacheBlock->index() )
+			return *m_cacheBlock;
+		if( number < m_cacheBlock->index() ) {
+			if( number < m_cacheBlock->index() / 2 ) {
+				while( b.index() < number )
+					++b;
+			} else {
+				b = *m_cacheBlock;
+				while( b.index() > number )
+					--b;
+			}
+		} else {
+			if( number < m_cacheBlock->index() + (size() - m_cacheBlock->index())/ 2 ) {
+				b = *m_cacheBlock;
+				while( b.index() < number )
+					++b;
+			} else {
+				b = end();
+				while( b.index() > number )
+					--b;
+			}
+		}
 	}
+	return *m_cacheBlock = b;
 }
 
 size_t LaidoutBlocksMgr::docBlockCount() const
@@ -421,7 +488,7 @@ void LaidoutBlock::moveToEndOfDocument()
 	m_chunkIndex = m_lbMgr->m_chunks.size();
 	m_docBlockData.m_index = document()->blockCount();
 	m_docBlockData.m_position = m_viewBlockData.m_position = document()->size();
-	m_viewBlockData.m_index = m_lbMgr->viewBlockCount() + m_chunkIndex;
+	m_viewBlockData.m_index = m_lbMgr->viewBlockCount() + m_indexInChunk;
 }
 LaidoutBlock &LaidoutBlock::operator++()
 {

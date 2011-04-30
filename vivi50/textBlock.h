@@ -176,9 +176,9 @@ public:
 class LaidoutBlocksMgr
 {
 public:
-	LaidoutBlocksMgr(TextDocument *document)
-		: m_document(document)
-		{}
+	LaidoutBlocksMgr(TextDocument *document);
+		//: m_document(document)
+		//{}
 
 public:
 	size_t	docBlockCount() const;		//	LaidoutBlocksMgr Ç™ä«óùÇµÇƒÇ¢ÇÈçsêî
@@ -193,6 +193,7 @@ public:
 
 	LaidoutBlock	begin();
 	LaidoutBlock	end();
+	LaidoutBlock	findBlock(index_t position);
 	LaidoutBlock	findBlockByNumber(index_t);
 
 protected:
@@ -201,6 +202,7 @@ protected:
 
 private:
 	TextDocument	*m_document;
+	LaidoutBlock	*m_cacheBlock;
 	std::gap_vector<LaidoutChunk>	m_chunks;
 
 	friend class LaidoutBlock;
