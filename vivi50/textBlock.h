@@ -181,8 +181,8 @@ public:
 		{}
 
 public:
-	size_t	docBlockCount() const;
-	size_t	viewBlockCount() const;
+	size_t	docBlockCount() const;		//	LaidoutBlocksMgr ‚ªŠÇ—‚µ‚Ä‚¢‚és”
+	size_t	viewBlockCount() const;		//	LaidoutBlocksMgr ‚ªŠÇ—‚µ‚Ä‚¢‚és”
 	size_t	viewBlockSize(index_t) const;
 
 public:
@@ -203,9 +203,9 @@ private:
 class LaidoutBlock
 {
 public:
-	LaidoutBlock(TextView *view, LaidoutBlocksMgr *lbMgr)
-		: m_viewBlockData(0, 0), m_docBlockData(0, 0)
-		, m_view(view), m_lbMgr(lbMgr)
+	LaidoutBlock(/*TextView *view,*/ LaidoutBlocksMgr *lbMgr)
+		: /*m_view(view),*/ m_lbMgr(lbMgr)
+		, m_viewBlockData(0, 0), m_docBlockData(0, 0)
 		, m_chunkIndex(0), m_indexInChunk(0)
 		{}
 
@@ -223,14 +223,16 @@ public:
 
 public:
 	TextDocument	*document() { return m_lbMgr->m_document; }
+	void			moveToEndOfDocument();
 	LaidoutBlock	&operator++();
+	LaidoutBlock	&operator--();
 
 private:
 	BlockData	m_viewBlockData;
 	BlockData	m_docBlockData;
 	index_t		m_chunkIndex;
 	index_t		m_indexInChunk;
-	TextView	*m_view;
+	//TextView	*m_view;
 	LaidoutBlocksMgr	*m_lbMgr;
 };
 

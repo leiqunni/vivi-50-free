@@ -261,6 +261,16 @@ int ViewBlock::charsCount(index_t position) const
 	return cnt;
 }
 //----------------------------------------------------------------------
+LaidoutBlock LaidoutBlocksMgr::begin()
+{
+	return LaidoutBlock(this);
+}
+LaidoutBlock LaidoutBlocksMgr::end()
+{
+	LaidoutBlock b = LaidoutBlock(this);
+	b.moveToEndOfDocument();
+	return b;
+}
 size_t LaidoutBlocksMgr::docBlockCount() const
 {
 	size_t sum = 0;
@@ -385,6 +395,14 @@ QString LaidoutBlock::text() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
+void LaidoutBlock::moveToEndOfDocument()
+{
+	m_indexInChunk = document()->blockCount()- m_lbMgr->docBlockCount();
+	m_chunkIndex = m_lbMgr->m_chunks.size();
+	m_docBlockData.m_index = document()->blockCount();
+	m_docBlockData.m_position = m_viewBlockData.m_position = document()->size();
+	m_viewBlockData.m_index = m_lbMgr->viewBlockCount() + m_chunkIndex;
+}
 LaidoutBlock &LaidoutBlock::operator++()
 {
 	++m_viewBlockData.m_index;
@@ -417,5 +435,37 @@ LaidoutBlock &LaidoutBlock::operator++()
 	}
 	++m_chunkIndex;
 	m_indexInChunk = 0;
+	return *this;
+}
+LaidoutBlock &LaidoutBlock::operator--()
+{
+	--m_viewBlockData.m_index;
+	if( !m_indexInChunk ) {
+		if( !m_chunkIndex ) {
+			moveToEndOfDocument();
+			return *this;
+		} else {
+			--m_chunkIndex;
+			//const size_t u = m_lbMgr->m_chunks[m_chunkIndex].m_unLaidoutDocBlockCount;
+			m_indexInChunk = m_lbMgr->m_chunks[m_chunkIndex].m_unLaidoutDocBlockCount + 
+								m_lbMgr->m_chunks[m_chunkIndex].m_blocks.size() - 1;
+		}
+	} else {
+		--m_indexInChunk;
+		if( m_chunkIndex >= m_lbMgr->m_chunks.size() ) {
+			m_viewBlockData.m_position =
+			m_docBlockData.m_position -= m_lbMgr->m_document->blockSize(--m_docBlockData.m_index);
+			return *this;
+		}
+	}
+	const size_t u = m_lbMgr->m_chunks[m_chunkIndex].m_unLaidoutDocBlockCount;
+	if( m_indexInChunk < u ) {
+		m_viewBlockData.m_position =
+		m_docBlockData.m_position -= m_lbMgr->m_document->blockSize(--m_docBlockData.m_index);
+	} else {
+		m_viewBlockData.m_position -= m_lbMgr->m_chunks[m_chunkIndex].m_blocks[m_indexInChunk - u];
+		if( m_viewBlockData.m_position < m_docBlockData.m_position )
+			m_docBlockData.m_position -= m_lbMgr->m_document->blockSize(--m_docBlockData.m_index);
+	}
 	return *this;
 }

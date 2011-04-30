@@ -272,6 +272,7 @@ ViVi は「頑固爺開発モデル」を採用しています。
 0202 ◎ C  11/04/29 0.011 11/04/30 0.012│ToDo│LaidoutBlock クラス宣言・実装・単体テスト
 0203 ◎ C  11/04/30 0.011 11/04/30 0.012│Rfct│block = block.next() を ++block に変更
 0204 ● C  11/04/30 0.011               │ToDo│ViewBlock を LaidoutBlock に置き換え
-0205 ● C  11/04/30 0.011               │ToDo│LaidoutBlocksMgr::begin(), end() 追加
+0205 ◎ C  11/04/30 0.011 11/04/30 0.012│ToDo│LaidoutBlocksMgr::begin(), end() 追加
 0206 ● C  11/04/30 0.011               │ToDo│LaidoutBlocksMgr::findBlockByNumber() 追加
-0207 ● C  11/04/30 0.011               │ToDo│
+0207 ◎ C  11/04/30 0.011 11/04/30 0.012│ToDo│LaidoutBlock::operator--() 追加
+0208 ● C  11/04/30 0.011               │ToDo│
