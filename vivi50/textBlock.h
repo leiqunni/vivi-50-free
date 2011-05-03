@@ -202,10 +202,12 @@ public:
 					const std::gap_vector<size_t> &);		//	レイアウト結果
 
 	LaidoutBlock	begin() const;
+	LaidoutBlock	lastBlock() const;
 	LaidoutBlock	end() const;
 	LaidoutBlock	findBlock(index_t position) const;
 	LaidoutBlock	findBlockByNumber(index_t) const;
 	LaidoutBlock	findBlockByDocNumber(index_t) const;
+	const LaidoutBlock	*cacheBlock() const { return m_cacheBlock; }
 
 public:
 	void	erase(index_t first, index_t last) { m_blockSize.erase(first, last); }

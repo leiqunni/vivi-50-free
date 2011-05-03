@@ -300,10 +300,17 @@ LaidoutBlock LaidoutBlocksMgr::end() const
 	b.moveToEndOfDocument();
 	return b;
 }
+LaidoutBlock LaidoutBlocksMgr::lastBlock() const
+{
+	if( m_blockSize.empty() )
+		return LaidoutBlock((LaidoutBlocksMgr *)this);
+	LaidoutBlock b = end();
+	return --b;
+}
 LaidoutBlock LaidoutBlocksMgr::findBlock(index_t pos) const
 {
 	LaidoutBlock b = begin();
-	if( !pos || !document()->size() )
+	if( !pos || !document()->size() /*|| m_blockSize.empty()*/ )
 		return *m_cacheBlock = b;
 	if( !m_cacheBlock->position() ) {
 		if( pos <= document()->size() / 2 ) {
@@ -342,6 +349,8 @@ LaidoutBlock LaidoutBlocksMgr::findBlock(index_t pos) const
 LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number) const
 {
 	LaidoutBlock b = begin();
+	//if( m_blockSize.empty() )
+	//	return *m_cacheBlock = b;
 	if( !m_cacheBlock->position() ) {
 		if( number <= size() / 2 ) {
 			while( b.index() < number )
@@ -380,6 +389,8 @@ LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number) const
 LaidoutBlock LaidoutBlocksMgr::findBlockByDocNumber(index_t number) const
 {
 	LaidoutBlock b = begin();
+	//if( m_blockSize.empty() )
+	//	return *m_cacheBlock = b;
 	if( !m_cacheBlock->position() ) {
 		if( number <= size() / 2 ) {
 			while( b.docIndex() < number )

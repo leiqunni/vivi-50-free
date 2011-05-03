@@ -855,7 +855,8 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 		m_textCursor->clearSelection();
 		clearMultiCursor();
 		viewport()->update();
-		emit showMessage( QString("%1 cur=(%2 %3 %4 %5 %6 %7) blockData=(%8 %9)")
+		const LaidoutBlock *lb = lbMgr()->cacheBlock();
+		emit showMessage( QString("%1 cur=(p=%2 d.i=%3 d.p=%4 v.i=%5 v.p=%6 x=%7) blockData=(%8 %9) cache=(d.i=%10 d.p=%11 v.i=%12 v.p=%13)")
 							.arg(QDir::currentPath())
 							.arg(m_textCursor->position())
 							.arg(m_textCursor->blockData().index())
@@ -864,7 +865,12 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 							.arg(m_textCursor->viewBlockData().position())
 							.arg(m_textCursor->x())
 							.arg(m_document->blockData().index())
-							.arg(m_document->blockData().position()) );
+							.arg(m_document->blockData().position())
+							.arg(lb->docIndex())
+							.arg(lb->docPosition())
+							.arg(lb->index())
+							.arg(lb->position())
+						);
 		return;
 	}
 	if( move != 0 ) {
@@ -1088,6 +1094,8 @@ void TextView::doReplaceAll(const QString &findText, ushort options,
 void TextView::resizeEvent(QResizeEvent *event)
 {
 	QAbstractScrollArea::resizeEvent(event);
+	const QRect vr = viewport()->rect();
+	m_lbMgr->setWidth(vr.width() - fontMetrics().width(' ') * 4);
 	updateBlocks();
 	m_textCursor->updateViewBlock();
 	//clearBlocks();		//	レイアウト情報クリア
@@ -1383,8 +1391,11 @@ void TextView::getReLayoutRange(ViewCursor cur,
 }
 int TextView::insertText(ViewCursor &cur, const QString &text)
 {
-	if( !m_lineBreakMode )
-		return document()->insertText(cur, text);
+	if( !m_lineBreakMode ) {
+		const int sz = document()->insertText(cur, text);
+		cur.updateViewBlock();
+		return sz;
+	}
 
 	DocBlock block = cur.docBlock();
 #if 1
@@ -1548,7 +1559,7 @@ void TextView::updateBlocks()
 	} else {
 		if( !m_lbMgr->width() ) {
 			const QRect vr = viewport()->rect();
-			m_lbMgr->setWidth(vr.width());
+			m_lbMgr->setWidth(vr.width() - fontMetrics().width(' ') * 4);
 		}
 		m_lbMgr->clear();
 		m_lbMgr->buildBlocks(this, document()->firstBlock());
