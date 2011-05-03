@@ -280,7 +280,7 @@ public:
 	bool	isMatchIgnoreCase(index_t, cuchar *, cuchar *) const;		//	単純比較関数
 	uchar	charEncoding() const { return m_charEncoding; }
 	bool	withBOM() const { return m_withBOM; }
-	BlockData blockData() const { return m_blockData; }
+	BlockData cacheBlockData() const { return m_cacheBlockData; }
 
 	BlockData	findBlockData(index_t position) const;
 	BlockData	nextBlockData(BlockData d) const
@@ -385,7 +385,7 @@ private:
 	mutable std::gap_vector<uchar>	m_buffer;
 	//mutable std::gap_vector<size_t>	m_blocks;		//	ブロックサイズ配列
 	mutable std::gap_vector<DocBlockItem>	m_blocks;		//	ブロック配列
-	mutable BlockData	m_blockData;			//	カレントブロック情報
+	mutable BlockData	m_cacheBlockData;			//	カレントブロック情報
 	//index_t		m_blockIndex;		//	カレントブロック情報
 	//index_t		m_blockPosition;	//	カレントブロック情報
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ

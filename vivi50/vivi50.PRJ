@@ -28,17 +28,17 @@ memFileColumnWd = 320
   main.cpp	(-178.304,-339.84)
   mainwindow.cpp	(-128.265,-196.142)
   mainwindow.h	(-128.265,-229.142)
-  TextDocument.cpp	(-152.875,65.766)
-  TextDocument.h	(-152.875,32.766)
+* TextDocument.cpp	(-152.875,65.766)
+* TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
 * mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
   unit_test.h	(173.104,-115.746)
-  mainwindowTest.cpp	(-128.265,-130.142)
+* mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
-  textCursor.cpp	(-335.316,-33.0248)
-  textCursor.h	(-335.316,-66.0248)
+* textCursor.cpp	(-335.316,-33.0248)
+* textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
 * TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
@@ -56,14 +56,14 @@ memFileColumnWd = 320
   "TextDocument.cpp" 796 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
-  "TextView.cpp" 850 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 994 'B: ' '' undone 暫定コード
-  "TextView.cpp" 995 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1012 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1013 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1240 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1262 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1300 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1579 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1600 'B: ' '' undone 未コーディング
+  "TextView.cpp" 853 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 997 'B: ' '' undone 暫定コード
+  "TextView.cpp" 998 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1015 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1016 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1245 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1267 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1305 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1590 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1611 'B: ' '' undone 未コーディング
   "textBlock.cpp" 557 'B: ' '' undone チャンクが連続している場合等

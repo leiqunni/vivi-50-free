@@ -48,13 +48,14 @@ void MainWindow::printBuffer()
 				.arg(ix).arg(m_view->blockSize(ix)) );
 	}
 	doOutput(QString("cache block doc = (%1 %2) view = (%3 %4)\n")
-				.arg(doc->blockData().m_index)
-				.arg(doc->blockData().m_position)
-				.arg(m_view->blockData().m_index)
-				.arg(m_view->blockData().m_position));
+				.arg(doc->cacheBlockData().m_index)
+				.arg(doc->cacheBlockData().m_position)
+				.arg(m_view->cacheBlockData().m_index)
+				.arg(m_view->cacheBlockData().m_position));
 }
 
 void test_TextDocument();
+void test_TextDocumentUndoRedo();
 void test_TextView();
 void test_LaidoutBlocksMgr();
 void test_LaidoutBlock();
@@ -74,6 +75,7 @@ void MainWindow::doUnitTest()
 	}
 	if( m_unitTestDoc )
 		test_TextDocument();
+	test_TextDocumentUndoRedo();
 	if( m_unitTestLaidoutBlocksMgr ) {
 		test_LaidoutBlocksMgr();
 		test_LaidoutBlock();
@@ -311,40 +313,6 @@ void test_TextDocument()
 		ut.ut_test_equal(2, doc.blockCount());
 		ut.ut_test_equal(6, doc.firstBlock().size());
 		ut.ut_test_equal(QString("123YZ\n"), doc.firstBlock().text());
-	}
-	if( 1 ) {		//	undo/redo 対応 do_insert() テスト
-		TextDocument doc;
-		doc.do_insert(0, "123\n");
-		ut.ut_test_equal(QString("123\n"), doc.toPlainText());
-		index_t position, anchor;
-		doc.doUndo(position, anchor);
-		ut.ut_test_equal(QString(""), doc.toPlainText());
-		doc.doRedo(position, anchor);
-		ut.ut_test_equal(QString("123\n"), doc.toPlainText());
-	}
-	if( 1 ) {		//	undo/redo 対応 do_replace() テスト
-		TextDocument doc;
-		doc.setPlainText(QString("123\nxyzzz\n12345\n"));
-		ut.ut_test_equal(4, doc.firstBlock().size());
-		doc.do_replace(0, 1, "XYZ");
-		ut.ut_test_equal(6, doc.firstBlock().size());
-		ut.ut_test_equal(QString("XYZ23\n"), doc.firstBlock().text());
-		index_t position, anchor;
-		doc.doUndo(position, anchor);
-		ut.ut_test_equal(4, doc.firstBlock().size());
-		ut.ut_test_equal(QString("123\n"), doc.firstBlock().text());
-		doc.doRedo(position, anchor);
-		ut.ut_test_equal(6, doc.firstBlock().size());
-		ut.ut_test_equal(QString("XYZ23\n"), doc.firstBlock().text());
-
-		doc.setPlainText(QString("123\n456\n"));
-		ut.ut_test_equal(3, doc.blockCount());
-		ut.ut_test_equal(4, doc.firstBlock().size());
-		ut.ut_test_equal(QString("123\n"), doc.firstBlock().text());
-		doc.do_replace(2, 5, "XYZ");
-		ut.ut_test_equal(2, doc.blockCount());
-		ut.ut_test_equal(8, doc.firstBlock().size());
-		ut.ut_test_equal(QString("12XYZ56\n"), doc.firstBlock().text());
 	}
 	if( 1 ) {
 		TextDocument doc;
@@ -588,15 +556,15 @@ void test_TextDocument()
 		const int nLines = 30;
 		for(int i = 0; i < nLines; ++i)
 			cur.insertText(text);
-		doc.m_blockData.m_index = 0;	//	キャッシュ無し
+		doc.m_cacheBlockData.m_index = 0;	//	キャッシュ無し
 		for(int i = 0; i <= nLines; ++i) {
 			BlockData d = doc.findBlockData(i*10);
 			ut.ut_test_equal(i, d.m_index);
 			ut.ut_test_equal(i*10, d.m_position);
 		}
 		DocBlock block = doc.findBlockByNumber(15);
-		doc.m_blockData.m_index = block.blockNumber();		//	キャッシュ有り
-		doc.m_blockData.m_position = block.position();
+		doc.m_cacheBlockData.m_index = block.blockNumber();		//	キャッシュ有り
+		doc.m_cacheBlockData.m_position = block.position();
 		for(int i = 0; i <= nLines; ++i) {
 			BlockData d = doc.findBlockData(i*10);
 			ut.ut_test_equal(i, d.m_index);
@@ -611,8 +579,8 @@ void test_TextDocument()
 		for(int i = 0; i < nLines; ++i)
 			cur.insertText(text);
 		DocBlock block = doc.findBlockByNumber(50);
-		doc.m_blockData.m_index = block.blockNumber();
-		doc.m_blockData.m_position = block.position();
+		doc.m_cacheBlockData.m_index = block.blockNumber();
+		doc.m_cacheBlockData.m_position = block.position();
 		index_t blockPos;
 		//index_t ix = doc.findBlockIndex(26*10, &blockPos);
 		for(int i = 0; i <= nLines; ++i) {
@@ -632,7 +600,57 @@ void test_TextDocument()
 		ut.ut_test_equal(7, cur.position());
 	}
 }
+void test_TextDocumentUndoRedo()
+{
+	CUnitTest ut("TextDocument::undo(), redo()");
+	if( 1 ) {		//	undo/redo 対応 do_insert() テスト
+		TextDocument doc;
+		doc.do_insert(0, "123\n");
+		ut.ut_test_equal(QString("123\n"), doc.toPlainText());
+		index_t position, anchor;
+		doc.doUndo(position, anchor);
+		ut.ut_test_equal(QString(""), doc.toPlainText());
+		doc.doRedo(position, anchor);
+		ut.ut_test_equal(QString("123\n"), doc.toPlainText());
+	}
+	if( 1 ) {		//	undo/redo 対応 do_replace() テスト
+		TextDocument doc;
+		doc.setPlainText(QString("123\nxyzzz\n12345\n"));
+		ut.ut_test_equal(4, doc.firstBlock().size());
+		doc.do_replace(0, 1, "XYZ");
+		ut.ut_test_equal(6, doc.firstBlock().size());
+		ut.ut_test_equal(QString("XYZ23\n"), doc.firstBlock().text());
+		index_t position, anchor;
+		doc.doUndo(position, anchor);
+		ut.ut_test_equal(4, doc.firstBlock().size());
+		ut.ut_test_equal(QString("123\n"), doc.firstBlock().text());
+		doc.doRedo(position, anchor);
+		ut.ut_test_equal(6, doc.firstBlock().size());
+		ut.ut_test_equal(QString("XYZ23\n"), doc.firstBlock().text());
 
+		doc.setPlainText(QString("123\n456\n"));
+		ut.ut_test_equal(3, doc.blockCount());
+		ut.ut_test_equal(4, doc.firstBlock().size());
+		ut.ut_test_equal(QString("123\n"), doc.firstBlock().text());
+		doc.do_replace(2, 5, "XYZ");
+		ut.ut_test_equal(2, doc.blockCount());
+		ut.ut_test_equal(8, doc.firstBlock().size());
+		ut.ut_test_equal(QString("12XYZ56\n"), doc.firstBlock().text());
+	}
+	if( 1 ) {		//	文字入力、undo、文字入力 を行うとブロックサイズ不正？
+		TextDocument doc;
+		doc.do_insert(0, "a");
+		ut.ut_test_equal(1, doc.blockCount());
+		ut.ut_test_equal(1, doc.blockSize(0));
+		index_t position, anchor;
+		doc.doUndo(position, anchor);
+		ut.ut_test_equal(1, doc.blockCount());
+		ut.ut_test_equal(0, doc.blockSize(0));
+		doc.do_insert(0, "a");
+		ut.ut_test_equal(1, doc.blockCount());
+		ut.ut_test_equal(1, doc.blockSize(0));
+	}
+}
 void test_TextView()
 {
 	CUnitTest ut("TextView");

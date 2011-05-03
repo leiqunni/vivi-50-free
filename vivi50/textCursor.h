@@ -184,6 +184,8 @@ public:
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
 	void	setPosition(index_t position, BlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
+	void	setViewBlockData(BlockData d) { m_viewBlockData = d; }
+	void	setViewAnchorBlockData(BlockData d) { m_viewAnchorBlockData = d; }
 
 	void	insertText(const QString &);
 	void	deleteChar();

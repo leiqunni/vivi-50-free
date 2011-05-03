@@ -203,7 +203,7 @@ void TextDocument::init()
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(DocBlockItem(0));
-	m_blockData = BlockData(0, 0);
+	m_cacheBlockData = BlockData(0, 0);
 	//m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
 }
@@ -228,7 +228,7 @@ BlockData TextDocument::findBlockData(index_t position) const
 	if( m_blocks.size() == 1 )
 		return BlockData(0, 0);
 	BlockData data(0, 0), next;
-	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
+	if( m_cacheBlockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( position <= size() / 2 ) {
 			while( data.m_index < m_blocks.size() - 1 &&
 					position >= (next = nextBlockData(data)).position() )
@@ -240,22 +240,22 @@ BlockData TextDocument::findBlockData(index_t position) const
 			} while( data.position() > position );
 		}
 	} else {
-		if( position < m_blockData.position() ) {
-			if( position <= m_blockData.position() / 2 ) {
-				while( data.m_index < m_blockData.index() - 1 &&
+		if( position < m_cacheBlockData.position() ) {
+			if( position <= m_cacheBlockData.position() / 2 ) {
+				while( data.m_index < m_cacheBlockData.index() - 1 &&
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
 			} else {
-				data = m_blockData;
+				data = m_cacheBlockData;
 				do {
 					data = prevBlockData(data);
 				} while( data.position() > position );
 			}
 		} else {
-			next = nextBlockData(m_blockData);
-			if( m_blockData.position() <= position && position < next.position() )
-				return m_blockData;
-			if( position <= m_blockData.position() + (size() - m_blockData.position()) / 2 ) {
+			next = nextBlockData(m_cacheBlockData);
+			if( m_cacheBlockData.position() <= position && position < next.position() )
+				return m_cacheBlockData;
+			if( position <= m_cacheBlockData.position() + (size() - m_cacheBlockData.position()) / 2 ) {
 				while( data.m_index < m_blocks.size() - 1 &&
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
@@ -311,13 +311,13 @@ DocBlock TextDocument::findBlockByNumberRaw(index_t blockIndex) const
 DocBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 {
 	if( blockIndex >= blockCount() - 1 ) {
-		m_blockData.m_index = blockCount() - 1;
-		m_blockData.m_position = size() - blockSize(m_blockData.m_index);
-		return DocBlock(const_cast<TextDocument*>(this), m_blockData);
+		m_cacheBlockData.m_index = blockCount() - 1;
+		m_cacheBlockData.m_position = size() - blockSize(m_cacheBlockData.m_index);
+		return DocBlock(const_cast<TextDocument*>(this), m_cacheBlockData);
 	}
 	index_t blockPosition = 0;
 	index_t ix = 0;
-	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
+	if( m_cacheBlockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( blockIndex <= blockCount() / 2 ) {
 			while( ix < blockIndex )
 				blockPosition += m_blocks[ix++].m_size;
@@ -328,32 +328,32 @@ DocBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 				blockPosition -= m_blocks[--ix].m_size;
 		}
 	} else {
-		if( blockIndex == m_blockData.m_index )
-			return DocBlock(const_cast<TextDocument*>(this), m_blockData.m_index, m_blockData.m_position);
-		if( blockIndex < m_blockData.m_index ) {
+		if( blockIndex == m_cacheBlockData.m_index )
+			return DocBlock(const_cast<TextDocument*>(this), m_cacheBlockData.m_index, m_cacheBlockData.m_position);
+		if( blockIndex < m_cacheBlockData.m_index ) {
 #if 0	//	逆方向シーケンシャルアクセス頻度は低いのでコメントアウトしておく
 			if( blockIndex == m_blockIndex - 1 ) {
 				m_blockPosition -= m_blocks[--m_blockIndex].m_size;
 				return DocBlock(this, m_blockIndex, m_blockPosition);
 			}
 #endif
-			if( blockIndex <= m_blockData.m_index / 2 ) {
+			if( blockIndex <= m_cacheBlockData.m_index / 2 ) {
 				while( ix < blockIndex )
 					blockPosition += m_blocks[ix++].m_size;
 			} else {	//	中央より後ろの場合
-				blockPosition = m_blockData.m_position;
-				ix = m_blockData.m_index;
+				blockPosition = m_cacheBlockData.m_position;
+				ix = m_cacheBlockData.m_index;
 				while( ix > blockIndex )
 					blockPosition -= m_blocks[--ix].m_size;
 			}
-		} else {	//	m_blockData.m_index < blockIndex < m_blocks.size() の場合
-			if( blockIndex == m_blockData.m_index + 1 ) {
-				m_blockData.m_position += m_blocks[m_blockData.m_index++].m_size;
-				return DocBlock(const_cast<TextDocument*>(this), m_blockData);
+		} else {	//	m_cacheBlockData.m_index < blockIndex < m_blocks.size() の場合
+			if( blockIndex == m_cacheBlockData.m_index + 1 ) {
+				m_cacheBlockData.m_position += m_blocks[m_cacheBlockData.m_index++].m_size;
+				return DocBlock(const_cast<TextDocument*>(this), m_cacheBlockData);
 			}
-			if( blockIndex <= m_blockData.m_index + (m_blocks.size() - m_blockData.m_index) / 2 ) {
-				blockPosition = m_blockData.m_position;
-				ix = m_blockData.m_index;
+			if( blockIndex <= m_cacheBlockData.m_index + (m_blocks.size() - m_cacheBlockData.m_index) / 2 ) {
+				blockPosition = m_cacheBlockData.m_position;
+				ix = m_cacheBlockData.m_index;
 				while( ix < blockIndex )
 					blockPosition += m_blocks[ix++].m_size;
 			} else {	//	中央より後ろの場合
@@ -364,16 +364,16 @@ DocBlock TextDocument::findBlockByNumber(index_t blockIndex) const
 					blockPosition -= m_blocks[--ix].m_size;
 				} while( ix > blockIndex );
 #else
-				blockPosition = m_blockData.m_position;
-				ix = m_blockData.m_index;
+				blockPosition = m_cacheBlockData.m_position;
+				ix = m_cacheBlockData.m_index;
 				while( ix > blockIndex )
 					blockPosition -= m_blocks[--ix].m_size;
 #endif
 			}
 		}
 	}
-	m_blockData.m_index = ix;
-	m_blockData.m_position = blockPosition;
+	m_cacheBlockData.m_index = ix;
+	m_cacheBlockData.m_position = blockPosition;
 	return DocBlock(const_cast<TextDocument*>(this), ix, blockPosition);
 }
 
@@ -489,14 +489,14 @@ void TextDocument::erase(index_t first, index_t last)
 	BlockData d = findBlockData(first);
 	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
-	m_blockData = d;	//	キャッシュ更新
+	m_cacheBlockData = d;	//	キャッシュ更新
 }
 void TextDocument::erase(index_t first, BlockData d, index_t last)
 {
 	if( last > size() ) last = size();
 	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
-	m_blockData = d;	//	キャッシュ更新
+	m_cacheBlockData = d;	//	キャッシュ更新
 }
 void TextDocument::insert(index_t position, BlockData d, const QString &text)
 {
@@ -506,7 +506,7 @@ void TextDocument::insert(index_t position, BlockData d, const QString &text)
 	const uchar *ptr = (const uchar *)(ba.data());
 	if( position > m_buffer.size() ) position = m_buffer.size();
 	m_buffer.insert(position, ptr, ptr + sz);
-	m_blockData = d;	//	キャッシュ更新
+	m_cacheBlockData = d;	//	キャッシュ更新
 	updateBlocksAtInsert(position, d, sz);
 }
 void TextDocument::insert(index_t position, const QString &text)
@@ -519,7 +519,7 @@ void TextDocument::insert(index_t ix, BlockData d,
 							cuchar *first, cuchar *last)
 {
 	m_buffer.insert(ix, first, last);
-	m_blockData = d;	//	キャッシュ更新
+	m_cacheBlockData = d;	//	キャッシュ更新
 	updateBlocksAtInsert(ix, d, last - first);
 }
 void TextDocument::insert(index_t ix, cuchar *first, cuchar *last)
@@ -565,7 +565,7 @@ size_t TextDocument::deleteChar(DocCursor &cur)
 	if( first == last ) return 0;
 	do_erase(first, last, flags);
 	cur.copyAnchorToPosition();
-	m_blockData = cur.blockData();
+	m_cacheBlockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
@@ -583,7 +583,7 @@ size_t TextDocument::deletePreviousChar(DocCursor &cur)
 	if( first == last ) return 0;
 	do_erase(first, last, GVUNDOITEM_CUR_TAIL);
 	cur.copyPositionToAnchor();
-	m_blockData = cur.blockData();
+	m_cacheBlockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
@@ -622,14 +622,14 @@ int TextDocument::insertText(DocCursor &cur, const QString &text,
 							isModified());
 		delSz = last - first;
 	}
-	m_blockData = cur.blockData();		//	キャッシュ更新
+	m_cacheBlockData = cur.blockData();		//	キャッシュ更新
 	if( select ) {
 		cur.setAnchor(cur.position());
 		cur.setPosition(cur.position() + sz, DocCursor::KeepAnchor);
 	} else
 		cur.setPosition(cur.position() + sz);
 	//cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, text.length());
-	//m_blockData = cur.blockData();
+	//m_cacheBlockData = cur.blockData();
 	m_modified = true;
 	emit contentsChange(position, delSz, sz);
 	emit contentsChanged();

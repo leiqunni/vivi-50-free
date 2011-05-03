@@ -71,7 +71,7 @@ TextView::TextView(QWidget *parent)
 	m_firstUnlayoutedBlockCount = 0;
 	m_layoutedDocBlockCount = 0;
 #endif
-	m_blockData = BlockData(0, 0);
+	m_cacheBlockData = BlockData(0, 0);
 #if 0
 	m_firstViewLine = 0;
 	m_lastViewLine = 0;
@@ -123,7 +123,10 @@ size_t TextView::size() const
 size_t TextView::blockCount() const
 {
 #if LAIDOUT_BLOCKS_MGR
-	return m_lbMgr->size();
+	if( m_lineBreakMode )
+		return m_lbMgr->size();
+	else
+		return document()->blockCount();
 #else
 	return document()->blockCount() - layoutedDocBlockCount() + m_blockSize.size();
 #if 0
@@ -212,7 +215,7 @@ ViewBlock TextView::findBlockByNumber(index_t bn) const
 #else
 	BlockData data(0, 0), next;
 	const size_t bc = blockCount();
-	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
+	if( m_cacheBlockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( bn <= bc / 2 ) {
 			while( data.m_index < bc - 1 &&
 					bn >= (next = nextBlockData(data)).index() )
@@ -224,22 +227,22 @@ ViewBlock TextView::findBlockByNumber(index_t bn) const
 			} while( data.index() > bn );
 		}
 	} else {
-		if( bn < m_blockData.index() ) {
-			if( bn <= m_blockData.index() / 2 ) {
-				while( data.m_index < m_blockData.index() - 1 &&
+		if( bn < m_cacheBlockData.index() ) {
+			if( bn <= m_cacheBlockData.index() / 2 ) {
+				while( data.m_index < m_cacheBlockData.index() - 1 &&
 						bn >= (next = nextBlockData(data)).index() )
 					data = next;
 			} else {
-				data = m_blockData;
+				data = m_cacheBlockData;
 				do {
 					data = prevBlockData(data);
 				} while( data.index() > bn );
 			}
 		} else {
-			next = nextBlockData(m_blockData);
-			if( m_blockData.index() <= bn && bn < next.index() )
-				return ViewBlock((TextView*)this, docBlock(m_blockData), m_blockData);
-			if( bn <= m_blockData.index() + (size() - m_blockData.index()) / 2 ) {
+			next = nextBlockData(m_cacheBlockData);
+			if( m_cacheBlockData.index() <= bn && bn < next.index() )
+				return ViewBlock((TextView*)this, docBlock(m_cacheBlockData), m_cacheBlockData);
+			if( bn <= m_cacheBlockData.index() + (size() - m_cacheBlockData.index()) / 2 ) {
 				while( data.m_index < bc - 1 &&
 						bn >= (next = nextBlockData(data)).index() )
 					data = next;
@@ -251,7 +254,7 @@ ViewBlock TextView::findBlockByNumber(index_t bn) const
 			}
 		}
 	}
-	m_blockData = data;
+	m_cacheBlockData = data;
 	return ViewBlock((TextView*)this, docBlock(data), data);
 #endif
 }
@@ -265,7 +268,7 @@ BlockData TextView::findBlockData(index_t position) const
 	//	return BlockData(blockCount(), size());
 	BlockData data(0, 0), next;
 	const size_t bc = blockCount();
-	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
+	if( m_cacheBlockData.m_index == 0 ) {		//	キャッシュが無い場合
 		if( position <= size() / 2 ) {
 			while( data.m_index < bc - 1 &&
 					position >= (next = nextBlockData(data)).position() )
@@ -277,22 +280,22 @@ BlockData TextView::findBlockData(index_t position) const
 			} while( data.position() > position );
 		}
 	} else {
-		if( position < m_blockData.position() ) {
-			if( position <= m_blockData.position() / 2 ) {
-				while( data.m_index < m_blockData.index() - 1 &&
+		if( position < m_cacheBlockData.position() ) {
+			if( position <= m_cacheBlockData.position() / 2 ) {
+				while( data.m_index < m_cacheBlockData.index() - 1 &&
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
 			} else {
-				data = m_blockData;
+				data = m_cacheBlockData;
 				do {
 					data = prevBlockData(data);
 				} while( data.position() > position );
 			}
 		} else {
-			next = nextBlockData(m_blockData);
-			if( m_blockData.position() <= position && position < next.position() )
-				return m_blockData;
-			if( position <= m_blockData.position() + (size() - m_blockData.position()) / 2 ) {
+			next = nextBlockData(m_cacheBlockData);
+			if( m_cacheBlockData.position() <= position && position < next.position() )
+				return m_cacheBlockData;
+			if( position <= m_cacheBlockData.position() + (size() - m_cacheBlockData.position()) / 2 ) {
 				while( data.m_index < bc - 1 &&
 						position >= (next = nextBlockData(data)).position() )
 					data = next;
@@ -304,7 +307,7 @@ BlockData TextView::findBlockData(index_t position) const
 			}
 		}
 	}
-	m_blockData = data;
+	m_cacheBlockData = data;
 	return data;
 #endif
 }
@@ -864,8 +867,8 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 							.arg(m_textCursor->viewBlockData().index())
 							.arg(m_textCursor->viewBlockData().position())
 							.arg(m_textCursor->x())
-							.arg(m_document->blockData().index())
-							.arg(m_document->blockData().position())
+							.arg(m_document->cacheBlockData().index())
+							.arg(m_document->cacheBlockData().position())
 							.arg(lb->docIndex())
 							.arg(lb->docPosition())
 							.arg(lb->index())
@@ -993,7 +996,7 @@ void TextView::undo()
 	m_document->doUndo(pos, anchor);
 	clearBlocks();		//	undone B 暫定コード
 	buildBlocks(firstBlock());		//	undone B 暫定コード
-	m_blockData = BlockData(0, 0);
+	m_cacheBlockData = BlockData(0, 0);
 	if( pos == anchor )
 		m_textCursor->setPosition(pos);
 	else {
@@ -1011,7 +1014,7 @@ void TextView::redo()
 	m_document->doRedo(pos, anchor);
 	clearBlocks();		//	undone B 暫定コード
 	buildBlocks(firstBlock());		//	undone B 暫定コード
-	m_blockData = BlockData(0, 0);
+	m_cacheBlockData = BlockData(0, 0);
 	m_textCursor->setPosition(pos);
 	ensureCursorVisible();
 	viewport()->update();
@@ -1100,8 +1103,10 @@ void TextView::resizeEvent(QResizeEvent *event)
 	QAbstractScrollArea::resizeEvent(event);
 	const QRect vr = viewport()->rect();
 	m_lbMgr->setWidth(vr.width() - fontMetrics().width(' ') * 4);
-	updateBlocks();
-	m_textCursor->updateViewBlock();
+	if( m_lineBreakMode ) {
+		updateBlocks();
+		m_textCursor->updateViewBlock();
+	}
 	//clearBlocks();		//	レイアウト情報クリア
 	updateLineNumberAreaSize();
 	//onBlockCountChanged();
@@ -1401,7 +1406,9 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 {
 	if( !m_lineBreakMode ) {
 		const int sz = document()->insertText(cur, text);
-		cur.updateViewBlock();
+		cur.setViewBlockData(cur.blockData());
+		cur.setViewAnchorBlockData(cur.anchorBlockData());
+		//cur.updateViewBlock();
 		return sz;
 	}
 
@@ -1419,14 +1426,18 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 	const int sz = document()->insertText(cur, text);
 	reLayoutBlocks(block, lastPosition + sz, firstViewBlockNumber);
 #endif
-	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
+	m_cacheBlockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
 	cur.updateViewBlock();
 	return sz;
 }
 size_t TextView::deleteChar(ViewCursor &cur)
 {
-	if( !m_lineBreakMode )
-		return document()->deleteChar(cur);
+	if( !m_lineBreakMode ) {
+		size_t sz = document()->deleteChar(cur);
+		cur.setViewBlockData(cur.blockData());
+		cur.setViewAnchorBlockData(cur.anchorBlockData());
+		return sz;
+	}
 	if( !cur.hasSelection() ) {
 		cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor);
 		if( !cur.hasSelection() )
@@ -1439,7 +1450,7 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	const size_t delSize = document()->deleteChar(cur);
 	const int d = (int)document()->blockCount() - bc;
 	reLayoutBlocksUntillDocBlockNumber(block, lastDocBlockNumber + d, firstViewBlockNumber);
-	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
+	m_cacheBlockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
 	cur.updateViewBlock();
 	return delSize;
 }
@@ -1489,7 +1500,7 @@ void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIn
 #else
 	qDebug() << "blockCount() = " << blockCount();
 	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
-	m_blockData.m_index = 0;
+	m_cacheBlockData.m_index = 0;
 	bool set = false;
 	QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
@@ -1505,8 +1516,8 @@ void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIn
 			m_blockSize.insert(vbIndex++, *itr);
 			if( !set ) {
 				set = true;
-				m_blockData.m_index = vbIndex;
-				m_blockData.m_position = block.position();
+				m_cacheBlockData.m_index = vbIndex;
+				m_cacheBlockData.m_position = block.position();
 			}
 		}
 		++m_layoutedDocBlockCount;		//	レイアウトされたドキュメントブロック数
@@ -1565,7 +1576,7 @@ void TextView::onLineBreak(bool b)
 
 void TextView::updateBlocks()
 {
-	m_blockData = BlockData(0, 0);
+	m_cacheBlockData = BlockData(0, 0);
 	if( !m_lineBreakMode ) {
 		clearBlocks();
 	} else {

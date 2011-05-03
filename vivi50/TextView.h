@@ -111,7 +111,7 @@ public:
 	int		charCountToX(const QString &, int) const;		//	第２引数は文字数
 	int		xToCharCount(const QString &, int) const;		//	ｘ座標に対応する文字数を返す
 	index_t	movePositionByCharCount(index_t, int n) const;	//	n 文字分移動
-	BlockData blockData() const { return m_blockData; }
+	BlockData cacheBlockData() const { return m_cacheBlockData; }
 #if LAIDOUT_BLOCKS_MGR
 	LaidoutBlocksMgr	*lbMgr() const { return m_lbMgr; }
 #endif
@@ -234,7 +234,7 @@ private:
 	//int		m_lineNumberNDigits;		//	桁数
 	QTimer	*m_timer;					//	タイマーオブジェクト
 	//mutable std::gap_vector<ViewTextBlockItem>	m_blocks;		//	ブロック配列
-	mutable BlockData	m_blockData;			//	カレントブロック情報
+	mutable BlockData	m_cacheBlockData;			//	カレントブロック情報
 
 #if LAIDOUT_BLOCKS_MGR
 	mutable LaidoutBlocksMgr	*m_lbMgr;
