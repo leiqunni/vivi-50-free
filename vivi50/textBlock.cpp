@@ -598,6 +598,7 @@ void layoutText(std::vector<size_t> &v, QFontMetrics &fm, const DocBlock &block,
 }
 //	指定範囲をレイアウト
 //	指定範囲に対応する LaidoutBlocksMgr のブロック情報は削除されているものとする
+#if 0
 void LaidoutBlocksMgr::buildBlocks(TextView *view,
 									DocBlock block,		//	[レイアウト開始位置
 									index_t vIndex,		//	[レイアウト開始位置
@@ -622,6 +623,7 @@ void LaidoutBlocksMgr::buildBlocks(TextView *view,
 		++block;
 	}
 }
+#endif
 void LaidoutBlocksMgr::buildBlocksUntillDocBlockNumber(TextView *view,
 									DocBlock block,		//	[レイアウト開始位置
 									index_t vIndex,		//	[レイアウト開始位置
@@ -647,6 +649,8 @@ void LaidoutBlocksMgr::buildBlocksUntillDocBlockNumber(TextView *view,
 		y += fm.lineSpacing() * v.size();
 		++block;
 	}
+	if( block.isValid() )
+		*m_cacheBlock = LaidoutBlock(this, BlockData(vIndex, block.position()), block.data());
 	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
 }
 //----------------------------------------------------------------------

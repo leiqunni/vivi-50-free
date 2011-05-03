@@ -337,7 +337,7 @@ void MainWindow::writeSettings()
     QSettings settings;
     settings.setValue("pos", pos());
     settings.setValue("size", size());
-    settings.setValue("linebreak", m_view->lineBreakMode());
+    //settings.setValue("linebreak", m_view->lineBreakMode());
 }
 bool MainWindow::maybeSave()
 {

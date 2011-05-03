@@ -211,11 +211,13 @@ public:
 
 public:
 	void	erase(index_t first, index_t last) { m_blockSize.erase(first, last); }
+#if 0
 	void	buildBlocks(TextView *,
 						DocBlock block,		//	[レイアウト開始位置
 						index_t vIndex = 0,		//	[レイアウト開始位置
 						int ht = 0,				//	レイアウト範囲);
 						index_t diLimit = 0);	//	レイアウト範囲);
+#endif
 	void	buildBlocksUntillDocBlockNumber(TextView *,
 						DocBlock block,		//	[レイアウト開始位置
 						index_t vIndex = 0,		//	[レイアウト開始位置

@@ -1467,7 +1467,7 @@ void test_LaidoutBlock()
 		QFontMetrics fm = view.fontMetrics();
 		lbMgr.setWidth(fm.width(QString("‚ ‚¢‚¤‚¦‚¨")));
 		//view.viewport()->setGeometry(0, 0, fm.width(QString("‚ ‚¢‚¤‚¦‚¨    ")), 100);
-		lbMgr.buildBlocks(&view, doc->firstBlock());
+		lbMgr.buildBlocksUntillDocBlockNumber(&view, doc->firstBlock());
 		ut.ut_test_equal(4, lbMgr.blockCount());
 		ut.ut_test_equal(5, lbMgr.blockSize(0));
 		ut.ut_test_equal(15, lbMgr.blockSize(1));	//	‚ ‚¢‚¤‚¦‚¨

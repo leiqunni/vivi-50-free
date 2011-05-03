@@ -188,7 +188,7 @@ protected:
 	void	clearBlocks();
 	void	eraseBlocks(index_t, index_t);
 	void	buildBlocks(ViewBlock, int ht = 0, index_t = 0);
-	void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
+	//void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
 	void	reLayoutBlocksUntillDocBlockNumber(DocBlock, index_t lastBlockNumber, index_t vbIndex);
 	void	layoutText(std::vector<size_t> &, const DocBlock &, int wd, int tabWidth);
 	void	layoutText(std::vector<size_t> &, const QString &, index_t, int wd, int tabWidth);

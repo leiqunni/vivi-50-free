@@ -1335,7 +1335,11 @@ void TextView::getReLayoutRangeByBlockNumber(
 		cur.swapPositionAnchor();			//	ensure pos <= anchor
 	block = cur.docBlock();
 	DocBlock lastBlock = cur.docAnchorBlock();
-	firstViewBlockNumber = cur.viewBlockData().m_index;		//	docBlock 先頭のビューブロック
+	LaidoutBlock floBlock(m_lbMgr, cur.viewBlockData(), cur.docBlockData());
+	while( floBlock.position() > floBlock.docPosition() )
+		--floBlock;
+	firstViewBlockNumber = floBlock.blockNumber();
+	//firstViewBlockNumber = cur.viewBlockData().m_index;		//	docBlock 先頭のビューブロック
 	LaidoutBlock loBlock(m_lbMgr, cur.viewAnchorBlockData(), cur.docAnchorBlockData());
 	const index_t dbn = loBlock.docBlockNumber();
 	do {
@@ -1471,6 +1475,7 @@ void TextView::reLayoutBlocksUntillDocBlockNumber(DocBlock block,
 {
 	m_lbMgr->buildBlocksUntillDocBlockNumber(this, block, vbIndex, 0, lastDocBlockNumber);
 }
+#if 0
 void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIndex)
 {
 #if LAIDOUT_BLOCKS_MGR
@@ -1508,6 +1513,7 @@ void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIn
 	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
 #endif
 }
+#endif
 #if 0
 void TextView::buildBlocks()
 {
@@ -1548,6 +1554,8 @@ void TextView::buildBlocks()
 void TextView::onLineBreak(bool b)
 {
 	m_lineBreakMode = b;
+    QSettings settings;
+    settings.setValue("linebreak", m_lineBreakMode);
 	updateBlocks();
 }
 
@@ -1562,7 +1570,7 @@ void TextView::updateBlocks()
 			m_lbMgr->setWidth(vr.width() - fontMetrics().width(' ') * 4);
 		}
 		m_lbMgr->clear();
-		m_lbMgr->buildBlocks(this, document()->firstBlock());
+		m_lbMgr->buildBlocksUntillDocBlockNumber(this, document()->firstBlock());
 	}
 	//	undone B 垂直スクロールバー位置更新
 	viewport()->update();
@@ -1663,10 +1671,10 @@ void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdL
 	}
 }
 void TextView::buildBlocks(ViewBlock block, int ht,
-							index_t diLimit)	//	レイアウト範囲
+							index_t lastDocBlockNumber)	//	レイアウト範囲
 {
 #if LAIDOUT_BLOCKS_MGR
-	m_lbMgr->buildBlocks(this, block, block.blockNumber(), ht, diLimit);
+	m_lbMgr->buildBlocksUntillDocBlockNumber(this, block, block.blockNumber(), ht, lastDocBlockNumber);
 #if 0
 	QFontMetrics fm = fontMetrics();
 	const int spaceWidth = fm.width(QChar(' '));
