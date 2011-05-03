@@ -10,35 +10,35 @@ extList = cpp,h
 todoKeyWord = todo,undone
 memFileColumnWd = 320
 [symbols]
-#define SIMPLE_LAIDOUT_BLOCKS 1
 #define HIST_LIMIT 30
+#define SIMPLE_LAIDOUT_BLOCKS 1
 #define MARGIN_LEFT 4
 #define INVALID_INDEX 0
-#define TEXT_CURSOR_BLOCK 1
 #define PTR_ALLOCATOR 0
+#define TEXT_CURSOR_BLOCK 1
 #define BLOCK_HAS_OFFSET 0
 #define LAIDOUT_BLOCKS_MGR 1
-#define LINE_HEIGHT 20
 #define LAZY_LAIDOUT 0
-#define BLOCK_HAS_SIZE 1
+#define LINE_HEIGHT 20
 #define GV_USE_ITR_FACADE 1
+#define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
   gap_vector.h	(-94.078,307.793)
   main.cpp	(-178.304,-339.84)
-* mainwindow.cpp	(-128.265,-196.142)
-* mainwindow.h	(-128.265,-229.142)
+  mainwindow.cpp	(-128.265,-196.142)
+  mainwindow.h	(-128.265,-229.142)
   TextDocument.cpp	(-152.875,65.766)
-* TextDocument.h	(-152.875,32.766)
+  TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
-  mainwindowBench.cpp	(-128.265,-163.142)
+* mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
   unit_test.h	(173.104,-115.746)
-* mainwindowTest.cpp	(-128.265,-130.142)
+  mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
-* textCursor.cpp	(-335.316,-33.0248)
-* textCursor.h	(-335.316,-66.0248)
+  textCursor.cpp	(-335.316,-33.0248)
+  textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
 * TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
@@ -48,7 +48,7 @@ memFileColumnWd = 320
   ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(139,-320)
 * textBlock.cpp	(-243,329)
-* textBlock.h	(-243,296)
+  textBlock.h	(-243,296)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
@@ -57,13 +57,13 @@ memFileColumnWd = 320
   "textCursor.cpp" 414 'B: ' '' undone 暫定コード
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
   "TextView.cpp" 850 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1000 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1001 'B: ' '' undone 暫定コード
+  "TextView.cpp" 994 'B: ' '' undone 暫定コード
+  "TextView.cpp" 995 'B: ' '' undone 暫定コード
   "TextView.cpp" 1012 'B: ' '' undone 暫定コード
   "TextView.cpp" 1013 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1238 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1260 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1298 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1577 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1598 'B: ' '' undone 未コーディング
+  "TextView.cpp" 1240 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1262 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1300 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1579 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1600 'B: ' '' undone 未コーディング
   "textBlock.cpp" 557 'B: ' '' undone チャンクが連続している場合等

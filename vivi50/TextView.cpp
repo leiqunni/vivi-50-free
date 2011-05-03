@@ -991,14 +991,15 @@ void TextView::undo()
 	clearMultiCursor();
 	index_t pos = 0, anchor = 0;
 	m_document->doUndo(pos, anchor);
+	clearBlocks();		//	undone B 暫定コード
+	buildBlocks(firstBlock());		//	undone B 暫定コード
+	m_blockData = BlockData(0, 0);
 	if( pos == anchor )
 		m_textCursor->setPosition(pos);
 	else {
 		m_textCursor->setPosition(anchor);
 		m_textCursor->setPosition(pos, DocCursor::KeepAnchor);
 	}
-	clearBlocks();		//	undone B 暫定コード
-	buildBlocks(firstBlock());		//	undone B 暫定コード
 	ensureCursorVisible();
 	viewport()->update();
 }
@@ -1008,9 +1009,10 @@ void TextView::redo()
 	clearMultiCursor();
 	index_t pos = 0, anchor = 0;
 	m_document->doRedo(pos, anchor);
-	m_textCursor->setPosition(pos);
 	clearBlocks();		//	undone B 暫定コード
 	buildBlocks(firstBlock());		//	undone B 暫定コード
+	m_blockData = BlockData(0, 0);
+	m_textCursor->setPosition(pos);
 	ensureCursorVisible();
 	viewport()->update();
 }
