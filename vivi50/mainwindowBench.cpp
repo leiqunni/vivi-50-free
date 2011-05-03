@@ -191,6 +191,7 @@ void v_laidout(uint n)
 	for(uint i = 0; i < n; ++i)
 		c.insertText(text);
 	boost::timer tm;
+	view.lbMgr()->setWidth(1000);
 	view.buildBlocks();
 	const double dur = tm.elapsed();
 	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));
@@ -298,10 +299,11 @@ void MainWindow::doBenchmark()
 
 	doOutput("rayout blocks:\n");
 	doOutput("  LaidoutBlocksMgr:\n");
-	v_laidout(100);
-	v_laidout(200);
-	v_laidout(400);
-	v_laidout(800);
+	v_laidout( 100);
+	v_laidout( 200);
+	v_laidout( 400);
+	v_laidout( 800);
+	v_laidout(1600);
 
 	doOutput("\n=== Benchmark Test finished ===\n");
 	QApplication::restoreOverrideCursor();
