@@ -723,7 +723,7 @@ QVariant TextView::inputMethodQuery ( Qt::InputMethodQuery query ) const
 void TextView::inputMethodEvent ( QInputMethodEvent * event )
 {
 	//qDebug() << "*** inputMethodEvent " << event;
-	if( m_toDeleteIMEPreeditText ) {
+	if( m_toDeleteIMEPreeditText ) {	//	変換候補削除（undo）
 		//qDebug() << "  doUndo.";
 		//if( event->preeditString() == QString("かｎ") )
 		//	qDebug() << "  かｎ";
@@ -739,13 +739,13 @@ void TextView::inputMethodEvent ( QInputMethodEvent * event )
 		m_toDeleteIMEPreeditText = false;
 	}
 	const QString &text = event->commitString();
-	if( !text.isEmpty() ) {
+	if( !text.isEmpty() ) {		//	IME入力が確定した場合
 		//qDebug() << "  insert commitString " << text;
 		insertText(text);
 		viewport()->update();
 	}
 	m_preeditString = event->preeditString();
-	if( !m_preeditString.isEmpty() ) {
+	if( !m_preeditString.isEmpty() ) {		//	変換候補ありの場合
 		//qDebug() << "  start = " << event->replacementStart () <<
 		//			", len = " << event->replacementLength ();
 		//qDebug() << "  insertText " << peText;
@@ -997,6 +997,7 @@ void TextView::undo()
 		m_textCursor->setPosition(anchor);
 		m_textCursor->setPosition(pos, DocCursor::KeepAnchor);
 	}
+	clearBlocks();		//	undone B 暫定コード
 	buildBlocks(firstBlock());		//	undone B 暫定コード
 	ensureCursorVisible();
 	viewport()->update();
@@ -1008,6 +1009,7 @@ void TextView::redo()
 	index_t pos = 0, anchor = 0;
 	m_document->doRedo(pos, anchor);
 	m_textCursor->setPosition(pos);
+	clearBlocks();		//	undone B 暫定コード
 	buildBlocks(firstBlock());		//	undone B 暫定コード
 	ensureCursorVisible();
 	viewport()->update();

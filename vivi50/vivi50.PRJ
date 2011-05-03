@@ -58,10 +58,12 @@ memFileColumnWd = 320
   "textCursor.cpp" 425 'B: ' '' undone 暫定コード
   "TextView.cpp" 850 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 1000 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1011 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1236 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1258 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1296 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1564 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1585 'B: ' '' undone 未コーディング
+  "TextView.cpp" 1001 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1012 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1013 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1238 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1260 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1298 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1577 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1598 'B: ' '' undone 未コーディング
   "textBlock.cpp" 557 'B: ' '' undone チャンクが連続している場合等

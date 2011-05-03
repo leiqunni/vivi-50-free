@@ -66,6 +66,9 @@
 + 2011/04/29 "TextView.cpp" B:   undone 暫定コード
 # 2011/04/29 15:59:02
 + 2011/04/29 "textBlock.cpp" B:   undone チャンクが連続している場合等
+# 2011/05/03 22:07:11
++ 2011/05/03 "TextView.cpp" B:   undone 暫定コード
++ 2011/05/03 "TextView.cpp" B:   undone 暫定コード
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -76,6 +79,8 @@
 2011/04/12 "TextView.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
 2011/04/29 "TextView.cpp" B:   undone 暫定コード
 2011/04/29 "TextView.cpp" B:   undone 暫定コード
+2011/05/03 "TextView.cpp" B:   undone 暫定コード
+2011/05/03 "TextView.cpp" B:   undone 暫定コード
 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 2011/04/19 "TextView.cpp" A:   undone BlockData も要補正

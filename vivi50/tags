@@ -96,8 +96,8 @@ LF	.\charEncoding.h	/^		LF,$/;"	e	enum:CharEncoding::__anon2
 LaidoutBlock	.\textBlock.h	/^	LaidoutBlock(LaidoutBlocksMgr *lbMgr, BlockData viewBlockData, BlockData docBlockData)$/;"	f	class:LaidoutBlock
 LaidoutBlock	.\textBlock.h	/^	LaidoutBlock(\/*TextView *view,*\/ LaidoutBlocksMgr *lbMgr)$/;"	f	class:LaidoutBlock
 LaidoutBlock	.\textBlock.h	/^class LaidoutBlock$/;"	c
-LaidoutBlocksMgr	.\textBlock.h	/^class LaidoutBlocksMgr$/;"	c
 LaidoutBlocksMgr	.\textBlock.cpp	/^LaidoutBlocksMgr::LaidoutBlocksMgr(TextDocument *document)$/;"	f	class:LaidoutBlocksMgr
+LaidoutBlocksMgr	.\textBlock.h	/^class LaidoutBlocksMgr$/;"	c
 LaidoutChunk	.\textBlock.h	/^	LaidoutChunk()$/;"	f	struct:LaidoutChunk
 LaidoutChunk	.\textBlock.h	/^	LaidoutChunk(const LaidoutChunk &x)$/;"	f	struct:LaidoutChunk
 LaidoutChunk	.\textBlock.h	/^	LaidoutChunk(size_t unLaidoutDocBlockCount,$/;"	f	struct:LaidoutChunk
@@ -151,8 +151,8 @@ Ui	.\GeneratedFiles\ui_mainwindow.h	/^namespace Ui {$/;"	n
 Ui_MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^class Ui_MainWindowClass$/;"	c
 Up	.\textCursor.h	/^		Up,$/;"	e	enum:DocCursor::__anon2
 VERSION_STR	.\mainwindow.cpp	29;"	d	file:
-ViewBlock	.\textBlock.h	/^class ViewBlock : public DocBlock$/;"	c
 ViewBlock	.\textBlock.cpp	/^ViewBlock::ViewBlock(TextView *view, const DocBlock &block, BlockData d)$/;"	f	class:ViewBlock
+ViewBlock	.\textBlock.h	/^class ViewBlock : public DocBlock$/;"	c
 ViewCursor	.\textCursor.h	/^class ViewCursor : public DocCursor$/;"	c
 ViewCursor	.\textCursor.cpp	/^ViewCursor::ViewCursor(TextView *view, const DocCursor &x)$/;"	f	class:ViewCursor
 ViewCursor	.\textCursor.cpp	/^ViewCursor::ViewCursor(TextView *view, index_t position)$/;"	f	class:ViewCursor
@@ -344,8 +344,8 @@ docAnchorBlock	.\textCursor.cpp	/^DocBlock ViewCursor::docAnchorBlock() const$/;
 docAnchorBlockData	.\textCursor.h	/^	BlockData	docAnchorBlockData() const { return DocCursor::anchorBlockData(); }$/;"	f	class:ViewCursor
 docBlock	.\TextView.cpp	/^DocBlock TextView::docBlock(BlockData v) const$/;"	f	class:TextView
 docBlock	.\textCursor.h	/^	DocBlock	docBlock() const { return DocCursor::block(); }$/;"	f	class:ViewCursor
-docBlockCount	.\textBlock.h	/^	size_t	docBlockCount() const$/;"	f	struct:LaidoutChunk
 docBlockCount	.\textBlock.cpp	/^size_t LaidoutBlocksMgr::docBlockCount() const$/;"	f	class:LaidoutBlocksMgr
+docBlockCount	.\textBlock.h	/^	size_t	docBlockCount() const$/;"	f	struct:LaidoutChunk
 docBlockData	.\TextView.cpp	/^BlockData TextView::docBlockData(BlockData v) const$/;"	f	class:TextView
 docBlockData	.\textBlock.h	/^	BlockData	docBlockData() const { return BlockData(docBlockNumber(), docPosition()); }$/;"	f	class:LaidoutBlock
 docBlockData	.\textCursor.h	/^	BlockData	docBlockData() const { return DocCursor::blockData(); }$/;"	f	class:ViewCursor
@@ -737,10 +737,10 @@ paste	.\TextView.cpp	/^void TextView::paste()$/;"	f	class:TextView
 pasteAct	.\mainwindow.h	/^    QAction *pasteAct;$/;"	m	class:MainWindow
 pointer	.\gap_vector.h	/^	typedef Type* pointer;$/;"	t	class:std::_Gap_Vector_Iterator
 pointer	.\gap_vector.h	/^	typedef Type* pointer;$/;"	t	class:std::gap_vector
-position	.\textBlock.h	/^	index_t	position() const { return m_viewBlockData.m_position; }$/;"	f	class:LaidoutBlock
-position	.\textBlock.h	/^	index_t position() const { return m_position; }$/;"	f	struct:BlockData
 position	.\textBlock.cpp	/^index_t DocBlock::position() const$/;"	f	class:DocBlock
 position	.\textBlock.cpp	/^index_t ViewBlock::position() const$/;"	f	class:ViewBlock
+position	.\textBlock.h	/^	index_t	position() const { return m_viewBlockData.m_position; }$/;"	f	class:LaidoutBlock
+position	.\textBlock.h	/^	index_t position() const { return m_position; }$/;"	f	struct:BlockData
 position	.\textCursor.h	/^	index_t	position() const { return m_position; }$/;"	f	class:DocCursor
 prev	.\textBlock.cpp	/^DocBlock DocBlock::prev() const$/;"	f	class:DocBlock
 prev	.\textBlock.cpp	/^ViewBlock ViewBlock::prev() const$/;"	f	class:ViewBlock
@@ -920,8 +920,8 @@ view	.\textCursor.h	/^	TextView	*view() { return m_view; }$/;"	f	class:ViewCurso
 view	.\textCursor.h	/^	const TextView	*view() const { return m_view; }$/;"	f	class:ViewCursor
 viewAnchorBlockData	.\textCursor.h	/^	BlockData	viewAnchorBlockData() const { return m_viewAnchorBlockData; }$/;"	f	class:ViewCursor
 viewAnchorBlockNumber	.\textCursor.h	/^	index_t	viewAnchorBlockNumber() const { return m_viewAnchorBlockData.index(); }$/;"	f	class:ViewCursor
-viewBlockCount	.\textBlock.h	/^	size_t	viewBlockCount() const$/;"	f	struct:LaidoutChunk
 viewBlockCount	.\textBlock.cpp	/^size_t LaidoutBlocksMgr::viewBlockCount() const$/;"	f	class:LaidoutBlocksMgr
+viewBlockCount	.\textBlock.h	/^	size_t	viewBlockCount() const$/;"	f	struct:LaidoutChunk
 viewBlockData	.\textBlock.h	/^	BlockData	viewBlockData() const { return BlockData(blockNumber(), position()); }$/;"	f	class:LaidoutBlock
 viewBlockData	.\textCursor.h	/^	BlockData	viewBlockData() const { return m_viewBlockData; }$/;"	f	class:ViewCursor
 viewBlockNumber	.\textBlock.h	/^	index_t		viewBlockNumber() const { return m_viewBlock.index(); }$/;"	f	class:ViewBlock

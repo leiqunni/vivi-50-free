@@ -651,6 +651,8 @@ void LaidoutBlocksMgr::buildBlocksUntillDocBlockNumber(TextView *view,
 	}
 	if( block.isValid() )
 		*m_cacheBlock = LaidoutBlock(this, BlockData(vIndex, block.position()), block.data());
+	else
+		*m_cacheBlock = lastBlock();
 	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
 }
 //----------------------------------------------------------------------
