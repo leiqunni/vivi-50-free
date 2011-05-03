@@ -588,6 +588,8 @@ ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor,
 ViewCursor::ViewCursor(const ViewCursor &x)
 	: m_view(x.m_view), DocCursor(x)
 	, m_x(x.m_x)
+	, m_viewBlockData(x.m_viewBlockData)
+	, m_viewAnchorBlockData(x.m_viewAnchorBlockData)
 {
 }
 ViewCursor::ViewCursor(TextView *view, const DocCursor &x)
@@ -656,6 +658,12 @@ void ViewCursor::copyAnchorToPosition()
 	m_position = m_anchor;
 	m_blockData = m_anchorBlockData;
 	m_viewBlockData = m_viewAnchorBlockData;
+}
+void ViewCursor::swapPositionAnchor()
+{
+	DocCursor::swapPositionAnchor();
+	BlockData b;
+	b = m_viewBlockData; m_viewBlockData = m_viewAnchorBlockData; m_viewAnchorBlockData = b;
 }
 bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 {

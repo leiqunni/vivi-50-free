@@ -817,8 +817,9 @@ void test_TextView()
 		ut.ut_test_equal(QString(""), block.text());
 
 		QFontMetrics fm = view.fontMetrics();
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
 		//const int wd = fm.width(QString("あいうえお"));
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		const int ht = fm.lineSpacing() * 10;
 		DocCursor cur(doc);
 		view.m_lineBreakMode = true;
@@ -883,8 +884,9 @@ void test_TextView()
 		doc->setPlainText(QString("123\nあいうえおかきく\nあいうえおあいうえおかきく\n"));
 		ut.ut_test_equal(4, view.blockCount());
 		QFontMetrics fm = view.fontMetrics();
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
 		//const int wd = fm.width(QString("あいうえお"));
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		const int ht = fm.lineSpacing() * 2;		//	2行分
 		DocCursor cur(doc);
 		cur.setPosition(4);							//	2行目先頭
@@ -923,8 +925,9 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("あいうえおかきく\nあいうえおあいうえおかきく\n"));
 		QFontMetrics fm = view.fontMetrics();
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
 		//const int wd = fm.width(QString("あいうえお"));
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		const int ht = fm.lineSpacing() * 10;
 		DocCursor dcur(doc);
 		view.m_lineBreakMode = true;
@@ -942,8 +945,9 @@ void test_TextView()
 	if( 1 ) {		//	文字挿入テスト
 		TextView view;
 		TextDocument *doc = view.document();
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		QFontMetrics fm = view.fontMetrics();
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
 		view.onLineBreak(true);		//	右端で折り返し
 		ut.ut_test_equal(1, view.blockCount());
 		ViewCursor cur(&view);
@@ -974,7 +978,7 @@ void test_TextView()
 		TextView view;
 		TextDocument *doc = view.document();
 		QFontMetrics fm = view.fontMetrics();
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
 		view.onLineBreak(true);		//	右端で折り返し
 		ut.ut_test_equal(1, doc->blockCount());
 		ut.ut_test_equal(1, view.blockCount());
@@ -1005,7 +1009,8 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("あいうえおかきく\n"));
 		QFontMetrics fm = view.fontMetrics();
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		view.onLineBreak(true);		//	右端で折り返し
 		ut.ut_test_equal(2, doc->blockCount());
 		ut.ut_test_equal(3, view.blockCount());
@@ -1029,7 +1034,8 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("あいうえおかきく\n"));
 		QFontMetrics fm = view.fontMetrics();
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		view.onLineBreak(true);		//	右端で折り返し
 		ut.ut_test_equal(2, doc->blockCount());
 		ut.ut_test_equal(3, view.blockCount());
@@ -1069,7 +1075,8 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("あいうえおかきく\nあいう\n"));
 		QFontMetrics fm = view.fontMetrics();
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		DocCursor dcur(doc);
 		view.onLineBreak(true);		//	右端で折り返し
 		ut.ut_test_equal(35, doc->size());
@@ -1090,7 +1097,8 @@ void test_TextView()
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\n"));
 		QFontMetrics fm = view.fontMetrics();
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		view.lbMgr()->setWidth(fm.width(QString("あいうえお")));
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		DocCursor dcur(doc);
 		view.onLineBreak(true);		//	右端で折り返し
 		ut.ut_test_equal(4, doc->size());
@@ -1457,7 +1465,8 @@ void test_LaidoutBlock()
 		LaidoutBlocksMgr lbMgr(doc);
 		doc->setPlainText(QString("123\r\nあいうえおかきく\n"));
 		QFontMetrics fm = view.fontMetrics();
-		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		lbMgr.setWidth(fm.width(QString("あいうえお")));
+		//view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
 		lbMgr.buildBlocks(&view, doc->firstBlock());
 		ut.ut_test_equal(4, lbMgr.blockCount());
 		ut.ut_test_equal(5, lbMgr.blockSize(0));

@@ -1328,7 +1328,7 @@ void TextView::getReLayoutRangeByBlockNumber(
 	block = cur.docBlock();
 	DocBlock lastBlock = cur.docAnchorBlock();
 	firstViewBlockNumber = cur.viewBlockData().m_index;		//	docBlock 先頭のビューブロック
-	LaidoutBlock loBlock(m_lbMgr, cur.viewBlockData(), cur.docBlockData());
+	LaidoutBlock loBlock(m_lbMgr, cur.viewAnchorBlockData(), cur.docAnchorBlockData());
 	const index_t dbn = loBlock.docBlockNumber();
 	do {
 		++loBlock;
@@ -1414,23 +1414,12 @@ size_t TextView::deleteChar(ViewCursor &cur)
 			return 0;
 	}
 	DocBlock block = cur.docBlock();
-	index_t lastPosition, firstViewBlockNumber;
-	getReLayoutRange(cur, block, lastPosition, firstViewBlockNumber);
-#if 0
-	//	done B 改行まで削除する場合は次の行まで再レイアウトが必要 → 常に１行余分にレイアウトすることにする
-	DocBlock block = cur.position() < cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
-	DocBlock lastBlock = cur.position() > cur.anchor() ? cur.docBlock() : cur.docAnchorBlock();
-	index_t firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
-	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());		//	次のブロック
-	//if( lastBlockData.position() == qMax(cur.position(), cur.anchor()))			//	改行まで削除の場合
-	//	lastBlockData = document()->nextBlockData(lastBlockData);		//	次のブロック
-	index_t lastBlockPosition = lastBlockData.position();
-	index_t lastViewBlockNumber = findBlockData(lastBlockData.position()).m_index;
-	m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
-	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber + 1);
-#endif
+	const size_t bc = document()->blockCount();
+	index_t lastDocBlockNumber, firstViewBlockNumber;
+	getReLayoutRangeByBlockNumber(cur, block, lastDocBlockNumber, firstViewBlockNumber);
 	const size_t delSize = document()->deleteChar(cur);
-	reLayoutBlocks(block, lastPosition - delSize, firstViewBlockNumber);
+	const int d = (int)document()->blockCount() - bc;
+	reLayoutBlocksUntillDocBlockNumber(block, lastDocBlockNumber + d, firstViewBlockNumber);
 	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
 	cur.updateViewBlock();
 	return delSize;
@@ -1557,9 +1546,10 @@ void TextView::updateBlocks()
 	if( !m_lineBreakMode ) {
 		clearBlocks();
 	} else {
-		//const QRect vr = viewport()->rect();
-		//int width = vr.width() - fontMetrics().width(' ') * 4;
-		//buildBlocks(document()->firstBlock(), /*width,*/ 0);
+		if( !m_lbMgr->width() ) {
+			const QRect vr = viewport()->rect();
+			m_lbMgr->setWidth(vr.width());
+		}
 		m_lbMgr->clear();
 		m_lbMgr->buildBlocks(this, document()->firstBlock());
 	}

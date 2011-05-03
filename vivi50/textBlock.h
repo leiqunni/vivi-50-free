@@ -192,8 +192,11 @@ public:
 	size_t	blockNumberFromDocBlockNumber(index_t) const;
 	size_t	docBlockNumberFromNumber(index_t) const;
 
+	int		width() const { return m_width; }
+
 public:
 	void	clear();
+	void	setWidth(int width) { m_width = width; }
 	bool	insert(index_t docBlockNumber,		//	ドキュメントブロック番号（0..*）
 					size_t docBlockCount,		//	レイアウト行数（ドキュメントブロック数）
 					const std::gap_vector<size_t> &);		//	レイアウト結果
@@ -224,6 +227,7 @@ protected:
 
 private:
 	TextDocument	*m_document;
+	int		m_width;
 	mutable LaidoutBlock	*m_cacheBlock;
 #if SIMPLE_LAIDOUT_BLOCKS
 	std::gap_vector<size_t>	m_blockSize;		//	ビューブロック長、0 ならは未レイアウト

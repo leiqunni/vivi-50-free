@@ -169,7 +169,9 @@ public:
 	//DocBlockData	docBlockData() const { return DocBlock::blockData(); }
 	ViewBlock	block() const;
 	BlockData	viewBlockData() const { return m_viewBlockData; }
+	BlockData	viewAnchorBlockData() const { return m_viewAnchorBlockData; }
 	BlockData	docBlockData() const { return DocCursor::blockData(); }
+	BlockData	docAnchorBlockData() const { return DocCursor::anchorBlockData(); }
 	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
 	int		x() const { return m_x; }
 	index_t	viewBlockNumber() const { return m_viewBlockData.index(); }
@@ -187,6 +189,7 @@ public:
 	void	deleteChar();
 	void	deletePreviousChar();
 
+	void	swapPositionAnchor();
 	ViewCursor &operator=(const DocCursor &);
 
 protected:
