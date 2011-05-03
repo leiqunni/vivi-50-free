@@ -85,6 +85,7 @@ private slots:
 	void	onUnitTestDoc(bool);
 	void	onUnitTestView(bool);
 	void	doBenchmark();
+	void	onBenchmarkReplace(bool b);
 
 private:
 	TextView	*m_view;
@@ -96,6 +97,7 @@ private:
 	bool	m_unitTestDoc;
 	bool	m_unitTestLaidoutBlocksMgr;
 	bool	m_unitTestView;
+	bool	m_benchmarkReplace;
 
 	QDockWidget	*m_outputDock;
 
@@ -131,6 +133,7 @@ private:
     QAction	*unitTestDocAct;
     QAction	*unitTestViewAct;
     QAction	*benchmarkAct;
+    QAction	*benchmarkReplaceAct;
 
     QAction *separatorMRUAct;
     enum { MaxRecentFiles = 10 };

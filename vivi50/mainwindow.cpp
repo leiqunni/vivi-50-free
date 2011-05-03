@@ -197,6 +197,10 @@ void MainWindow::createActions()
     benchmarkAct = new QAction(QIcon(":vivi/Resources/images/Clock.png"), tr("&Benchmark"), this);
     benchmarkAct->setStatusTip(tr("benchmark Tests"));
     connect(benchmarkAct, SIGNAL(triggered()), this, SLOT(doBenchmark()));
+	benchmarkReplaceAct = new QAction(tr("benchmark&Replace"), this);
+    benchmarkReplaceAct->setCheckable(true);
+    benchmarkReplaceAct->setChecked(true);
+    connect(benchmarkReplaceAct, SIGNAL(toggled(bool)), this, SLOT(onBenchmarkReplace(bool)));
 
 	unitTestDocAct = new QAction(tr("unitTest&Document"), this);
     unitTestDocAct->setCheckable(true);
@@ -254,6 +258,9 @@ void MainWindow::createMenus()
 		unitTestOpt->addAction(unitTestViewAct);
 	otherMenu->addMenu(unitTestOpt);
 	otherMenu->addAction(benchmarkAct);
+	QMenu *benchmarkOpt = new QMenu("benchmarkOptions");
+		benchmarkOpt->addAction(benchmarkReplaceAct);
+	otherMenu->addMenu(benchmarkOpt);
 }
 void MainWindow::createToolBars()
 {
@@ -304,6 +311,11 @@ void MainWindow::onUnitTestView(bool b)
     QSettings settings;
     settings.setValue("unitTestView", m_unitTestView = b);
 }
+void MainWindow::onBenchmarkReplace(bool b)
+{
+    QSettings settings;
+    settings.setValue("benchmarkReplace", m_benchmarkReplace = b);
+}
 void MainWindow::readSettings()
 {
     QSettings settings;
@@ -315,6 +327,8 @@ void MainWindow::readSettings()
     unitTestDocAct->setChecked(m_unitTestDoc);
     m_unitTestView = settings.value("unitTestView", true).toBool();
     unitTestViewAct->setChecked(m_unitTestView);
+    m_benchmarkReplace = settings.value("benchmarkReplace", true).toBool();
+    benchmarkReplaceAct->setChecked(m_benchmarkReplace);
     m_view->setLineBreakMode(settings.value("linebreak", false).toBool());
     linebreakAct->setChecked(m_view->lineBreakMode());
 }

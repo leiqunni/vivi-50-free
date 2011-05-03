@@ -25,6 +25,7 @@
 //#include "PlainTextEdit.h"
 #include "TextDocument.h"
 #include "TextCursor.h"
+#include "TextView.h"
 #include	<boost/timer.hpp>
 
 extern MainWindow *pMainWindow;
@@ -182,6 +183,18 @@ void d_replace_Abcde_XYZ(uint n)
 			pMainWindow->doOutput(QString("\tfailed at line %1\n").arg(i + 1));
 	}
 }
+void v_laidout(uint n)
+{
+	TextView view;
+	DocCursor c(view.document());
+	QString text = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 \n";
+	for(uint i = 0; i < n; ++i)
+		c.insertText(text);
+	boost::timer tm;
+	view.buildBlocks();
+	const double dur = tm.elapsed();
+	pMainWindow->doOutput(QString("\t%1: dur = %2\n").arg(n).arg(dur));
+}
 void MainWindow::doBenchmark()
 {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -251,25 +264,27 @@ void MainWindow::doBenchmark()
 	do_replace35_mv7(10000);
 #endif
 
-	doOutput("replace 'XYZ' to 'Abcde':\n");
-	doOutput("  QTextDocument:\n");
-	q_replace_XYZ_Abcde(1000);
-	q_replace_XYZ_Abcde(2000);
-	doOutput("  TextDocument:\n");
-	d_replace_XYZ_Abcde(1000);
-	d_replace_XYZ_Abcde(2000);
-	d_replace_XYZ_Abcde(5000);
-	d_replace_XYZ_Abcde(10000);
+	if( m_benchmarkReplace ) {
+		doOutput("replace 'XYZ' to 'Abcde':\n");
+		doOutput("  QTextDocument:\n");
+		q_replace_XYZ_Abcde(1000);
+		q_replace_XYZ_Abcde(2000);
+		doOutput("  TextDocument:\n");
+		d_replace_XYZ_Abcde(1000);
+		d_replace_XYZ_Abcde(2000);
+		d_replace_XYZ_Abcde(5000);
+		d_replace_XYZ_Abcde(10000);
 
-	doOutput("replace 'Abcde' to 'XYZ':\n");
-	doOutput("  QTextDocument:\n");
-	q_replace_Abcde_XYZ(1000);
-	q_replace_Abcde_XYZ(2000);
-	doOutput("  TextDocument:\n");
-	d_replace_Abcde_XYZ(1000);
-	d_replace_Abcde_XYZ(2000);
-	d_replace_Abcde_XYZ(5000);
-	d_replace_Abcde_XYZ(10000);
+		doOutput("replace 'Abcde' to 'XYZ':\n");
+		doOutput("  QTextDocument:\n");
+		q_replace_Abcde_XYZ(1000);
+		q_replace_Abcde_XYZ(2000);
+		doOutput("  TextDocument:\n");
+		d_replace_Abcde_XYZ(1000);
+		d_replace_Abcde_XYZ(2000);
+		d_replace_Abcde_XYZ(5000);
+		d_replace_Abcde_XYZ(10000);
+	}
 
 	doOutput("findBlockByNumber (sequential):\n");
 	doOutput("  QTextDocument:\n");
@@ -280,6 +295,13 @@ void MainWindow::doBenchmark()
 	v_findBlockByNumber(1000);
 	v_findBlockByNumber(5000);
 	v_findBlockByNumber(10000);
+
+	doOutput("rayout blocks:\n");
+	doOutput("  LaidoutBlocksMgr:\n");
+	v_laidout(100);
+	v_laidout(200);
+	v_laidout(400);
+	v_laidout(800);
 
 	doOutput("\n=== Benchmark Test finished ===\n");
 	QApplication::restoreOverrideCursor();

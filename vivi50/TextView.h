@@ -134,6 +134,7 @@ public:
 	int		insertText(ViewCursor &, const QString &);
 	size_t	deleteChar(ViewCursor &);
 	size_t	deletePreviousChar(ViewCursor &);
+	void	buildBlocks() { buildBlocks(firstBlock(), 0, 0); }
 
 public slots:
 	void	copy();
