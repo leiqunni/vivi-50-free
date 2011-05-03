@@ -189,6 +189,7 @@ protected:
 	void	eraseBlocks(index_t, index_t);
 	void	buildBlocks(ViewBlock, int ht = 0, index_t = 0);
 	void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
+	void	reLayoutBlocksUntillDocBlockNumber(DocBlock, index_t lastBlockNumber, index_t vbIndex);
 	void	layoutText(std::vector<size_t> &, const DocBlock &, int wd, int tabWidth);
 	void	layoutText(std::vector<size_t> &, const QString &, index_t, int wd, int tabWidth);
 	void	getReLayoutRange(ViewCursor cur,
@@ -196,6 +197,10 @@ protected:
 								index_t &lastPosition,	//	再レイアウト終了位置 [block, last)
 								index_t &firstViewBlockNumber);	//	再レイアウト開始ビューブロック番号
 								//index_t &lastViewBlockIndex);	//	再レイアウト終了位置 [first, last)
+	void	getReLayoutRangeByBlockNumber(ViewCursor cur,
+								DocBlock &block,		//	再レイアウト開始ブロック
+								index_t &lastBlockNumber,	//	再レイアウト終了位置 [block, last)
+								index_t &firstViewBlockNumber);	//	再レイアウト開始ビューブロック番号
 
 	void	resetCursorBlink();
     void	removeOverlappedCursor();

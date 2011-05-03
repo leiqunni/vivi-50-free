@@ -600,7 +600,7 @@ void LaidoutBlocksMgr::buildBlocks(TextView *view,
 	//index_t firstBlockNumber = block.blockNumber();
 	std::vector<size_t> v;
 	int y = 0;
-	while( block.isValid() && (!ht || y < ht) && (!lastPos || block.blockNumber() < lastPos) )
+	while( block.isValid() && (!ht || y < ht) && (!lastPos || block.position() < lastPos) )
 	{
 		layoutText(v, fm, block, wdLimit);
 		m_blockSize.insert(vIndex, v.begin(), v.end());
@@ -608,6 +608,32 @@ void LaidoutBlocksMgr::buildBlocks(TextView *view,
 		y += fm.lineSpacing() * v.size();
 		++block;
 	}
+}
+void LaidoutBlocksMgr::buildBlocksUntillDocBlockNumber(TextView *view,
+									DocBlock block,		//	[レイアウト開始位置
+									index_t vIndex,		//	[レイアウト開始位置
+									int ht,				//	レイアウト範囲);
+									index_t lastDocBlockNumber)	//	レイアウト範囲);
+{
+	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
+	QFontMetrics fm = view->fontMetrics();
+	//const int spaceWidth = fm.width(QChar(' '));
+	//const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
+	const QRect vr = view->viewport()->rect();
+	int wdLimit = vr.width() - fm.width(' ') * 4;
+	//index_t firstBlockNumber = block.blockNumber();
+	std::vector<size_t> v;
+	int y = 0;
+	while( block.isValid() && (!ht || y < ht) &&
+		(!lastDocBlockNumber || block.blockNumber() < lastDocBlockNumber) )
+	{
+		layoutText(v, fm, block, wdLimit);
+		m_blockSize.insert(vIndex, v.begin(), v.end());
+		vIndex += v.size();
+		y += fm.lineSpacing() * v.size();
+		++block;
+	}
+	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
 }
 //----------------------------------------------------------------------
 bool LaidoutBlock::isValid() const

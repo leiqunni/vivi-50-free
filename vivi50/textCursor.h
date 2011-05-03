@@ -169,6 +169,7 @@ public:
 	//DocBlockData	docBlockData() const { return DocBlock::blockData(); }
 	ViewBlock	block() const;
 	BlockData	viewBlockData() const { return m_viewBlockData; }
+	BlockData	docBlockData() const { return DocCursor::blockData(); }
 	int		prevCharsCount() const;		//	行頭からカーソルまでの文字数を返す
 	int		x() const { return m_x; }
 	index_t	viewBlockNumber() const { return m_viewBlockData.index(); }

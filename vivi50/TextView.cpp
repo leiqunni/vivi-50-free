@@ -1317,6 +1317,25 @@ void TextView::insertText(const QString &text, bool tab)
 		document()->closeUndoBlock();
 	}
 }
+void TextView::getReLayoutRangeByBlockNumber(
+					ViewCursor cur,
+					DocBlock &block,		//	再レイアウト開始ブロック
+					index_t &lastBlockNumber,	//	再レイアウト終了位置 [block, last)
+					index_t &firstViewBlockNumber)	//	再レイアウト開始ビューブロック番号
+{
+	if( cur.anchor() < cur.position() )
+		cur.swapPositionAnchor();			//	ensure pos <= anchor
+	block = cur.docBlock();
+	DocBlock lastBlock = cur.docAnchorBlock();
+	firstViewBlockNumber = cur.viewBlockData().m_index;		//	docBlock 先頭のビューブロック
+	LaidoutBlock loBlock(m_lbMgr, cur.viewBlockData(), cur.docBlockData());
+	const index_t dbn = loBlock.docBlockNumber();
+	do {
+		++loBlock;
+	} while( loBlock.docBlockNumber() == dbn );		//	次の論理行まで移動
+	lastBlockNumber = loBlock.docBlockNumber();
+	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber());
+}
 void TextView::getReLayoutRange(ViewCursor cur,
 								DocBlock &block,		//	再レイアウト開始ブロック
 								index_t &lastPosition,	//	再レイアウト終了位置 [block, last)
@@ -1329,12 +1348,22 @@ void TextView::getReLayoutRange(ViewCursor cur,
 	block = cur.docBlock();
 	DocBlock lastBlock = cur.docAnchorBlock();
 	firstViewBlockNumber = cur.viewBlockData().m_index;		//	docBlock 先頭のビューブロック
+	LaidoutBlock loBlock(m_lbMgr, cur.viewBlockData(), cur.docBlockData());
+	const index_t dbn = loBlock.docBlockNumber();
+	do {
+		++loBlock;
+	} while( loBlock.docBlockNumber() == dbn );		//	次の論理行まで移動
+	lastPosition = loBlock.docPosition();
+	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber());
+#if 0
 	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());	//	次のブロック
 	lastPosition = lastBlockData.position();
-	index_t lastViewBlockNumber = cur.viewAnchorBlockNumber() + 1;
+	//index_t lastViewBlockNumber = cur.viewAnchorBlockNumber() + 1;	//	次のビュー行番号では、折り返されていた場合によろしくない
+	index_t lastViewBlockNumber = findBlockData(lastBlockData.position()).m_index;
 	//index_t lastViewBlockNumber = lastBlockData.m_index >= document()->blockCount() ? blockCount() + 1
 	//								: findBlockData(lastBlockData.position()).m_index;
 	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
+#endif
 #else
 	if( cur.anchor() < cur.position() )
 		cur.swapPositionAnchor();			//	ensure pos <= anchor
@@ -1358,10 +1387,19 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 		return document()->insertText(cur, text);
 
 	DocBlock block = cur.docBlock();
+#if 1
+	const size_t bc = document()->blockCount();
+	index_t lastDocBlockNumber, firstViewBlockNumber;
+	getReLayoutRangeByBlockNumber(cur, block, lastDocBlockNumber, firstViewBlockNumber);
+	const int sz = document()->insertText(cur, text);
+	const int d = (int)document()->blockCount() - bc;
+	reLayoutBlocksUntillDocBlockNumber(block, lastDocBlockNumber + d, firstViewBlockNumber);
+#else
 	index_t lastPosition, firstViewBlockNumber;
 	getReLayoutRange(cur, block, lastPosition, firstViewBlockNumber);
 	const int sz = document()->insertText(cur, text);
 	reLayoutBlocks(block, lastPosition + sz, firstViewBlockNumber);
+#endif
 	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
 	cur.updateViewBlock();
 	return sz;
@@ -1427,9 +1465,17 @@ void TextView::eraseBlocks(index_t first, index_t last)
 	//m_layoutedDocBlockCount -= last - first;		//	undone D [first, last) はレイアウト済みと仮定
 #endif
 }
+void TextView::reLayoutBlocksUntillDocBlockNumber(DocBlock block,
+													index_t lastDocBlockNumber,
+													index_t vbIndex)
+{
+	m_lbMgr->buildBlocksUntillDocBlockNumber(this, block, vbIndex, 0, lastDocBlockNumber);
+}
 void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIndex)
 {
 #if LAIDOUT_BLOCKS_MGR
+	if( lastPosition == size() )		//	EOF 位置の場合は最後までレイアウト for EOF 行が空の場合
+		lastPosition = 0;				//		
 	m_lbMgr->buildBlocks(this, block, vbIndex, 0, lastPosition);
 #else
 	qDebug() << "blockCount() = " << blockCount();

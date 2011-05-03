@@ -211,6 +211,11 @@ public:
 						index_t vIndex = 0,		//	[レイアウト開始位置
 						int ht = 0,				//	レイアウト範囲);
 						index_t diLimit = 0);	//	レイアウト範囲);
+	void	buildBlocksUntillDocBlockNumber(TextView *,
+						DocBlock block,		//	[レイアウト開始位置
+						index_t vIndex = 0,		//	[レイアウト開始位置
+						int ht = 0,				//	レイアウト範囲);
+						index_t docBlockNumber = 0);	//	レイアウト範囲);
 
 protected:
 	const TextDocument	*document() const { return m_document; }
@@ -238,6 +243,10 @@ public:
 #if !SIMPLE_LAIDOUT_BLOCKS
 		, m_chunkIndex(0), m_indexInChunk(0)
 #endif
+		{}
+	LaidoutBlock(LaidoutBlocksMgr *lbMgr, BlockData viewBlockData, BlockData docBlockData)
+		: m_lbMgr(lbMgr)
+		, m_viewBlockData(viewBlockData), m_docBlockData(docBlockData)
 		{}
 
 public:

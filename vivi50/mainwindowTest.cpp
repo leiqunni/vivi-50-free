@@ -970,7 +970,7 @@ void test_TextView()
 		ut.ut_test_equal(1, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 	}
-	if( 0 ) {		//	文字挿入テスト：初期状態から（文書先頭に改行挿入）＊３回
+	if( 1 ) {		//	文字挿入テスト：初期状態から（文書先頭に改行挿入）＊３回
 		TextView view;
 		TextDocument *doc = view.document();
 		QFontMetrics fm = view.fontMetrics();
@@ -1024,7 +1024,7 @@ void test_TextView()
 		ut.ut_test_equal(0, block.position());
 		ut.ut_test_equal(25+1, lastPosition);	//	+1 for EOF 行まで再レイアウト
 	}
-	if( 0 ) {		//	文字挿入テスト：折り返し行がある状態から（文書先頭に改行挿入）＊３回
+	if( 1 ) {		//	文字挿入テスト：折り返し行がある状態から（文書先頭に改行挿入）＊３回
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("あいうえおかきく\n"));
@@ -1064,7 +1064,7 @@ void test_TextView()
 		ut.ut_test_equal(0, view.blockSize(3));
 #endif
 	}
-	if( 0 ) {		//	文字削除テスト
+	if( 1 ) {		//	文字削除テスト
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("あいうえおかきく\nあいう\n"));
@@ -1085,7 +1085,7 @@ void test_TextView()
 		ut.ut_test_equal(0, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 	}
-	if( 0 ) {		//	文字削除テスト EOF直前改行を削除
+	if( 1 ) {		//	文字削除テスト EOF直前改行を削除
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("abc\n"));
