@@ -673,6 +673,7 @@ void test_TextView()
 		ut.ut_test_equal(0, view.blockSize(3));
 	}
 #endif
+#if 0	//	マルチカーソルテスト
 	if( 1 ) {		//	マルチカーソル：文字挿入
 		std::vector<ViewCursor*> v;
 		TextView view;
@@ -798,6 +799,7 @@ void test_TextView()
 		view.redo();
 		ut.ut_test_equal(QString("1234567\nabc\n"), doc->toPlainText());
 	}
+#endif
 	if( 1 ) {		//	buildBlocks テスト
 		TextView view;
 		TextDocument *doc = view.document();
@@ -820,7 +822,7 @@ void test_TextView()
 		const int ht = fm.lineSpacing() * 10;
 		DocCursor cur(doc);
 		view.m_lineBreakMode = true;
-		view.buildBlocks(cur.block(), /*wd,*/ ht);		//	最初から最後までレイアウト
+		view.buildBlocks(view.firstBlock());		//	最初から最後までレイアウト
 		ut.ut_test_equal(7, view.blockCount());
 
 		block = view.lastBlock();
@@ -867,7 +869,7 @@ void test_TextView()
 		ut.ut_test_equal(QString("かきく\n"), block.text());
 		++block;
 		ut.ut_test( block.isValid() );
-		ut.ut_test( block.isLayouted() );
+		//ut.ut_test( block.isLayouted() );		//	空のEOF行は未レイアウトと判断しても無問題
 		ut.ut_test_equal(3, block.docIndex());
 		ut.ut_test_equal(0, block.size());
 		ut.ut_test_equal(QString(""), block.text());
@@ -875,7 +877,7 @@ void test_TextView()
 		ut.ut_test_equal(4, block.docIndex());
 		ut.ut_test( !block.isValid() );
 	}
-	if( 1 ) {		//	buildBlocks テスト
+	if( 0 ) {		//	buildBlocks テスト
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("123\nあいうえおかきく\nあいうえおあいうえおかきく\n"));
@@ -887,7 +889,7 @@ void test_TextView()
 		DocCursor cur(doc);
 		cur.setPosition(4);							//	2行目先頭
 		view.m_lineBreakMode = true;
-		view.buildBlocks(cur.block(), /*wd,*/ ht);		//	最初からレイアウト
+		view.buildBlocks(view.firstBlock());		//	最初からレイアウト
 		ut.ut_test_equal(5, view.blockCount());
 
 	}
@@ -895,6 +897,7 @@ void test_TextView()
 		TextView view;
 		TextDocument *doc = view.document();
 		doc->setPlainText(QString("123\nabcde\r\nxyzzz\r"));
+		//	未レイアウト状態での view.findBlock()
 		ut.ut_test_equal(0, view.findBlock(0).blockNumber());
 		ut.ut_test_equal(0, view.findBlock(1).blockNumber());
 		ut.ut_test_equal(0, view.findBlock(2).blockNumber());
@@ -925,7 +928,7 @@ void test_TextView()
 		const int ht = fm.lineSpacing() * 10;
 		DocCursor dcur(doc);
 		view.m_lineBreakMode = true;
-		view.buildBlocks(dcur.block(), /*wd,*/ ht);		//	最初から最後までレイアウト
+		view.buildBlocks(view.firstBlock());		//	最初から最後までレイアウト
 		ut.ut_test_equal(6, view.blockCount());
 		ViewCursor cur(&view);
 		ut.ut_test_equal(0, cur.position());
@@ -936,7 +939,7 @@ void test_TextView()
 		ut.ut_test_equal(15, cur.viewBlockData().position());
 		ut.ut_test_equal(1, cur.viewBlockData().index());
 	}
-	if( 0 ) {		//	文字挿入テスト
+	if( 1 ) {		//	文字挿入テスト
 		TextView view;
 		TextDocument *doc = view.document();
 		QFontMetrics fm = view.fontMetrics();
@@ -1009,8 +1012,11 @@ void test_TextView()
 		ut.ut_test_equal(15, view.blockSize(0));
 		ut.ut_test_equal(10, view.blockSize(1));
 		ut.ut_test_equal(0, view.blockSize(2));
+#if LAIDOUT_BLOCKS_MGR
+#else
 		ut.ut_test_equal(3, view.m_blockSize.size());
 		ut.ut_test_equal(2, view.m_layoutedDocBlockCount);
+#endif
 		ViewCursor cur(&view);
 		DocBlock block = cur.docBlock();
 		index_t lastPosition, firstViewBlockNumber;
@@ -1105,24 +1111,24 @@ void test_TextView()
 void test_LaidoutBlocksMgr()
 {
 	CUnitTest ut("LaidoutBlocksMgr");
-	if( 1 ) {
+	if( 0 ) {
 		TextDocument doc;
 		LaidoutBlocksMgr lbMgr(&doc);
-		ut.ut_test_equal(0, lbMgr.docBlockCount());
-		ut.ut_test_equal(0, lbMgr.viewBlockCount());
+		//ut.ut_test_equal(1, lbMgr.docBlockCount());
+		ut.ut_test_equal(1, lbMgr.viewBlockCount());
 		doc.setPlainText(QString("1234567890\n"));
 		std::gap_vector<size_t> v;
 		v.push_back(8);
 		v.push_back(3);
 		v.push_back(0);
 		lbMgr.insert(0, 2, v);
-		ut.ut_test_equal(2, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		//ut.ut_test_equal(2, lbMgr.docBlockCount());		//	レイアウトされたブロック数
 		ut.ut_test_equal(3, lbMgr.viewBlockCount());
 		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
 		ut.ut_test_equal(0, lbMgr.viewBlockSize(2));
 	}
-	if( 1 ) {		//	重ならないレイアウトチャンクを後ろに追加
+	if( 0 ) {		//	重ならないレイアウトチャンクを後ろに追加
 		TextDocument doc;
 		LaidoutBlocksMgr lbMgr(&doc);
 		doc.setPlainText(QString("1234567890\n\nabcdef\n"));
@@ -1130,7 +1136,7 @@ void test_LaidoutBlocksMgr()
 		v.push_back(8);
 		v.push_back(3);
 		lbMgr.insert(0, 1, v);
-		ut.ut_test_equal(1, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		//ut.ut_test_equal(1, lbMgr.docBlockCount());		//	レイアウトされたブロック数
 		ut.ut_test_equal(2, lbMgr.viewBlockCount());
 		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
@@ -1139,7 +1145,7 @@ void test_LaidoutBlocksMgr()
 		v.push_back(4);		//	abcd
 		v.push_back(3);		//	ef\n
 		lbMgr.insert(2, 1, v);
-		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		//ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
 		ut.ut_test_equal(5, lbMgr.viewBlockCount());
 		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
@@ -1148,7 +1154,7 @@ void test_LaidoutBlocksMgr()
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(4));
 		ut.ut_test_equal(0, lbMgr.viewBlockSize(5));	//	EOF行
 	}
-	if( 1 ) {		//	重ならないレイアウトチャンクを前に追加
+	if( 0 ) {		//	重ならないレイアウトチャンクを前に追加
 		TextDocument doc;
 		LaidoutBlocksMgr lbMgr(&doc);
 		doc.setPlainText(QString("1234567890\n\nabcdef\n"));
@@ -1156,7 +1162,7 @@ void test_LaidoutBlocksMgr()
 		v.push_back(4);		//	abcd
 		v.push_back(3);		//	ef\n
 		lbMgr.insert(2, 1, v);
-		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		//ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
 		ut.ut_test_equal(4, lbMgr.viewBlockCount());
 		ut.ut_test_equal(11, lbMgr.viewBlockSize(0));
 		ut.ut_test_equal(1, lbMgr.viewBlockSize(1));	//	\n
@@ -1175,7 +1181,7 @@ void test_LaidoutBlocksMgr()
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(4));
 		ut.ut_test_equal(0, lbMgr.viewBlockSize(5));	//	EOF行
 	}
-	if( 1 ) {		//	連続するレイアウトチャンクを最後に追加
+	if( 0 ) {		//	連続するレイアウトチャンクを最後に追加
 		TextDocument doc;
 		LaidoutBlocksMgr lbMgr(&doc);
 		doc.setPlainText(QString("1234567890\n\nabcdef\n"));
@@ -1188,7 +1194,7 @@ void test_LaidoutBlocksMgr()
 		v.push_back(4);		//	abcd
 		v.push_back(3);		//	ef\n
 		lbMgr.insert(1, 2, v);
-		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		//ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
 		ut.ut_test_equal(5, lbMgr.viewBlockCount());
 		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
@@ -1197,7 +1203,7 @@ void test_LaidoutBlocksMgr()
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(4));
 		ut.ut_test_equal(0, lbMgr.viewBlockSize(5));	//	EOF行
 	}
-	if( 1 ) {		//	連続するレイアウトチャンクを最初に追加
+	if( 0 ) {		//	連続するレイアウトチャンクを最初に追加
 		TextDocument doc;
 		LaidoutBlocksMgr lbMgr(&doc);
 		doc.setPlainText(QString("1234567890\n\nabcdef\n"));
@@ -1210,7 +1216,7 @@ void test_LaidoutBlocksMgr()
 		v.push_back(8);
 		v.push_back(3);
 		lbMgr.insert(0, 1, v);
-		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		//ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
 		ut.ut_test_equal(5, lbMgr.viewBlockCount());
 		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
@@ -1219,7 +1225,7 @@ void test_LaidoutBlocksMgr()
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(4));
 		ut.ut_test_equal(0, lbMgr.viewBlockSize(5));	//	EOF行
 	}
-	if( 1 ) {		//	連続するレイアウトチャンクを途中に追加
+	if( 0 ) {		//	連続するレイアウトチャンクを途中に追加
 		TextDocument doc;
 		LaidoutBlocksMgr lbMgr(&doc);
 		doc.setPlainText(QString("1234567890\nxyzzz\nabcdef\n"));
@@ -1235,7 +1241,7 @@ void test_LaidoutBlocksMgr()
 		v.push_back(2);		//	xy
 		v.push_back(4);		//	zzz\n
 		ut.ut_test( lbMgr.insert(1, 1, v) );
-		ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		//ut.ut_test_equal(3, lbMgr.docBlockCount());		//	レイアウトされたブロック数
 		ut.ut_test_equal(6, lbMgr.viewBlockCount());
 		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
@@ -1245,7 +1251,7 @@ void test_LaidoutBlocksMgr()
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(5));
 		ut.ut_test_equal(0, lbMgr.viewBlockSize(6));	//	EOF行
 	}
-	if( 1 ) {		//	直前にだけ連続するレイアウトチャンクを途中に追加
+	if( 0 ) {		//	直前にだけ連続するレイアウトチャンクを途中に追加
 		TextDocument doc;
 		LaidoutBlocksMgr lbMgr(&doc);
 		doc.setPlainText(QString("1234567890\nxyzzz\n\nabcdef\n"));
@@ -1261,7 +1267,7 @@ void test_LaidoutBlocksMgr()
 		v.push_back(2);		//	xy
 		v.push_back(4);		//	zzz\n
 		ut.ut_test( lbMgr.insert(1, 1, v) );
-		ut.ut_test_equal(4, lbMgr.docBlockCount());		//	レイアウトされたブロック数
+		//ut.ut_test_equal(4, lbMgr.docBlockCount());		//	レイアウトされたブロック数
 		ut.ut_test_equal(7, lbMgr.viewBlockCount());
 		ut.ut_test_equal(8, lbMgr.viewBlockSize(0));
 		ut.ut_test_equal(3, lbMgr.viewBlockSize(1));
@@ -1276,7 +1282,7 @@ void test_LaidoutBlocksMgr()
 void test_LaidoutBlock()
 {
 	CUnitTest ut("LaidoutBlock");
-	if( 1 ) {
+	if( 0 ) {
 		TextView view;
 		TextDocument *doc = view.document();
 		LaidoutBlocksMgr lbMgr(doc);
@@ -1343,7 +1349,7 @@ void test_LaidoutBlock()
 		ut.ut_test_equal( 0, block.size() );
 		ut.ut_test_equal( QString(""), block.text() );
 	}
-	if( 1 ) {
+	if( 0 ) {	//	chunk により管理する版向け
 		TextView view;
 		TextDocument *doc = view.document();
 		LaidoutBlocksMgr lbMgr(doc);
@@ -1444,5 +1450,19 @@ void test_LaidoutBlock()
 		b = lbMgr.findBlock(1);
 		b = lbMgr.findBlock(19);
 		ut.ut_test_equal( 9, b.index() );
+	}
+	if( 1 ) {
+		TextView view;
+		TextDocument *doc = view.document();
+		LaidoutBlocksMgr lbMgr(doc);
+		doc->setPlainText(QString("123\r\nあいうえおかきく\n"));
+		QFontMetrics fm = view.fontMetrics();
+		view.viewport()->setGeometry(0, 0, fm.width(QString("あいうえお    ")), 100);
+		lbMgr.buildBlocks(&view, doc->firstBlock());
+		ut.ut_test_equal(4, lbMgr.blockCount());
+		ut.ut_test_equal(5, lbMgr.blockSize(0));
+		ut.ut_test_equal(15, lbMgr.blockSize(1));	//	あいうえお
+		ut.ut_test_equal(10, lbMgr.blockSize(2));	//	かきく
+		ut.ut_test_equal(0, lbMgr.blockSize(3));
 	}
 }

@@ -67,8 +67,10 @@ TextView::TextView(QWidget *parent)
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
 	m_lineBreakMode = false;
+#if !LAIDOUT_BLOCKS_MGR
 	m_firstUnlayoutedBlockCount = 0;
 	m_layoutedDocBlockCount = 0;
+#endif
 	m_blockData = BlockData(0, 0);
 #if 0
 	m_firstViewLine = 0;
@@ -120,13 +122,25 @@ size_t TextView::size() const
 }
 size_t TextView::blockCount() const
 {
+#if LAIDOUT_BLOCKS_MGR
+	return m_lbMgr->size();
+#else
 	return document()->blockCount() - layoutedDocBlockCount() + m_blockSize.size();
 #if 0
 	return document()->blockCount() - (m_lastViewLine - m_firstViewLine)
 			+ m_viewLines.size();
 #endif
+#endif
 }
 #if LAIDOUT_BLOCKS_MGR
+bool TextView::isLayoutedDocBlock(index_t ix) const
+{
+	return m_lbMgr->findBlockByDocNumber(ix).isLayouted();
+}
+bool TextView::isLayoutedViewBlock(index_t ix) const
+{
+	return m_lbMgr->findBlockByNumber(ix).isLayouted();
+}
 #else
 bool TextView::isLayoutedDocBlock(index_t ix) const
 {
@@ -141,11 +155,15 @@ bool TextView::isLayoutedViewBlock(index_t ix) const
 #endif
 size_t TextView::blockSize(index_t ix) const	//	ix はビュー行番号（0..*）
 {
+#if LAIDOUT_BLOCKS_MGR
+	return m_lbMgr->viewBlockSize(ix);
+#else
 	if( ix < m_firstUnlayoutedBlockCount )
 		return document()->blockSize(ix);
 	if( ix - m_firstUnlayoutedBlockCount < m_blockSize.size() )
 		return m_blockSize[ix - m_firstUnlayoutedBlockCount];
 	return document()->blockSize(ix - m_blockSize.size() + m_layoutedDocBlockCount);
+#endif
 }
 #if 0
 BlockData TextView::prevBlockData(BlockData d) const
@@ -186,6 +204,12 @@ ViewBlock TextView::findBlock(index_t position) const
 //	ブロック番号（0..*）からブロックを取得
 ViewBlock TextView::findBlockByNumber(index_t bn) const
 {
+#if LAIDOUT_BLOCKS_MGR
+	LaidoutBlock lb = lbMgr()->findBlockByNumber(bn);
+	return ViewBlock((TextView*)this,
+						DocBlock((TextDocument *)document(), lb.docBlockData()),
+						lb.viewBlockData());
+#else
 	BlockData data(0, 0), next;
 	const size_t bc = blockCount();
 	if( m_blockData.m_index == 0 ) {		//	キャッシュが無い場合
@@ -229,9 +253,14 @@ ViewBlock TextView::findBlockByNumber(index_t bn) const
 	}
 	m_blockData = data;
 	return ViewBlock((TextView*)this, docBlock(data), data);
+#endif
 }
 BlockData TextView::findBlockData(index_t position) const
 {
+#if LAIDOUT_BLOCKS_MGR
+	LaidoutBlock lb = lbMgr()->findBlock(position);
+	return BlockData(lb.blockNumber(), lb.position());
+#else
 	//if( position >= size() )
 	//	return BlockData(blockCount(), size());
 	BlockData data(0, 0), next;
@@ -277,6 +306,7 @@ BlockData TextView::findBlockData(index_t position) const
 	}
 	m_blockData = data;
 	return data;
+#endif
 }
 #if 0
 void TextView::resetCursorBlinkTimer()
@@ -466,8 +496,10 @@ void TextView::paintEvent(QPaintEvent * event)
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
 	//qDebug() << verticalScrollBar()->value();
 
-	//if( m_wordWrapLongLines )
-	//	ensureBlockLayout();		//	未レイアウトの場合はレイアウト処理
+#if LAZY_LAIDOUT
+	if( m_lineBreakMode )
+		ensureBlockLayout();		//	未レイアウトの場合はレイアウト処理
+#endif
 
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
@@ -1291,6 +1323,19 @@ void TextView::getReLayoutRange(ViewCursor cur,
 								index_t &firstViewBlockNumber)	//	再レイアウト開始ビューブロック番号
 								//index_t &lastViewBlockIndex)	//	再レイアウト終了位置 [first, last)
 {
+#if LAIDOUT_BLOCKS_MGR
+	if( cur.anchor() < cur.position() )
+		cur.swapPositionAnchor();			//	ensure pos <= anchor
+	block = cur.docBlock();
+	DocBlock lastBlock = cur.docAnchorBlock();
+	firstViewBlockNumber = cur.viewBlockData().m_index;		//	docBlock 先頭のビューブロック
+	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());	//	次のブロック
+	lastPosition = lastBlockData.position();
+	index_t lastViewBlockNumber = cur.viewAnchorBlockNumber() + 1;
+	//index_t lastViewBlockNumber = lastBlockData.m_index >= document()->blockCount() ? blockCount() + 1
+	//								: findBlockData(lastBlockData.position()).m_index;
+	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
+#else
 	if( cur.anchor() < cur.position() )
 		cur.swapPositionAnchor();			//	ensure pos <= anchor
 	block = cur.docBlock();
@@ -1305,6 +1350,7 @@ void TextView::getReLayoutRange(ViewCursor cur,
 	//m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
 	m_layoutedDocBlockCount -= lastBlockData.index() - block.index();
 	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
+#endif
 }
 int TextView::insertText(ViewCursor &cur, const QString &text)
 {
@@ -1314,21 +1360,6 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 	DocBlock block = cur.docBlock();
 	index_t lastPosition, firstViewBlockNumber;
 	getReLayoutRange(cur, block, lastPosition, firstViewBlockNumber);
-#if 0
-	if( cur.anchor() < cur.position() )
-		cur.swapPositionAnchor();
-	DocBlock block = cur.docBlock();
-	DocBlock lastBlock = cur.docAnchorBlock();
-	index_t firstViewBlockNumber = findBlockData(block.position()).m_index;		//	docBlock 先頭のビューブロック
-	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());		//	次のブロック
-	lastBlockData = document()->nextBlockData(blockData());		//	次のブロック
-	index_t lastBlockPosition = lastBlockData.position();
-	index_t lastViewBlockNumber = lastBlockData.m_index >= document()->blockCount() ? blockCount()
-									: findBlockData(lastBlockData.position()).m_index;
-	//m_layoutedDocBlockCount -= qMin(document()->blockCount(), lastBlockData.index() + 1) - block.index();
-	m_layoutedDocBlockCount -= lastBlockData.index() - block.index();
-	eraseBlocks(firstViewBlockNumber, lastViewBlockNumber);
-#endif
 	const int sz = document()->insertText(cur, text);
 	reLayoutBlocks(block, lastPosition + sz, firstViewBlockNumber);
 	m_blockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
@@ -1379,17 +1410,28 @@ size_t TextView::deletePreviousChar(ViewCursor &cur)
 }
 void TextView::clearBlocks()
 {
+#if LAIDOUT_BLOCKS_MGR
+	m_lbMgr->clear();
+#else
 	m_blockSize.clear();
 	m_firstUnlayoutedBlockCount = 0;
 	m_layoutedDocBlockCount = 0;
+#endif
 }
 void TextView::eraseBlocks(index_t first, index_t last)
 {
+#if LAIDOUT_BLOCKS_MGR
+	m_lbMgr->erase(first, last);
+#else
 	m_blockSize.erase(first - m_firstUnlayoutedBlockCount, last - m_firstUnlayoutedBlockCount);
 	//m_layoutedDocBlockCount -= last - first;		//	undone D [first, last) はレイアウト済みと仮定
+#endif
 }
 void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIndex)
 {
+#if LAIDOUT_BLOCKS_MGR
+	m_lbMgr->buildBlocks(this, block, vbIndex, 0, lastPosition);
+#else
 	qDebug() << "blockCount() = " << blockCount();
 	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
 	m_blockData.m_index = 0;
@@ -1418,6 +1460,7 @@ void TextView::reLayoutBlocks(DocBlock block, index_t lastPosition, index_t vbIn
 	}
 	qDebug() << "blockCount() = " << blockCount();
 	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
+#endif
 }
 #if 0
 void TextView::buildBlocks()
@@ -1470,23 +1513,27 @@ void TextView::updateBlocks()
 	} else {
 		//const QRect vr = viewport()->rect();
 		//int width = vr.width() - fontMetrics().width(' ') * 4;
-		buildBlocks(document()->firstBlock(), /*width,*/ 0);
+		//buildBlocks(document()->firstBlock(), /*width,*/ 0);
+		m_lbMgr->clear();
+		m_lbMgr->buildBlocks(this, document()->firstBlock());
 	}
 	//	undone B 垂直スクロールバー位置更新
 	viewport()->update();
 }
 ViewBlock TextView::firstBlock()
 {
-#if LAIDOUT_BLOCKS_MGR
-	return m_lbMgr->begin();
-#else
+//#if LAIDOUT_BLOCKS_MGR
+//	LaidoutBlock b = m_lbMgr->begin();
+//#else
 	return ViewBlock(this, document()->firstBlock(), BlockData(0, 0));
-#endif
+//#endif
 }
 ViewBlock TextView::lastBlock()
 {
 #if LAIDOUT_BLOCKS_MGR
-	return m_lbMgr->end() - 1;
+	LaidoutBlock block = m_lbMgr->end();
+	--block;
+	return ViewBlock(this, DocBlock(document(), block.docBlockData()), block.viewBlockData());
 #else
 	DocBlock d = document()->lastBlock();
 	if( !isLayoutedDocBlock(d.index()) )
@@ -1500,11 +1547,41 @@ void TextView::ensureBlockLayout()
 {
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
-	DocBlock d = m_document->findBlockByNumber(verticalScrollBar()->value());
-	buildBlocks(d, /*vr.width(),*/ vr.height());
+	const int ht = vr.height();
+	QFontMetrics fm = fontMetrics();
+	const int spaceWidth = fm.width(QChar(' '));
+	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
+	//DocBlock d = m_document->findBlockByNumber(verticalScrollBar()->value());
+	//buildBlocks(d, /*vr.width(),*/ vr.height());
+	LaidoutBlock lb = m_lbMgr->findBlockByNumber(verticalScrollBar()->value());
+	int wdLimit = vr.width() - fm.width(' ') * 4;
+	///index_t firstBlockNumber = block.blockNumber();
+	std::vector<size_t> v;
+	int y = 0;
+	while( lb.isValid() && y < ht) {
+		if( !lb.isLayouted() && lb.size() != 0 ) {
+			DocBlock block = DocBlock(document(), lb.docBlockData());
+			layoutText(v, block, wdLimit, tabWidth);
+			std::gap_vector<size_t> gv;
+			gv.insert(gv.end(), v.begin(), v.end());
+			m_lbMgr->insert(block.blockNumber(), 1, gv);
+			for(size_t i = 0; i < v.size(); ++i)
+				++lb;
+			y += fm.lineSpacing() * v.size();
+		} else {
+			++lb;
+			y += fm.lineSpacing();
+		}
+	}
+}
+void TextView::layoutText(std::vector<size_t> &v, const QString &text,
+							index_t ixEOL, int wdLimit, int tabWidth)
+{
 }
 void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdLimit, int tabWidth)
 {
+	qDebug() << "TextView::layoutText() block.blockNumber() = " << block.blockNumber()
+				<< QTime::currentTime();
 	v.clear();
 	index_t pos = block.position();
 	index_t blockPos = pos;
@@ -1514,6 +1591,7 @@ void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdL
 	if( !ixEOL ) {
 		v.push_back(block.size());
 	} else {
+		//layoutText(v, text, ixEOL, wdLimit, tabWidth);
 		index_t ix = 0;
 		while( ix < ixEOL ) {
 			int width = 0;		//	現在幅
@@ -1537,9 +1615,30 @@ void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdL
 		}
 	}
 }
-void TextView::buildBlocks(DocBlock block, /*int wdLimit,*/ int ht,
+void TextView::buildBlocks(ViewBlock block, int ht,
 							index_t diLimit)	//	レイアウト範囲
 {
+#if LAIDOUT_BLOCKS_MGR
+	m_lbMgr->buildBlocks(this, block, block.blockNumber(), ht, diLimit);
+#if 0
+	QFontMetrics fm = fontMetrics();
+	const int spaceWidth = fm.width(QChar(' '));
+	const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
+	const QRect vr = viewport()->rect();
+	int wdLimit = vr.width() - fm.width(' ') * 4;
+	index_t firstBlockNumber = block.blockNumber();
+	std::vector<size_t> v;
+	std::gap_vector<size_t> gv;
+	int y = 0;
+	while( block.isValid() && (!ht || y < ht) && (!diLimit || block.index() < diLimit) ) {
+		layoutText(v, block, wdLimit, tabWidth);
+		gv.insert(gv.end(), v.begin(), v.end());
+		y += fm.lineSpacing() * v.size();
+		++block;
+	}
+	m_lbMgr->insert(firstBlockNumber, block.blockNumber() - firstBlockNumber, gv);
+#endif
+#else
 	m_blockSize.clear();
 	m_layoutedDocBlockCount = m_firstUnlayoutedBlockCount = 0;
 	if( !m_lineBreakMode ) return;
@@ -1569,4 +1668,5 @@ void TextView::buildBlocks(DocBlock block, /*int wdLimit,*/ int ht,
 		++block;
 	}
 	//m_lastViewLine = blockIndex;
+#endif
 }

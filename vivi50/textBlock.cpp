@@ -171,11 +171,21 @@ size_t ViewBlock::size() const
 	if( !isLayouted() )
 		return DocBlock::size();
 #endif
-	return m_view->blockSize(m_viewBlock.index());
+	const size_t sz = m_view->lbMgr()->viewBlockSize(m_viewBlock.index());
+	return !sz ? DocBlock::size() : sz;	
+	//return m_view->blockSize(m_viewBlock.index());
 }
 
 ViewBlock &ViewBlock::operator++()
 {
+#if LAIDOUT_BLOCKS_MGR
+	LaidoutBlock lb = view()->lbMgr()->findBlockByNumber(m_viewBlock.m_index);
+	++lb;
+	m_viewBlock.m_index = lb.blockNumber();
+	m_viewBlock.m_position = lb.position();
+	m_data.m_index = lb.docBlockNumber();
+	m_data.m_position = lb.docPosition();
+#else
 	const index_t dbIndex = DocBlock::index();
 	if( dbIndex >= m_view->firstUnlayoutedBlockCount() &&
 		dbIndex < m_view->firstUnlayoutedBlockCount() + m_view->layoutedDocBlockCount() )
@@ -195,6 +205,7 @@ ViewBlock &ViewBlock::operator++()
 		m_viewBlock.m_position = m_data.m_position += sz;
 		++m_viewBlock.m_index;
 	}
+#endif
 	return *this;
 }
 ViewBlock ViewBlock::next() const
@@ -245,16 +256,16 @@ QString ViewBlock::text() const
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba);
 }
-int ViewBlock::charsCount(index_t position) const
+int ViewBlock::charsCount(index_t pos) const
 {
-	if( !isValid() || position <= m_viewBlock.position() ||
-		position > m_viewBlock.position() + view()->blockSize(m_viewBlock.index()) )
+	if( !isValid() || pos <= position() ||
+		pos > position() + size() )
 	{
 		return 0;
 	}
 	int cnt = 0;
 	int ix = m_viewBlock.position();
-	while( ix < position ) {
+	while( ix < pos ) {
 		++cnt;
 		ix += UTF8CharSize((*m_document)[ix]);
 	}
@@ -265,6 +276,17 @@ LaidoutBlocksMgr::LaidoutBlocksMgr(TextDocument *document)
 	: m_document(document)
 {
 	m_cacheBlock = new LaidoutBlock(this);
+}
+
+void LaidoutBlocksMgr::clear()
+{
+#if SIMPLE_LAIDOUT_BLOCKS
+	m_blockSize.clear();
+	//m_blockSize = std::gap_vector<size_t>(document()->blockCount(), 0);
+#else
+	m_chunks.clear();
+#endif
+	*m_cacheBlock = begin();
 }
 
 LaidoutBlock LaidoutBlocksMgr::begin() const
@@ -280,9 +302,11 @@ LaidoutBlock LaidoutBlocksMgr::end() const
 LaidoutBlock LaidoutBlocksMgr::findBlock(index_t pos) const
 {
 	LaidoutBlock b = begin();
+	if( !pos || !document()->size() )
+		return *m_cacheBlock = b;
 	if( !m_cacheBlock->position() ) {
-		if( pos < document()->size() / 2 ) {
-			while( b.position() + b.size() <= pos )
+		if( pos <= document()->size() / 2 ) {
+			while( b.isValid() && b.position() + b.size() <= pos )
 				++b;
 		} else {
 			b = end();
@@ -291,20 +315,20 @@ LaidoutBlock LaidoutBlocksMgr::findBlock(index_t pos) const
 	} else {
 		if( pos == m_cacheBlock->position() )
 			return *m_cacheBlock;
-		if( pos < m_cacheBlock->position() ) {
-			if( pos < m_cacheBlock->position() / 2 ) {
-				while( b.position() + b.size() <= pos )
+		if( pos <= m_cacheBlock->position() ) {
+			if( pos <= m_cacheBlock->position() / 2 ) {
+				while( b.isValid() && b.position() + b.size() <= pos )
 					++b;
 			} else {
 				b = *m_cacheBlock;
 				do { --b; } while( b.position() > pos );
 			}
 		} else {
-			if( pos < m_cacheBlock->position() +
+			if( pos <= m_cacheBlock->position() +
 				(document()->size() - m_cacheBlock->position())/ 2 )
 			{
 				b = *m_cacheBlock;
-				while( b.position() + b.size() <= pos )
+				while( b.isValid() && b.position() + b.size() <= pos )
 					++b;
 			} else {
 				b = end();
@@ -318,7 +342,7 @@ LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number) const
 {
 	LaidoutBlock b = begin();
 	if( !m_cacheBlock->position() ) {
-		if( number < size() / 2 ) {
+		if( number <= size() / 2 ) {
 			while( b.index() < number )
 				++b;
 		} else {
@@ -329,8 +353,8 @@ LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number) const
 	} else {
 		if( number == m_cacheBlock->index() )
 			return *m_cacheBlock;
-		if( number < m_cacheBlock->index() ) {
-			if( number < m_cacheBlock->index() / 2 ) {
+		if( number <= m_cacheBlock->index() ) {
+			if( number <= m_cacheBlock->index() / 2 ) {
 				while( b.index() < number )
 					++b;
 			} else {
@@ -339,7 +363,7 @@ LaidoutBlock LaidoutBlocksMgr::findBlockByNumber(index_t number) const
 					--b;
 			}
 		} else {
-			if( number < m_cacheBlock->index() + (size() - m_cacheBlock->index())/ 2 ) {
+			if( number <= m_cacheBlock->index() + (size() - m_cacheBlock->index())/ 2 ) {
 				b = *m_cacheBlock;
 				while( b.index() < number )
 					++b;
@@ -356,7 +380,7 @@ LaidoutBlock LaidoutBlocksMgr::findBlockByDocNumber(index_t number) const
 {
 	LaidoutBlock b = begin();
 	if( !m_cacheBlock->position() ) {
-		if( number < size() / 2 ) {
+		if( number <= size() / 2 ) {
 			while( b.docIndex() < number )
 				++b;
 		} else {
@@ -367,8 +391,8 @@ LaidoutBlock LaidoutBlocksMgr::findBlockByDocNumber(index_t number) const
 	} else {
 		if( number == m_cacheBlock->docIndex() )
 			return *m_cacheBlock;
-		if( number < m_cacheBlock->docIndex() ) {
-			if( number < m_cacheBlock->docIndex() / 2 ) {
+		if( number <= m_cacheBlock->docIndex() ) {
+			if( number <= m_cacheBlock->docIndex() / 2 ) {
 				while( b.docIndex() < number )
 					++b;
 			} else {
@@ -377,7 +401,7 @@ LaidoutBlock LaidoutBlocksMgr::findBlockByDocNumber(index_t number) const
 					--b;
 			}
 		} else {
-			if( number < m_cacheBlock->docIndex() + (size() - m_cacheBlock->docIndex())/ 2 ) {
+			if( number <= m_cacheBlock->docIndex() + (size() - m_cacheBlock->docIndex())/ 2 ) {
 				b = *m_cacheBlock;
 				while( b.docIndex() < number )
 					++b;
@@ -403,6 +427,9 @@ size_t LaidoutBlocksMgr::docBlockNumberFromNumber(index_t number) const
 
 size_t LaidoutBlocksMgr::docBlockCount() const
 {
+#if SIMPLE_LAIDOUT_BLOCKS
+	return document()->blockCount();
+#else
 	size_t sum = 0;
 	for(std::gap_vector<LaidoutChunk>::const_iterator itr = m_chunks.begin(),
 														iend = m_chunks.end();
@@ -411,9 +438,13 @@ size_t LaidoutBlocksMgr::docBlockCount() const
 		sum += itr->docBlockCount();
 	}
 	return sum;
+#endif
 }
 size_t LaidoutBlocksMgr::viewBlockCount() const
 {
+#if SIMPLE_LAIDOUT_BLOCKS
+	return m_blockSize.empty() ? document()->blockCount() : m_blockSize.size();
+#else
 	size_t sum = 0;
 	for(std::gap_vector<LaidoutChunk>::const_iterator itr = m_chunks.begin(),
 														iend = m_chunks.end();
@@ -422,14 +453,23 @@ size_t LaidoutBlocksMgr::viewBlockCount() const
 		sum += itr->viewBlockCount();
 	}
 	return sum;
+#endif
 }
 size_t LaidoutBlocksMgr::size() const
 {
-	size_t sz = document()->size();
+#if SIMPLE_LAIDOUT_BLOCKS
+	return m_blockSize.empty() ? document()->blockCount() : m_blockSize.size();
+#else
+	size_t sz = document()->blockCount();
 	return viewBlockCount() + sz - docBlockCount();
+#endif
 }
 size_t LaidoutBlocksMgr::viewBlockSize(index_t viewBlockNumber) const
 {
+#if SIMPLE_LAIDOUT_BLOCKS
+	if( viewBlockNumber >= m_blockSize.size() ) return 0;
+	return m_blockSize[viewBlockNumber];
+#else
 	size_t sumVBC = 0;
 	index_t docBlockNumber = 0;
 	for(std::gap_vector<LaidoutChunk>::const_iterator itr = m_chunks.begin(),
@@ -445,11 +485,15 @@ size_t LaidoutBlocksMgr::viewBlockSize(index_t viewBlockNumber) const
 		docBlockNumber += itr->docBlockCount();
 	}
 	return m_document->blockSize(viewBlockNumber - sumVBC + docBlockNumber);
+#endif
 }
 bool LaidoutBlocksMgr::insert(index_t docBlockNumber,		//	挿入位置
 						size_t docLaidoutBlockCount,		//	レイアウト行数（ドキュメントブロック数）
 						const std::gap_vector<size_t> &v)		//	レイアウト結果
 {
+#if SIMPLE_LAIDOUT_BLOCKS
+	return false;
+#else
 	const size_t dbCount = docBlockCount();
 	if( m_chunks.empty() || docBlockNumber > dbCount ) {
 		m_chunks.push_back(LaidoutChunk(docBlockNumber - dbCount, docLaidoutBlockCount, v));
@@ -500,14 +544,92 @@ bool LaidoutBlocksMgr::insert(index_t docBlockNumber,		//	挿入位置
 	}
 	//	undone B チャンクが連続している場合等
 	return false;
+#endif
+}
+void layoutText(std::vector<size_t> &v, QFontMetrics &fm, const DocBlock &block, int wdLimit)
+{
+	qDebug() << "TextView::layoutText() block.blockNumber() = " << block.blockNumber()
+				<< QTime::currentTime();
+	v.clear();
+	const int tabWidth = fm.width(QChar(' ')) * 4;	//	とりあえず空白4文字分に固定
+	index_t pos = block.position();
+	index_t blockPos = pos;
+	QString text = block.text();
+	const size_t nlLength = block.newlineLength();
+	index_t ixEOL = text.length() - nlLength;		//	改行コードは１バイトと仮定
+	if( !ixEOL ) {
+		v.push_back(block.size());
+	} else {
+		//layoutText(v, text, ixEOL, wdLimit, tabWidth);
+		index_t ix = 0;
+		while( ix < ixEOL ) {
+			int width = 0;		//	現在幅
+			for(;;) {
+				if( ix == ixEOL ) {
+					pos += nlLength;
+					break;
+				}
+				QChar qch = text.at(ix);
+				if( qch == '\t' ) {
+					width = (width / tabWidth + 1) * tabWidth;
+					pos += 1;
+				} else {
+					if( (width += fm.width(qch)) > wdLimit ) break;
+					pos += UTF8CharSize((*block.document())[pos]);
+				}
+				++ix;
+			}
+			v.push_back(pos - blockPos);
+			blockPos = pos;
+		}
+	}
+}
+//	指定範囲をレイアウト
+//	指定範囲に対応する LaidoutBlocksMgr のブロック情報は削除されているものとする
+void LaidoutBlocksMgr::buildBlocks(TextView *view,
+									DocBlock block,		//	[レイアウト開始位置
+									index_t vIndex,		//	[レイアウト開始位置
+									int ht,				//	レイアウト範囲);
+									index_t lastPos)	//	レイアウト範囲);
+{
+	QFontMetrics fm = view->fontMetrics();
+	//const int spaceWidth = fm.width(QChar(' '));
+	//const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
+	const QRect vr = view->viewport()->rect();
+	int wdLimit = vr.width() - fm.width(' ') * 4;
+	//index_t firstBlockNumber = block.blockNumber();
+	std::vector<size_t> v;
+	int y = 0;
+	while( block.isValid() && (!ht || y < ht) && (!lastPos || block.blockNumber() < lastPos) )
+	{
+		layoutText(v, fm, block, wdLimit);
+		m_blockSize.insert(vIndex, v.begin(), v.end());
+		vIndex += v.size();
+		y += fm.lineSpacing() * v.size();
+		++block;
+	}
 }
 //----------------------------------------------------------------------
 bool LaidoutBlock::isValid() const
 {
 	return m_docBlockData.m_index < m_lbMgr->m_document->blockCount();
 }
+bool LaidoutBlock::isLayouted() const
+{
+#if SIMPLE_LAIDOUT_BLOCKS
+	return m_lbMgr->viewBlockSize(m_viewBlockData.m_index) != 0;
+#else
+	return m_chunkIndex < m_lbMgr->m_chunks.size() &&
+			m_chunkIndex >= m_lbMgr->m_chunks[m_chunkIndex].m_unLaidoutDocBlockCount;
+#endif
+}
 size_t LaidoutBlock::size() const
 {
+#if SIMPLE_LAIDOUT_BLOCKS
+	size_t sz = m_lbMgr->viewBlockSize(m_viewBlockData.m_index);
+	if( sz != 0 ) return sz;
+	return m_lbMgr->document()->blockSize(m_docBlockData.m_index);
+#else
 	if( m_chunkIndex >= m_lbMgr->m_chunks.size() )
 		return m_lbMgr->m_document->blockSize(m_docBlockData.m_index);
 	const size_t u = m_lbMgr->m_chunks[m_chunkIndex].m_unLaidoutDocBlockCount;
@@ -515,6 +637,7 @@ size_t LaidoutBlock::size() const
 		return m_lbMgr->m_document->blockSize(m_docBlockData.m_index);
 	else
 		return m_lbMgr->m_chunks[m_chunkIndex].m_blocks[m_indexInChunk - u];
+#endif
 }
 QString LaidoutBlock::text() const
 {
@@ -532,14 +655,35 @@ QString LaidoutBlock::text() const
 }
 void LaidoutBlock::moveToEndOfDocument()
 {
+#if SIMPLE_LAIDOUT_BLOCKS
+	m_viewBlockData.m_index = m_lbMgr->size();
+	m_docBlockData.m_index = document()->blockCount();
+	m_viewBlockData.m_position = m_docBlockData.m_position = document()->size();
+#else
 	m_indexInChunk = document()->blockCount()- m_lbMgr->docBlockCount();
 	m_chunkIndex = m_lbMgr->m_chunks.size();
 	m_docBlockData.m_index = document()->blockCount();
 	m_docBlockData.m_position = m_viewBlockData.m_position = document()->size();
 	m_viewBlockData.m_index = m_lbMgr->viewBlockCount() + m_indexInChunk;
+#endif
 }
 LaidoutBlock &LaidoutBlock::operator++()
 {
+#if SIMPLE_LAIDOUT_BLOCKS
+	const index_t nextDocPosition = m_docBlockData.m_position +
+									document()->blockSize(m_docBlockData.m_index);
+	if( !m_lbMgr->viewBlockSize(m_viewBlockData.m_index) ) {
+		++m_viewBlockData.m_index;
+		++m_docBlockData.m_index;
+		m_viewBlockData.m_position = m_docBlockData.m_position = nextDocPosition;
+	} else {
+		m_viewBlockData.m_position += m_lbMgr->viewBlockSize(m_viewBlockData.m_index++);
+		if( m_viewBlockData.m_position == nextDocPosition ) {
+			m_docBlockData.m_position = nextDocPosition;
+			++m_docBlockData.m_index;
+		}
+	}
+#else
 	++m_viewBlockData.m_index;
 	index_t nextDocPosition = m_docBlockData.m_position +
 								m_lbMgr->m_document->blockSize(m_docBlockData.m_index);
@@ -570,10 +714,26 @@ LaidoutBlock &LaidoutBlock::operator++()
 	}
 	++m_chunkIndex;
 	m_indexInChunk = 0;
+#endif
 	return *this;
 }
 LaidoutBlock &LaidoutBlock::operator--()
 {
+#if SIMPLE_LAIDOUT_BLOCKS
+	const index_t prevDocPosition = m_docBlockData.m_position -
+									document()->blockSize(m_docBlockData.m_index - 1);
+	const size_t sz = m_lbMgr->viewBlockSize(--m_viewBlockData.m_index);
+	if( !sz ) {
+		--m_docBlockData.m_index;
+		m_viewBlockData.m_position = m_docBlockData.m_position = prevDocPosition;
+	} else {
+		m_viewBlockData.m_position -= sz;
+		if( m_viewBlockData.m_position < m_docBlockData.m_position ) {
+			m_docBlockData.m_position = prevDocPosition;
+			--m_docBlockData.m_index;
+		}
+	}
+#else
 	--m_viewBlockData.m_index;
 	if( !m_indexInChunk ) {
 		if( !m_chunkIndex ) {
@@ -602,5 +762,6 @@ LaidoutBlock &LaidoutBlock::operator--()
 		if( m_viewBlockData.m_position < m_docBlockData.m_position )
 			m_docBlockData.m_position -= m_lbMgr->m_document->blockSize(--m_docBlockData.m_index);
 	}
+#endif
 	return *this;
 }

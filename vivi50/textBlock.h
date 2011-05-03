@@ -17,6 +17,7 @@
 
 typedef size_t index_t;
 
+#define		SIMPLE_LAIDOUT_BLOCKS	1
 #define		BLOCK_HAS_SIZE		1
 #define		INVALID_INDEX		0xffffffff
 
@@ -184,12 +185,15 @@ public:
 	size_t	docBlockCount() const;		//	LaidoutBlocksMgr が管理している行数
 	size_t	viewBlockCount() const;		//	LaidoutBlocksMgr が管理している行数
 	size_t	size() const;				//	ビューのトータル行数
+	size_t	blockCount() const { return size(); }
 	size_t	viewBlockSize(index_t) const;
+	size_t	blockSize(index_t ix) const { return viewBlockSize(ix); }
 
 	size_t	blockNumberFromDocBlockNumber(index_t) const;
 	size_t	docBlockNumberFromNumber(index_t) const;
 
 public:
+	void	clear();
 	bool	insert(index_t docBlockNumber,		//	ドキュメントブロック番号（0..*）
 					size_t docBlockCount,		//	レイアウト行数（ドキュメントブロック数）
 					const std::gap_vector<size_t> &);		//	レイアウト結果
@@ -200,14 +204,27 @@ public:
 	LaidoutBlock	findBlockByNumber(index_t) const;
 	LaidoutBlock	findBlockByDocNumber(index_t) const;
 
+public:
+	void	erase(index_t first, index_t last) { m_blockSize.erase(first, last); }
+	void	buildBlocks(TextView *,
+						DocBlock block,		//	[レイアウト開始位置
+						index_t vIndex = 0,		//	[レイアウト開始位置
+						int ht = 0,				//	レイアウト範囲);
+						index_t diLimit = 0);	//	レイアウト範囲);
+
 protected:
 	const TextDocument	*document() const { return m_document; }
 	TextDocument	*document() { return m_document; }
 
+
 private:
 	TextDocument	*m_document;
 	mutable LaidoutBlock	*m_cacheBlock;
+#if SIMPLE_LAIDOUT_BLOCKS
+	std::gap_vector<size_t>	m_blockSize;		//	ビューブロック長、0 ならは未レイアウト
+#else
 	std::gap_vector<LaidoutChunk>	m_chunks;
+#endif
 
 	friend class LaidoutBlock;
 };
@@ -218,7 +235,9 @@ public:
 	LaidoutBlock(/*TextView *view,*/ LaidoutBlocksMgr *lbMgr)
 		: /*m_view(view),*/ m_lbMgr(lbMgr)
 		, m_viewBlockData(0, 0), m_docBlockData(0, 0)
+#if !SIMPLE_LAIDOUT_BLOCKS
 		, m_chunkIndex(0), m_indexInChunk(0)
+#endif
 		{}
 
 public:
@@ -230,9 +249,12 @@ public:
 	index_t	docPosition() const { return m_docBlockData.m_position; }
 	index_t	docIndex() const { return m_docBlockData.m_index; }
 	index_t	docBlockNumber() const { return m_docBlockData.m_index; }
+	BlockData	viewBlockData() const { return BlockData(blockNumber(), position()); }
+	BlockData	docBlockData() const { return BlockData(docBlockNumber(), docPosition()); }
 
 	size_t	size() const;
 	QString	text() const;
+
 
 	bool	operator==(const LaidoutBlock &x) const { return index() == x.index(); }
 
@@ -243,12 +265,15 @@ public:
 	LaidoutBlock	&operator--();
 
 private:
+	LaidoutBlocksMgr	*m_lbMgr;
 	BlockData	m_viewBlockData;
 	BlockData	m_docBlockData;
+#if		SIMPLE_LAIDOUT_BLOCKS
+#else
 	index_t		m_chunkIndex;
 	index_t		m_indexInChunk;
 	//TextView	*m_view;
-	LaidoutBlocksMgr	*m_lbMgr;
+#endif
 };
 
 #endif		//_HEADER_TESTBLOCK_H

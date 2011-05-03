@@ -23,7 +23,8 @@
 #ifndef PLAINTEXTEDIT_H
 #define PLAINTEXTEDIT_H
 
-#define		LAIDOUT_BLOCKS_MGR		0
+#define		LAIDOUT_BLOCKS_MGR		1
+#define		LAZY_LAIDOUT			0
 
 #include <deque>
 #include <QAbstractScrollArea>
@@ -111,6 +112,9 @@ public:
 	int		xToCharCount(const QString &, int) const;		//	ｘ座標に対応する文字数を返す
 	index_t	movePositionByCharCount(index_t, int n) const;	//	n 文字分移動
 	BlockData blockData() const { return m_blockData; }
+#if LAIDOUT_BLOCKS_MGR
+	LaidoutBlocksMgr	*lbMgr() const { return m_lbMgr; }
+#endif
 
 public:
 	TextDocument	*document() { return m_document; }
@@ -182,9 +186,10 @@ protected:
 	void	updateBlocks();
 	void	clearBlocks();
 	void	eraseBlocks(index_t, index_t);
-	void	buildBlocks(DocBlock, /*int wd,*/ int ht = 0, index_t = 0);
+	void	buildBlocks(ViewBlock, int ht = 0, index_t = 0);
 	void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
 	void	layoutText(std::vector<size_t> &, const DocBlock &, int wd, int tabWidth);
+	void	layoutText(std::vector<size_t> &, const QString &, index_t, int wd, int tabWidth);
 	void	getReLayoutRange(ViewCursor cur,
 								DocBlock &block,		//	再レイアウト開始ブロック
 								index_t &lastPosition,	//	再レイアウト終了位置 [block, last)
@@ -239,6 +244,7 @@ private:
 #endif
 
 	friend void test_TextView();
+	friend void test_LaidoutBlock();
 };
 
 #endif // PLAINTEXTEDIT_H
