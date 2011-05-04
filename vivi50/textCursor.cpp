@@ -741,3 +741,8 @@ void ViewCursor::updateViewBlock()
 	else
 		m_viewAnchorBlockData = m_viewBlockData;
 }
+void ViewCursor::move(int d)
+{
+	DocCursor::move(d);
+	updateBlockData(KeepAnchor);
+}

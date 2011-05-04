@@ -932,6 +932,7 @@ void TextView::setFontFamily(const QString &name)
 }
 void TextView::selectAll()
 {
+	clearMultiCursor();
 	m_textCursor->movePosition(DocCursor::StartOfDocument);
 	m_textCursor->movePosition(DocCursor::EndOfDocument, DocCursor::KeepAnchor);
 	ensureCursorVisible();
