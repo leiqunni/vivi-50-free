@@ -26,7 +26,7 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-94.078,307.793)
   main.cpp	(-178.304,-339.84)
-  mainwindow.cpp	(-128.265,-196.142)
+* mainwindow.cpp	(-128.265,-196.142)
   mainwindow.h	(-128.265,-229.142)
 * TextDocument.cpp	(-152.875,65.766)
 * TextDocument.h	(-152.875,32.766)
@@ -49,6 +49,8 @@ memFileColumnWd = 320
   vivi50_ja.ts	(139,-320)
 * textBlock.cpp	(-243,329)
   textBlock.h	(-243,296)
+  LayoutThread.cpp	(390,133)
+  LayoutThread.h	(390,100)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
