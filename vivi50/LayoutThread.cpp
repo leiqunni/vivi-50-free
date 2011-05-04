@@ -10,3 +10,7 @@ LayoutThread::~LayoutThread()
 {
 
 }
+
+void LayoutThread::run()
+{
+}

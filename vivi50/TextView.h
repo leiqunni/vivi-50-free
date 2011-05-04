@@ -181,7 +181,7 @@ protected:
 	void	setTextCursor(const ViewCursor &cur) { *m_textCursor = cur; }
 	void	resetCursorBlinkTimer();
 	void	clearMultiCursor() { m_multiCursor.clear(); }
-	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); }
+	void	addToMultiCursor();
 	void	getAllCursor(std::vector<ViewCursor*> &);
 	void	ensureBlockLayout();
 	void	updateBlocks();

@@ -306,7 +306,7 @@
     <message>
         <location filename="mainwindow.cpp" line="241"/>
         <source>&amp;View</source>
-        <translation type="unfinished">ビュー(&amp;V)</translation>
+        <translation type="unfinished">表示(&amp;V)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="244"/>

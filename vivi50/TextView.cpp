@@ -794,9 +794,13 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 			move = DocCursor::Left;
 		break;
 	case Qt::Key_Up:
+		if( ctrl )
+			addToMultiCursor();
 		move = DocCursor::Up;
 		break;
 	case Qt::Key_Down:
+		if( ctrl )
+			addToMultiCursor();
 		move = DocCursor::Down;
 		break;
 	case Qt::Key_PageUp:
@@ -1164,6 +1168,14 @@ void TextView::doJump(int lineNum)
 		setViCursor(cur);
 #endif
 }
+void TextView::addToMultiCursor()
+{
+	std::vector<ViewCursor>::iterator itr = m_multiCursor.begin();
+	std::vector<ViewCursor>::iterator iend = m_multiCursor.end();
+	while( itr != iend && itr->position() < m_textCursor->position() )
+		++itr;
+	m_multiCursor.insert(itr, *m_textCursor);
+}
 void TextView::mousePressEvent ( QMouseEvent * event )
 {
 	Qt::KeyboardModifiers mod = event->modifiers();
@@ -1179,13 +1191,9 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 	cur.setPosition(block.position());
 	if( offset != 0 )
 		cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, offset);
-	if( ctrl ) {
-		std::vector<ViewCursor>::iterator itr = m_multiCursor.begin();
-		std::vector<ViewCursor>::iterator iend = m_multiCursor.end();
-		while( itr != iend && itr->position() < m_textCursor->position() )
-			++itr;
-		m_multiCursor.insert(itr, *m_textCursor);
-	} else
+	if( ctrl )
+		addToMultiCursor();
+	else
 		clearMultiCursor();
 	*m_textCursor = cur;
 	removeOverlappedCursor();
