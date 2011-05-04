@@ -594,6 +594,7 @@ ViewCursor::ViewCursor(const ViewCursor &x)
 }
 ViewCursor::ViewCursor(TextView *view, const DocCursor &x)
 	: m_view(view), DocCursor(x)
+	, m_x(0)
 {
 	updateBlockData();
 }
