@@ -47,7 +47,7 @@ memFileColumnWd = 320
   ReplaceDlg.cpp	(236,78)
   ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(139,-320)
-  textBlock.cpp	(-243,329)
+* textBlock.cpp	(-243,329)
 * textBlock.h	(-243,296)
 * LayoutThread.cpp	(390,133)
 * LayoutThread.h	(390,100)
@@ -68,4 +68,4 @@ memFileColumnWd = 320
   "TextView.cpp" 1331 'A: ' '' undone BlockData も要補正
   "TextView.cpp" 1621 'B: ' '' undone 垂直スクロールバー位置更新
   "TextView.cpp" 1642 'B: ' '' undone 未コーディング
-  "textBlock.cpp" 557 'B: ' '' undone チャンクが連続している場合等
+  "textBlock.cpp" 567 'B: ' '' undone チャンクが連続している場合等
