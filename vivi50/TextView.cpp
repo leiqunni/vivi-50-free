@@ -482,9 +482,9 @@ ViewBlock TextView::firstVisibleBlock() const
 	BlockData b = findBlockByNumber(v).data();
 	return ViewBlock((TextView*)this, docBlock(b), b);
 }
-int TextView::textBlockToY(const DocBlock &block) const
+int TextView::textBlockToY(const ViewBlock &block) const
 {
-	DocBlock fvBlock = firstVisibleBlock();
+	ViewBlock fvBlock = firstVisibleBlock();
 	if( block < fvBlock ) return -1;
 	QWidget *vp = viewport();
 	QRect vr = vp->rect();
@@ -716,7 +716,7 @@ bool TextView::event ( QEvent * event )
 QVariant TextView::inputMethodQuery ( Qt::InputMethodQuery query ) const
 {
 	if( query == Qt::ImMicroFocus ) {
-		DocBlock block = m_textCursor->block();
+		ViewBlock block = m_textCursor->block();
 		int x = charCountToX(block.text(), block.charsCount(m_preeditPosCursor->anchor()));
 		int y = textBlockToY(block);
 		return QVariant(QRect(m_lineNumberAreaWidth + x, y, 20, 20));

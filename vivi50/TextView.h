@@ -159,7 +159,7 @@ public slots:
 
 protected:
 	ViewBlock	yToTextBlock(int) const;
-	int		textBlockToY(const DocBlock&) const;		//	垂直スクロールを考慮した、block Y座標を返す
+	int		textBlockToY(const ViewBlock&) const;		//	垂直スクロールを考慮した、block Y座標を返す
 														//	画面外の場合は -1 を返す
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);
@@ -223,7 +223,7 @@ private:
 	ViewCursor	m_viewTextCursor;
 	std::vector<ViewCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる
-	DocCursor	*m_preeditPosCursor;
+	ViewCursor	*m_preeditPosCursor;
 	QString	m_preeditString;
 	TextDocument	*m_document;
 	ViewCursor	*m_textCursor;		//	ビュー用カーソル
