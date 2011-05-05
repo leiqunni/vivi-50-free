@@ -68,6 +68,7 @@ public:
 	index_t		index() const { return m_data.m_index; }
 	index_t		blockNumber() const { return m_data.m_index; }
 	index_t		position() const;	// { return isValid() ? m_document->blockPosition(m_index) : 0; }
+	index_t		nextBlockPosition() const { return position() + size(); }
 	BlockData	data() const { return m_data; }
 	QString		text() const;
 	int			charsCount(index_t) const;		//	s“ª‚©‚çw’èˆÊ’u‚Ü‚Å‚Ì•¶š”‚ğ•Ô‚·
@@ -108,6 +109,7 @@ public:
 	index_t		index() const { return m_viewBlock.m_index; }
 	index_t		blockNumber() const { return m_viewBlock.m_index; }
 	index_t		viewBlockNumber() const { return m_viewBlock.index(); }
+	index_t		nextBlockPosition() const { return position() + size(); }
 	BlockData	data() const { return m_viewBlock; }
 	ViewBlock	next() const;
 	ViewBlock	prev() const;

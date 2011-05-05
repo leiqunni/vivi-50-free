@@ -158,6 +158,8 @@ bool TextView::isLayoutedViewBlock(index_t ix) const
 #endif
 size_t TextView::blockSize(index_t ix) const	//	ix はビュー行番号（0..*）
 {
+	if( !lineBreakMode() )
+		return document()->blockSize(ix);
 #if LAIDOUT_BLOCKS_MGR
 	return m_lbMgr->viewBlockSize(ix);
 #else
@@ -534,14 +536,14 @@ void TextView::paintEvent(QPaintEvent * event)
 		if( selLast <= block.position() ) continue;		//	選択箇所が最初のブロック以前の場合
 		index_t selFirst = itr->firstPosition();
 		while( y < vr.height() && block.isValid() &&
-			selFirst >= block.position() + m_document->blockSize(block.index()) )
+			selFirst >= block.position() + block.size() )
 		{
 			y += fm.lineSpacing();
 			++block;
 		}
 		for(;;) {
 			if( y >= vr.height() || !block.isValid() ) break;
-			index_t nextBlockPosition = block.position() + blockSize(block.index());
+			index_t nextBlockPosition = block.nextBlockPosition();
 			if( selFirst < nextBlockPosition && selLast > block.position() ) {
 				//	block が選択範囲内にある場合
 				const QString text = block.text();
@@ -575,7 +577,7 @@ void TextView::paintEvent(QPaintEvent * event)
 	std::vector<ViewCursor>::const_iterator mciend = m_multiCursor.end();
 	while( y < vr.height() && block.isValid() ) {
 		const QString text = block.text();
-		index_t nextBlockPosition = block.position() + block.size();
+		index_t nextBlockPosition = block.nextBlockPosition();
 		if( m_textCursor->hasSelection() &&
 			selFirst < nextBlockPosition && selLast > block.position() )
 		{

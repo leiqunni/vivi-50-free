@@ -55,7 +55,7 @@ public:
 		{
 #if TEXT_CURSOR_BLOCK
 			updateBlockData();
-			m_offset = m_position - m_blockData.index();
+			m_offset = m_position - m_blockData.position();
 #endif
 		}
 	DocCursor(TextDocument *document, index_t position, index_t anchor)
@@ -63,7 +63,7 @@ public:
 		{
 #if TEXT_CURSOR_BLOCK
 			updateBlockData();
-			m_offset = m_position - m_blockData.index();
+			m_offset = m_position - m_blockData.position();
 #endif
 		}
 #if TEXT_CURSOR_BLOCK
@@ -72,7 +72,7 @@ public:
 		: m_document(document), m_position(position), m_anchor(anchor)
 		, m_blockData(blockData)
 		{
-			m_offset = m_position - m_blockData.index();
+			m_offset = m_position - m_blockData.position();
 		}
 #endif
 	DocCursor(const DocCursor &x)
