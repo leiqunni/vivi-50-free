@@ -208,10 +208,17 @@ ViewBlock TextView::findBlock(index_t position) const
 ViewBlock TextView::findBlockByNumber(index_t bn) const
 {
 #if LAIDOUT_BLOCKS_MGR
-	LaidoutBlock lb = lbMgr()->findBlockByNumber(bn);
-	return ViewBlock((TextView*)this,
-						DocBlock((TextDocument *)document(), lb.docBlockData()),
-						lb.viewBlockData());
+	if( !lineBreakMode() ) {
+		DocBlock b = document()->findBlockByNumber(bn);
+		return ViewBlock((TextView*)this,
+							DocBlock((TextDocument *)document(), b.data()),
+							b.data());
+	} else {
+		LaidoutBlock lb = lbMgr()->findBlockByNumber(bn);
+		return ViewBlock((TextView*)this,
+							DocBlock((TextDocument *)document(), lb.docBlockData()),
+							lb.viewBlockData());
+	}
 #else
 	BlockData data(0, 0), next;
 	const size_t bc = blockCount();
@@ -568,7 +575,7 @@ void TextView::paintEvent(QPaintEvent * event)
 	std::vector<ViewCursor>::const_iterator mciend = m_multiCursor.end();
 	while( y < vr.height() && block.isValid() ) {
 		const QString text = block.text();
-		index_t nextBlockPosition = block.position() + blockSize(block.index());
+		index_t nextBlockPosition = block.position() + block.size();
 		if( m_textCursor->hasSelection() &&
 			selFirst < nextBlockPosition && selLast > block.position() )
 		{
@@ -1415,9 +1422,9 @@ int TextView::insertText(ViewCursor &cur, const QString &text)
 {
 	if( !m_lineBreakMode ) {
 		const int sz = document()->insertText(cur, text);
-		cur.setViewBlockData(cur.blockData());
-		cur.setViewAnchorBlockData(cur.anchorBlockData());
-		//cur.updateViewBlock();
+		//cur.setViewBlockData(cur.blockData());
+		//cur.setViewAnchorBlockData(cur.anchorBlockData());
+		cur.updateViewBlock();
 		return sz;
 	}
 
@@ -1443,8 +1450,9 @@ size_t TextView::deleteChar(ViewCursor &cur)
 {
 	if( !m_lineBreakMode ) {
 		size_t sz = document()->deleteChar(cur);
-		cur.setViewBlockData(cur.blockData());
-		cur.setViewAnchorBlockData(cur.anchorBlockData());
+		cur.updateViewBlock();
+		//cur.setViewBlockData(cur.blockData());
+		//cur.setViewAnchorBlockData(cur.anchorBlockData());
 		return sz;
 	}
 	if( !cur.hasSelection() ) {
@@ -1465,8 +1473,11 @@ size_t TextView::deleteChar(ViewCursor &cur)
 }
 size_t TextView::deletePreviousChar(ViewCursor &cur)
 {
-	if( !m_lineBreakMode )
-		return document()->deletePreviousChar(cur);
+	if( !m_lineBreakMode ) {
+		size_t sz = document()->deletePreviousChar(cur);
+		cur.updateViewBlock();
+		return sz;
+	}
 	if( !cur.hasSelection() ) {
 		cur.movePosition(DocCursor::Left, DocCursor::KeepAnchor);
 		if( !cur.hasSelection() )
