@@ -31,25 +31,30 @@ index_t DocBlock::position() const
 }
 size_t DocBlock::newlineLength() const
 {
-	if( !isValid() ) return 0;
-	const size_t sz = size();
-	index_t np = position() + sz;
-	if( np > position() ) {
-		uchar uch = (*m_document)[np-1];
+	if( !size() ) return 0;
+	return newlineLength(position() + size());
+}
+
+size_t DocBlock::newlineLength(index_t pos) const
+{
+	if( !isValid() || !pos || !size() ) return 0;
+	//index_t np = position() + sz;
+	//if( np > position() ) {
+		uchar uch = (*m_document)[pos-1];
 		if( uch == '\r' )
 			return 1;
 		if( uch == '\n' ) {
-			if( np - 2 >= position() && (*m_document)[np-2] == '\r' )
+			if( pos >= 2 && (*m_document)[pos-2] == '\r' )
 				return 2;
 			else
 				return 1;
 		}
-	}
+	//}
 	return 0;
 }
 index_t DocBlock::EOLOffset() const
 {
-	if( !isValid() ) return 0;
+	if( !isValid() || !size() ) return 0;
 	return size() - newlineLength();
 #if 0
 	const size_t sz = size();
@@ -174,6 +179,11 @@ size_t ViewBlock::size() const
 	const size_t sz = m_view->lbMgr()->viewBlockSize(m_viewBlock.index());
 	return !sz ? DocBlock::size() : sz;	
 	//return m_view->blockSize(m_viewBlock.index());
+}
+index_t ViewBlock::EOLOffset() const
+{
+	if( !isValid() || !size() ) return 0;
+	return size() - newlineLength(position() + size());
 }
 
 ViewBlock &ViewBlock::operator++()

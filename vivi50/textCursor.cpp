@@ -696,6 +696,16 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		//movePosition(Right, KeepAnchor, view()->xToCharCount(block().text(), m_x));
 		m_blockData = view()->docBlockData(m_viewBlockData);
 		break;
+	case StartOfBlock:
+		m_position = m_viewBlockData.position();
+		m_offset = 0;
+		m_x = 0;
+		break;
+	case EndOfBlock:
+		m_position = m_viewBlockData.position() + block().EOLOffset();
+		m_offset = 0xffffffff;
+		m_x = -1;
+		break;
 	default:
 		if( !DocCursor::movePosition(move, mode, n) )
 			return false;

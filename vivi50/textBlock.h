@@ -63,6 +63,7 @@ public:
 	size_t		length() const { return size(); }
 	index_t		EOLOffset() const;
 	size_t		newlineLength() const;		//	改行部分のバイト数を返す
+	size_t		newlineLength(index_t) const;		//	指定位置直前の改行バイト数を返す
 	bool		isValid() const;
 	//{ return m_document != 0 && blockNumber() >= m_document->blockCount(); }
 	index_t		index() const { return m_data.m_index; }
@@ -102,6 +103,7 @@ public:
 	bool		isFirstBlock() const;	//	DocBlock の最初の行か？
 	bool		isLayouted() const;
 	size_t		size() const;
+	index_t		EOLOffset() const;
 	index_t		position() const;
 	index_t		docPosition() const { return DocBlock::position(); };
 	index_t		docIndex() const { return DocBlock::index(); }
