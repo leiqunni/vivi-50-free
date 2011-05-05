@@ -1341,6 +1341,7 @@ void TextView::insertText(const QString &text, bool tab)
 				itr != iend; ++itr)
 			{
 				const int sz = insertText(**itr, text);
+				//emit printBuffer();
 				//print(v);
 				for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 					(*k)->move(sz);

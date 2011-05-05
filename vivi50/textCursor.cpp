@@ -616,9 +616,11 @@ void ViewCursor::updateBlockData(uchar mode)
 		m_viewBlockData = m_viewAnchorBlockData = BlockData(0, 0);
 	} else {
 		m_viewBlockData = m_view->findBlockData(m_position);
-		if( mode == MoveAnchor ) {
+		if( mode == MoveAnchor || position() == anchor() ) {
 			m_anchorBlockData = m_blockData;
 			m_viewAnchorBlockData = m_viewBlockData;
+		} else {
+			m_viewAnchorBlockData = m_view->findBlockData(m_anchor);
 		}
 	}
 }

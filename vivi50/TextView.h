@@ -213,6 +213,7 @@ protected slots:
 	void	onTimer();
 
 signals:
+	void	printBuffer();
 	void	showMessage(const QString &);
 
 private:

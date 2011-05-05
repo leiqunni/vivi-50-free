@@ -57,6 +57,7 @@ void MainWindow::init()
 	m_unitTestLaidoutBlocksMgr = true;
 	m_unitTestView = true;
 	m_view = new TextView;
+	connect(m_view, SIGNAL(printBuffer()), this, SLOT(printBuffer()));
     QSettings settings;    const QString fontName = settings.value("fontName", "").toString();
     const int fontSize = settings.value("fontSize", 0).toInt();
     if( !fontName.isEmpty() && fontSize != 0 ) {
