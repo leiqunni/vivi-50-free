@@ -287,11 +287,13 @@ LaidoutBlocksMgr::LaidoutBlocksMgr(TextDocument *document)
 {
 	m_cacheBlock = new LaidoutBlock(this);
 	m_width = 0;
+	m_laidoutDocBlockCount = 0;
 }
 
 void LaidoutBlocksMgr::clear()
 {
 #if SIMPLE_LAIDOUT_BLOCKS
+	m_laidoutDocBlockCount = 0;
 	m_blockSize.clear();
 	//m_blockSize = std::gap_vector<size_t>(document()->blockCount(), 0);
 #else
@@ -480,7 +482,8 @@ size_t LaidoutBlocksMgr::viewBlockCount() const
 size_t LaidoutBlocksMgr::size() const
 {
 #if SIMPLE_LAIDOUT_BLOCKS
-	return m_blockSize.empty() ? document()->blockCount() : m_blockSize.size();
+	return m_blockSize.size() + document()->blockCount() - m_laidoutDocBlockCount;
+	//return m_blockSize.empty() ? document()->blockCount() : m_blockSize.size();
 #else
 	size_t sz = document()->blockCount();
 	return viewBlockCount() + sz - docBlockCount();
@@ -570,8 +573,8 @@ bool LaidoutBlocksMgr::insert(index_t docBlockNumber,		//	挿入位置
 }
 void layoutText(std::vector<size_t> &v, QFontMetrics &fm, const DocBlock &block, int wdLimit)
 {
-	qDebug() << "TextView::layoutText() block.blockNumber() = " << block.blockNumber()
-				<< QTime::currentTime();
+	//qDebug() << "::layoutText() block.blockNumber() = " << block.blockNumber()
+	//			<< QTime::currentTime();
 	v.clear();
 	const int tabWidth = fm.width(QChar(' ')) * 4;	//	とりあえず空白4文字分に固定
 	index_t pos = block.position();
@@ -641,7 +644,7 @@ void LaidoutBlocksMgr::buildBlocksUntillDocBlockNumber(TextView *view,
 									index_t lastDocBlockNumber)	//	レイアウト範囲);
 {
 	if( !m_width ) return;
-	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
+	//qDebug() << "m_blockSize.size() = " << m_blockSize.size();
 	QFontMetrics fm = view->fontMetrics();
 	//const int spaceWidth = fm.width(QChar(' '));
 	//const int tabWidth = spaceWidth * 4;		//	とりあえず空白4文字分に固定
@@ -658,12 +661,13 @@ void LaidoutBlocksMgr::buildBlocksUntillDocBlockNumber(TextView *view,
 		vIndex += v.size();
 		y += fm.lineSpacing() * v.size();
 		++block;
+		++m_laidoutDocBlockCount;
 	}
 	if( block.isValid() )
 		*m_cacheBlock = LaidoutBlock(this, BlockData(vIndex, block.position()), block.data());
 	else
 		*m_cacheBlock = lastBlock();
-	qDebug() << "m_blockSize.size() = " << m_blockSize.size();
+	//qDebug() << "m_blockSize.size() = " << m_blockSize.size();
 }
 //----------------------------------------------------------------------
 bool LaidoutBlock::isValid() const

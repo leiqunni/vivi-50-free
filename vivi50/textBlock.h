@@ -197,6 +197,8 @@ public:
 	size_t	docBlockNumberFromNumber(index_t) const;
 
 	int		width() const { return m_width; }
+	size_t	laidoutDocBlockCount() const { return m_laidoutDocBlockCount; }
+	size_t	laidoutViewBlockCount() const { return m_blockSize.size(); }
 
 public:
 	void	clear();
@@ -214,7 +216,12 @@ public:
 	const LaidoutBlock	*cacheBlock() const { return m_cacheBlock; }
 
 public:
-	void	erase(index_t first, index_t last) { m_blockSize.erase(first, last); }
+	void	erase(index_t first, index_t last, size_t delDocBlockCount)
+	{
+		m_laidoutDocBlockCount -= delDocBlockCount;
+		m_blockSize.erase(first, last);
+		//size_t sz = m_blockSize.size();
+	}
 #if 0
 	void	buildBlocks(TextView *,
 						DocBlock block,		//	[レイアウト開始位置
@@ -236,6 +243,7 @@ protected:
 private:
 	TextDocument	*m_document;
 	int		m_width;
+	size_t	m_laidoutDocBlockCount;				//	レイアウト済みドキュメントブロック数
 	mutable LaidoutBlock	*m_cacheBlock;
 #if SIMPLE_LAIDOUT_BLOCKS
 	std::gap_vector<size_t>	m_blockSize;		//	ビューブロック長、0 ならは未レイアウト

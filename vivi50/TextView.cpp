@@ -104,6 +104,8 @@ TextView::TextView(QWidget *parent)
 	m_timer->start();
 	resetCursorBlinkTimer();
 #endif
+	//	レイアウトを100行ごとに分割して処理
+	connect(this, SIGNAL(doLayout100Blocks()), this, SLOT(layout100Blocks()), Qt::QueuedConnection);
 }
 
 TextView::~TextView()
@@ -512,6 +514,7 @@ int TextView::textBlockToY(const ViewBlock &block) const
 int getEOLOffset(const QString text);
 void TextView::paintEvent(QPaintEvent * event)
 {
+	qDebug() << "TextView::paintEvent(QPaintEvent * event)";
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
 	//qDebug() << verticalScrollBar()->value();
 
@@ -1121,6 +1124,7 @@ void TextView::doReplaceAll(const QString &findText, ushort options,
 }
 void TextView::resizeEvent(QResizeEvent *event)
 {
+	qDebug() << "TextView::resizeEvent(QResizeEvent *event)";
 	QAbstractScrollArea::resizeEvent(event);
 	const QRect vr = viewport()->rect();
 	m_lbMgr->setWidth(vr.width() - fontMetrics().width(' ') * 4);
@@ -1382,7 +1386,7 @@ void TextView::getReLayoutRangeByBlockNumber(
 		++loBlock;
 	} while( loBlock.docBlockNumber() == dbn );		//	次の論理行まで移動
 	lastBlockNumber = loBlock.docBlockNumber();
-	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber());
+	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber(), lastBlockNumber - block.blockNumber());
 }
 void TextView::getReLayoutRange(ViewCursor cur,
 								DocBlock &block,		//	再レイアウト開始ブロック
@@ -1402,7 +1406,7 @@ void TextView::getReLayoutRange(ViewCursor cur,
 		++loBlock;
 	} while( loBlock.docBlockNumber() == dbn );		//	次の論理行まで移動
 	lastPosition = loBlock.docPosition();
-	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber());
+	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber(), loBlock.index() - block.index());
 #if 0
 	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());	//	次のブロック
 	lastPosition = lastBlockData.position();
@@ -1506,10 +1510,10 @@ void TextView::clearBlocks()
 	m_layoutedDocBlockCount = 0;
 #endif
 }
-void TextView::eraseBlocks(index_t first, index_t last)
+void TextView::eraseBlocks(index_t first, index_t last, size_t delDocBlockCount)
 {
 #if LAIDOUT_BLOCKS_MGR
-	m_lbMgr->erase(first, last);
+	m_lbMgr->erase(first, last, delDocBlockCount);
 #else
 	m_blockSize.erase(first - m_firstUnlayoutedBlockCount, last - m_firstUnlayoutedBlockCount);
 	//m_layoutedDocBlockCount -= last - first;		//	undone D [first, last) はレイアウト済みと仮定
@@ -1616,7 +1620,8 @@ void TextView::updateBlocks()
 			m_lbMgr->setWidth(vr.width() - fontMetrics().width(' ') * 4);
 		}
 		m_lbMgr->clear();
-		m_lbMgr->buildBlocksUntillDocBlockNumber(this, document()->firstBlock());
+		layout100Blocks();
+		//m_lbMgr->buildBlocksUntillDocBlockNumber(this, document()->firstBlock());
 	}
 	//	undone B 垂直スクロールバー位置更新
 	viewport()->update();
@@ -1681,8 +1686,8 @@ void TextView::layoutText(std::vector<size_t> &v, const QString &text,
 }
 void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdLimit, int tabWidth)
 {
-	qDebug() << "TextView::layoutText() block.blockNumber() = " << block.blockNumber()
-				<< QTime::currentTime();
+	//qDebug() << "TextView::layoutText() block.blockNumber() = " << block.blockNumber()
+	//			<< QTime::currentTime();
 	v.clear();
 	index_t pos = block.position();
 	index_t blockPos = pos;
@@ -1715,6 +1720,20 @@ void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdL
 			blockPos = pos;
 		}
 	}
+}
+void TextView::layout100Blocks()
+{
+	const index_t docBlockNummer = m_lbMgr->laidoutDocBlockCount();		//	レイアウト開始ブロック
+	qDebug() << "layout100Blocks() docBlockNummer = " << docBlockNummer;
+	const index_t lastDocBlockNumber = docBlockNummer + 100;			//	最大100行レイアウト
+	DocBlock block = document()->findBlockByNumber(docBlockNummer);
+	m_lbMgr->buildBlocksUntillDocBlockNumber(this,
+												block,
+												m_lbMgr->laidoutViewBlockCount(),
+												0, lastDocBlockNumber);
+
+	if( m_lbMgr->laidoutDocBlockCount() < document()->blockCount() )
+		emit doLayout100Blocks();		//	次の100ブロックをレイアウト
 }
 void TextView::buildBlocks(ViewBlock block, int ht,
 							index_t lastDocBlockNumber)	//	レイアウト範囲

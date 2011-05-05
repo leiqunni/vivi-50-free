@@ -26,19 +26,19 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-94.078,307.793)
   main.cpp	(-178.304,-339.84)
-* mainwindow.cpp	(-128.265,-196.142)
-* mainwindow.h	(-128.265,-229.142)
+  mainwindow.cpp	(-128.265,-196.142)
+  mainwindow.h	(-128.265,-229.142)
   TextDocument.cpp	(-152.875,65.766)
-  TextDocument.h	(-152.875,32.766)
+* TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
   mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(173.104,-82.746)
   unit_test.h	(173.104,-115.746)
-* mainwindowTest.cpp	(-128.265,-130.142)
+  mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(191.416,-176.123)
   charEncoding.h	(191.416,-209.123)
-* textCursor.cpp	(-335.316,-33.0248)
-* textCursor.h	(-335.316,-66.0248)
+  textCursor.cpp	(-335.316,-33.0248)
+  textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
 * TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
@@ -49,8 +49,8 @@ memFileColumnWd = 320
   vivi50_ja.ts	(139,-320)
 * textBlock.cpp	(-243,329)
 * textBlock.h	(-243,296)
-* LayoutThread.cpp	(390,133)
-* LayoutThread.h	(390,100)
+  LayoutThread.cpp	(390,133)
+  LayoutThread.h	(390,100)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
@@ -66,6 +66,6 @@ memFileColumnWd = 320
   "TextView.cpp" 1270 'R: ' '' undone insertText と処理を共通化
   "TextView.cpp" 1293 'R: ' '' undone insertText と処理を共通化
   "TextView.cpp" 1331 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1621 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1642 'B: ' '' undone 未コーディング
-  "textBlock.cpp" 567 'B: ' '' undone チャンクが連続している場合等
+  "TextView.cpp" 1622 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1643 'B: ' '' undone 未コーディング
+  "textBlock.cpp" 570 'B: ' '' undone チャンクが連続している場合等

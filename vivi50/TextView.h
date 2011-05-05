@@ -187,7 +187,7 @@ protected:
 	void	ensureBlockLayout();
 	void	updateBlocks();
 	void	clearBlocks();
-	void	eraseBlocks(index_t, index_t);
+	void	eraseBlocks(index_t, index_t, size_t);
 	void	buildBlocks(ViewBlock, int ht = 0, index_t = 0);
 	//void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
 	void	reLayoutBlocksUntillDocBlockNumber(DocBlock, index_t lastBlockNumber, index_t vbIndex);
@@ -210,10 +210,12 @@ protected:
 	int		lineNumberLength() const;			//	最大行番号桁数
 
 protected slots:
+	void	layout100Blocks();				//	新たに100行レイアウト処理
 	void	onBlockCountChanged();
 	void	onTimer();
 
 signals:
+	void	doLayout100Blocks();			//	次の100行をレイアウト
 	void	printBuffer();
 	void	showMessage(const QString &);
 
