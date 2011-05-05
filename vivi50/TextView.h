@@ -182,6 +182,7 @@ protected:
 	void	resetCursorBlinkTimer();
 	void	clearMultiCursor() { m_multiCursor.clear(); }
 	void	addToMultiCursor();
+	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); };
 	void	getAllCursor(std::vector<ViewCursor*> &);
 	void	ensureBlockLayout();
 	void	updateBlocks();

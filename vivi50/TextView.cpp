@@ -1274,7 +1274,8 @@ void TextView::deleteChar()
 		for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
-			const int sz = document()->deleteChar(**itr);
+			const int sz = deleteChar(**itr);
+			//emit printBuffer();
 			for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 				(*k)->move(-sz);
 				//(*k)->setPosition((*k)->position() - sz);

@@ -691,7 +691,7 @@ void test_TextView()
 		ut.ut_test_equal(0, view.blockSize(3));
 	}
 #endif
-#if 0	//	マルチカーソルテスト
+#if 1	//	マルチカーソルテスト
 	if( 1 ) {		//	マルチカーソル：文字挿入
 		std::vector<ViewCursor*> v;
 		TextView view;
