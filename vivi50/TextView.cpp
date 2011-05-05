@@ -200,10 +200,15 @@ ViewBlock TextView::findBlock(index_t position) const
 		return ViewBlock(const_cast<TextView*>(this),
 							DocBlock((TextDocument*)document(), b), b);
 	}
-	index_t blockPosition;
-	//const index_t ix = findBlockIndex(position, &blockPosition);
-	BlockData d = findBlockData(position);
-	return ViewBlock(const_cast<TextView*>(this), docBlock(d), d);
+	if( !lineBreakMode() ) {
+		DocBlock b = document()->findBlock(position);
+		return ViewBlock((TextView*)this, b, b.data());
+	} else {
+		index_t blockPosition;
+		//const index_t ix = findBlockIndex(position, &blockPosition);
+		BlockData d = findBlockData(position);
+		return ViewBlock(const_cast<TextView*>(this), docBlock(d), d);
+	}
 }
 
 //	ブロック番号（0..*）からブロックを取得
@@ -212,9 +217,7 @@ ViewBlock TextView::findBlockByNumber(index_t bn) const
 #if LAIDOUT_BLOCKS_MGR
 	if( !lineBreakMode() ) {
 		DocBlock b = document()->findBlockByNumber(bn);
-		return ViewBlock((TextView*)this,
-							DocBlock((TextDocument *)document(), b.data()),
-							b.data());
+		return ViewBlock((TextView*)this, b, b.data());
 	} else {
 		LaidoutBlock lb = lbMgr()->findBlockByNumber(bn);
 		return ViewBlock((TextView*)this,
@@ -270,8 +273,12 @@ ViewBlock TextView::findBlockByNumber(index_t bn) const
 BlockData TextView::findBlockData(index_t position) const
 {
 #if LAIDOUT_BLOCKS_MGR
-	LaidoutBlock lb = lbMgr()->findBlock(position);
-	return BlockData(lb.blockNumber(), lb.position());
+	if( !lineBreakMode() ) {
+		return document()->findBlockData(position);
+	} else {
+		LaidoutBlock lb = lbMgr()->findBlock(position);
+		return BlockData(lb.blockNumber(), lb.position());
+	}
 #else
 	//if( position >= size() )
 	//	return BlockData(blockCount(), size());
