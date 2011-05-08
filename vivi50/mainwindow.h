@@ -30,6 +30,8 @@ class QAction;
 class QMenu;
 class QTextEdit;
 class TextView;
+class ViEngine;
+class QLineEdit;
 
 class MainWindow : public QMainWindow
 {
@@ -78,6 +80,10 @@ private slots:
     void	openRecentFile();
 	void	doJump(int lineNum);
     void	showAboutDlg();
+	void	cmdLineTextChanged(const QString & text);
+	void	cmdLineReturnPressed();
+	void	cmdLineCursorPositionChanged(int, int);
+	void	setFocusToCmdLine();
 	void	showMessage(const QString & text);
 	void	printBuffer();
 	void	font();
@@ -89,6 +95,9 @@ private slots:
 
 private:
 	TextView	*m_view;
+	ViEngine	*m_viEngine;
+	QLineEdit	*m_cmdLineEdit;
+	QString		m_cmdText;			//	QLineEdit に実際に入力されたテキスト
 	QTextEdit	*m_output;
 	QString	m_curFile;
 	QString	m_absFilePath;

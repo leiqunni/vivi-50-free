@@ -59,7 +59,7 @@ void addFindStringHist(/*ushort opt,*/ const QString &text)
 	addStringToHist("findStringHist", text);
 }
 
-FindDlg::FindDlg(QWidget *parent, ushort matchCase)
+FindDlg::FindDlg(const QString &text, QWidget *parent, ushort matchCase)
 	: QDialog(parent)
 {
 	setWindowTitle(tr("Find Dialog"));
@@ -73,6 +73,8 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 		QFontMetrics fm = m_findStringCB->fontMetrics();
 		m_findStringCB->setMinimumWidth(fm.width('8')*32);
 		m_findStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
+		if( !text.isEmpty() )
+			m_findStringCB->addItem(text);
 	    QSettings settings;
 	    QStringList hist = settings.value("findStringHist").toStringList();
 	    for(int ix = hist.size(); ix != 0; )
@@ -87,6 +89,7 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 			m_caseComboBox->setCurrentIndex(matchCase);
 			m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayout2->addWidget(m_caseComboBox);
+#if 0
 		m_dirGroup = new QGroupBox(tr("direction"));
 			QHBoxLayout *hBoxLayout3 = new QHBoxLayout();
 			QRadioButton *ptr;
@@ -95,6 +98,7 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 			ptr->setChecked(true);
 			m_dirGroup->setLayout(hBoxLayout3);
 			vBoxLayout2->addWidget(m_dirGroup);
+#endif
 		hBoxLayout2->addLayout(vBoxLayout2);
 		hBoxLayout2->addStretch();
 	QVBoxLayout *vBoxLayoutLeft = new QVBoxLayout();
@@ -103,6 +107,9 @@ FindDlg::FindDlg(QWidget *parent, ushort matchCase)
 		vBoxLayoutLeft->addStretch();
 
 	QVBoxLayout *vBoxLayoutRight = new QVBoxLayout();	//	ボタン配置用
+		QPushButton *findPrev = new QPushButton(tr("FindPrev"));
+		connect(findPrev, SIGNAL(clicked()), this, SLOT(onFindPrev()));
+		vBoxLayoutRight->addWidget(findPrev);
 		QPushButton *findNext = new QPushButton(tr("FindNext"));
 		connect(findNext, SIGNAL(clicked()), this, SLOT(onFindNext()));
 		findNext->setDefault(true);
@@ -132,16 +139,28 @@ void FindDlg::onFindClose()
 	onFindNext();
 	close();
 }
-void FindDlg::onFindNext()
+void FindDlg::onFindPrev()
 {
 	const QString findString = m_findStringCB->currentText();
-	//const QString findString = m_findStringEdit->text();
 	if( !findString.isEmpty() ) {
 		ushort options = 0;
 		if( m_caseComboBox->currentIndex() == 1 )
 			options |= MatchCase;
+		emit doFindNext(findString, options | FindBackWard);
+		addFindStringHist(findString);
+	}
+}
+void FindDlg::onFindNext()
+{
+	const QString findString = m_findStringCB->currentText();
+	if( !findString.isEmpty() ) {
+		ushort options = 0;
+		if( m_caseComboBox->currentIndex() == 1 )
+			options |= MatchCase;
+#if 0
 		if( m_findBackWard->isChecked() != 0 )
 			options |= FindBackWard;
+#endif
 		emit doFindNext(findString, options);
 		addFindStringHist(findString);
 	}

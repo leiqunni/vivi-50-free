@@ -175,6 +175,7 @@ protected:
     void	mouseMoveEvent ( QMouseEvent * event );
     void	mouseDoubleClickEvent ( QMouseEvent * event );
     QVariant	inputMethodQuery ( Qt::InputMethodQuery query ) const;
+	void	doPaint();
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
 	void	drawLineNumbers();
@@ -224,13 +225,17 @@ private:
 	bool	m_toDeleteIMEPreeditText;
 	bool	m_drawCursor;
 	bool	m_lineBreakMode;					//	右端で折り返し
+	bool	m_lineBreaking;						//	折り返し処理中
 	ViewCursor	m_viewTextCursor;
 	std::vector<ViewCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる
 	ViewCursor	*m_preeditPosCursor;
 	QString	m_preeditString;
 	TextDocument	*m_document;
-	ViewCursor	*m_textCursor;		//	ビュー用カーソル
+	ViewCursor	*m_textCursor;					//	ビュー用カーソル
+	mutable bool		m_validFirstVisibleBlock;		//	m_firstVisibleBlock 有効
+	mutable size_t		m_firstVisibleDocBlockNumber;
+	mutable BlockData	m_firstVisibleBlock;			//	表示開始行
 	int		m_viewportWidth;
 	QWidget	*m_lineNumberArea;
 	int		m_lineNumberAreaWidth;

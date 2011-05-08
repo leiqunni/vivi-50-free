@@ -45,11 +45,12 @@ public:
 	enum {
 	};
 public:
-	FindDlg(QWidget *parent = 0, ushort = IgnoreCase);
+	FindDlg(const QString &, QWidget *parent = 0, ushort = IgnoreCase);
 	~FindDlg();
 
 protected slots:
 	void	onFindNext();
+	void	onFindPrev();
 	void	onFindClose();
 
 signals:

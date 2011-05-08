@@ -67,6 +67,10 @@ TextView::TextView(QWidget *parent)
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
 	m_lineBreakMode = false;
+	m_lineBreaking = false;
+	m_validFirstVisibleBlock = true;
+	m_firstVisibleDocBlockNumber = 0;
+	m_firstVisibleBlock = BlockData(0, 0);
 #if !LAIDOUT_BLOCKS_MGR
 	m_firstUnlayoutedBlockCount = 0;
 	m_layoutedDocBlockCount = 0;
@@ -493,12 +497,21 @@ ViewBlock TextView::yToTextBlock(int py) const
 }
 ViewBlock TextView::firstVisibleBlock() const
 {
+	if( m_lineBreaking ) {
+		if( m_validFirstVisibleBlock )
+			return ViewBlock((TextView*)this, docBlock(m_firstVisibleBlock), m_firstVisibleBlock);
+		DocBlock db = document()->findBlockByNumber(m_firstVisibleDocBlockNumber);
+		index_t bn = m_lbMgr->blockNumberFromDocBlockNumber(db.blockNumber());
+		BlockData b(bn, db.position());
+		return ViewBlock((TextView*)this, db, b);
+	}
 	//QFontMetrics fm = fontMetrics();
 	const index_t v = verticalScrollBar()->value();
 
 	//DocBlock d = m_document->findBlockByNumber();
-	BlockData b = findBlockByNumber(v).data();
-	return ViewBlock((TextView*)this, docBlock(b), b);
+	m_validFirstVisibleBlock = true;
+	m_firstVisibleBlock = findBlockByNumber(v).data();
+	return ViewBlock((TextView*)this, docBlock(m_firstVisibleBlock), m_firstVisibleBlock);
 }
 int TextView::textBlockToY(const ViewBlock &block) const
 {
@@ -514,10 +527,14 @@ int TextView::textBlockToY(const ViewBlock &block) const
 int getEOLOffset(const QString text);
 void TextView::paintEvent(QPaintEvent * event)
 {
-	qDebug() << "TextView::paintEvent(QPaintEvent * event)";
+	//qDebug() << "TextView::paintEvent(QPaintEvent * event)";
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
 	//qDebug() << verticalScrollBar()->value();
+	doPaint();
+}
 
+void TextView::doPaint()
+{
 #if LAZY_LAIDOUT
 	if( m_lineBreakMode )
 		ensureBlockLayout();		//	未レイアウトの場合はレイアウト処理
@@ -690,6 +707,9 @@ void TextView::ensureCursorVisible()
 	else
 		bn = qMin( curBlock.viewBlockNumber(), (size_t)verticalScrollBar()->maximum() );
 	verticalScrollBar()->setValue(bn);
+	m_firstVisibleDocBlockNumber = m_lbMgr->docBlockNumberFromBlockNumber(bn);
+	m_firstVisibleBlock = findBlockByNumber(bn).data();
+	m_validFirstVisibleBlock = true;
 	const index_t v = verticalScrollBar()->value();
 	viewport()->update();
 }
@@ -1061,7 +1081,13 @@ void TextView::replace()
 }
 void TextView::find()
 {
-	FindDlg aDlg;
+	QString text;
+	if( m_textCursor->hasSelection() &&
+		m_textCursor->blockData().m_index == m_textCursor->anchorBlockData().m_index )
+	{
+		text = m_textCursor->selectedText();
+	}
+	FindDlg aDlg(text);
 	connect(&aDlg, SIGNAL(doFindNext(const QString &, ushort)),
 			this, SLOT(doFindNext(const QString &, ushort)));
 	aDlg.exec();
@@ -1119,6 +1145,8 @@ void TextView::doReplaceAll(const QString &findText, ushort options,
 							const QString &replaceText)
 {
 	document()->doReplaceAll(findText, options, replaceText);
+	//clearBlocks();
+	updateBlocks();
 	ensureCursorVisible();
 	viewport()->update();
 }
@@ -1128,6 +1156,8 @@ void TextView::resizeEvent(QResizeEvent *event)
 	QAbstractScrollArea::resizeEvent(event);
 	const QRect vr = viewport()->rect();
 	m_lbMgr->setWidth(vr.width() - fontMetrics().width(' ') * 4);
+	ViewBlock block = firstVisibleBlock();
+	index_t docBlockNumber = block.docBlockNumber();
 	if( m_lineBreakMode ) {
 		updateBlocks();
 		m_textCursor->updateViewBlock();
@@ -1136,6 +1166,12 @@ void TextView::resizeEvent(QResizeEvent *event)
 	updateLineNumberAreaSize();
 	//onBlockCountChanged();
 	updateScrollBarData();
+	if( m_lineBreakMode ) {
+		index_t viewBlockNumber = m_lbMgr->blockNumberFromDocBlockNumber(docBlockNumber);
+		verticalScrollBar()->setValue(viewBlockNumber);
+	}
+	//repaint();
+	doPaint();		//	強制表示
 }
 void TextView::updateLineNumberAreaSize()
 {
@@ -1620,7 +1656,11 @@ void TextView::updateBlocks()
 			m_lbMgr->setWidth(vr.width() - fontMetrics().width(' ') * 4);
 		}
 		m_lbMgr->clear();
-		layout100Blocks();
+		if( !m_lineBreaking ) {
+			m_lineBreaking = true;		//	折り返し処理中
+			m_firstVisibleDocBlockNumber = m_lbMgr->docBlockNumberFromBlockNumber(m_firstVisibleDocBlockNumber);
+			layout100Blocks();
+		}
 		//m_lbMgr->buildBlocksUntillDocBlockNumber(this, document()->firstBlock());
 	}
 	//	undone B 垂直スクロールバー位置更新
@@ -1723,6 +1763,9 @@ void TextView::layoutText(std::vector<size_t> &v, const DocBlock &block, int wdL
 }
 void TextView::layout100Blocks()
 {
+	ViewBlock fvBlock = firstVisibleBlock();
+	//const index_t fvDocBlockNumber = fvBlock.docBlockNumber();				//	表示開始行
+	//qDebug() << "fvDocBlockNumber = " << fvDocBlockNumber;
 	const index_t docBlockNummer = m_lbMgr->laidoutDocBlockCount();		//	レイアウト開始ブロック
 	qDebug() << "layout100Blocks() docBlockNummer = " << docBlockNummer;
 	const index_t lastDocBlockNumber = docBlockNummer + 100;			//	最大100行レイアウト
@@ -1732,8 +1775,15 @@ void TextView::layout100Blocks()
 												m_lbMgr->laidoutViewBlockCount(),
 												0, lastDocBlockNumber);
 
+	updateScrollBarData();
+	if( docBlockNummer < m_firstVisibleDocBlockNumber ) {
+		index_t viewBlockNumber = m_lbMgr->blockNumberFromDocBlockNumber(m_firstVisibleDocBlockNumber);
+		verticalScrollBar()->setValue(viewBlockNumber);
+	}
 	if( m_lbMgr->laidoutDocBlockCount() < document()->blockCount() )
 		emit doLayout100Blocks();		//	次の100ブロックをレイアウト
+	else
+		m_lineBreaking = false;			//	レイアウト処理終了
 }
 void TextView::buildBlocks(ViewBlock block, int ht,
 							index_t lastDocBlockNumber)	//	レイアウト範囲

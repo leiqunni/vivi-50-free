@@ -68,6 +68,11 @@ void MainWindow::init()
 
 	connect(m_view, SIGNAL(showMessage(const QString &)), this, SLOT(showMessage(const QString &)));
     connect(m_view->document(), SIGNAL(contentsChanged()), this, SLOT(documentWasModified()));
+	statusBar()->addWidget(m_cmdLineEdit = new QLineEdit(), 1);
+	m_cmdLineEdit->installEventFilter(this);
+	connect(m_cmdLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(cmdLineTextChanged(const QString &)));
+	connect(m_cmdLineEdit, SIGNAL(returnPressed()), this, SLOT(cmdLineReturnPressed()));
+	connect(m_cmdLineEdit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(cmdLineCursorPositionChanged(int, int)));
 
 	createActions();
 	createMenus();
@@ -686,6 +691,41 @@ void MainWindow::font()
 	    settings.setValue("fontSize", font.pointSize());
 	} else {
 	}
+}
+void MainWindow::cmdLineReturnPressed()
+{
+	QString text = m_cmdLineEdit->text();
+#if 0	///
+	if( !text.isEmpty() ) {
+		if( text[0] == ':' )
+			m_viEngine->doExCommand(text.mid(1));
+		else
+			m_viEngine->doFind(text.mid(1), text[0] == '/');
+	}
+	m_viEngine->setMode(CMD);
+#endif
+}
+void MainWindow::cmdLineCursorPositionChanged(int oldPos, int newPos)
+{
+	//qDebug() << "MainWindow::cmdLineCursorPositionChanged()";
+#if 0	///
+	if( newPos == 0 )
+		m_cmdLineEdit->setCursorPosition(1);
+#endif
+}
+void MainWindow::cmdLineTextChanged(const QString & text)
+{
+	//qDebug() << "MainWindow::cmdLineTextChanged()";
+	m_cmdText = text;
+#if 0	///
+	if( text.isEmpty() || (text[0] != ':' && text[0] != '/' && text[0] != '?') )
+		m_viEngine->setMode(CMD);
+#endif
+}
+void MainWindow::setFocusToCmdLine()
+{
+	//qDebug() << "MainWindow::setFocusToCmdLine()";
+	m_cmdLineEdit->setFocus(Qt::OtherFocusReason);
 }
 void MainWindow::showMessage(const QString & text)
 {

@@ -443,7 +443,7 @@ size_t LaidoutBlocksMgr::blockNumberFromDocBlockNumber(index_t number) const
 	LaidoutBlock b = findBlockByDocNumber(number);
 	return b.blockNumber();
 }
-size_t LaidoutBlocksMgr::docBlockNumberFromNumber(index_t number) const
+size_t LaidoutBlocksMgr::docBlockNumberFromBlockNumber(index_t number) const
 {
 	LaidoutBlock b = findBlockByNumber(number);
 	return b.docBlockNumber();

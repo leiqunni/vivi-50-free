@@ -194,7 +194,7 @@ public:
 	size_t	blockSize(index_t ix) const { return viewBlockSize(ix); }
 
 	size_t	blockNumberFromDocBlockNumber(index_t) const;
-	size_t	docBlockNumberFromNumber(index_t) const;
+	size_t	docBlockNumberFromBlockNumber(index_t) const;
 
 	int		width() const { return m_width; }
 	size_t	laidoutDocBlockCount() const { return m_laidoutDocBlockCount; }
