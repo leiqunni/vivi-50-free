@@ -315,13 +315,13 @@ bool gotoStartOfWord(DocCursor &cur)
 	int pos = cur.position();
 	int ix = cur.prevCharsCount();
 	//	ひとつ前の文字が同じタイプ and 空白類になるまで or 行頭まで読み飛ばす
-	if( ix > 0 && !isTabOrSpace(text[ix-1]) ) {
-		uchar cat = getCharType(text[--ix]);
+	if( !ix || isTabOrSpace(text[ix-1]) ) return false;
+	const uchar cat = getCharType(text[ix]);
+	if( cat != getCharType(text[--ix]) ) return false;	//	単語先頭にいる場合
+	do { } while( !isUTF8FirstChar((*doc)[--pos]) );
+	while( ix > 0 && !isTabOrSpace(text[ix-1]) && getCharType(text[ix-1]) == cat ) {
+		--ix;
 		do { } while( !isUTF8FirstChar((*doc)[--pos]) );
-		while( ix > 0 && !isTabOrSpace(text[ix-1]) && getCharType(text[ix-1]) == cat ) {
-			--ix;
-			do { } while( !isUTF8FirstChar((*doc)[--pos]) );
-		}
 	}
 	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;

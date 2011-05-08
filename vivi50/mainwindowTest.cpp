@@ -208,6 +208,25 @@ void test_TextDocument()
 	}
 	if( 1 ) {
 		TextDocument doc;
+		doc.setPlainText(QString("abc###\n"));
+		DocCursor cur(&doc);		//	êÊì™à íu
+		cur.movePosition(DocCursor::StartOfWord);
+		ut.ut_test_equal(0, cur.position());		//	abc
+		cur.setPosition(1);
+		cur.movePosition(DocCursor::StartOfWord);
+		ut.ut_test_equal(0, cur.position());		//	abc
+		cur.setPosition(2);
+		cur.movePosition(DocCursor::StartOfWord);
+		ut.ut_test_equal(0, cur.position());		//	abc
+		cur.setPosition(3);
+		cur.movePosition(DocCursor::StartOfWord);
+		ut.ut_test_equal(3, cur.position());		//	###
+		cur.setPosition(4);
+		cur.movePosition(DocCursor::StartOfWord);
+		ut.ut_test_equal(3, cur.position());		//	###
+	}
+	if( 1 ) {
+		TextDocument doc;
 		doc.setPlainText(QString("line-1\nline-2\nline-3\nline-4\n"));
 		index_t bp;
 		ut.ut_test_equal(0, doc.findBlockIndex(0, &bp));
