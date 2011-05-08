@@ -26,6 +26,7 @@
 #include	"textCursor.h"
 #include	"FindDlg.h"
 #include	"ReplaceDlg.h"
+#include	"viEngine.h"
 #include	<math.h>
 #include	<QDebug>
 
@@ -63,6 +64,7 @@ void print(const std::vector<ViewCursor*> &v)
 TextView::TextView(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
+	m_viEngine = 0;
 	m_mouseCaptured = false;
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
@@ -116,6 +118,10 @@ TextView::~TextView()
 {
 	delete m_document;
 	delete m_textCursor;
+}
+void TextView::setViEngine(ViEngine *viEngine)
+{
+	m_viEngine = viEngine;
 }
 void TextView::setOverwriteMode(bool)
 {
@@ -621,18 +627,24 @@ void TextView::doPaint()
 		}
 		if( m_drawCursor ) {
 			if( m_textCursor->block() == block) {		//	カーソルがブロック内にある場合
+				drawCursor(painter, *m_textCursor, block, text, y, Qt::red);
+#if 0
 				const int offset = qMin(block.charsCount(m_textCursor->position()),
 											text.length());
 				int x = charCountToX(text, offset);
 				painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::red);
+#endif
 			}
 			while( mcitr != mciend && mcitr->block() < block )
 				++mcitr;
 			while( mcitr != mciend && mcitr->block() == block) {		//	カーソルがブロック内にある場合
+				drawCursor(painter, *mcitr, block, text, y, Qt::green);
+#if 0
 				const int offset = qMin(block.charsCount(mcitr->position()),
 											text.length());
 				int x = charCountToX(text, offset);
 				painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, 2, fm.height()), Qt::green);
+#endif
 				++mcitr;
 			}
 		}
@@ -692,6 +704,34 @@ void TextView::doPaint()
 	//qDebug() << m_preeditPosCursor->block().index() << " '" << m_preeditString << "'";
 	m_lineNumberArea->update();
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
+}
+
+void TextView::drawCursor(QPainter &painter,
+							const ViewCursor &cur,
+							ViewBlock &block,
+							const QString &text,
+							int y,
+							const QColor &color)
+{
+	QFontMetrics fm = fontMetrics();
+	const int offset = qMin(block.charsCount(cur.position()),
+								text.length());
+	int x = charCountToX(text, offset);
+	int wd = 2;
+	int ht = fm.height();
+	switch( m_viEngine->mode() ) {
+	case CMD: {
+		QChar ch = document()->charAt(cur.position());
+		if( ch == QChar() ) ch = QChar('[');
+		wd = fm.width(ch);
+		y += ht / 2;
+		ht -= ht / 2;
+		break;
+	}
+	case INSERT:
+		break;
+	}
+	painter.fillRect(QRect(x + MARGIN_LEFT + 1, y+2, wd, ht), color);
 }
 void TextView::ensureCursorVisible()
 {
@@ -937,9 +977,12 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 	}
 	QString text = keyEvent->text();
 	if( !text.isEmpty() ) {
+		m_viEngine->doViCommand(text);
+#if 0
 		insertText(text);
 		ensureCursorVisible();
 		viewport()->update();
+#endif
 	}
 }
 void TextView::wheelEvent ( QWheelEvent * event )

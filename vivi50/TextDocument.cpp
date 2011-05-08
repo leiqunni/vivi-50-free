@@ -207,6 +207,19 @@ void TextDocument::init()
 	//m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
 }
+QChar TextDocument::charAt(index_t ix) const
+{
+	if( ix >= size() ) return QChar();
+	QByteArray ba;
+	ba.reserve(3);
+	size_t sz = UTF8CharSize(at(ix));
+	while( sz != 0 ) {
+		ba += at(ix++);
+		--sz;
+	}
+	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+	return codec->toUnicode(ba)[0];
+}
 size_t TextDocument::blockSize(index_t ix) const
 {
 	if( ix >= m_blocks.size() ) return 0;

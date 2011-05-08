@@ -276,6 +276,7 @@ public:
 	size_t	blockSize(index_t ix) const;
 	uchar	operator[](index_t ix) const { return m_buffer[ix]; }
 	uchar	at(index_t ix) const { return m_buffer[ix]; }
+	QChar	charAt(index_t ix) const;
 	QString	toPlainText() const;
 	bool	isMatch(index_t, cuchar *, cuchar *, ushort) const;		//	’Pƒ”äŠrŠÖ”
 	bool	isMatch(index_t, cuchar *, cuchar *) const;		//	’Pƒ”äŠrŠÖ”

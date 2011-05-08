@@ -25,8 +25,9 @@
 #include "TextView.h"
 #include "TextDocument.h"
 #include "charEncoding.h"
+#include "ViEngine.h"
 
-#define	VERSION_STR			"5.0.013 Dev"
+#define	VERSION_STR			"5.0.014 Dev"
 
 MainWindow *pMainWindow;
 
@@ -56,7 +57,9 @@ void MainWindow::init()
 	m_unitTestDoc = true;
 	m_unitTestLaidoutBlocksMgr = true;
 	m_unitTestView = true;
-	m_view = new TextView;
+	m_viEngine = new ViEngine();
+	m_viEngine->setEditor(m_view = new TextView);
+	m_view->setViEngine(m_viEngine);
 	connect(m_view, SIGNAL(printBuffer()), this, SLOT(printBuffer()));
     QSettings settings;    const QString fontName = settings.value("fontName", "").toString();
     const int fontSize = settings.value("fontSize", 0).toInt();

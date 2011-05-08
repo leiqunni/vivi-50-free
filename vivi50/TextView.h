@@ -32,6 +32,7 @@
 #include	"textBlock.h"
 #include	"textCursor.h"
 
+class ViEngine;
 class TextView;
 class ViewCursor;
 class TextDocument;
@@ -120,6 +121,7 @@ public:
 
 public:
 	TextDocument	*document() { return m_document; }
+	void	setViEngine(ViEngine *);
 	void	doJump(int lineNum);
 	void	doVertScroll(int);
 	void	setOverwriteMode(bool);
@@ -186,6 +188,8 @@ protected:
     void	mouseMoveEvent ( QMouseEvent * event );
     void	mouseDoubleClickEvent ( QMouseEvent * event );
     QVariant	inputMethodQuery ( Qt::InputMethodQuery query ) const;
+	void	drawCursor(QPainter &painter, const ViewCursor &, ViewBlock &,
+						const QString &text, int y, const QColor &color);
 	void	doPaint();
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
@@ -236,6 +240,7 @@ private:
 	bool	m_drawCursor;
 	bool	m_lineBreakMode;					//	右端で折り返し
 	bool	m_lineBreaking;						//	折り返し処理中
+	ViEngine	*m_viEngine;
 	ViewCursor	m_viewTextCursor;
 	std::vector<ViewCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる

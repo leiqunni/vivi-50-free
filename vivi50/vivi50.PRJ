@@ -26,21 +26,21 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-84.078,377.793)
   main.cpp	(-178.304,-339.84)
-  mainwindow.cpp	(-128.265,-196.142)
-  mainwindow.h	(-128.265,-229.142)
-  TextDocument.cpp	(-152.875,65.766)
-  TextDocument.h	(-152.875,32.766)
+* mainwindow.cpp	(-128.265,-196.142)
+* mainwindow.h	(-128.265,-229.142)
+* TextDocument.cpp	(-152.875,65.766)
+* TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
   mainwindowBench.cpp	(-128.265,-163.142)
   unit_test.cpp	(-353.896,-154.746)
   unit_test.h	(-353.896,-187.746)
-  mainwindowTest.cpp	(-128.265,-130.142)
+* mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(133.416,-154.123)
   charEncoding.h	(133.416,-187.123)
 * textCursor.cpp	(-335.316,-33.0248)
   textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
-  TextView.h	(44.6123,-64.8647)
+* TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
   FindDlg.h	(49.637,166.277)
   findOpt.h	(241,304)
@@ -52,29 +52,29 @@ memFileColumnWd = 320
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
   ViEngine.cpp	(219,-29)
-  ViEngine.h	(219,-62)
-  vi.h	(376,-15)
+* ViEngine.h	(219,-62)
+* vi.h	(376,-15)
   viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 78 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 796 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
+  "TextDocument.cpp" 809 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 415 'B: ' '' undone 暫定コード
   "textCursor.cpp" 426 'B: ' '' undone 暫定コード
-  "TextView.cpp" 902 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1043 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1049 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1071 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1072 'B: ' '' undone 暫定コード
+  "TextView.cpp" 942 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1083 'B: ' '' undone 暫定コード
   "TextView.cpp" 1089 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1090 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1340 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1363 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1401 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1696 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1721 'B: ' '' undone 未コーディング
+  "TextView.cpp" 1111 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1112 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1129 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1130 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1380 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1403 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1441 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1728 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1753 'B: ' '' undone 未コーディング
   "textBlock.cpp" 576 'B: ' '' undone チャンクが連続している場合等
   "ViEngine.cpp" 777 'R: ' '' undone delete の場合と処理を共通化する
   "ViEngine.cpp" 846 'B: ' '' undone 未コーディング
