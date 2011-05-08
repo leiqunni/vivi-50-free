@@ -676,7 +676,10 @@ void ViewCursor::swapPositionAnchor()
 bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 {
 	if( isNull() || !n ) return false;
+	ViewBlock vb = block();
+	index_t pos = position();
 	switch( move ) {
+	case ViMoveOperation::Up:	//	暫定コード
 	case Up:
 		while( n != 0 ) {
 			if( !m_viewBlockData.m_index ) break;
@@ -689,6 +692,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		//movePosition(Right, KeepAnchor, view()->xToCharCount(block().text(), m_x));
 		m_blockData = view()->docBlockData(m_viewBlockData);
 		break;
+	case ViMoveOperation::Down:	//	暫定コード
 	case Down:
 		while( n != 0 ) {
 			if( m_viewBlockData.m_index >= view()->blockCount() - 1 ) break;
@@ -701,6 +705,18 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		//movePosition(Right, KeepAnchor, view()->xToCharCount(block().text(), m_x));
 		m_blockData = view()->docBlockData(m_viewBlockData);
 		break;
+	case ViMoveOperation::Left:
+		n = qMin(n, pos - vb.position());
+		move = DocCursor::Left;
+		goto moveDocCursor;
+	case ViMoveOperation::Right: {
+		if( !vb.EOLOffset() ) return false;		//	改行 or EOF オンリー行の場合
+		const int endpos = vb.position() + vb.EOLOffset() - 1;
+		if( pos >= endpos ) return false;
+		n = qMin(n, endpos - pos);
+		move = DocCursor::Right;
+		goto moveDocCursor;
+	}
 	case StartOfBlock:
 		m_position = m_viewBlockData.position();
 		m_offset = 0;
@@ -711,6 +727,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		m_offset = 0xffffffff;
 		m_x = -1;
 		break;
+moveDocCursor:
 	default:
 		if( !DocCursor::movePosition(move, mode, n) )
 			return false;

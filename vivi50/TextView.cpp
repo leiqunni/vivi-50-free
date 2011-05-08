@@ -348,6 +348,13 @@ void TextView::resetCursorBlinkTimer()
 	m_tickCount = m_timer->elapsed();
 }
 #endif
+void TextView::setTextCursor(const ViewCursor &cur)
+{
+	*m_textCursor = cur;
+	ensureCursorVisible();
+	resetCursorBlink();
+	viewport()->update();
+}
 void TextView::onTimer()
 {
 	m_drawCursor = !m_drawCursor;
@@ -722,7 +729,7 @@ void TextView::drawCursor(QPainter &painter,
 	switch( m_viEngine->mode() ) {
 	case CMD: {
 		QChar ch = document()->charAt(cur.position());
-		if( ch == QChar() ) ch = QChar('[');
+		if( ch.unicode() < 0x20 ) ch = QChar('[');
 		wd = fm.width(ch);
 		y += ht / 2;
 		ht -= ht / 2;

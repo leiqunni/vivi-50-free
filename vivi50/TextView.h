@@ -133,7 +133,7 @@ public:
 	ViewBlock	lastBlock() const;
 	ViewBlock	findBlock(index_t) const;
 
-	void	setTextCursor(const ViewCursor &cur) { *m_textCursor = cur; }
+	void	setTextCursor(const ViewCursor &cur);
 	void	setLineBreakMode(bool b) { onLineBreak(b); }
 
 	void	doDelete(int, int);
