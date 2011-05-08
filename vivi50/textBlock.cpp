@@ -186,6 +186,12 @@ index_t ViewBlock::EOLOffset() const
 	return size() - newlineLength(position() + size());
 }
 
+ViewBlock &ViewBlock::operator=(const DocBlock &docBlock)
+{
+	*((DocBlock*)this) = docBlock;
+	m_viewBlock = docBlock.data();
+	return *this;
+}
 ViewBlock &ViewBlock::operator++()
 {
 #if LAIDOUT_BLOCKS_MGR

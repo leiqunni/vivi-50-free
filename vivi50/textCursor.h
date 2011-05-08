@@ -44,6 +44,8 @@ public:
 		EndOfWord,
 		NextWord,
 		PrevWord,
+		NextBlock,
+		PrevBlock,
 		StartOfBlock,
 		EndOfBlock,
 		StartOfDocument,
@@ -94,6 +96,7 @@ public:
 	bool	hasSelection() const { return m_position != m_anchor; }
 	bool	isNull() const { return m_document == 0; }
 	bool	atEnd() const;	// { return isNull() || m_position >= m_document->size(); }
+	bool	atBlockEnd() const;
 	bool	isOverlapped(const DocCursor &) const;
 	QString	selectedText() const;
 #if TEXT_CURSOR_BLOCK

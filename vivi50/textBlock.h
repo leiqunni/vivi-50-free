@@ -127,6 +127,7 @@ public:
 	{ return m_view == x.m_view && blockNumber() < x.blockNumber(); }
 
 public:
+	ViewBlock	&operator=(const DocBlock &);
 	ViewBlock	&operator++();
 
 protected:

@@ -115,18 +115,29 @@ public:
 #if LAIDOUT_BLOCKS_MGR
 	LaidoutBlocksMgr	*lbMgr() const { return m_lbMgr; }
 #endif
+	const ViewBlock *firstVisibleBlockPtr() const;
+	const ViewBlock *lastVisibleBlockPtr() const;
 
 public:
 	TextDocument	*document() { return m_document; }
 	void	doJump(int lineNum);
+	void	doVertScroll(int);
+	void	setOverwriteMode(bool);
 	void	onFontChanged();
 
 public:
-	ViewBlock	firstBlock();
-	ViewBlock	lastBlock();
+	ViewCursor	textCursor() { return *m_textCursor; }
+	ViewBlock	firstBlock() const;
+	ViewBlock	lastBlock() const;
 	ViewBlock	findBlock(index_t) const;
 
+	void	setTextCursor(const ViewCursor &cur) { *m_textCursor = cur; }
 	void	setLineBreakMode(bool b) { onLineBreak(b); }
+
+	void	doDelete(int, int);
+	void	doOpenLine(bool next = true);		//	next = false ならば、直前に行オープン
+	void	doUndo(int n = 1);
+	void	doRedo(int n = 1);
 
 	void	deleteChar();
 	void	deletePreviousChar();
@@ -179,7 +190,6 @@ protected:
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
 	void	drawLineNumbers();
-	void	setTextCursor(const ViewCursor &cur) { *m_textCursor = cur; }
 	void	resetCursorBlinkTimer();
 	void	clearMultiCursor() { m_multiCursor.clear(); }
 	void	addToMultiCursor();

@@ -217,6 +217,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\viCursor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ViEngine.cpp"
 				>
 			</File>

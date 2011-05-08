@@ -24,9 +24,10 @@
 #include "vi.h"
 #include "ViEngine.h"
 #include "TextView.h"
-///#include "viCursor.h"
+#include "TextDocument.h"
+#include "viCursor.h"
 
-#if 0
+#if 1
 ViEngine::ViEngine(QObject *parent)
 	: m_noInsModeAtImeOpenStatus(false), m_mode(CMD), m_editor(0)
 	, m_redoRecording(false), m_redoing(false), m_redoRepeatCount(0)
@@ -42,6 +43,10 @@ ViEngine::ViEngine(QObject *parent)
 ViEngine::~ViEngine()
 {
 
+}
+TextDocument *ViEngine::document()
+{
+	return editor()->document();
 }
 void ViEngine::setEditor(TextView *editor)
 {
@@ -99,8 +104,8 @@ bool ViEngine::processKeyPressEvent( QKeyEvent * event )
 void ViEngine::printCursorPosition()
 {
 	QString mess;
-	QTextCursor cur = m_editor->textCursor();
-	QTextBlock block = cur.block();
+	ViewCursor cur = m_editor->textCursor();
+	ViewBlock block = cur.block();
 	if( block.isValid() ) {
 		mess = QString(tr("pos = %1 block.length() = %2 textLen = %3"))
 				.arg(cur.position()).arg(block.length()).arg(block.text().length());
@@ -113,16 +118,17 @@ void ViEngine::printCursorPosition()
 //	前行末尾に空白類が無い場合のみ、半角空白を挿入
 void ViEngine::doJoin(int n)
 {
-	ViCursor cur = m_editor->textCursor();
+	ViewCursor cur = m_editor->textCursor();
 	int pos = cur.position();
-	cur.beginEditBlock();
+	document()->openUndoBlock();
+	//cur.beginEditBlock();
 	do {
-		QTextBlock block = cur.block();
-		QTextBlock next = block.next();
+		ViewBlock block = cur.block();
+		ViewBlock next = block.next();
 		if( !next.isValid() ) break;
 		cur.setPosition(pos = block.position() + block.text().length());
-		cur.setPosition(next.position(), QTextCursor::KeepAnchor);
-		cur.movePosition(ViMoveOperation::FirstNonBlankChar, QTextCursor::KeepAnchor);
+		cur.setPosition(next.position(), DocCursor::KeepAnchor);
+		cur.movePosition(ViMoveOperation::FirstNonBlankChar, DocCursor::KeepAnchor);
 		QChar lastChar;
 		if( !block.text().isEmpty() )
 			lastChar = block.text().at(block.text().length() - 1);
@@ -130,17 +136,19 @@ void ViEngine::doJoin(int n)
 			cur.deleteChar();
 		else
 			cur.insertText(" ");
-		//cur.movePosition(QTextCursor::Right);	//	空白位置に移動
+		//cur.movePosition(DocCursor::Right);	//	空白位置に移動
 	} while( --n > 1 );		//	2J までは１回だけjoin
-	cur.endEditBlock();
+	document()->closeUndoBlock();
+	//cur.endEditBlock();
 	cur.setPosition(pos);	//	最後の空白位置に移動
 	m_editor->setTextCursor(cur);
 }
-bool ViEngine::doShiftRight(QTextCursor &cur, int n)
+bool ViEngine::doShiftRight(ViewCursor &cur, int n)
 {
 	int pos = cur.position();
-	cur.beginEditBlock();
-	QTextBlock block = cur.block();
+	document()->openUndoBlock();
+	//cur.beginEditBlock();
+	ViewBlock block = cur.block();
 	do {
 		cur.setPosition(block.position());
 		cur.insertText("\t");
@@ -150,15 +158,17 @@ bool ViEngine::doShiftRight(QTextCursor &cur, int n)
 	cur.setPosition(pos);
 	moveCursor(cur, ViMoveOperation::FirstNonBlankChar);
 	m_editor->setTextCursor(cur);
-	cur.endEditBlock();
+	document()->closeUndoBlock();
+	//cur.endEditBlock();
 	m_editor->viewport()->update();
 	return true;
 }
-bool ViEngine::doShiftLeft(QTextCursor &cur, int n)
+bool ViEngine::doShiftLeft(ViewCursor &cur, int n)
 {
 	int pos = cur.position();
-	cur.beginEditBlock();
-	QTextBlock block = cur.block();
+	document()->openUndoBlock();
+	//cur.beginEditBlock();
+	ViewBlock block = cur.block();
 	do {
 		const QString text = block.text();
 		if( text.length() != 0 ) {
@@ -169,7 +179,7 @@ bool ViEngine::doShiftLeft(QTextCursor &cur, int n)
 					++ix;
 			if( ix != 0 ) {
 				cur.setPosition(block.position());
-				cur.setPosition(block.position() + ix, QTextCursor::KeepAnchor);
+				cur.setPosition(block.position() + ix, DocCursor::KeepAnchor);
 				cur.deleteChar();
 			}
 		}
@@ -179,7 +189,8 @@ bool ViEngine::doShiftLeft(QTextCursor &cur, int n)
 	cur.setPosition(pos);
 	moveCursor(cur, ViMoveOperation::FirstNonBlankChar);
 	m_editor->setTextCursor(cur);
-	cur.endEditBlock();
+	document()->closeUndoBlock();
+	//cur.endEditBlock();
 	m_editor->viewport()->update();
 	return true;
 }
@@ -195,13 +206,13 @@ int ViEngine::repeatCount() const
 	return m_repeatCount * rc2;
 }
 //	block から n 行下の先頭位置を返す
-int nLinesPosition(QTextCursor cur, int n)
+int nLinesPosition(ViewCursor cur, int n)
 {
-	QTextBlock block = cur.block();
+	ViewBlock block = cur.block();
 	while( --n >= 0 ) {
 		block = block.next();
 		if( !block.isValid() ) {
-			cur.movePosition(QTextCursor::End);
+			cur.movePosition(DocCursor::EndOfDocument);
 			return cur.position();
 		}
 	}
@@ -246,7 +257,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 	if( mode() == INSERT || mode() == REPLACE ) {
 		//	done A insModeKeyPressEvent() の部分と処理を共通化する
 		if( qch.unicode() == 0x1b ) {	//	Esc
-			QTextCursor cur = m_editor->textCursor();
+			ViewCursor cur = m_editor->textCursor();
 			if( m_redoRecording ) {
 				//	挿入中にカーソル移動していない＆繰り返し回数指定がある場合は、残り回数分の文字挿入
 #if 1
@@ -265,7 +276,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 					}
 				} else {
 					for(int i = 1; i < m_insCount; ++i) {
-						cur.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor,
+						cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor,
 											m_insertedText.length());
 						cur.insertText(m_insertedText);
 					}
@@ -289,13 +300,14 @@ bool ViEngine::doViCommand(const QChar &qch)
 				m_joinPrevEditBlock = false;
 			} else
 				m_insertedText += qch;
-			QTextCursor cur = m_editor->textCursor();
+			ViewCursor cur = m_editor->textCursor();
 			if( mode() == REPLACE && !cur.atBlockEnd() )
-				cur.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+				cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor);
 			if( m_joinPrevEditBlock ) {
-				cur.joinPreviousEditBlock();
+				///cur.joinPreviousEditBlock();
 				cur.insertText(qch);
-				cur.endEditBlock();
+				document()->closeUndoBlock();
+				//cur.endEditBlock();
 			} else {
 				cur.insertText(qch);
 			}
@@ -320,8 +332,9 @@ bool ViEngine::doViCommand(const QChar &qch)
 		}
 	}
 	//bool rc = true;
-	ViCursor cur = m_editor->viCursor();
-	QTextBlock block = cur.block();
+	ViewCursor cur = m_editor->textCursor();
+	///ViewCursor cur = m_editor->viCursor();
+	ViewBlock block = cur.block();
 	bool toUpdateRedoCmd = false;
 	bool cursorMoved = false;
 	bool toInsertMode = false;
@@ -455,7 +468,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			}
 			break;
 		case '0':
-			cursorMoved = moveCursor(cur, QTextCursor::StartOfBlock);
+			cursorMoved = moveCursor(cur, DocCursor::StartOfBlock);
 			break;
 		case '^':
 			cursorMoved = moveCursor(cur, ViMoveOperation::FirstNonBlankChar);
@@ -487,7 +500,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case 'M': {
 			const int n = (m_editor->firstVisibleBlockPtr()->blockNumber() + 
 							cdy, m_editor->lastVisibleBlockPtr()->blockNumber()) / 2 + 1;
-			cursorMoved = cur.movePosition(ViMoveOperation::JumpLine, QTextCursor::MoveAnchor, n);
+			cursorMoved = cur.movePosition(ViMoveOperation::JumpLine, DocCursor::MoveAnchor, n);
 			m_moveByLine = true;
 			break;
 		}
@@ -495,7 +508,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			if( !m_repeatCount )
 				cursorMoved = moveCursor(cur, ViMoveOperation::LastLine);
 			else
-				cursorMoved = cur.movePosition(ViMoveOperation::JumpLine, QTextCursor::MoveAnchor, repeatCount());
+				cursorMoved = cur.movePosition(ViMoveOperation::JumpLine, DocCursor::MoveAnchor, repeatCount());
 			m_moveByLine = true;
 			break;
 		case '/':
@@ -513,7 +526,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			toInsertMode = true;
 			break;
 		case 'A':
-			cursorMoved = moveCursor(cur, QTextCursor::EndOfBlock);
+			cursorMoved = moveCursor(cur, DocCursor::EndOfBlock);
 			toInsertMode = true;
 			break;
 		case 'I':
@@ -566,20 +579,20 @@ bool ViEngine::doViCommand(const QChar &qch)
 			break;
 		case 0x08:		//	BackSpace
 		case 'h':
-			cursorMoved = cur.movePosition(ViMoveOperation::Left, QTextCursor::MoveAnchor, repeatCount());
+			cursorMoved = cur.movePosition(ViMoveOperation::Left, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case ' ':
 		case 'l':
-			cursorMoved = cur.movePosition(ViMoveOperation::Right, QTextCursor::MoveAnchor, repeatCount());
+			cursorMoved = cur.movePosition(ViMoveOperation::Right, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case 'k':
-			cursorMoved = cur.movePosition(ViMoveOperation::Up, QTextCursor::MoveAnchor, repeatCount());
+			cursorMoved = cur.movePosition(ViMoveOperation::Up, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case 'j':
-			cursorMoved = cur.movePosition(ViMoveOperation::Down, QTextCursor::MoveAnchor, repeatCount());
+			cursorMoved = cur.movePosition(ViMoveOperation::Down, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case 'b':
-			cursorMoved = cur.movePosition(ViMoveOperation::PrevWord, QTextCursor::MoveAnchor, repeatCount());
+			cursorMoved = cur.movePosition(ViMoveOperation::PrevWord, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case 'e':
 			cursorMoved = moveCursor(cur, ViMoveOperation::NextWordEnd, repeatCount(), cdy);
@@ -618,7 +631,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			//	下にスルー
 		case 'D': {
 			delFrom = cur.position();
-			//const QTextBlock block = cur.block();
+			//const ViewBlock block = cur.block();
 			delTo = block.position() + block.text().length();
 			toUpdateRedoCmd = true;
 			break;
@@ -652,12 +665,12 @@ bool ViEngine::doViCommand(const QChar &qch)
 					cur.setPosition(block.next().position());
 				else if( !block.text().isEmpty() ) {
 					//	空でないEOF行の場合
-					cur.movePosition(QTextCursor::End);
+					cur.movePosition(DocCursor::EndOfDocument);
 					cur.insertText("\n");
 				}
 			} else {
 				if( !cur.atBlockEnd() )
-					cur.movePosition(QTextCursor::Right);
+					cur.movePosition(DocCursor::Right);
 			}
 			toMovePos = cur.position();
 			cur.insertText(yankText());
@@ -674,7 +687,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_editor->setTextCursor(cur);
 			break;
 		case '~':		//	英大文字小文字置換
-			cur.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, repeatCount());
+			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, repeatCount());
 			if( cur.hasSelection() ) {
 				QString text = cur.selectedText();
 				for(int i = 0; i < text.length(); ++i) {
@@ -712,7 +725,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 	}
 	if( cursorMoved ) {
 		//if( m_cdyCmd && (ch == 'e' || ch == 'E') )
-		//	cur.movePosition(QTextCursor::Right);
+		//	cur.movePosition(DocCursor::Right);
 		switch( m_cdyCmd ) {
 		case 'c':
 			m_joinPrevEditBlock = true;
@@ -741,7 +754,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			}
 			break;
 		default:
-			m_editor->setViCursor(cur);
+			m_editor->setTextCursor(cur);
 			//qDebug() << "cur.position() = " << cur.position();
 		}
 	}
@@ -763,17 +776,17 @@ bool ViEngine::doViCommand(const QChar &qch)
 	if( yankFrom >= 0 && yankFrom < yankTo ) {
 		//	undone R delete の場合と処理を共通化する
 		cur.setPosition(yankFrom);
-		cur.setPosition(yankTo, QTextCursor::KeepAnchor);
+		cur.setPosition(yankTo, DocCursor::KeepAnchor);
 		m_yankByLine = m_moveByLine || toYankByLine;
 		m_yankBuffer = cur.selectedText();
 	}
 	if( delFrom >= 0 && delFrom < delTo ) {
 		if( m_moveByLine ) {
-			//QTextCursor cur = m_editor->textCursor();
+			//ViewCursor cur = m_editor->textCursor();
 			cur.setPosition(delFrom);
 			delFrom = cur.block().position();
 			cur.setPosition(delTo);
-			QTextBlock block = cur.block();
+			ViewBlock block = cur.block();
 			//if( cur.position() != block.position() ) { //	delTo が行頭ではない場合
 				if( block.next().isValid() )
 					delTo = block.next().position();
@@ -782,20 +795,22 @@ bool ViEngine::doViCommand(const QChar &qch)
 			//}
 		}
 		cur.setPosition(delFrom);
-		cur.setPosition(delTo, QTextCursor::KeepAnchor);
+		cur.setPosition(delTo, DocCursor::KeepAnchor);
 		m_yankByLine = m_moveByLine || toYankByLine;
 		m_yankBuffer = cur.selectedText();
 		if( m_joinPrevEditBlock ) {
-			cur.beginEditBlock();
+			document()->openUndoBlock();
+			//cur.beginEditBlock();
 			cur.deleteChar();
-			cur.endEditBlock();
+			document()->closeUndoBlock();
+			//cur.endEditBlock();
 			m_editor->setTextCursor(cur);
 		} else {
 			cur.deleteChar();
 		}
 		//	削除後に改行位置にいる場合はカーソルを左移動
-		QTextCursor cur = m_editor->textCursor();
-		const QTextBlock block = cur.block();
+		ViewCursor cur = m_editor->textCursor();
+		const ViewBlock block = cur.block();
 		if( !toInsertMode && block.text().length() != 0 &&
 			cur.position() == block.position() + block.text().length() )
 		{
@@ -941,8 +956,8 @@ void ViEngine::doExCommand(const QString &text)
 		}
 		if( !m_lineNum2 )		//	:0 は最初の行にジャンプ
 			m_lineNum2 = 1;
-		ViCursor cur = m_editor->textCursor();
-		cur.movePosition(ViMoveOperation::JumpLine, QTextCursor::MoveAnchor, m_lineNum2);
+		ViewCursor cur = m_editor->textCursor();
+		cur.movePosition(ViMoveOperation::JumpLine, DocCursor::MoveAnchor, m_lineNum2);
 		m_editor->setTextCursor(cur);
 		return;
 	}
@@ -1034,16 +1049,16 @@ void ViEngine::doDelete()
 		m_lineNum1 = m_lineNum2;
 	if( !m_lineNum1 ) m_lineNum1 = 1;
 	if( m_lineNum1 > m_lineNum2 ) return;
-	QTextCursor cur = m_editor->textCursor();
-	QTextBlock block1 = m_editor->document()->findBlockByNumber(m_lineNum1 - 1);
+	ViewCursor cur = m_editor->textCursor();
+	DocBlock block1 = m_editor->document()->findBlockByNumber(m_lineNum1 - 1);
 	cur.setPosition(block1.position());
 	int pos;
-	QTextBlock block2 = m_editor->document()->findBlockByNumber(m_lineNum2 - 1);
+	DocBlock block2 = m_editor->document()->findBlockByNumber(m_lineNum2 - 1);
 	if( block2.next().isValid() )
 		pos = block2.next().position();
 	else
 		pos = block2.position() + block2.text().length();
-	cur.setPosition(pos, QTextCursor::KeepAnchor);
+	cur.setPosition(pos, DocCursor::KeepAnchor);
 	//	undone C "[a-z] ヤンクバッファ指定対応
 	m_yankBuffer = cur.selectedText();
 	m_yankByLine = true;
@@ -1064,16 +1079,17 @@ void ViEngine::doSubst(const QString &param, int first, int last)
 		return;
 	}
 	//qDebug() << QString("before = '%1', after = '%2'").arg(before).arg(after);
-	QTextCursor cur = m_editor->textCursor();
-	cur.beginEditBlock();
+	ViewCursor cur = m_editor->textCursor();
+	document()->openUndoBlock();
+	//cur.beginEditBlock();
 	QRegExp rex(before);
-	QTextBlock block = m_editor->document()->findBlockByNumber(first - 1);
+	DocBlock block = m_editor->document()->findBlockByNumber(first - 1);
 	while( first <= last && block.isValid() ) {
 		for(int k = 0;;) {
 			int ix = rex.indexIn(block.text(), k);
 			if( ix < 0 ) break;
 			cur.setPosition(block.position() + ix);
-			cur.setPosition(block.position() + ix + rex.matchedLength(), QTextCursor::KeepAnchor);
+			cur.setPosition(block.position() + ix + rex.matchedLength(), DocCursor::KeepAnchor);
 			cur.insertText(after);
 			if( !global ) break;
 			k = ix + after.length();
@@ -1081,7 +1097,8 @@ void ViEngine::doSubst(const QString &param, int first, int last)
 		++first;
 		block = block.next();
 	}
-	cur.endEditBlock();
+	document()->closeUndoBlock();
+	//cur.endEditBlock();
 	m_editor->setTextCursor(cur);
 }
 bool ViEngine::parseSubstCmd(const QString &text,
@@ -1114,7 +1131,7 @@ void ViEngine::doFind(const QString &regexpText, bool forward)
 		emit showMessage(tr("invalid regexp."));
 		return;
 	}
-	QTextCursor cur = m_editor->textCursor();
+	ViewCursor cur = m_editor->textCursor();
 	if( moveCursorFind(cur, rex, forward) ) {
 		m_findString = regexpText;
 		m_findForward = forward;
@@ -1122,7 +1139,7 @@ void ViEngine::doFind(const QString &regexpText, bool forward)
 	}
 	emit regexpSearched(regexpText);
 }
-bool ViEngine::doFindNext(QTextCursor &cur, int nth, bool revers)
+bool ViEngine::doFindNext(ViewCursor &cur, int nth, bool revers)
 {
 	if( m_findString.isEmpty() )
 		return false;
@@ -1171,15 +1188,15 @@ void ViEngine::getLineNumbers(const QString &text, int &ix)
 	if( m_editor == 0 )
 		m_curLineNum = 1;
 	else {
-		const QTextCursor cur = m_editor->textCursor();
-		const QTextBlock block = cur.block();
+		const ViewCursor cur = m_editor->textCursor();
+		const ViewBlock block = cur.block();
 		m_curLineNum = block.blockNumber() + 1;
 	}
 	if( ix < text.length() && text[ix] == '%' ) {
 		++ix;
 		m_nLineNum = 2;
 		m_lineNum1 = 1;
-		QTextBlock block = m_editor->document()->lastBlock();
+		DocBlock block = m_editor->document()->lastBlock();
 		m_lineNum2 = block.blockNumber() + 1;
 		if( m_lineNum2 > 1 && block.text().isEmpty() )
 			--m_lineNum2;
@@ -1233,7 +1250,7 @@ bool ViEngine::getLineNumber(const QString &text, int &ix, int &lineNumber)
 	if( text[ix] == '$' ) {
 		++ix;
 		if( m_editor == 0 ) return 1;
-		QTextBlock block = m_editor->document()->lastBlock();
+		DocBlock block = m_editor->document()->lastBlock();
 		lineNumber = block.blockNumber() + 1;
 		if( lineNumber > 1 && block.text().isEmpty() )
 			--lineNumber;

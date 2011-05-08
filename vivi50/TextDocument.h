@@ -40,6 +40,7 @@ class DocCursor;
 
 //#define		BLOCK_HAS_OFFSET	0
 #define		BLOCK_HAS_SIZE		1
+#if 0
 enum {
 	CT_EOF = 0,
 	CT_NEWLINE,
@@ -58,6 +59,7 @@ enum {
 	CT_ALPHA_EX,	//	ÇªÇÃëºÇÃçëÇÃï∂éö
 	CT_OTHER,		//	ÇªÇÃëºï∂éö
 };
+#endif
 
 class TextDocument;
 class DocBlock;

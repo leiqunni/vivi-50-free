@@ -31,6 +31,7 @@
 
 class QKeyEvent;
 class TextView;
+class TextDocument;
 class ViewCursor;
 
 class ViEngine : public QObject
@@ -61,6 +62,7 @@ public:
 	void	setMode(Mode mode, ushort=0);
 	void	setEditor(TextView *editor);	//{ m_editor = editor; }
 	TextView *editor() { return m_editor; }
+	TextDocument	*document();
 	void	doExCommand(const QString &);			//	ˆø”‚É‚ÍAæ“ª‚Ì : ‚ğŠÜ‚Ü‚È‚¢•¶š—ñ‚ª“n‚é
 	void	doSet(const QString &);
 	void	doSet(const QString &, const QString &);

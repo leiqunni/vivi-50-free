@@ -117,6 +117,9 @@ TextView::~TextView()
 	delete m_document;
 	delete m_textCursor;
 }
+void TextView::setOverwriteMode(bool)
+{
+}
 void TextView::resetCursorBlink()
 {
 	m_drawCursor = true;
@@ -390,6 +393,9 @@ void TextView::onBlockCountChanged()
 	onFontChanged();
 }
 
+void TextView::doVertScroll(int)
+{
+}
 void TextView::updateScrollBarData()
 {
 	QFontMetrics fm = fontMetrics();
@@ -1032,6 +1038,30 @@ void TextView::paste()
 		viewport()->update();
 	}
 }
+const ViewBlock *TextView::firstVisibleBlockPtr() const
+{
+	//	undone B 暫定コード
+	static ViewBlock block = firstBlock();
+	return &block;
+}
+const ViewBlock *TextView::lastVisibleBlockPtr() const
+{
+	//	undone B 暫定コード
+	static ViewBlock block = firstBlock();
+	return &block;
+}
+void TextView::doDelete(int, int)
+{
+}
+void TextView::doOpenLine(bool next)
+{
+}
+void TextView::doUndo(int n)
+{
+}
+void TextView::doRedo(int n)
+{
+}
 void TextView::undo()
 {
 	if( !m_document->canUndo() ) return;
@@ -1666,20 +1696,24 @@ void TextView::updateBlocks()
 	//	undone B 垂直スクロールバー位置更新
 	viewport()->update();
 }
-ViewBlock TextView::firstBlock()
+ViewBlock TextView::firstBlock() const
 {
 //#if LAIDOUT_BLOCKS_MGR
 //	LaidoutBlock b = m_lbMgr->begin();
 //#else
-	return ViewBlock(this, document()->firstBlock(), BlockData(0, 0));
+	return ViewBlock((TextView*)this,
+						const_cast<TextDocument*>(document())->firstBlock(),
+						BlockData(0, 0));
 //#endif
 }
-ViewBlock TextView::lastBlock()
+ViewBlock TextView::lastBlock() const
 {
 #if LAIDOUT_BLOCKS_MGR
 	LaidoutBlock block = m_lbMgr->end();
 	--block;
-	return ViewBlock(this, DocBlock(document(), block.docBlockData()), block.viewBlockData());
+	return ViewBlock((TextView*)this,
+						DocBlock(const_cast<TextDocument*>(document()), block.docBlockData()),
+						block.viewBlockData());
 #else
 	DocBlock d = document()->lastBlock();
 	if( !isLayoutedDocBlock(d.index()) )

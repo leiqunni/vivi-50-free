@@ -10,6 +10,7 @@
 #include	"textCursor.h"
 #include	"TextDocument.h"
 #include	"TextView.h"
+#include	"viCursor.h"
 
 inline bool isUTF8FirstChar(uchar ch)
 {
@@ -500,6 +501,10 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 		//m_ancBlockPosition = m_blockData.m_position;
 	}
 	return true;
+}
+bool DocCursor::atBlockEnd() const
+{
+	return false;
 }
 bool DocCursor::atEnd() const
 {

@@ -181,7 +181,7 @@
     <message>
         <location filename="mainwindow.cpp" line="161"/>
         <source>&amp;Find...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索(&amp;F)...</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="163"/>
@@ -191,7 +191,7 @@
     <message>
         <location filename="mainwindow.cpp" line="165"/>
         <source>Find&amp;Next</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">次検索(&amp;N)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="167"/>
@@ -201,7 +201,7 @@
     <message>
         <location filename="mainwindow.cpp" line="169"/>
         <source>Find&amp;Prev</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">前検索(&amp;P)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="171"/>
@@ -211,22 +211,22 @@
     <message>
         <location filename="mainwindow.cpp" line="173"/>
         <source>FindCur&amp;Word</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">カーソル位置単語検索(&amp;W)</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="175"/>
         <source>find cursor position&apos;s word text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">カーソル位置の単語を検索します</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="178"/>
         <source>&amp;Replace...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">置換(&amp;R)...</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="180"/>
         <source>replace strings...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">テキスト置換...</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="183"/>

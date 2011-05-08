@@ -75,6 +75,9 @@
 + 2011/05/06 "ViEngine.cpp" B:   undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
 + 2011/05/06 "ViEngine.cpp" C:   undone "[a-z] ヤンクバッファ指定対応
 + 2011/05/06 "ViEngine.h" C:   undone 行番号関係は独立した構造体にした方がよさげ
+# 2011/05/08 16:02:28
++ 2011/05/08 "TextView.cpp" B:   undone 暫定コード
++ 2011/05/08 "TextView.cpp" B:   undone 暫定コード
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -87,6 +90,8 @@
 2011/04/29 "TextView.cpp" B:   undone 暫定コード
 2011/05/03 "TextView.cpp" B:   undone 暫定コード
 2011/05/03 "TextView.cpp" B:   undone 暫定コード
+2011/05/08 "TextView.cpp" B:   undone 暫定コード
+2011/05/08 "TextView.cpp" B:   undone 暫定コード
 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 2011/04/18 "TextView.cpp" R:   undone insertText と処理を共通化
 2011/04/19 "TextView.cpp" A:   undone BlockData も要補正
