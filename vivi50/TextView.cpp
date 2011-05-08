@@ -1394,20 +1394,12 @@ void TextView::insertText(const QString &text, bool tab)
 			for(;;) {
 				const QString text = itr == v.begin() ? lastText
 											: (*(itr-1))->selectedText();
-				const int d = text.length() - lastLength;		//	‘Œ¸’l
-				document()->insertText(**itr, text, /*select::=*/true);
+				//const int d = text.length() - lastLength;		//	‘Œ¸’l
+				const int d = document()->insertText(**itr, text, /*select::=*/true);
 				//print(v);
 				for(std::vector<ViewCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
 					//	undone A BlockData ‚à—v•â³
 					(*k)->move(d);
-					//(*k)->setAnchor((*k)->anchor() + d);
-					//(*k)->setPosition((*k)->position() + d, DocCursor::KeepAnchor);
-#if 0
-					if( (*k)->anchor() < (*k)->position() )
-						(*k)->setPosition((*k)->position() + d);
-					else if( (*k)->position() < (*k)->anchor() )
-						(*k)->setAnchor((*k)->anchor() + d);
-#endif
 				}
 				//print(v);
 				if( itr == v.begin() ) break;

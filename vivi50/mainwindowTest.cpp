@@ -817,6 +817,24 @@ void test_TextView()
 		view.redo();
 		ut.ut_test_equal(QString("1234567\nabc\n"), doc->toPlainText());
 	}
+	if( 1 ) {		//	マルチカーソル：ローテイト
+		std::vector<ViewCursor*> v;
+		TextView view;
+		TextDocument *doc = view.document();
+		doc->setPlainText(QString("基本的あいうえおabc1234567\n"));
+		ViewCursor cur(&view);
+		cur.setPosition(3*3, DocCursor::KeepAnchor);	//	基本的
+		view.addToMultiCursor(cur);
+		cur.setPosition(9);
+		cur.setPosition(9+15, DocCursor::KeepAnchor);	//	あいうえお
+		view.setTextCursor(cur);			//	メインカーソル
+		view.insertText(QString("\t"), true);	//	ローテイト
+		ut.ut_test_equal(QString("あいうえお基本的abc1234567\n"), doc->toPlainText());
+		cur = view.textCursor();
+		ut.ut_test( cur.hasSelection() );
+		ut.ut_test_equal(15, cur.anchor() );
+		ut.ut_test_equal(15+9, cur.position() );
+	}
 #endif
 	if( 1 ) {		//	buildBlocks テスト
 		TextView view;
