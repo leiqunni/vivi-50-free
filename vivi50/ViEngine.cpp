@@ -311,6 +311,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			} else {
 				cur.insertText(qch);
 			}
+			m_editor->setTextCursor(cur);
 		}
 		return true;
 	}

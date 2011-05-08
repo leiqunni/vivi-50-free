@@ -76,8 +76,8 @@ memFileColumnWd = 320
   "TextView.cpp" 1742 'B: ' '' undone 垂直スクロールバー位置更新
   "TextView.cpp" 1767 'B: ' '' undone 未コーディング
   "textBlock.cpp" 576 'B: ' '' undone チャンクが連続している場合等
-  "ViEngine.cpp" 777 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 846 'B: ' '' undone 未コーディング
-  "ViEngine.cpp" 964 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1062 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 778 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 847 'B: ' '' undone 未コーディング
+  "ViEngine.cpp" 965 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1063 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
   "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ
