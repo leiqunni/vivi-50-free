@@ -410,6 +410,7 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 #endif
 		break;
 	case Up:
+	case PrevBlock:
 		while( n != 0 ) {
 			if( !m_blockData.m_index ) break;
 			//	undone B Žb’èƒR[ƒh
@@ -420,6 +421,7 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 		m_position = m_blockData.m_position + qMin(m_offset, getEOLOffset(m_document, m_blockData));
 #endif
 		break;
+	case NextBlock:
 	case Down:
 		while( n != 0 ) {
 			if( m_blockData.m_index >= m_document->blockCount() - 1 ) break;
