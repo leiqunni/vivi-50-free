@@ -324,8 +324,8 @@ doFindNext	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNe
 doFindNext	.\GeneratedFiles\Release\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg
 doFindNext	.\GeneratedFiles\Release\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:ReplaceDlg
 doJoin	.\ViEngine.cpp	/^void ViEngine::doJoin(int n)$/;"	f	class:ViEngine
-doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doJump	.\TextView.cpp	/^void TextView::doJump(int lineNum)$/;"	f	class:TextView
+doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
 doOpenLine	.\TextView.cpp	/^void TextView::doOpenLine(bool next)$/;"	f	class:TextView
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
 doPaint	.\TextView.cpp	/^void TextView::doPaint()$/;"	f	class:TextView
@@ -407,8 +407,8 @@ erase	.\gap_vector.h	/^	void erase(index_type first, index_type last)$/;"	f	clas
 erase	.\gap_vector.h	/^	void erase(index_type ix)$/;"	f	class:std::gap_vector
 eraseBlocks	.\TextView.cpp	/^void TextView::eraseBlocks(index_t first, index_t last, size_t delDocBlockCount)$/;"	f	class:TextView
 event	.\TextView.cpp	/^bool TextView::event ( QEvent * event )$/;"	f	class:TextView
-eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
 eventFilter	.\TextView.cpp	/^bool TextView::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:TextView
+eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
 eventFilter	.\ViEngine.cpp	/^bool ViEngine::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:ViEngine
 exCommands	.\ViEngine.h	/^	const QStringList &exCommands() const { return m_exCommands; }$/;"	f	class:ViEngine
 expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector

@@ -1101,9 +1101,13 @@ void TextView::doOpenLine(bool next)
 }
 void TextView::doUndo(int n)
 {
+	for(int i = 0; i < n; ++i)
+		undo();
 }
 void TextView::doRedo(int n)
 {
+	for(int i = 0; i < n; ++i)
+		redo();
 }
 void TextView::undo()
 {
