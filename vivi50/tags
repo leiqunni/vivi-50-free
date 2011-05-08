@@ -439,6 +439,7 @@ findPrevAct	.\mainwindow.h	/^    QAction *findPrevAct;$/;"	m	class:MainWindow
 firstBlock	.\TextView.cpp	/^ViewBlock TextView::firstBlock() const$/;"	f	class:TextView
 firstBlock	.\TextDocument.h	/^	DocBlock	firstBlock() { return DocBlock(this, 0); }$/;"	f	class:TextDocument
 firstBlock	.\TextDocument.h	/^	DocBlock	firstBlock() { return DocBlock(this, 0, 0); }$/;"	f	class:TextDocument
+firstNonBlankCharPos	.\viCursor.cpp	/^int firstNonBlankCharPos(const QString &text)$/;"	f
 firstPosition	.\textCursor.h	/^	index_t firstPosition() const { return qMin(position(), anchor()); }$/;"	f	class:DocCursor
 firstUnlayoutedBlockCount	.\TextView.h	/^	size_t	firstUnlayoutedBlockCount() const { return m_firstUnlayoutedBlockCount; }$/;"	f	class:TextView
 firstVisibleBlock	.\TextView.cpp	/^ViewBlock TextView::firstVisibleBlock() const$/;"	f	class:TextView
@@ -487,8 +488,19 @@ get_last	.\gap_vector.h	/^	const_pointer get_last() const { return m_last; }$/;"
 get_pointer	.\gap_vector.h	/^	const_pointer	get_pointer(size_type n) const$/;"	f	class:std::gap_vector
 get_pointer	.\gap_vector.h	/^	pointer	get_pointer(size_type n)$/;"	f	class:std::gap_vector
 get_raw_index_of_gap	.\gap_vector.h	/^	size_t get_raw_index_of_gap() const { return m_gapBegin - m_first; }$/;"	f	class:std::gap_vector
+gotoBeginBlock	.\viCursor.cpp	/^bool gotoBeginBlock(ViewCursor &cur, bool forward, int n)$/;"	f
+gotoBlankLine	.\viCursor.cpp	/^bool gotoBlankLine(ViewCursor &cur, bool forward, int n)$/;"	f
 gotoEndOfWord	.\textCursor.cpp	/^bool gotoEndOfWord(DocCursor &cur)$/;"	f
+gotoMatchParen	.\viCursor.cpp	/^bool gotoMatchParen(ViewCursor &cur)$/;"	f
+gotoNextBlankLine	.\viCursor.cpp	/^bool gotoNextBlankLine(ViewCursor &cur, int n)$/;"	f
+gotoNextSSWord	.\viCursor.cpp	/^bool gotoNextSSWord(ViewCursor &cur, int n, bool cdy)$/;"	f
+gotoNextSSWordEnd	.\viCursor.cpp	/^bool gotoNextSSWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
+gotoNextWord	.\viCursor.cpp	/^bool gotoNextWord(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n, bool cdy)$/;"	f
+gotoNextWordEnd	.\viCursor.cpp	/^bool gotoNextWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
+gotoPrevBlankLine	.\viCursor.cpp	/^bool gotoPrevBlankLine(ViewCursor &cur, int n)$/;"	f
+gotoPrevSSWord	.\viCursor.cpp	/^bool gotoPrevSSWord(ViewCursor &cur, int n)$/;"	f
+gotoPrevWord	.\viCursor.cpp	/^bool gotoPrevWord(ViewCursor &cur, int n)$/;"	f
 gotoPrevWord	.\textCursor.cpp	/^bool gotoPrevWord(DocCursor &cur, int n)$/;"	f
 gotoStartOfWord	.\textCursor.cpp	/^bool gotoStartOfWord(DocCursor &cur)$/;"	f
 hasMultiCursor	.\TextView.h	/^	bool	hasMultiCursor() const { return !m_multiCursor.empty(); }$/;"	f	class:TextView
@@ -543,6 +555,7 @@ isModified	.\TextView.cpp	/^bool TextView::isModified() const$/;"	f	class:TextVi
 isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
 isNull	.\textCursor.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:DocCursor
 isOverlapped	.\textCursor.cpp	/^bool DocCursor::isOverlapped(const DocCursor &x) const$/;"	f	class:DocCursor
+isTabOrSpace	.\viCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isTabOrSpace	.\textCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isUTF16beBom	.\charEncoding.cpp	/^inline bool isUTF16beBom(cuchar *ptr, cuchar *endptr)$/;"	f
 isUTF16leBom	.\charEncoding.cpp	/^inline bool isUTF16leBom(cuchar *ptr, cuchar *endptr)$/;"	f
@@ -748,10 +761,16 @@ mousePressEvent	.\TextView.cpp	/^void TextView::mousePressEvent ( QMouseEvent * 
 mouseReleaseEvent	.\TextView.cpp	/^void TextView::mouseReleaseEvent ( QMouseEvent * event )$/;"	f	class:TextView
 move	.\textCursor.cpp	/^void DocCursor::move(int d)$/;"	f	class:DocCursor
 move	.\textCursor.cpp	/^void ViewCursor::move(int d)$/;"	f	class:ViewCursor
+moveCursor	.\viCursor.cpp	/^bool moveCursor(ViewCursor &cur, \/\/int &x,$/;"	f
+moveCursorFind	.\viCursor.cpp	/^bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth)$/;"	f
+moveCursorFindBackward	.\viCursor.cpp	/^int moveCursorFindBackward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)$/;"	f
+moveCursorFindForward	.\viCursor.cpp	/^int moveCursorFindForward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)$/;"	f
+moveCursorFindInLine	.\viCursor.cpp	/^bool moveCursorFindInLine(ViewCursor &cur, ushort cmd, const QChar &qch, int n)$/;"	f
 movePosition	.\textCursor.cpp	/^bool DocCursor::movePosition(uchar move, uchar mode, uint n)$/;"	f	class:DocCursor
 movePosition	.\textCursor.cpp	/^bool ViewCursor::movePosition(uchar move, uchar mode, uint n)$/;"	f	class:ViewCursor
 movePositionByCharCount	.\TextView.cpp	/^index_t TextView::movePositionByCharCount(index_t pos, int n) const$/;"	f	class:TextView
 moveToEndOfDocument	.\textBlock.cpp	/^void LaidoutBlock::moveToEndOfDocument()$/;"	f	class:LaidoutBlock
+moveToFirstNonBlankChar	.\viCursor.cpp	/^void moveToFirstNonBlankChar(ViewCursor &cur)$/;"	f
 move_data	.\gap_vector.h	/^	void move_data(pointer dst, pointer src, int sz)$/;"	f	class:std::gap_vector
 move_data_backward	.\gap_vector.h	/^	void move_data_backward(pointer dst, pointer src, int sz)$/;"	f	class:std::gap_vector
 move_gap	.\gap_vector.h	/^	void	move_gap(const Iterator &itr)$/;"	f	class:std::gap_vector

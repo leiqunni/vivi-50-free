@@ -478,8 +478,8 @@ bool moveCursor(ViewCursor &cur, //int &x,
 		cur.setPosition(blockPos + firstNonBlankCharPos(blockText));
 		return true;
 	case ViMoveOperation::LastChar: {
-		int ix = blockText.length();
-		//int ix = EOLOffset(blockText);
+		int ix = block.EOLOffset();
+		//int ix = blockText.length();
 		if( !cdy && ix != 0 ) --ix;
 		cur.setPosition(blockPos + ix);
 		///cur.setVerticalMovementX(-1);
