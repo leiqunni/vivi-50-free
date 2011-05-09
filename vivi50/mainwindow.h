@@ -24,6 +24,7 @@
 #define MAINWINDOW_H
 
 #include <QtGui/QMainWindow>
+#include	"vi.h"
 #include	"unit_test.h"
 
 class QAction;
@@ -69,6 +70,7 @@ private:
     void writeSettings();
 
 private slots:
+	void	onModeChanged(Mode, ushort=0);
     void	documentWasModified();
 	void	newFile();
 	void	open();
@@ -97,6 +99,7 @@ private:
 	TextView	*m_view;
 	ViEngine	*m_viEngine;
 	QLineEdit	*m_cmdLineEdit;
+	int			m_exCmdsIx;
 	QString		m_cmdText;			//	QLineEdit に実際に入力されたテキスト
 	QTextEdit	*m_output;
 	QString	m_curFile;

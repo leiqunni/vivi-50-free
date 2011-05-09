@@ -60,6 +60,7 @@ void MainWindow::init()
 	m_viEngine = new ViEngine();
 	m_viEngine->setEditor(m_view = new TextView);
 	m_view->setViEngine(m_viEngine);
+	connect(m_viEngine, SIGNAL(modeChanged(Mode, ushort)), this, SLOT(onModeChanged(Mode, ushort)));
 	connect(m_view, SIGNAL(printBuffer()), this, SLOT(printBuffer()));
     QSettings settings;    const QString fontName = settings.value("fontName", "").toString();
     const int fontSize = settings.value("fontSize", 0).toInt();
@@ -83,6 +84,7 @@ void MainWindow::init()
 	createDockWindows();
     readSettings();			//	createActions() ‚ÌŒã‚ÉƒR[ƒ‹‚·‚é‚±‚Æ
 
+	onModeChanged(m_viEngine->mode());
 	updateWindowTitle();
 	statusBar()->showMessage("Ready");
 }
@@ -729,6 +731,40 @@ void MainWindow::setFocusToCmdLine()
 {
 	//qDebug() << "MainWindow::setFocusToCmdLine()";
 	m_cmdLineEdit->setFocus(Qt::OtherFocusReason);
+}
+void MainWindow::onModeChanged(Mode mode, ushort subMode)
+{
+	//qDebug() << "mode = " << mode;
+	QString text;
+	switch( mode ) {
+	case CMD: {
+#if	0	///def	WIN32
+		HWND hwnd = window()->winId();
+		HIMC hC = ImmGetContext(hwnd);
+		ImmSetOpenStatus(hC, FALSE);		//	IME OFF
+#endif	//WIN32
+		text = "CMD";
+		break;
+	}
+	case INSERT:
+		text = "INSERT";
+		break;
+	case REPLACE:
+		text = "REPLACE";
+		break;
+	case CMDLINE:
+		m_exCmdsIx = -1;
+		m_cmdLineEdit->setText(QChar(subMode));
+		m_cmdLineEdit->show();
+		m_cmdLineEdit->setFocus(Qt::OtherFocusReason);
+		statusBar()->repaint();
+		return;
+	}
+	m_cmdLineEdit->hide();
+	statusBar()->repaint();
+	if( !m_viEngine->message().isEmpty() )
+		text = m_viEngine->message();
+	statusBar()->showMessage(text);
 }
 void MainWindow::showMessage(const QString & text)
 {

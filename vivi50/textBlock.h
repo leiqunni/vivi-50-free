@@ -193,6 +193,7 @@ public:
 	size_t	blockCount() const { return size(); }
 	size_t	viewBlockSize(index_t) const;
 	size_t	blockSize(index_t ix) const { return viewBlockSize(ix); }
+	size_t	blockSizeSize() const { return m_blockSize.size(); }
 
 	size_t	blockNumberFromDocBlockNumber(index_t) const;
 	size_t	docBlockNumberFromBlockNumber(index_t) const;

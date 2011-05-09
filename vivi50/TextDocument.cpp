@@ -485,7 +485,9 @@ void TextDocument::updateBlocksAtErase(index_t first,
 		emit blockCountChanged();
 	}
 	m_blocks[d.index()].m_size += offset - (last - d.position());
-	//size_t t = m_blocks[blockIndex].m_size;	//	for debug
+#ifdef	_DEBUG
+	size_t t = m_blocks[d.index()].m_size;	//	for debug
+#endif
 }
 #if 0
 void TextDocument::updateBlocksAtErase(index_t first, index_t last)

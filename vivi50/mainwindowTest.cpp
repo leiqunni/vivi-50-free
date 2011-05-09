@@ -42,7 +42,9 @@ void MainWindow::printBuffer()
 		doOutput(QString("block[%1].m_size = %2\n")
 				.arg(ix).arg(doc->blockSize(ix)) );
 	}
-	doOutput(QString("TextView blockCount = %1\n").arg(m_view->blockCount()));
+	doOutput(QString("TextView blockCount = %1 lbMgr::m_blockSize.size() = %2\n")
+				.arg(m_view->blockCount())
+				.arg(m_view->lbMgr()->blockSizeSize()));
 	for(size_t ix = 0; ix < m_view->blockCount(); ++ix) {
 		doOutput(QString("block[%1].m_size = %2\n")
 				.arg(ix).arg(m_view->blockSize(ix)) );
@@ -333,6 +335,30 @@ void test_TextDocument()
 		ut.ut_test_equal(6, doc.firstBlock().size());
 		ut.ut_test_equal(QString("123YZ\n"), doc.firstBlock().text());
 	}
+	if( 1 ) {
+		TextDocument doc;
+		doc.insert(0, "\t123\n");
+		DocCursor cur(&doc);
+		ut.ut_test_equal(2, doc.blockCount());
+		ut.ut_test_equal(5, doc.blockSize(0));		//	\t123\n
+		ut.ut_test_equal(0, doc.blockSize(1));		//	EOF
+		cur.setPosition(1);
+		doc.deleteChar(cur);
+		ut.ut_test_equal(2, doc.blockCount());
+		ut.ut_test_equal(4, doc.blockSize(0));		//	\t23\n
+		ut.ut_test_equal(0, doc.blockSize(1));		//	EOF
+		index_t position, anchor;
+		doc.doUndo(position, anchor);
+		ut.ut_test_equal(2, doc.blockCount());
+		ut.ut_test_equal(5, doc.blockSize(0));		//	\t123\n
+		ut.ut_test_equal(0, doc.blockSize(1));		//	EOF
+		cur.setPosition(1);
+		doc.deleteChar(cur);
+		ut.ut_test_equal(2, doc.blockCount());
+		ut.ut_test_equal(4, doc.blockSize(0));		//	\t23\n
+		ut.ut_test_equal(0, doc.blockSize(1));		//	EOF
+	}
+	//return;
 	if( 1 ) {
 		TextDocument doc;
 		doc.do_insert(0, "123\nxyzzz\nxyZZZ\n");
