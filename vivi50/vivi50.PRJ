@@ -39,22 +39,22 @@ memFileColumnWd = 320
   charEncoding.h	(133.416,-187.123)
 * textCursor.cpp	(-335.316,-33.0248)
 * textCursor.h	(-335.316,-66.0248)
-  TextView.cpp	(44.6123,-31.8647)
-  TextView.h	(44.6123,-64.8647)
+* TextView.cpp	(44.6123,-31.8647)
+* TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
   FindDlg.h	(49.637,166.277)
   findOpt.h	(241,304)
   ReplaceDlg.cpp	(236,78)
   ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(139,-320)
-  textBlock.cpp	(-363,293)
-  textBlock.h	(-363,260)
+* textBlock.cpp	(-363,293)
+* textBlock.h	(-363,260)
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
 * ViEngine.cpp	(219,-29)
   ViEngine.h	(219,-62)
   vi.h	(376,-15)
-  viCursor.cpp	(-180,296)
+* viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
@@ -63,21 +63,21 @@ memFileColumnWd = 320
   "TextDocument.cpp" 809 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 416 'B: ' '' undone 暫定コード
   "textCursor.cpp" 428 'B: ' '' undone 暫定コード
-  "TextView.cpp" 949 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1093 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1099 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1142 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1143 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1162 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1163 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1414 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1437 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1475 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1762 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1787 'B: ' '' undone 未コーディング
-  "textBlock.cpp" 576 'B: ' '' undone チャンクが連続している場合等
-  "ViEngine.cpp" 778 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 847 'B: ' '' undone 未コーディング
-  "ViEngine.cpp" 965 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1063 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "TextView.cpp" 956 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1100 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1106 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1149 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1150 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1169 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1170 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1421 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1444 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1482 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1769 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1794 'B: ' '' undone 未コーディング
+  "textBlock.cpp" 587 'B: ' '' undone チャンクが連続している場合等
+  "ViEngine.cpp" 783 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 852 'B: ' '' undone 未コーディング
+  "ViEngine.cpp" 970 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1068 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
   "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

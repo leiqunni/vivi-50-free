@@ -126,7 +126,7 @@ void ViEngine::doJoin(int n)
 		ViewBlock block = cur.block();
 		ViewBlock next = block.next();
 		if( !next.isValid() ) break;
-		cur.setPosition(pos = block.position() + block.text().length());
+		cur.setPosition(pos = block.position() + block.EOLOffset());
 		cur.setPosition(next.position(), DocCursor::KeepAnchor);
 		cur.movePosition(ViMoveOperation::FirstNonBlankChar, DocCursor::KeepAnchor);
 		QChar lastChar;
@@ -254,6 +254,9 @@ bool ViEngine::doViCommand(const QChar &qch)
 		m_editor->doVertScroll(op);
 		return true;
 	}
+	if( qch.unicode() == 0x1b ) {	//	Esc
+		m_editor->clearMultiCursor();
+	}
 	if( mode() == INSERT || mode() == REPLACE ) {
 		//	done A insModeKeyPressEvent() ‚Ì•”•ª‚Æˆ—‚ð‹¤’Ê‰»‚·‚é
 		if( qch.unicode() == 0x1b ) {	//	Esc
@@ -309,7 +312,9 @@ bool ViEngine::doViCommand(const QChar &qch)
 				document()->closeUndoBlock();
 				//cur.endEditBlock();
 			} else {
-				cur.insertText(qch);
+				//cur.insertText(qch);
+				m_editor->insertText(qch);
+				return true;
 			}
 			m_editor->setTextCursor(cur);
 		}

@@ -287,7 +287,7 @@ bool gotoBlankLine(ViewCursor &cur, bool forward, int n)
 	int lastPos = block.position();
 	while( --n >= 0 ) {
 		//	ãÛçsÇì«Ç›îÚÇŒÇ∑
-		while( block.text().length() == 0 ) {
+		while( block.EOLOffset() == 0 ) {
 			block = forward ? block.next() : block.prev();
 			if( !block.isValid() ) {
 				cur.setPosition(lastPos);
@@ -296,7 +296,7 @@ bool gotoBlankLine(ViewCursor &cur, bool forward, int n)
 			lastPos = block.position();
 		}
 		//	ãÛçsÇ‹Ç≈ì«Ç›îÚÇŒÇ∑
-		while( block.text().length() != 0 ) {
+		while( block.EOLOffset() != 0 ) {
 			block = forward ? block.next() : block.prev();
 			if( !block.isValid() ) {
 				cur.setPosition(lastPos);

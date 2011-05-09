@@ -126,8 +126,8 @@ public:
 	void	doVertScroll(int);
 	void	setOverwriteMode(bool);
 	void	onFontChanged();
+	void	clearMultiCursor() { m_multiCursor.clear(); }
 
-public:
 	ViewCursor	textCursor() { return *m_textCursor; }
 	ViewBlock	firstBlock() const;
 	ViewBlock	lastBlock() const;
@@ -195,7 +195,6 @@ protected:
 	void	updateScrollBarData();
 	void	drawLineNumbers();
 	void	resetCursorBlinkTimer();
-	void	clearMultiCursor() { m_multiCursor.clear(); }
 	void	addToMultiCursor();
 	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); };
 	void	getAllCursor(std::vector<ViewCursor*> &);

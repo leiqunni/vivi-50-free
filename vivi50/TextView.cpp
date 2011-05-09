@@ -855,6 +855,7 @@ void TextView::inputMethodEvent ( QInputMethodEvent * event )
 void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 {
 	Qt::KeyboardModifiers mod = keyEvent->modifiers();
+	const bool alt = (mod & Qt::AltModifier) != 0;
 	const bool ctrl = (mod & Qt::ControlModifier) != 0;
 	const bool shift = (mod & Qt::ShiftModifier) != 0;
 	const uchar mvMode = shift ? DocCursor::KeepAnchor : DocCursor::MoveAnchor;
@@ -874,24 +875,30 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 			move = DocCursor::EndOfBlock;
 		break;
 	case Qt::Key_Right:
-		if( ctrl )
-			move = DocCursor::NextWord;
-		else
-			move = DocCursor::Right;
+		move = DocCursor::Right;
+		if( ctrl ) {
+			if( !alt )
+				move = DocCursor::NextWord;
+			else
+				addToMultiCursor();
+		}
 		break;
 	case Qt::Key_Left:
-		if( ctrl )
-			move = DocCursor::PrevWord;
-		else
-			move = DocCursor::Left;
+		move = DocCursor::Left;
+		if( ctrl ) {
+			if( !alt )
+				move = DocCursor::PrevWord;
+			else
+				addToMultiCursor();
+		}
 		break;
 	case Qt::Key_Up:
-		if( ctrl )
+		if( ctrl && alt )
 			addToMultiCursor();
 		move = DocCursor::Up;
 		break;
 	case Qt::Key_Down:
-		if( ctrl )
+		if( ctrl && alt )
 			addToMultiCursor();
 		move = DocCursor::Down;
 		break;
