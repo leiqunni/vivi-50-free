@@ -638,7 +638,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case 'D': {
 			delFrom = cur.position();
 			//const ViewBlock block = cur.block();
-			delTo = block.position() + block.text().length();
+			delTo = block.position() + block.EOLOffset();
 			toUpdateRedoCmd = true;
 			break;
 		}
