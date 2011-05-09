@@ -252,9 +252,20 @@ ViewBlock ViewBlock::next() const
 	return b;
 #endif
 }
+ViewBlock &ViewBlock::operator--()
+{
+	LaidoutBlock lb = view()->lbMgr()->findBlockByNumber(m_viewBlock.m_index);
+	--lb;
+	m_viewBlock.m_index = lb.blockNumber();
+	m_viewBlock.m_position = lb.position();
+	m_data.m_index = lb.docBlockNumber();
+	m_data.m_position = lb.docPosition();
+	return *this;
+}
 ViewBlock ViewBlock::prev() const
 {
-	return *this;		//	ébíËÉRÅ[Éh
+	ViewBlock b(*this);
+	return --b;
 }
 
 QString ViewBlock::text() const

@@ -719,6 +719,9 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		move = DocCursor::Right;
 		goto moveDocCursor;
 	}
+	case ViMoveOperation::PrevWord:
+		gotoPrevWord(*this);
+		break;
 	case StartOfBlock:
 		m_position = m_viewBlockData.position();
 		m_offset = 0;

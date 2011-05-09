@@ -129,6 +129,7 @@ public:
 public:
 	ViewBlock	&operator=(const DocBlock &);
 	ViewBlock	&operator++();
+	ViewBlock	&operator--();
 
 protected:
 	TextView	*m_view;
