@@ -1105,6 +1105,22 @@ void TextView::doDelete(int, int)
 }
 void TextView::doOpenLine(bool next)
 {
+	ViewCursor cur = textCursor();
+	bool bEOFLine = false;
+	if( next ) {
+		if( cur.docBlock() == cur.document()->lastBlock() ) {
+			bEOFLine = true;
+			cur.movePosition(DocCursor::EndOfBlock);
+		} else {
+			cur.movePosition(DocCursor::NextBlock);
+			cur.movePosition(DocCursor::StartOfBlock);
+		}
+	} else
+		cur.movePosition(DocCursor::StartOfBlock);
+	cur.insertText("\n");
+	if( !bEOFLine )
+		cur.movePosition(DocCursor::Left);
+	setTextCursor(cur);
 }
 void TextView::doUndo(int n)
 {

@@ -180,6 +180,7 @@ public:
 	index_t	viewBlockNumber() const { return m_viewBlockData.index(); }
 	index_t	viewAnchorBlockNumber() const { return m_viewAnchorBlockData.index(); }
 
+
 public:
 	TextView	*view() { return m_view; }
 	void	updateViewBlock();

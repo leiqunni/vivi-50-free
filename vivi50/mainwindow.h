@@ -94,6 +94,8 @@ private slots:
 	void	onUnitTestView(bool);
 	void	doBenchmark();
 	void	onBenchmarkReplace(bool b);
+	void	closeView(TextView*, bool = false);
+	void	closeAllViews(bool = false);
 
 private:
 	TextView	*m_view;

@@ -61,6 +61,8 @@ void MainWindow::init()
 	m_viEngine->setEditor(m_view = new TextView);
 	m_view->setViEngine(m_viEngine);
 	connect(m_viEngine, SIGNAL(modeChanged(Mode, ushort)), this, SLOT(onModeChanged(Mode, ushort)));
+	connect(m_viEngine, SIGNAL(closeView(TextView *, bool)), this, SLOT(closeView(TextView *, bool)));
+
 	connect(m_view, SIGNAL(printBuffer()), this, SLOT(printBuffer()));
     QSettings settings;    const QString fontName = settings.value("fontName", "").toString();
     const int fontSize = settings.value("fontSize", 0).toInt();
@@ -378,6 +380,25 @@ void MainWindow::closeEvent(QCloseEvent *event)
         event->ignore();
     }
 #endif
+}
+void MainWindow::closeView(TextView *view, bool noSaveDlg)
+{
+	if( view == m_view ) {
+		if( noSaveDlg ) 
+		    setWindowModified(false);
+		close();		//	MainWindow ‚ðƒNƒ[ƒY
+	}
+}
+void MainWindow::closeAllViews(bool noSaveDlg)
+{
+    foreach( QWidget *widget, qApp->topLevelWidgets() ) {
+        MainWindow *mainWin = qobject_cast<MainWindow *>(widget);
+        if( mainWin ) {
+        	if( noSaveDlg )
+        		mainWin->setWindowModified(false);
+            mainWin->close();
+        }
+    }
 }
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
@@ -733,14 +754,12 @@ void MainWindow::font()
 void MainWindow::cmdLineReturnPressed()
 {
 	QString text = m_cmdLineEdit->text();
-#if 0	///
 	if( !text.isEmpty() ) {
 		if( text[0] == ':' )
 			m_viEngine->doExCommand(text.mid(1));
 		else
 			m_viEngine->doFind(text.mid(1), text[0] == '/');
 	}
-#endif
 	m_viEngine->setMode(CMD);
 }
 void MainWindow::cmdLineCursorPositionChanged(int oldPos, int newPos)
