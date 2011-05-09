@@ -61,7 +61,16 @@ void MainWindow::init()
 	m_viEngine->setEditor(m_view = new TextView);
 	m_view->setViEngine(m_viEngine);
 	connect(m_viEngine, SIGNAL(modeChanged(Mode, ushort)), this, SLOT(onModeChanged(Mode, ushort)));
+	connect(m_viEngine, SIGNAL(modeChanged(Mode)), m_view, SLOT(setMode(Mode)));
 	connect(m_viEngine, SIGNAL(closeView(TextView *, bool)), this, SLOT(closeView(TextView *, bool)));
+	connect(m_viEngine, SIGNAL(closeAllViews(bool)), this, SLOT(closeAllViews(bool)));
+	connect(m_viEngine, SIGNAL(open(const QString &)), this, SLOT(open(const QString &)));
+	connect(m_viEngine, SIGNAL(save(const QString &)), this, SLOT(save(const QString &)));
+	connect(m_viEngine, SIGNAL(testViCommands(const QString &)), this, SLOT(testViCommands(const QString &)));
+	connect(m_viEngine, SIGNAL(showMessage(const QString &)), this, SLOT(showMessage(const QString &)));
+	connect(m_viEngine, SIGNAL(doOutput(const QString &)), this, SLOT(doOutput(const QString &)));
+	connect(m_viEngine, SIGNAL(clearOutput()), this, SLOT(clearOutput()));
+	connect(m_viEngine, SIGNAL(regexpSearched(const QString &)), this, SLOT(onRegexpSearced(const QString &)));
 
 	connect(m_view, SIGNAL(printBuffer()), this, SLOT(printBuffer()));
     QSettings settings;    const QString fontName = settings.value("fontName", "").toString();

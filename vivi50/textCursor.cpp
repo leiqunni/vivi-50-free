@@ -729,6 +729,15 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		m_offset = 0xffffffff;
 		m_x = -1;
 		break;
+	case ViMoveOperation::JumpLine: {
+		DocBlock d = document()->findBlockByNumber(n - 1);
+		m_position = d.position();
+		m_offset = 0;
+		m_x = 0;
+		m_blockData = d.data();
+		m_viewBlockData = m_view->findBlockData(m_position);
+		break;
+	}
 moveDocCursor:
 	default:
 		if( !DocCursor::movePosition(move, mode, n) )
