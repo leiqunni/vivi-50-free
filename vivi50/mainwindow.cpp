@@ -27,7 +27,7 @@
 #include "charEncoding.h"
 #include "ViEngine.h"
 
-#define	VERSION_STR			"5.0.014 Dev"
+#define	VERSION_STR			"5.0.015 Dev"
 
 MainWindow *pMainWindow;
 
