@@ -381,6 +381,39 @@ void MainWindow::closeEvent(QCloseEvent *event)
 }
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
+	if( obj == m_cmdLineEdit && event->type() == QEvent::KeyPress &&
+		m_viEngine->mode() == CMDLINE )
+	{
+		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+		if( keyEvent->key() == Qt::Key_Escape ) {
+			m_viEngine->setMode(CMD);
+			return true;
+		}
+#if 0
+		const QString text = m_cmdText;
+		QStringList cmds;
+		if( text[0] == ':' )
+			cmds = m_viEngine->exCommands();
+		else if( text[0] == '/' || text[0] == '?' )
+			cmds = findStrings();
+		if( !cmds.isEmpty() ) {
+			if( keyEvent->key() == Qt::Key_Up ) {
+				//if( --m_exCmdsIx < 0 ) m_exCmdsIx = cmds.count() - 1;
+				//m_cmdLineEdit->setText(":" + cmds[m_exCmdsIx]);
+				m_cmdLineEdit->setText(findCommand(cmds, text, true));
+				m_cmdText = text;		//	実入力コマンド
+				return true;
+			}
+			if( keyEvent->key() == Qt::Key_Down ) {
+				//if( ++m_exCmdsIx >= cmds.count() ) m_exCmdsIx = 0;
+				//m_cmdLineEdit->setText(":" + cmds[m_exCmdsIx]);
+				m_cmdLineEdit->setText(findCommand(cmds, text, false));
+				m_cmdText = text;		//	実入力コマンド
+				return true;
+			}
+		}
+#endif
+	}
 	if( obj == m_output->viewport() ) {
 		//qDebug() << event->type();
 		if( event->type() == QEvent::MouseButtonDblClick ) {
@@ -707,16 +740,14 @@ void MainWindow::cmdLineReturnPressed()
 		else
 			m_viEngine->doFind(text.mid(1), text[0] == '/');
 	}
-	m_viEngine->setMode(CMD);
 #endif
+	m_viEngine->setMode(CMD);
 }
 void MainWindow::cmdLineCursorPositionChanged(int oldPos, int newPos)
 {
 	//qDebug() << "MainWindow::cmdLineCursorPositionChanged()";
-#if 0	///
 	if( newPos == 0 )
 		m_cmdLineEdit->setCursorPosition(1);
-#endif
 }
 void MainWindow::cmdLineTextChanged(const QString & text)
 {
