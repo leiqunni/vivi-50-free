@@ -465,8 +465,13 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_cmdPrefix = ch;
 			emit showMessage(m_cmdString);
 			return true;
-		case 'c':
 		case 'd':
+			if( cur.hasSelection() ) {
+				delFrom = qMin(cur.anchor(), cur.position());
+				delTo = qMax(cur.anchor(), cur.position());
+				break;
+			}
+		case 'c':
 		case 'y':
 			m_cdyCmd = ch;
 			m_cdyPos = cur.position();
@@ -662,14 +667,24 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_repeatCount = 1;		//	<数値>s text Esc で text を数値回数挿入しませんように
 			break;
 		case 'x':
-			delFrom = cur.position();
-			moveCursor(cur, ViMoveOperation::RightForA, repeatCount());
-			delTo = cur.position();
+			if( cur.hasSelection() ) {
+				delFrom = qMin(cur.anchor(), cur.position());
+				delTo = qMax(cur.anchor(), cur.position());
+			} else {
+				delFrom = cur.position();
+				moveCursor(cur, ViMoveOperation::RightForA, repeatCount());
+				delTo = cur.position();
+			}
 			break;
 		case 'X':
-			delTo = cur.position();
-			moveCursor(cur, ViMoveOperation::Left, repeatCount());
-			delFrom = cur.position();
+			if( cur.hasSelection() ) {
+				delFrom = qMin(cur.anchor(), cur.position());
+				delTo = qMax(cur.anchor(), cur.position());
+			} else {
+				delTo = cur.position();
+				moveCursor(cur, ViMoveOperation::Left, repeatCount());
+				delFrom = cur.position();
+			}
 			break;
 		case 'Y':		//	行ヤンク
 			yankFrom = cur.block().position();
@@ -799,6 +814,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		m_yankBuffer = cur.selectedText();
 	}
 	if( delFrom >= 0 && delFrom < delTo ) {
+		m_editor->clearSelection();
 		if( m_moveByLine ) {
 			//ViewCursor cur = m_editor->textCursor();
 			cur.setPosition(delFrom);

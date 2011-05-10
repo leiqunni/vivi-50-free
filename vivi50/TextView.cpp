@@ -1639,6 +1639,7 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	if( !m_lineBreakMode ) {
 		size_t sz = document()->deleteChar(cur);
 		cur.updateViewBlock();
+		setTextCursor(cur);
 		//cur.setViewBlockData(cur.blockData());
 		//cur.setViewAnchorBlockData(cur.anchorBlockData());
 		return sz;
@@ -1657,6 +1658,7 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	reLayoutBlocksUntillDocBlockNumber(block, lastDocBlockNumber + d, firstViewBlockNumber);
 	m_cacheBlockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlockêÊì™à íu
 	cur.updateViewBlock();
+	setTextCursor(cur);
 	return delSize;
 }
 size_t TextView::deletePreviousChar(ViewCursor &cur)
