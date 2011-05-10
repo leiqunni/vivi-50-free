@@ -409,6 +409,21 @@ void MainWindow::closeAllViews(bool noSaveDlg)
         }
     }
 }
+QString MainWindow::findCommand(const QStringList cmds, const QString text, bool up)
+{
+	int ix = m_exCmdsIx;
+	QChar firstChar = text[0];
+	const QString cmd = text.mid(1);
+	for(;;) {
+		if( up ) {
+			if( --m_exCmdsIx < 0 ) m_exCmdsIx = cmds.count() - 1;
+		} else {
+			if( ++m_exCmdsIx >= cmds.count() ) m_exCmdsIx = 0;
+		}
+		if( cmd.isEmpty() || cmds[m_exCmdsIx].startsWith(cmd) || m_exCmdsIx == ix )
+			return firstChar + cmds[m_exCmdsIx];
+	}
+}
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
 	if( obj == m_cmdLineEdit && event->type() == QEvent::KeyPress &&
@@ -419,7 +434,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 			m_viEngine->setMode(CMD);
 			return true;
 		}
-#if 0
 		const QString text = m_cmdText;
 		QStringList cmds;
 		if( text[0] == ':' )
@@ -442,7 +456,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 				return true;
 			}
 		}
-#endif
 	}
 	if( obj == m_output->viewport() ) {
 		//qDebug() << event->type();

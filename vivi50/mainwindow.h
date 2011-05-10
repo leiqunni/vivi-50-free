@@ -44,6 +44,9 @@ public:
 	~MainWindow();
 
 public:
+	const QStringList &findStrings() const { return m_findStrings; }
+
+public:
     void doOutput(const QString &);
 
 protected:
@@ -58,6 +61,7 @@ protected:
     void	setCurrentFile(const QString &fileName);
     void	updateRecentFileActions();
     QString strippedName(const QString &fullFileName);
+	QString	findCommand(const QStringList cmds, const QString text, bool);
 
 private:
     void init();
@@ -107,6 +111,7 @@ private:
 	QTextEdit	*m_output;
 	QString	m_curFile;
 	QString	m_absFilePath;
+	QStringList	m_findStrings;		//	ŒŸõi³‹K•\Œ»j•¶š—ñ—š—ğ
 	bool	m_isUntitled;
 	bool	m_isModified;
 	bool	m_unitTestDoc;
