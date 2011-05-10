@@ -26,8 +26,8 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-84.078,377.793)
   main.cpp	(-178.304,-339.84)
-* mainwindow.cpp	(-128.265,-196.142)
-* mainwindow.h	(-128.265,-229.142)
+  mainwindow.cpp	(-128.265,-196.142)
+  mainwindow.h	(-128.265,-229.142)
   TextDocument.cpp	(-152.875,65.766)
   TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
@@ -37,10 +37,10 @@ memFileColumnWd = 320
   mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(133.416,-154.123)
   charEncoding.h	(133.416,-187.123)
-  textCursor.cpp	(-335.316,-33.0248)
+* textCursor.cpp	(-335.316,-33.0248)
 * textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
-* TextView.h	(44.6123,-64.8647)
+  TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
   FindDlg.h	(49.637,166.277)
   findOpt.h	(241,304)
@@ -52,17 +52,17 @@ memFileColumnWd = 320
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
 * ViEngine.cpp	(219,-29)
-* ViEngine.h	(219,-62)
+  ViEngine.h	(219,-62)
   vi.h	(376,-15)
-  viCursor.cpp	(-180,296)
+* viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 78 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 809 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
-  "textCursor.cpp" 416 'B: ' '' undone 暫定コード
-  "textCursor.cpp" 428 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 418 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 430 'B: ' '' undone 暫定コード
   "TextView.cpp" 989 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 1133 'B: ' '' undone 暫定コード
   "TextView.cpp" 1140 'B: ' '' undone 暫定コード
@@ -76,8 +76,8 @@ memFileColumnWd = 320
   "TextView.cpp" 1815 'B: ' '' undone 垂直スクロールバー位置更新
   "TextView.cpp" 1840 'B: ' '' undone 未コーディング
   "textBlock.cpp" 587 'B: ' '' undone チャンクが連続している場合等
-  "ViEngine.cpp" 810 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 880 'B: ' '' undone 未コーディング
-  "ViEngine.cpp" 998 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1096 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 813 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 883 'B: ' '' undone 未コーディング
+  "ViEngine.cpp" 1001 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1099 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
   "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

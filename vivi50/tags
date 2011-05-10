@@ -144,16 +144,16 @@ Ui_MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^class Ui_MainWindowClass$/
 Up	.\textCursor.h	/^		Up,$/;"	e	enum:DocCursor::__anon2
 VERSION_STR	.\mainwindow.cpp	30;"	d	file:
 VIENGINE_H	.\ViEngine.h	26;"	d
-ViEngine	.\ViEngine.h	/^class ViEngine : public QObject$/;"	c
 ViEngine	.\ViEngine.cpp	/^ViEngine::ViEngine(QObject *parent)$/;"	f	class:ViEngine
+ViEngine	.\ViEngine.h	/^class ViEngine : public QObject$/;"	c
 ViewBlock	.\textBlock.cpp	/^ViewBlock::ViewBlock(TextView *view, const DocBlock &block, BlockData d)$/;"	f	class:ViewBlock
 ViewBlock	.\textBlock.h	/^class ViewBlock : public DocBlock$/;"	c
-ViewCursor	.\textCursor.h	/^class ViewCursor : public DocCursor$/;"	c
 ViewCursor	.\textCursor.cpp	/^ViewCursor::ViewCursor(TextView *view, const DocCursor &x)$/;"	f	class:ViewCursor
 ViewCursor	.\textCursor.cpp	/^ViewCursor::ViewCursor(TextView *view, index_t position)$/;"	f	class:ViewCursor
 ViewCursor	.\textCursor.cpp	/^ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor)$/;"	f	class:ViewCursor
 ViewCursor	.\textCursor.cpp	/^ViewCursor::ViewCursor(TextView *view, index_t position, index_t anchor,$/;"	f	class:ViewCursor
 ViewCursor	.\textCursor.cpp	/^ViewCursor::ViewCursor(const ViewCursor &x)$/;"	f	class:ViewCursor
+ViewCursor	.\textCursor.h	/^class ViewCursor : public DocCursor$/;"	c
 ViewLine	.\TextView.h	/^	ViewLine(index_t position, index_t blockIndex)$/;"	f	struct:ViewLine
 ViewLine	.\TextView.h	/^struct ViewLine$/;"	s
 ViewTextBlockItem	.\textCursor.h	/^	ViewTextBlockItem(size_t size = 0) : m_size(size) {}$/;"	f	struct:ViewTextBlockItem
@@ -301,15 +301,15 @@ data_size	.\TextDocument.h	/^	size_t	data_size() const { return m_last - m_first
 data_size2	.\TextDocument.h	/^	size_t	data_size2() const { return m_last2 - m_first; }$/;"	f	struct:GVUndoItem
 decrement	.\gap_vector.h	/^	void	decrement() { if( m_ptr == m_gapEnd ) { m_ptr = m_gapBegin; } --m_ptr; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
 decrement	.\gap_vector.h	/^	void	decrement() { if( m_ptr == m_gapEnd ) { m_ptr = m_gapBegin; } --m_ptr; }$/;"	f	class:std::_Gap_Vector_Iterator
-deleteChar	.\TextView.cpp	/^size_t TextView::deleteChar(ViewCursor &cur)$/;"	f	class:TextView
-deleteChar	.\TextView.cpp	/^void TextView::deleteChar()$/;"	f	class:TextView
 deleteChar	.\textCursor.cpp	/^void DocCursor::deleteChar()$/;"	f	class:DocCursor
 deleteChar	.\textCursor.cpp	/^void ViewCursor::deleteChar()$/;"	f	class:ViewCursor
+deleteChar	.\TextView.cpp	/^size_t TextView::deleteChar(ViewCursor &cur)$/;"	f	class:TextView
+deleteChar	.\TextView.cpp	/^void TextView::deleteChar()$/;"	f	class:TextView
 deleteChar	.\TextDocument.cpp	/^size_t TextDocument::deleteChar(DocCursor &cur)$/;"	f	class:TextDocument
-deletePreviousChar	.\TextView.cpp	/^size_t TextView::deletePreviousChar(ViewCursor &cur)$/;"	f	class:TextView
-deletePreviousChar	.\TextView.cpp	/^void TextView::deletePreviousChar()$/;"	f	class:TextView
 deletePreviousChar	.\textCursor.cpp	/^void DocCursor::deletePreviousChar()$/;"	f	class:DocCursor
 deletePreviousChar	.\textCursor.cpp	/^void ViewCursor::deletePreviousChar()$/;"	f	class:ViewCursor
+deletePreviousChar	.\TextView.cpp	/^size_t TextView::deletePreviousChar(ViewCursor &cur)$/;"	f	class:TextView
+deletePreviousChar	.\TextView.cpp	/^void TextView::deletePreviousChar()$/;"	f	class:TextView
 deletePreviousChar	.\TextDocument.cpp	/^size_t TextDocument::deletePreviousChar(DocCursor &cur)$/;"	f	class:TextDocument
 dereference	.\gap_vector.h	/^	Type &dereference() const { return *m_ptr; }$/;"	f	class:std::_Gap_Vector_Iterator
 dereference	.\gap_vector.h	/^	Type dereference() const { return *m_ptr; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
@@ -317,13 +317,13 @@ difference_type	.\gap_vector.h	/^	typedef int difference_type;		\/\/	ÉMÉÉÉbÉvÇ™ñ
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Const_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Const_Iterator
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Iterator
 doBenchmark	.\mainwindowBench.cpp	/^void MainWindow::doBenchmark()$/;"	f	class:MainWindow
-doDelete	.\TextView.cpp	/^void TextView::doDelete(int, int)$/;"	f	class:TextView
 doDelete	.\ViEngine.cpp	/^void ViEngine::doDelete()$/;"	f	class:ViEngine
+doDelete	.\TextView.cpp	/^void TextView::doDelete(int, int)$/;"	f	class:TextView
 doExCommand	.\ViEngine.cpp	/^void ViEngine::doExCommand(const QString &text)$/;"	f	class:ViEngine
 doFind	.\ViEngine.cpp	/^void ViEngine::doFind(const QString &regexpText, bool forward)$/;"	f	class:ViEngine
 doFind	.\ReplaceDlg.cpp	/^void ReplaceDlg::doFind(bool backward)$/;"	f	class:ReplaceDlg
-doFindNext	.\TextView.cpp	/^void TextView::doFindNext(const QString &text, ushort options)$/;"	f	class:TextView
 doFindNext	.\ViEngine.cpp	/^bool ViEngine::doFindNext(ViewCursor &cur, int nth, bool revers)$/;"	f	class:ViEngine
+doFindNext	.\TextView.cpp	/^void TextView::doFindNext(const QString &text, ushort options)$/;"	f	class:TextView
 doFindNext	.\GeneratedFiles\Debug\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg
 doFindNext	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:ReplaceDlg
 doFindNext	.\GeneratedFiles\Release\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg
@@ -366,12 +366,12 @@ do_replace	.\TextDocument.cpp	/^void TextDocument::do_replace(index_t first, ind
 do_replace35_mv7	.\mainwindowBench.cpp	/^void do_replace35_mv7(uint n)$/;"	f
 docAnchorBlock	.\textCursor.cpp	/^DocBlock ViewCursor::docAnchorBlock() const$/;"	f	class:ViewCursor
 docAnchorBlockData	.\textCursor.h	/^	BlockData	docAnchorBlockData() const { return DocCursor::anchorBlockData(); }$/;"	f	class:ViewCursor
-docBlock	.\TextView.cpp	/^DocBlock TextView::docBlock(BlockData v) const$/;"	f	class:TextView
 docBlock	.\textCursor.h	/^	DocBlock	docBlock() const { return DocCursor::block(); }$/;"	f	class:ViewCursor
+docBlock	.\TextView.cpp	/^DocBlock TextView::docBlock(BlockData v) const$/;"	f	class:TextView
 docBlockCount	.\textBlock.cpp	/^size_t LaidoutBlocksMgr::docBlockCount() const$/;"	f	class:LaidoutBlocksMgr
 docBlockCount	.\textBlock.h	/^	size_t	docBlockCount() const$/;"	f	struct:LaidoutChunk
-docBlockData	.\TextView.cpp	/^BlockData TextView::docBlockData(BlockData v) const$/;"	f	class:TextView
 docBlockData	.\textCursor.h	/^	BlockData	docBlockData() const { return DocCursor::blockData(); }$/;"	f	class:ViewCursor
+docBlockData	.\TextView.cpp	/^BlockData TextView::docBlockData(BlockData v) const$/;"	f	class:TextView
 docBlockData	.\textBlock.h	/^	BlockData	docBlockData() const { return BlockData(docBlockNumber(), docPosition()); }$/;"	f	class:LaidoutBlock
 docBlockNumber	.\textBlock.h	/^	index_t		docBlockNumber() const { return DocBlock::blockNumber(); }$/;"	f	class:ViewBlock
 docBlockNumber	.\textBlock.h	/^	index_t	docBlockNumber() const { return m_docBlockData.m_index; }$/;"	f	class:LaidoutBlock
@@ -380,9 +380,9 @@ docIndex	.\textBlock.h	/^	index_t		docIndex() const { return DocBlock::index(); 
 docIndex	.\textBlock.h	/^	index_t	docIndex() const { return m_docBlockData.m_index; }$/;"	f	class:LaidoutBlock
 docPosition	.\textBlock.h	/^	index_t		docPosition() const { return DocBlock::position(); };$/;"	f	class:ViewBlock
 docPosition	.\textBlock.h	/^	index_t	docPosition() const { return m_docBlockData.m_position; }$/;"	f	class:LaidoutBlock
+document	.\ViEngine.cpp	/^TextDocument *ViEngine::document()$/;"	f	class:ViEngine
 document	.\textCursor.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:DocCursor
 document	.\textCursor.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:DocCursor
-document	.\ViEngine.cpp	/^TextDocument *ViEngine::document()$/;"	f	class:ViEngine
 document	.\TextView.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:TextView
 document	.\TextView.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:TextView
 document	.\textBlock.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:LaidoutBlocksMgr
@@ -412,9 +412,9 @@ erase	.\gap_vector.h	/^	void erase(index_type first, index_type last)$/;"	f	clas
 erase	.\gap_vector.h	/^	void erase(index_type ix)$/;"	f	class:std::gap_vector
 eraseBlocks	.\TextView.cpp	/^void TextView::eraseBlocks(index_t first, index_t last, size_t delDocBlockCount)$/;"	f	class:TextView
 event	.\TextView.cpp	/^bool TextView::event ( QEvent * event )$/;"	f	class:TextView
+eventFilter	.\ViEngine.cpp	/^bool ViEngine::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:ViEngine
 eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
 eventFilter	.\TextView.cpp	/^bool TextView::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:TextView
-eventFilter	.\ViEngine.cpp	/^bool ViEngine::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:ViEngine
 exCommands	.\ViEngine.h	/^	const QStringList &exCommands() const { return m_exCommands; }$/;"	f	class:ViEngine
 expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector
 fileMenu	.\mainwindow.h	/^    QMenu	*fileMenu;$/;"	m	class:MainWindow
@@ -502,17 +502,17 @@ gotoMatchParen	.\viCursor.cpp	/^bool gotoMatchParen(ViewCursor &cur)$/;"	f
 gotoNextBlankLine	.\viCursor.cpp	/^bool gotoNextBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoNextSSWord	.\viCursor.cpp	/^bool gotoNextSSWord(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoNextSSWordEnd	.\viCursor.cpp	/^bool gotoNextSSWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
-gotoNextWord	.\viCursor.cpp	/^bool gotoNextWord(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n, bool cdy)$/;"	f
+gotoNextWord	.\viCursor.cpp	/^bool gotoNextWord(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoNextWordEnd	.\viCursor.cpp	/^bool gotoNextWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoPrevBlankLine	.\viCursor.cpp	/^bool gotoPrevBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoPrevSSWord	.\viCursor.cpp	/^bool gotoPrevSSWord(ViewCursor &cur, int n)$/;"	f
-gotoPrevWord	.\viCursor.cpp	/^bool gotoPrevWord(ViewCursor &cur, int n)$/;"	f
 gotoPrevWord	.\textCursor.cpp	/^bool gotoPrevWord(DocCursor &cur, int n)$/;"	f
+gotoPrevWord	.\viCursor.cpp	/^bool gotoPrevWord(ViewCursor &cur, int n)$/;"	f
 gotoStartOfWord	.\textCursor.cpp	/^bool gotoStartOfWord(DocCursor &cur)$/;"	f
 hasMultiCursor	.\TextView.h	/^	bool	hasMultiCursor() const { return !m_multiCursor.empty(); }$/;"	f	class:TextView
-hasSelection	.\TextView.cpp	/^bool hasSelection(const std::vector<ViewCursor*> &v)$/;"	f
 hasSelection	.\textCursor.h	/^	bool	hasSelection() const { return m_position != m_anchor; }$/;"	f	class:DocCursor
+hasSelection	.\TextView.cpp	/^bool hasSelection(const std::vector<ViewCursor*> &v)$/;"	f
 increment	.\gap_vector.h	/^	void	increment() { if( ++m_ptr == m_gapBegin ) m_ptr = m_gapEnd; }$/;"	f	class:std::_Gap_Vector_Const_Iterator
 increment	.\gap_vector.h	/^	void	increment() { if( ++m_ptr == m_gapBegin ) m_ptr = m_gapEnd; }$/;"	f	class:std::_Gap_Vector_Iterator
 index	.\textBlock.h	/^	index_t		index() const { return m_data.m_index; }$/;"	f	class:DocBlock
@@ -536,10 +536,10 @@ insert	.\gap_vector.h	/^	iterator insert(const iterator &itr, InputIterator firs
 insert	.\gap_vector.h	/^	iterator insert(const iterator &itr, Type ch)$/;"	f	class:std::gap_vector
 insert	.\gap_vector.h	/^	iterator insert(size_t ix, InputIterator first, InputIterator last)$/;"	f	class:std::gap_vector
 insert	.\gap_vector.h	/^	void insert(index_type ix, Type ch)$/;"	f	class:std::gap_vector
-insertText	.\TextView.cpp	/^int TextView::insertText(ViewCursor &cur, const QString &text)$/;"	f	class:TextView
-insertText	.\TextView.cpp	/^void TextView::insertText(const QString &text, bool tab)$/;"	f	class:TextView
 insertText	.\textCursor.cpp	/^size_t DocCursor::insertText(const QString &text)$/;"	f	class:DocCursor
 insertText	.\textCursor.cpp	/^void ViewCursor::insertText(const QString &text)$/;"	f	class:ViewCursor
+insertText	.\TextView.cpp	/^int TextView::insertText(ViewCursor &cur, const QString &text)$/;"	f	class:TextView
+insertText	.\TextView.cpp	/^void TextView::insertText(const QString &text, bool tab)$/;"	f	class:TextView
 insertText	.\TextDocument.cpp	/^int TextDocument::insertText(DocCursor &cur, const QString &text,$/;"	f	class:TextDocument
 isDBCSLeadByte	.\charEncoding.cpp	/^bool isDBCSLeadByte(uchar ch)$/;"	f
 isDBCSSecondByte	.\charEncoding.cpp	/^bool isDBCSSecondByte(uchar ch)$/;"	f
@@ -562,8 +562,8 @@ isModified	.\TextView.cpp	/^bool TextView::isModified() const$/;"	f	class:TextVi
 isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
 isNull	.\textCursor.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:DocCursor
 isOverlapped	.\textCursor.cpp	/^bool DocCursor::isOverlapped(const DocCursor &x) const$/;"	f	class:DocCursor
-isTabOrSpace	.\viCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isTabOrSpace	.\textCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
+isTabOrSpace	.\viCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isUTF16beBom	.\charEncoding.cpp	/^inline bool isUTF16beBom(cuchar *ptr, cuchar *endptr)$/;"	f
 isUTF16leBom	.\charEncoding.cpp	/^inline bool isUTF16leBom(cuchar *ptr, cuchar *endptr)$/;"	f
 isUTF8Bom	.\charEncoding.cpp	/^inline bool isUTF8Bom(cuchar *ptr, cuchar *endptr)$/;"	f
@@ -733,8 +733,8 @@ m_vSize	.\LayoutThread.h	/^	std::vector<size_t>		m_vSize;	\/\/	ÉåÉCÉAÉEÉgÇ≥ÇÍÇΩç
 m_validFirstVisibleBlock	.\TextView.h	/^	mutable bool		m_validFirstVisibleBlock;		\/\/	m_firstVisibleBlock óLå¯$/;"	m	class:TextView
 m_viEngine	.\mainwindow.h	/^	ViEngine	*m_viEngine;$/;"	m	class:MainWindow
 m_viEngine	.\TextView.h	/^	ViEngine	*m_viEngine;$/;"	m	class:TextView
-m_view	.\mainwindow.h	/^	TextView	*m_view;$/;"	m	class:MainWindow
 m_view	.\textCursor.h	/^	TextView	*m_view;$/;"	m	class:ViewCursor
+m_view	.\mainwindow.h	/^	TextView	*m_view;$/;"	m	class:MainWindow
 m_view	.\textBlock.h	/^	TextView	*m_view;$/;"	m	class:ViewBlock
 m_viewAnchorBlockData	.\textCursor.h	/^	BlockData	m_viewAnchorBlockData;$/;"	m	class:ViewCursor
 m_viewBlock	.\textBlock.h	/^	BlockData	m_viewBlock;		\/\/	m_position	çsì™ï∂éöà íu$/;"	m	class:ViewBlock
@@ -832,9 +832,9 @@ operator --	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator--()$/;"	f	class:Vie
 operator <	.\textCursor.h	/^	bool	operator<(const DocCursor &x) const { return position() < x.position(); }$/;"	f	class:DocCursor
 operator <	.\textBlock.h	/^	bool	operator<(const DocBlock &x) const$/;"	f	class:DocBlock
 operator <	.\textBlock.h	/^	bool	operator<(const ViewBlock &x) const$/;"	f	class:ViewBlock
+operator =	.\textCursor.cpp	/^ViewCursor &ViewCursor::operator=(const DocCursor &x)$/;"	f	class:ViewCursor
 operator =	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator=(const DocBlock &docBlock)$/;"	f	class:ViewBlock
 operator =	.\textBlock.h	/^	LaidoutChunk	&operator=(const LaidoutChunk &x)$/;"	f	struct:LaidoutChunk
-operator =	.\textCursor.cpp	/^ViewCursor &ViewCursor::operator=(const DocCursor &x)$/;"	f	class:ViewCursor
 operator =	.\TextDocument.h	/^	GVUndoItem &operator=(const GVUndoItem &x)$/;"	f	struct:GVUndoItem
 operator =	.\gap_vector.h	/^	gap_vector &operator=(const gap_vector &x)$/;"	f	class:std::gap_vector
 operator =	.\unit_test.h	/^	const SFailedInfo &operator=(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
@@ -976,6 +976,7 @@ setViewAnchorBlockData	.\textCursor.h	/^	void	setViewAnchorBlockData(BlockData d
 setViewBlockData	.\textCursor.h	/^	void	setViewBlockData(BlockData d) { m_viewBlockData = d; }$/;"	f	class:ViewCursor
 setWidth	.\textBlock.h	/^	void	setWidth(int width) { m_width = width; }$/;"	f	class:LaidoutBlocksMgr
 setWithBOM	.\TextDocument.h	/^	void	setWithBOM(bool b) { m_withBOM = b; }$/;"	f	class:TextDocument
+setX	.\textCursor.h	/^	void	setX(int x) { m_x = x; }$/;"	f	class:ViewCursor
 settingsMenu	.\mainwindow.h	/^    QMenu	*settingsMenu;$/;"	m	class:MainWindow
 setupUi	.\GeneratedFiles\ui_mainwindow.h	/^    void setupUi(QMainWindow *MainWindowClass)$/;"	f	class:Ui_MainWindowClass
 showAboutDlg	.\mainwindow.cpp	/^void MainWindow::showAboutDlg()$/;"	f	class:MainWindow

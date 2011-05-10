@@ -11,25 +11,32 @@ HEADERS += ./charEncoding.h \
     ./FindDlg.h \
     ./findOpt.h \
     ./gap_vector.h \
+    ./LayoutThread.h \
     ./mainwindow.h \
     ./ReplaceDlg.h \
+    ./TestViCommands.h \
     ./textBlock.h \
     ./textCursor.h \
     ./TextDocument.h \
     ./TextView.h \
-    ./unit_test.h
+    ./unit_test.h \
+    ./ViEngine.h
 SOURCES += ./charEncoding.cpp \
     ./FindDlg.cpp \
+    ./LayoutThread.cpp \
     ./main.cpp \
     ./mainwindow.cpp \
     ./mainwindowBench.cpp \
     ./mainwindowTest.cpp \
     ./ReplaceDlg.cpp \
+    ./TestViCommands.cpp \
+    ./textBlock.cpp \
     ./textCursor.cpp \
     ./TextDocument.cpp \
     ./TextView.cpp \
     ./unit_test.cpp \
-    ./textBlock.cpp
+    ./viCursor.cpp \
+    ./ViEngine.cpp
 FORMS += ./mainwindow.ui
 TRANSLATIONS += ./vivi50_ja.ts
 RESOURCES += ./mainwindow.qrc

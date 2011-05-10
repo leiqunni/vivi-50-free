@@ -350,6 +350,8 @@ bool gotoEndOfWord(DocCursor &cur)
 bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 {
 	if( isNull() ) return false;
+	DocBlock b = block();
+	index_t blockPosition = b.position();
 	switch( move ) {
 	case Right:
 		if( m_document->size() - m_position <= n ) {
@@ -465,6 +467,15 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 		m_offset = 0;
 #endif
 		break;
+	case ViMoveOperation::LastChar: {		//	ブロックの最後の文字に移動
+		index_t ix = b.EOLOffset();
+		if( ix != 0 ) {
+			do { } while( !isUTF8FirstChar((*m_document)[blockPosition + --ix]) );
+		}
+		m_position = blockPosition + ix;
+		m_offset = 0xffffffff;
+		break;
+	}
 	case EndOfBlock:		//	改行位置に移動
 		m_position = m_blockData.position() + m_document->blockSize(m_blockData.index());
 		if( m_position > m_blockData.position() ) {
@@ -479,6 +490,7 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 		}
 		m_offset = 0xffffffff;
 		break;
+	
 	case StartOfDocument:
 		m_position = 0;
 #if TEXT_CURSOR_BLOCK
@@ -675,10 +687,13 @@ void ViewCursor::swapPositionAnchor()
 	BlockData b;
 	b = m_viewBlockData; m_viewBlockData = m_viewAnchorBlockData; m_viewAnchorBlockData = b;
 }
+int firstNonBlankCharPos(const QString &text);
 bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 {
 	if( isNull() || !n ) return false;
 	ViewBlock vb = block();
+	QString blockText = vb.text();
+	index_t blockPos = vb.position();
 	index_t pos = position();
 	switch( move ) {
 	case ViMoveOperation::Up:	//	暫定コード
@@ -731,6 +746,9 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		m_position = m_viewBlockData.position() + block().EOLOffset();
 		m_offset = 0xffffffff;
 		m_x = -1;
+		break;
+	case ViMoveOperation::FirstNonBlankChar:
+		setPosition(blockPos + firstNonBlankCharPos(blockText));
 		break;
 	case ViMoveOperation::JumpLine: {
 		DocBlock d = document()->findBlockByNumber(n - 1);

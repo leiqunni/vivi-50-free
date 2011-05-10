@@ -185,6 +185,7 @@ public:
 
 public:
 	TextView	*view() { return m_view; }
+	void	setX(int x) { m_x = x; }
 	void	updateViewBlock();
 	//void	assign(const DocCursor &);
 	void	setPosition(index_t position, uchar mode = MoveAnchor);

@@ -158,7 +158,7 @@ bool ViEngine::doShiftRight(ViewCursor &cur, int n)
 		block = block.next();
 	} while( block.isValid() );
 	cur.setPosition(pos);
-	moveCursor(cur, ViMoveOperation::FirstNonBlankChar);
+	cur.movePosition(ViMoveOperation::FirstNonBlankChar);
 	m_editor->setTextCursor(cur);
 	document()->closeUndoBlock();
 	//cur.endEditBlock();
@@ -189,7 +189,7 @@ bool ViEngine::doShiftLeft(ViewCursor &cur, int n)
 		block = block.next();
 	} while( block.isValid() );
 	cur.setPosition(pos);
-	moveCursor(cur, ViMoveOperation::FirstNonBlankChar);
+	cur.movePosition(ViMoveOperation::FirstNonBlankChar);
 	m_editor->setTextCursor(cur);
 	document()->closeUndoBlock();
 	//cur.endEditBlock();
@@ -494,10 +494,13 @@ bool ViEngine::doViCommand(const QChar &qch)
 			cursorMoved = moveCursor(cur, DocCursor::StartOfBlock);
 			break;
 		case '^':
-			cursorMoved = moveCursor(cur, ViMoveOperation::FirstNonBlankChar);
+			cursorMoved = cur.movePosition(ViMoveOperation::FirstNonBlankChar);
 			break;
 		case '$':
-			cursorMoved = moveCursor(cur, ViMoveOperation::LastChar, 1, cdy);
+			if( cdy )
+				cursorMoved = cur.movePosition(DocCursor::EndOfBlock);
+			else
+				cursorMoved = cur.movePosition(ViMoveOperation::LastChar);
 			break;
 		case '%':
 			cursorMoved = moveCursor(cur, ViMoveOperation::MatchParen);
@@ -553,7 +556,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			toInsertMode = true;
 			break;
 		case 'I':
-			cursorMoved = moveCursor(cur, ViMoveOperation::FirstNonBlankChar);
+			cursorMoved = cur.movePosition(ViMoveOperation::FirstNonBlankChar);
 			toInsertMode = true;
 			break;
 #if 1
