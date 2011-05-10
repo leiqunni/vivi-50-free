@@ -123,6 +123,8 @@ void TestViCommands::doTest()
 			m_viEngine->doFind(m_buffer.mid(1), m_buffer[0] == '/');
 		//} else if( m_buffer[0] == ':' ) {
 		//	m_viEngine->doExCommand(m_buffer.mid(1));
+		} else if( m_buffer == ".end" ) {
+			break;
 		} else {
 			m_ix = 0;
 			while( m_ix < m_buffer.length() ) {
@@ -253,7 +255,7 @@ void TestViCommands::checkBuffer(QTextStream &in)
 	TextView *editor = m_viEngine->editor();
 	DocBlock block = editor->document()->firstBlock();
 	while( !m_buffer.isEmpty() && m_buffer[0] == '>' ) {
-		if( block.isValid() && block.text() == m_buffer.mid(1) )
+		if( block.isValid() && block.text().left(block.EOLOffset()) == m_buffer.mid(1) )
 			m_mainWindow->doOutput(".");
 		else {
 			m_mainWindow->doOutput("F");
