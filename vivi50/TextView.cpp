@@ -712,14 +712,16 @@ void TextView::doPaint()
 			}
 		}
 		if( ix < text.length() ) {
+			//	改行マーク表示
+			//	undone B 矢印表示に変更する
 			painter.setPen(Qt::lightGray);
 			QString nl;
 			if( text[ix] == '\n' )
 				nl = QChar(0x266a);		//	♪
 			else if( ix + 1 < text.length() )
-				nl = QChar(0x266c);
+				nl = QChar(0x266c);		//	音符
 			else
-				nl = QChar(0x2669);
+				nl = QChar(0x2669);		//	音符
 			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), nl);
 		}
 		if( block.blockNumber() == lastBlockNumber ) {
