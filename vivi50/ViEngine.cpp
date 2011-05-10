@@ -27,6 +27,8 @@
 #include "TextDocument.h"
 #include "viCursor.h"
 
+bool hasSelection(const std::vector<ViewCursor*> &v);
+
 #if 1
 ViEngine::ViEngine(QObject *parent)
 	: m_noInsModeAtImeOpenStatus(false), m_mode(CMD), m_editor(0)
@@ -252,6 +254,15 @@ bool ViEngine::doViCommand(const QChar &qch)
 	}
 	if( op != 0 ) {
 		m_editor->doVertScroll(op);
+		return true;
+	}
+	std::vector<ViewCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
+	m_editor->getAllCursor(v);
+	if( qch == '\t' && m_editor->hasMultiCursor() && hasSelection(v) ) {
+		//	選択領域がある場合はローテイト
+		document()->openUndoBlock();
+		m_editor->rotateSelectedText(v);
+		document()->closeUndoBlock();
 		return true;
 	}
 	if( qch.unicode() == 0x1b ) {	//	Esc

@@ -127,12 +127,14 @@ public:
 	void	setOverwriteMode(bool);
 	void	onFontChanged();
 	void	clearMultiCursor() { m_multiCursor.clear(); }
+	void	rotateSelectedText(std::vector<ViewCursor*> &);
 
 	ViewCursor	textCursor() { return *m_textCursor; }
 	ViewBlock	firstBlock() const;
 	ViewBlock	lastBlock() const;
 	ViewBlock	findBlock(index_t) const;
 
+	void	getAllCursor(std::vector<ViewCursor*> &);
 	void	setTextCursor(const ViewCursor &cur);
 	void	setLineBreakMode(bool b) { onLineBreak(b); }
 
@@ -197,7 +199,6 @@ protected:
 	void	resetCursorBlinkTimer();
 	void	addToMultiCursor();
 	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); };
-	void	getAllCursor(std::vector<ViewCursor*> &);
 	void	ensureBlockLayout();
 	void	updateBlocks();
 	void	clearBlocks();

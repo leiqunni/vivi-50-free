@@ -1458,6 +1458,27 @@ void TextView::deletePreviousChar()
 		document()->closeUndoBlock();
 	}
 }
+void TextView::rotateSelectedText(std::vector<ViewCursor*> &v)
+{
+	std::vector<ViewCursor*>::iterator itr = v.end() - 1;
+	const QString lastText = (*itr)->selectedText();
+	int lastLength = lastText.length();
+	for(;;) {
+		const QString text = itr == v.begin() ? lastText
+									: (*(itr-1))->selectedText();
+		//const int d = text.length() - lastLength;		//	増減値
+		const int d = document()->insertText(**itr, text, /*select::=*/true);
+		//print(v);
+		for(std::vector<ViewCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
+			//	undone A BlockData も要補正
+			(*k)->move(d);
+		}
+		//print(v);
+		if( itr == v.begin() ) break;
+		lastLength = text.length();
+		--itr;
+	}
+}
 void TextView::insertText(const QString &text, bool tab)
 {
 	if( !hasMultiCursor() )
@@ -1468,25 +1489,7 @@ void TextView::insertText(const QString &text, bool tab)
 		getAllCursor(v);
 		if( tab && hasSelection(v) ) {
 			//	選択領域がある場合はローテイト
-			//print(v);
-			std::vector<ViewCursor*>::iterator itr = v.end() - 1;
-			const QString lastText = (*itr)->selectedText();
-			int lastLength = lastText.length();
-			for(;;) {
-				const QString text = itr == v.begin() ? lastText
-											: (*(itr-1))->selectedText();
-				//const int d = text.length() - lastLength;		//	増減値
-				const int d = document()->insertText(**itr, text, /*select::=*/true);
-				//print(v);
-				for(std::vector<ViewCursor*>::iterator k = itr + 1; k != v.end(); ++k) {
-					//	undone A BlockData も要補正
-					(*k)->move(d);
-				}
-				//print(v);
-				if( itr == v.begin() ) break;
-				lastLength = text.length();
-				--itr;
-			}
+			rotateSelectedText(v);
 		} else
 			for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 				itr != iend; ++itr)
@@ -1496,8 +1499,6 @@ void TextView::insertText(const QString &text, bool tab)
 				//print(v);
 				for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 					(*k)->move(sz);
-					//(*k)->setAnchor((*k)->anchor() + sz);
-					//(*k)->setPosition((*k)->position() + sz, DocCursor::KeepAnchor);
 				}
 				//print(v);
 			}
