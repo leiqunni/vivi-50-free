@@ -103,6 +103,8 @@ public:
 	DocBlock	block() const;
 	BlockData blockData() const { return m_blockData; }
 	BlockData anchorBlockData() const { return m_anchorBlockData; }
+	index_t positionInBlock() const { return position() - blockPosition(); }
+	index_t	blockNumber() const { return m_blockData.m_index; }
 	index_t	blockIndex() const { return m_blockData.m_index; }
 	index_t	blockPosition() const { return m_blockData.m_position; }
 	index_t	ancBlockIndex() const { return m_anchorBlockData.m_index; }

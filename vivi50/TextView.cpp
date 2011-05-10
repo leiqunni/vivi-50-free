@@ -1132,12 +1132,22 @@ const ViewBlock *TextView::firstVisibleBlockPtr() const
 {
 	//	undone B 暫定コード
 	static ViewBlock block = firstBlock();
+	block = firstVisibleBlock();
 	return &block;
 }
 const ViewBlock *TextView::lastVisibleBlockPtr() const
 {
 	//	undone B 暫定コード
 	static ViewBlock block = firstBlock();
+	block = firstVisibleBlock();
+	const int ht = viewport()->rect().height();
+	QFontMetrics fm = fontMetrics();
+	const int lineHeight = fm.lineSpacing();
+	int y = lineHeight;
+	while( y + lineHeight < ht ) {
+		y += lineHeight;
+		++block;
+	}
 	return &block;
 }
 void TextView::doDelete(int, int)

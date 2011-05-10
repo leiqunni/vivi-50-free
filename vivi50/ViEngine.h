@@ -74,7 +74,7 @@ signals:
 	void	open(const QString &);
 	void	save(const QString &);
 	void	regexpSearched(const QString &);
-	void	testViCommands(const QString &fileName);
+	void	testViCommands(QString fileName);
 	void	showMessage(const QString &);
 	void	doOutput(const QString &);
 	void	clearOutput();

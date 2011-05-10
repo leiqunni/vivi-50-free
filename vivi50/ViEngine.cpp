@@ -522,7 +522,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			break;
 		case 'M': {
 			const int n = (m_editor->firstVisibleBlockPtr()->blockNumber() + 
-							cdy, m_editor->lastVisibleBlockPtr()->blockNumber()) / 2 + 1;
+							m_editor->lastVisibleBlockPtr()->blockNumber()) / 2 + 1;
 			cursorMoved = cur.movePosition(ViMoveOperation::JumpLine, DocCursor::MoveAnchor, n);
 			m_moveByLine = true;
 			break;

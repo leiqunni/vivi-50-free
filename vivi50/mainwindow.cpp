@@ -66,7 +66,7 @@ void MainWindow::init()
 	connect(m_viEngine, SIGNAL(closeAllViews(bool)), this, SLOT(closeAllViews(bool)));
 	connect(m_viEngine, SIGNAL(open(const QString &)), this, SLOT(open(const QString &)));
 	connect(m_viEngine, SIGNAL(save(const QString &)), this, SLOT(save(const QString &)));
-	connect(m_viEngine, SIGNAL(testViCommands(const QString &)), this, SLOT(testViCommands(const QString &)));
+	connect(m_viEngine, SIGNAL(testViCommands(QString)), this, SLOT(testViCommands(QString)));
 	connect(m_viEngine, SIGNAL(showMessage(const QString &)), this, SLOT(showMessage(const QString &)));
 	connect(m_viEngine, SIGNAL(doOutput(const QString &)), this, SLOT(doOutput(const QString &)));
 	connect(m_viEngine, SIGNAL(clearOutput()), this, SLOT(clearOutput()));
@@ -790,6 +790,22 @@ void MainWindow::setFocusToCmdLine()
 {
 	//qDebug() << "MainWindow::setFocusToCmdLine()";
 	m_cmdLineEdit->setFocus(Qt::OtherFocusReason);
+}
+
+void testViCommands(MainWindow *, ViEngine *, const QString &);
+void MainWindow::testViCommands(QString fileName)
+{
+	if( fileName.isEmpty() )
+		fileName = QFileDialog::getOpenFileName(this, tr("Load ViVi 5.0 test file"), "", "*.tst");
+	if( m_isUntitled )
+		::testViCommands(this, m_viEngine, fileName);
+	else {
+		//	ファイルオープン時は新しい文書を開く
+		MainWindow *other = new MainWindow;
+		other->move(x() + 40, y() + 40);
+		other->show();
+		::testViCommands(other, other->m_viEngine, fileName);
+	}
 }
 void MainWindow::onModeChanged(Mode mode, ushort subMode)
 {
