@@ -929,7 +929,7 @@ bool ViEngine::processKeyPressEvent( QKeyEvent * event )
 		if( event->key() == Qt::Key_Delete )	//	Delete キーには文字コードが割り振られている
 			return false;		
 		ushort code = text[0].unicode();
-		//qDebug() << "code = " << code;
+		qDebug() << "code = " << code;
 		//	done R テーブル化して判定
 #if 0
 		if( code < 0x20 && code != 'G'-'@' && code != '\t' && code != '\r' &&

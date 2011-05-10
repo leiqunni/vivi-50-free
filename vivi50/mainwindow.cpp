@@ -795,6 +795,10 @@ void MainWindow::onModeChanged(Mode mode, ushort subMode)
 {
 	//qDebug() << "mode = " << mode;
 	QString text;
+	if( mode == INSERT || mode == REPLACE )
+		findAct->setShortcut(QKeySequence::Find);
+	else
+		findAct->setShortcut(0);
 	switch( mode ) {
 	case CMD: {
 #if	0	///def	WIN32

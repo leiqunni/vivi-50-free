@@ -406,8 +406,41 @@ void TextView::onBlockCountChanged()
 	onFontChanged();
 }
 
-void TextView::doVertScroll(int)
+void TextView::doVertScroll(int op)
 {
+	QScrollBar *vScrollBar = verticalScrollBar();
+	ViewCursor cur = textCursor();
+	const int value = vScrollBar->value();
+	const int pageStep = vScrollBar->pageStep();
+	switch( op ) {
+	case ViScrollOperation::NextPage:
+		vScrollBar->setValue(value + pageStep);
+		break;
+	case ViScrollOperation::PrevPage:
+		vScrollBar->setValue(value - pageStep);
+		break;
+	case ViScrollOperation::NextHalfPage:
+		vScrollBar->setValue(value + pageStep / 2);
+		break;
+	case ViScrollOperation::PrevHalfPage:
+		vScrollBar->setValue(value - pageStep / 2);
+		break;
+	case ViScrollOperation::ExposeBottom:
+		vScrollBar->setValue(value + 1);
+		break;
+	case ViScrollOperation::ExposeTop:
+		vScrollBar->setValue(value - 1);
+		break;
+	default:
+		return;
+	}
+	const int diff = vScrollBar->value() - value;
+	if( diff == 0 ) return;
+	if( diff > 0 )
+		cur.movePosition(DocCursor::Down, DocCursor::MoveAnchor, diff);
+	else
+		cur.movePosition(DocCursor::Up, DocCursor::MoveAnchor, -diff);
+	setTextCursor(cur);
 }
 void TextView::updateScrollBarData()
 {
