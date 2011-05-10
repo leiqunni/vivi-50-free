@@ -126,6 +126,7 @@ public:
 	void	doVertScroll(int);
 	void	setOverwriteMode(bool);
 	void	onFontChanged();
+	void	clearSelection() { m_textCursor->clearSelection(); }
 	void	clearMultiCursor() { m_multiCursor.clear(); }
 	void	rotateSelectedText(std::vector<ViewCursor*> &);
 

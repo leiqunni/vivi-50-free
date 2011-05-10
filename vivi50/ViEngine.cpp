@@ -267,6 +267,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 	}
 	if( qch.unicode() == 0x1b ) {	//	Esc
 		m_editor->clearMultiCursor();
+		m_editor->clearSelection();
 	}
 	if( mode() == INSERT || mode() == REPLACE ) {
 		//	done A insModeKeyPressEvent() ‚Ì•”•ª‚Æˆ—‚ğ‹¤’Ê‰»‚·‚é
