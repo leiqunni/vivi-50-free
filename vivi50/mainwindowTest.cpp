@@ -24,7 +24,7 @@
 #include "mainwindow.h"
 #include "TextView.h"
 #include "TextDocument.h"
-#include "TextCursor.h"
+#include "textCursor.h"
 #include "FindDlg.h"
 
 extern MainWindow *pMainWindow;

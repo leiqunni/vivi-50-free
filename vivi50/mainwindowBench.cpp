@@ -24,7 +24,7 @@
 #include "mainwindow.h"
 //#include "PlainTextEdit.h"
 #include "TextDocument.h"
-#include "TextCursor.h"
+#include "textCursor.h"
 #include "TextView.h"
 #include	<boost/timer.hpp>
 
