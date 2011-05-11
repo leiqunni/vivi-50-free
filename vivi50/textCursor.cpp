@@ -675,6 +675,7 @@ int ViewCursor::prevCharsCount() const
 	if( isNull() ) return 0;
 	int cnt = 0;
 	index_t pos = m_viewBlockData.position();
+	Q_ASSERT( pos <= m_position );
 	while( pos < m_position ) {
 		++cnt;
 		pos += UTF8CharSize((*m_document)[pos]);

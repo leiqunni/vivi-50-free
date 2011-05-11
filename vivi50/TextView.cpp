@@ -1467,15 +1467,15 @@ void TextView::deleteChar()
 		document()->openUndoBlock();
 		std::vector<ViewCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
 		getAllCursor(v);
+		print(v);
 		for(std::vector<ViewCursor*>::iterator itr = v.begin(), iend = v.end();
 			itr != iend; ++itr)
 		{
 			const int sz = deleteChar(**itr);
 			//emit printBuffer();
+			print(v);
 			for(std::vector<ViewCursor*>::iterator k = itr; ++k != iend; ) {
 				(*k)->move(-sz);
-				//(*k)->setPosition((*k)->position() - sz);
-				//(*k)->setAnchor((*k)->anchor() - sz);
 			}
 		}
 		document()->closeUndoBlock();
@@ -1651,7 +1651,7 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	if( !m_lineBreakMode ) {
 		size_t sz = document()->deleteChar(cur);
 		cur.updateViewBlock();
-		setTextCursor(cur);
+		///setTextCursor(cur);		//	この行があるとマルチカーソルの場合にうまくいかない
 		//cur.setViewBlockData(cur.blockData());
 		//cur.setViewAnchorBlockData(cur.anchorBlockData());
 		return sz;
@@ -1670,7 +1670,7 @@ size_t TextView::deleteChar(ViewCursor &cur)
 	reLayoutBlocksUntillDocBlockNumber(block, lastDocBlockNumber + d, firstViewBlockNumber);
 	m_cacheBlockData = BlockData(firstViewBlockNumber, block.position());	//	DocBlock先頭位置
 	cur.updateViewBlock();
-	setTextCursor(cur);
+	///setTextCursor(cur);		//	この行があるとマルチカーソルの場合にうまくいかない
 	return delSize;
 }
 size_t TextView::deletePreviousChar(ViewCursor &cur)

@@ -842,11 +842,13 @@ bool ViEngine::doViCommand(const QChar &qch)
 			cur.deleteChar();
 			document()->closeUndoBlock();
 			//cur.endEditBlock();
-			m_editor->setTextCursor(cur);
 		} else {
 			cur.deleteChar();
 		}
+		cur.moveLeftIfEndOfLine();		//	改行位置にいる場合はカーソルを左移動
+		m_editor->setTextCursor(cur);
 		//	削除後に改行位置にいる場合はカーソルを左移動
+#if 0
 		ViewCursor cur = m_editor->textCursor();
 		const ViewBlock block = cur.block();
 		if( !toInsertMode && block.text().length() != 0 &&
@@ -855,6 +857,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			cur.setPosition(cur.position() - 1);
 			m_editor->setTextCursor(cur);
 		}
+#endif
 	}
 	if( toInsertMode ) {
 		//if( m_joinPrevEditBlock )
