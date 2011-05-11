@@ -100,6 +100,7 @@ private slots:
 	void	onBenchmarkReplace(bool b);
 	void	closeView(TextView*, bool = false);
 	void	closeAllViews(bool = false);
+	void	clearOutput();
 	void	testViCommands(QString fileName);
 
 private:

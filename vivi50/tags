@@ -95,9 +95,9 @@ LayoutThread	.\LayoutThread.h	/^class LayoutThread : public QThread$/;"	c
 Left	.\textCursor.h	/^		Left,$/;"	e	enum:DocCursor::__anon2
 MAINWINDOW_H	.\mainwindow.h	24;"	d
 MARGIN_LEFT	.\TextView.cpp	61;"	d	file:
-MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
+MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^    class MainWindowClass: public Ui_MainWindowClass {};$/;"	c	namespace:Ui
 MatchCase	.\findOpt.h	/^	MatchCase = 0x01,$/;"	e	enum:__anon4
 MaxRecentFiles	.\mainwindow.h	/^    enum { MaxRecentFiles = 10 };$/;"	e	enum:MainWindow::__anon1
@@ -257,6 +257,7 @@ clear	.\TextDocument.h	/^	void	clear() { init(); }$/;"	f	class:TextDocument
 clear	.\gap_vector.h	/^	void clear()$/;"	f	class:std::gap_vector
 clearBlocks	.\TextView.cpp	/^void TextView::clearBlocks()$/;"	f	class:TextView
 clearMultiCursor	.\TextView.h	/^	void	clearMultiCursor() { m_multiCursor.clear(); }$/;"	f	class:TextView
+clearOutput	.\mainwindow.cpp	/^void MainWindow::clearOutput()$/;"	f	class:MainWindow
 clearSelection	.\textCursor.h	/^	void	clearSelection() { copyPositionToAnchor(); }$/;"	f	class:DocCursor
 clearSelection	.\TextView.h	/^	void	clearSelection() { m_textCursor->clearSelection(); }$/;"	f	class:TextView
 closeAllAct	.\mainwindow.h	/^	QAction *closeAllAct;$/;"	m	class:MainWindow
@@ -329,8 +330,8 @@ doFindNext	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNe
 doFindNext	.\GeneratedFiles\Release\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg
 doFindNext	.\GeneratedFiles\Release\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:ReplaceDlg
 doJoin	.\ViEngine.cpp	/^void ViEngine::doJoin(int n)$/;"	f	class:ViEngine
-doJump	.\TextView.cpp	/^void TextView::doJump(int lineNum)$/;"	f	class:TextView
 doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
+doJump	.\TextView.cpp	/^void TextView::doJump(int lineNum)$/;"	f	class:TextView
 doOpenLine	.\TextView.cpp	/^void TextView::doOpenLine(bool next)$/;"	f	class:TextView
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
 doPaint	.\TextView.cpp	/^void TextView::doPaint()$/;"	f	class:TextView
@@ -412,9 +413,9 @@ erase	.\gap_vector.h	/^	void erase(index_type first, index_type last)$/;"	f	clas
 erase	.\gap_vector.h	/^	void erase(index_type ix)$/;"	f	class:std::gap_vector
 eraseBlocks	.\TextView.cpp	/^void TextView::eraseBlocks(index_t first, index_t last, size_t delDocBlockCount)$/;"	f	class:TextView
 event	.\TextView.cpp	/^bool TextView::event ( QEvent * event )$/;"	f	class:TextView
+eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
 eventFilter	.\ViEngine.cpp	/^bool ViEngine::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:ViEngine
 eventFilter	.\TextView.cpp	/^bool TextView::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:TextView
-eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
 exCommands	.\ViEngine.h	/^	const QStringList &exCommands() const { return m_exCommands; }$/;"	f	class:ViEngine
 expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector
 fileMenu	.\mainwindow.h	/^    QMenu	*fileMenu;$/;"	m	class:MainWindow
@@ -733,8 +734,8 @@ m_vSize	.\LayoutThread.h	/^	std::vector<size_t>		m_vSize;	\/\/	ÉåÉCÉAÉEÉgÇ≥ÇÍÇΩç
 m_validFirstVisibleBlock	.\TextView.h	/^	mutable bool		m_validFirstVisibleBlock;		\/\/	m_firstVisibleBlock óLå¯$/;"	m	class:TextView
 m_viEngine	.\mainwindow.h	/^	ViEngine	*m_viEngine;$/;"	m	class:MainWindow
 m_viEngine	.\TextView.h	/^	ViEngine	*m_viEngine;$/;"	m	class:TextView
-m_view	.\textCursor.h	/^	TextView	*m_view;$/;"	m	class:ViewCursor
 m_view	.\mainwindow.h	/^	TextView	*m_view;$/;"	m	class:MainWindow
+m_view	.\textCursor.h	/^	TextView	*m_view;$/;"	m	class:ViewCursor
 m_view	.\textBlock.h	/^	TextView	*m_view;$/;"	m	class:ViewBlock
 m_viewAnchorBlockData	.\textCursor.h	/^	BlockData	m_viewAnchorBlockData;$/;"	m	class:ViewCursor
 m_viewBlock	.\textBlock.h	/^	BlockData	m_viewBlock;		\/\/	m_position	çsì™ï∂éöà íu$/;"	m	class:ViewBlock

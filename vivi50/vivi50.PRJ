@@ -78,7 +78,7 @@ memFileColumnWd = 320
   "TextView.cpp" 1842 'B: ' '' undone 未コーディング
   "textBlock.cpp" 587 'B: ' '' undone チャンクが連続している場合等
   "ViEngine.cpp" 814 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 884 'B: ' '' undone 未コーディング
-  "ViEngine.cpp" 1002 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1100 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 887 'B: ' '' undone 未コーディング
+  "ViEngine.cpp" 1005 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1103 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
   "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

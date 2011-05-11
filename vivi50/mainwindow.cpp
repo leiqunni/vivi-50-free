@@ -867,6 +867,11 @@ void MainWindow::showMessage(const QString & text)
 		statusBar()->showMessage(text);
 	//}
 }
+void MainWindow::clearOutput()
+{
+	m_output->document()->clear();
+	m_output->viewport()->repaint();	//	”O‚Ì‚½‚ß
+}
 void MainWindow::showAboutDlg()
 {
 	QMessageBox msgBox;
