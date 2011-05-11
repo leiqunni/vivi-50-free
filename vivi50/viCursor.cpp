@@ -22,8 +22,8 @@
 
 #include <QtGui>
 #include "viCursor.h"
-#include "textDocument.h"
-#include "textView.h"
+#include "TextDocument.h"
+#include "TextView.h"
 #include "textBlock.h"
 
 #if 0

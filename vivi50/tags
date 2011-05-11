@@ -111,8 +111,8 @@ PTR_ALLOCATOR	.\gap_vector.h	39;"	d
 PrevBlock	.\textCursor.h	/^		PrevBlock,$/;"	e	enum:DocCursor::__anon2
 PrevWord	.\textCursor.h	/^		PrevWord,$/;"	e	enum:DocCursor::__anon2
 REPLACEDLG_H	.\ReplaceDlg.h	24;"	d
-ReplaceDlg	.\ReplaceDlg.cpp	/^ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)$/;"	f	class:ReplaceDlg
 ReplaceDlg	.\ReplaceDlg.h	/^class ReplaceDlg : public QDialog$/;"	c
+ReplaceDlg	.\ReplaceDlg.cpp	/^ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)$/;"	f	class:ReplaceDlg
 Right	.\textCursor.h	/^		Right,$/;"	e	enum:DocCursor::__anon2
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const QString &fileName, int lineNum, QString mess="")$/;"	f	struct:SFailedInfo
 SFailedInfo	.\unit_test.h	/^	SFailedInfo(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
@@ -502,13 +502,13 @@ gotoMatchParen	.\viCursor.cpp	/^bool gotoMatchParen(ViewCursor &cur)$/;"	f
 gotoNextBlankLine	.\viCursor.cpp	/^bool gotoNextBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoNextSSWord	.\viCursor.cpp	/^bool gotoNextSSWord(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoNextSSWordEnd	.\viCursor.cpp	/^bool gotoNextSSWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
-gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n, bool cdy)$/;"	f
 gotoNextWord	.\viCursor.cpp	/^bool gotoNextWord(ViewCursor &cur, int n, bool cdy)$/;"	f
+gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n, bool cdy)$/;"	f
 gotoNextWordEnd	.\viCursor.cpp	/^bool gotoNextWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoPrevBlankLine	.\viCursor.cpp	/^bool gotoPrevBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoPrevSSWord	.\viCursor.cpp	/^bool gotoPrevSSWord(ViewCursor &cur, int n)$/;"	f
-gotoPrevWord	.\textCursor.cpp	/^bool gotoPrevWord(DocCursor &cur, int n)$/;"	f
 gotoPrevWord	.\viCursor.cpp	/^bool gotoPrevWord(ViewCursor &cur, int n)$/;"	f
+gotoPrevWord	.\textCursor.cpp	/^bool gotoPrevWord(DocCursor &cur, int n)$/;"	f
 gotoStartOfWord	.\textCursor.cpp	/^bool gotoStartOfWord(DocCursor &cur)$/;"	f
 hasMultiCursor	.\TextView.h	/^	bool	hasMultiCursor() const { return !m_multiCursor.empty(); }$/;"	f	class:TextView
 hasSelection	.\TextView.cpp	/^bool hasSelection(const std::vector<ViewCursor*> &v)$/;"	f
@@ -562,8 +562,8 @@ isModified	.\TextView.cpp	/^bool TextView::isModified() const$/;"	f	class:TextVi
 isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
 isNull	.\textCursor.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:DocCursor
 isOverlapped	.\textCursor.cpp	/^bool DocCursor::isOverlapped(const DocCursor &x) const$/;"	f	class:DocCursor
-isTabOrSpace	.\textCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isTabOrSpace	.\viCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
+isTabOrSpace	.\textCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isUTF16beBom	.\charEncoding.cpp	/^inline bool isUTF16beBom(cuchar *ptr, cuchar *endptr)$/;"	f
 isUTF16leBom	.\charEncoding.cpp	/^inline bool isUTF16leBom(cuchar *ptr, cuchar *endptr)$/;"	f
 isUTF8Bom	.\charEncoding.cpp	/^inline bool isUTF8Bom(cuchar *ptr, cuchar *endptr)$/;"	f
@@ -608,8 +608,8 @@ m_buffer	.\TextDocument.h	/^	mutable std::gap_vector<uchar>	m_buffer;$/;"	m	clas
 m_cacheBlock	.\textBlock.h	/^	mutable LaidoutBlock	*m_cacheBlock;$/;"	m	class:LaidoutBlocksMgr
 m_cacheBlockData	.\TextView.h	/^	mutable BlockData	m_cacheBlockData;			\/\/	カレントブロック情報$/;"	m	class:TextView
 m_cacheBlockData	.\TextDocument.h	/^	mutable BlockData	m_cacheBlockData;			\/\/	カレントブロック情報$/;"	m	class:TextDocument
-m_caseComboBox	.\FindDlg.h	/^	QComboBox	*m_caseComboBox;$/;"	m	class:FindDlg
 m_caseComboBox	.\ReplaceDlg.h	/^	QComboBox	*m_caseComboBox;$/;"	m	class:ReplaceDlg
+m_caseComboBox	.\FindDlg.h	/^	QComboBox	*m_caseComboBox;$/;"	m	class:FindDlg
 m_cdyCmd	.\ViEngine.h	/^	ushort	m_cdyCmd;				\/\/	c | d | y コマンド$/;"	m	class:ViEngine
 m_cdyPos	.\ViEngine.h	/^	int		m_cdyPos;				\/\/	c|d|y が押された時のカーソル位置$/;"	m	class:ViEngine
 m_charEncoding	.\TextDocument.h	/^	uchar	m_charEncoding;$/;"	m	class:TextDocument
@@ -635,12 +635,12 @@ m_exCmdsIx	.\mainwindow.h	/^	int			m_exCmdsIx;$/;"	m	class:MainWindow
 m_exCommands	.\ViEngine.h	/^	QStringList	m_exCommands;		\/\/	入力された ex-command 文字列$/;"	m	class:ViEngine
 m_failCount	.\unit_test.h	/^	int		m_failCount;		\/\/	失敗回数$/;"	m	class:CUnitTest
 m_fileName	.\unit_test.h	/^	QString		m_fileName;$/;"	m	struct:SFailedInfo
-m_findBackWard	.\FindDlg.h	/^	QRadioButton	*m_findBackWard;$/;"	m	class:FindDlg
 m_findBackWard	.\ReplaceDlg.h	/^	QRadioButton	*m_findBackWard;$/;"	m	class:ReplaceDlg
+m_findBackWard	.\FindDlg.h	/^	QRadioButton	*m_findBackWard;$/;"	m	class:FindDlg
 m_findForward	.\ViEngine.h	/^	bool	m_findForward;			\/\/	順方向検索$/;"	m	class:ViEngine
 m_findString	.\ViEngine.h	/^	QString	m_findString;			\/\/	検索正規表現文字列$/;"	m	class:ViEngine
-m_findStringCB	.\FindDlg.h	/^	QComboBox	*m_findStringCB;$/;"	m	class:FindDlg
 m_findStringCB	.\ReplaceDlg.h	/^	QComboBox	*m_findStringCB;$/;"	m	class:ReplaceDlg
+m_findStringCB	.\FindDlg.h	/^	QComboBox	*m_findStringCB;$/;"	m	class:FindDlg
 m_findStrings	.\mainwindow.h	/^	QStringList	m_findStrings;		\/\/	検索（正規表現）文字列履歴$/;"	m	class:MainWindow
 m_first	.\TextDocument.h	/^	index_t	m_first;$/;"	m	struct:GVUndoItem
 m_first	.\gap_vector.h	/^	pointer	m_first;		\/\/   ↓first   ↓gapBegi n   ↓gapEnd        ↓m_last$/;"	m	class:std::gap_vector
@@ -832,8 +832,8 @@ operator --	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator--()$/;"	f	class:Vie
 operator <	.\textCursor.h	/^	bool	operator<(const DocCursor &x) const { return position() < x.position(); }$/;"	f	class:DocCursor
 operator <	.\textBlock.h	/^	bool	operator<(const DocBlock &x) const$/;"	f	class:DocBlock
 operator <	.\textBlock.h	/^	bool	operator<(const ViewBlock &x) const$/;"	f	class:ViewBlock
-operator =	.\textCursor.cpp	/^ViewCursor &ViewCursor::operator=(const DocCursor &x)$/;"	f	class:ViewCursor
 operator =	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator=(const DocBlock &docBlock)$/;"	f	class:ViewBlock
+operator =	.\textCursor.cpp	/^ViewCursor &ViewCursor::operator=(const DocCursor &x)$/;"	f	class:ViewCursor
 operator =	.\textBlock.h	/^	LaidoutChunk	&operator=(const LaidoutChunk &x)$/;"	f	struct:LaidoutChunk
 operator =	.\TextDocument.h	/^	GVUndoItem &operator=(const GVUndoItem &x)$/;"	f	struct:GVUndoItem
 operator =	.\gap_vector.h	/^	gap_vector &operator=(const gap_vector &x)$/;"	f	class:std::gap_vector
@@ -852,9 +852,9 @@ paste	.\TextView.cpp	/^void TextView::paste()$/;"	f	class:TextView
 pasteAct	.\mainwindow.h	/^    QAction *pasteAct;$/;"	m	class:MainWindow
 pointer	.\gap_vector.h	/^	typedef Type* pointer;$/;"	t	class:std::_Gap_Vector_Iterator
 pointer	.\gap_vector.h	/^	typedef Type* pointer;$/;"	t	class:std::gap_vector
-position	.\textCursor.h	/^	index_t	position() const { return m_position; }$/;"	f	class:DocCursor
 position	.\textBlock.cpp	/^index_t DocBlock::position() const$/;"	f	class:DocBlock
 position	.\textBlock.cpp	/^index_t ViewBlock::position() const$/;"	f	class:ViewBlock
+position	.\textCursor.h	/^	index_t	position() const { return m_position; }$/;"	f	class:DocCursor
 position	.\textBlock.h	/^	index_t	position() const { return m_viewBlockData.m_position; }$/;"	f	class:LaidoutBlock
 position	.\textBlock.h	/^	index_t position() const { return m_position; }$/;"	f	struct:BlockData
 positionInBlock	.\textCursor.h	/^	index_t positionInBlock() const { return position() - blockPosition(); }$/;"	f	class:DocCursor

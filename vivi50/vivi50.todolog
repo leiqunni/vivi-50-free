@@ -78,6 +78,8 @@
 # 2011/05/08 16:02:28
 + 2011/05/08 "TextView.cpp" B:   undone 暫定コード
 + 2011/05/08 "TextView.cpp" B:   undone 暫定コード
+# 2011/05/11 07:24:52
++ 2011/05/11 "TextView.cpp" B:   undone 矢印表示に変更する
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -85,6 +87,7 @@
 2011/04/19 "TextDocument.cpp" P:   undone 置換テキストもUTF8にあらかじめ変換しておく
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード
+2011/05/11 "TextView.cpp" B:   undone 矢印表示に変更する
 2011/04/12 "TextView.cpp" C:   undone 本当は設定で CRLF/CR/LF のいずれかを挿入
 2011/04/29 "TextView.cpp" B:   undone 暫定コード
 2011/04/29 "TextView.cpp" B:   undone 暫定コード

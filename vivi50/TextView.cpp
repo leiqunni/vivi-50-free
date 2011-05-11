@@ -26,7 +26,7 @@
 #include	"textCursor.h"
 #include	"FindDlg.h"
 #include	"ReplaceDlg.h"
-#include	"viEngine.h"
+#include	"ViEngine.h"
 #include	<math.h>
 #include	<QDebug>
 

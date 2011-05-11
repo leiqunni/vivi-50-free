@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------
 
 #include "textBlock.h"
-#include "textView.h"
+#include "TextView.h"
 #include "TextDocument.h"
 
 size_t UTF8CharSize(uchar ch);

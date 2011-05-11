@@ -25,7 +25,7 @@
 
 #include <QDialog>
 #include "findOpt.h"
-#include "findDlg.h"
+#include "FindDlg.h"
 
 class QLabel;
 class QLineEdit;
