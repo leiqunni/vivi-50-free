@@ -124,6 +124,7 @@ public:
 	void	setPosition(index_t position, BlockData, uchar mode = MoveAnchor);
 	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
 	void	move(int);
+	void	moveLeftIfEndOfLine();
 
 	size_t	insertText(const QString &);
 	void	deleteChar();

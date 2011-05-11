@@ -347,6 +347,24 @@ bool gotoEndOfWord(DocCursor &cur)
 	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
+void DocCursor::moveLeftIfEndOfLine()
+{
+	DocBlock b = block();
+	uchar uch;
+	if( m_position > b.position() &&
+		(uch = (*m_document)[m_position]) == '\r' ||
+		uch == '\n' )
+	{
+		do { } while( !isUTF8FirstChar((*m_document)[--m_position]) );
+		m_anchor = m_position;
+	}
+}
+//	vi 移動コマンドでは、空行でない場合は改行位置にカーソル移動しない
+//	が、{c|d|y}<move> の場合は、改行まで移動しないといけない
+//	{c|d|y}<move> なのか単なる <move> なのかを引数で与えることも可能だが、
+//	それだと判定箇所が多数になってしまう
+//	そこで、movePosition() は常に改行まで移動することにし、
+//	movePosition() を呼び出す部分で、単なる <move> の場合は、改行からひとつ戻すことにする
 bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 {
 	if( isNull() ) return false;
@@ -407,10 +425,9 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 				m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
 			}
 		}
-#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
-#endif
 		break;
+	case ViMoveOperation::Up:	//	暫定コード
 	case Up:
 	case PrevBlock:
 		while( n != 0 ) {
@@ -419,10 +436,9 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 			m_position = m_blockData.m_position -= m_document->blockSize(--m_blockData.m_index);
 			--n;
 		}
-#if TEXT_CURSOR_BLOCK
 		m_position = m_blockData.m_position + qMin(m_offset, getEOLOffset(m_document, m_blockData));
-#endif
 		break;
+	case ViMoveOperation::Down:	//	暫定コード
 	case NextBlock:
 	case Down:
 		while( n != 0 ) {
@@ -431,11 +447,7 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 			m_position = m_blockData.m_position += m_document->blockSize(m_blockData.m_index++);
 			--n;
 		}
-#if TEXT_CURSOR_BLOCK
 		m_position = m_blockData.m_position + qMin(m_offset, getEOLOffset(m_document, m_blockData));
-#else
-		m_position = 0;
-#endif
 		break;
 	case StartOfWord:
 		gotoStartOfWord(*this);
@@ -696,7 +708,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 	index_t blockPos = vb.position();
 	index_t pos = position();
 	switch( move ) {
-	case ViMoveOperation::Up:	//	暫定コード
+	//case ViMoveOperation::Up:	//	暫定コード
 	case Up:
 		while( n != 0 ) {
 			if( !m_viewBlockData.m_index ) break;
@@ -709,7 +721,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 		//movePosition(Right, KeepAnchor, view()->xToCharCount(block().text(), m_x));
 		m_blockData = view()->docBlockData(m_viewBlockData);
 		break;
-	case ViMoveOperation::Down:	//	暫定コード
+	//case ViMoveOperation::Down:	//	暫定コード
 	case Down:
 		while( n != 0 ) {
 			if( m_viewBlockData.m_index >= view()->blockCount() - 1 ) break;

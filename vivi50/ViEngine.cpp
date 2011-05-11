@@ -790,6 +790,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			}
 			break;
 		default:
+			cur.moveLeftIfEndOfLine();
 			m_editor->setTextCursor(cur);
 			//qDebug() << "cur.position() = " << cur.position();
 		}
