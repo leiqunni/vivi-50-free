@@ -405,6 +405,50 @@ bool gotoNextSSWord(DocCursor &cur, int n, bool cdy)
 	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
+bool gotoNextSSWordEnd(DocCursor &cur, int n, bool cdy)
+{
+	const TextDocument *doc = cur.document();
+	index_t pos = cur.position();
+	DocBlock block = cur.block();
+	index_t blockPos = block.position();
+	QString text = block.text();
+	int EOLIndex = getEOLOffset(text);
+	int ix = cur.prevCharsCount();
+	while( --n >= 0 ) {
+		//	ŽŸ‚Ì•¶Žš‚ª‹ó”’—Þ or s––‚È‚ç•¶‘––”ö•ûŒü‚ÉˆÚ“®
+		while( ix + 1 >= EOLIndex || isTabOrSpace(text[ix+1]) ) {
+			if( ix + 1 >= EOLIndex ) {
+				do {
+					block = block.next();
+					if( !block.isValid() ) {
+						cur.setPosition(blockPos);
+						return true;
+					}
+					pos = blockPos = block.position();
+					text = block.text();
+					EOLIndex = getEOLOffset(text);
+				} while( !EOLIndex );
+				ix = 0;
+				if( ix < EOLIndex && !isTabOrSpace(text[ix]) )
+					break;
+			} else {
+				++ix;
+				pos += UTF8CharSize((*doc)[pos]);
+			}
+		}
+		//	ŽŸ‚Ì•¶Žš‚ª‹ó”’—Þ‚É‚È‚é‚Ü‚Å or s––‚Ü‚Å“Ç‚Ý”ò‚Î‚·
+		while( ix + 1 < EOLIndex && !isTabOrSpace(text[ix+1]) ) {
+			++ix;
+			pos += UTF8CharSize((*doc)[pos]);
+		}
+	}
+	if( cdy ) {
+		++ix;
+		pos += UTF8CharSize((*doc)[pos]);
+	}
+	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
+	return true;
+}
 bool gotoPrevSSWord(DocCursor &cur, int n)
 {
 	const TextDocument *doc = cur.document();
@@ -616,8 +660,13 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		m_offset = m_position - m_blockData.position();
 		break;
 	case ViMoveOperation::PrevSSWord:
-		return gotoPrevSSWord(*this, n);
+		gotoPrevSSWord(*this, n);
 		m_offset = m_position - m_blockData.position();
+		break;
+	case ViMoveOperation::NextSSWordEnd:
+		gotoNextSSWordEnd(*this, n, cdy);
+		m_offset = m_position - m_blockData.position();
+		break;
 	case StartOfBlock:
 		m_position = m_blockData.position();
 		m_offset = 0;

@@ -502,7 +502,7 @@ gotoEndOfWord	.\textCursor.cpp	/^bool gotoEndOfWord(DocCursor &cur)$/;"	f
 gotoMatchParen	.\viCursor.cpp	/^bool gotoMatchParen(ViewCursor &cur)$/;"	f
 gotoNextBlankLine	.\viCursor.cpp	/^bool gotoNextBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoNextSSWord	.\textCursor.cpp	/^bool gotoNextSSWord(DocCursor &cur, int n, bool cdy)$/;"	f
-gotoNextSSWordEnd	.\viCursor.cpp	/^bool gotoNextSSWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
+gotoNextSSWordEnd	.\textCursor.cpp	/^bool gotoNextSSWordEnd(DocCursor &cur, int n, bool cdy)$/;"	f
 gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n , bool vi, bool cdy)$/;"	f
 gotoNextWord	.\viCursor.cpp	/^bool gotoNextWord(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoNextWordEnd	.\textCursor.cpp	/^bool gotoNextWordEnd(DocCursor &cur, int n, bool cdy)$/;"	f

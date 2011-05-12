@@ -61,8 +61,8 @@ memFileColumnWd = 320
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 78 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 809 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
-  "textCursor.cpp" 571 'B: ' '' undone 暫定コード
-  "textCursor.cpp" 582 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 572 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 583 'B: ' '' undone 暫定コード
   "TextView.cpp" 716 'B: ' '' undone 矢印表示に変更する
   "TextView.cpp" 991 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 1135 'B: ' '' undone 暫定コード

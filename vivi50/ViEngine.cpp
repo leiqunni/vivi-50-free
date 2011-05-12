@@ -630,7 +630,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			cursorMoved = cur.movePosition(ViMoveOperation::PrevSSWord, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case 'E':
-			cursorMoved = moveCursor(cur, ViMoveOperation::NextSSWordEnd, repeatCount(), cdy);
+			cursorMoved = cur.movePosition(ViMoveOperation::NextSSWordEnd, DocCursor::MoveAnchor, repeatCount(), cdy);
 			break;
 		case 'W':
 			cursorMoved = cur.movePosition(ViMoveOperation::NextSSWord, DocCursor::MoveAnchor, repeatCount(), cdy);
