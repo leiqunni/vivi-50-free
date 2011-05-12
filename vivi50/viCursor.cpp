@@ -26,6 +26,8 @@
 #include "TextView.h"
 #include "textBlock.h"
 
+int getEOLOffset(const QString text);
+
 #if 0
 //	末尾改行（CR/LF/CRLF）位置を返す
 int EOLOffset(const QString &text)
@@ -128,16 +130,18 @@ bool gotoPrevWord(ViewCursor &cur, int n)
 	cur.setPosition(blockPos + ix);
 	return true;
 }
-bool gotoNextWordEnd(ViewCursor &cur, int n, bool cdy)
+#if 0
+bool gotoNextWordEnd(DocCursor &cur, int n, bool cdy)
 {
-	ViewBlock block = cur.block();
+	DocBlock block = cur.block();
 	int blockPos = block.position();
 	QString text = block.text();
 	int ix = cur.position() - blockPos;
+	int EOLIndex = getEOLOffset(text);
 	while( --n >= 0 ) {
 		//	次の文字が空白類 or 行末なら文書末尾方向に移動
-		while( ix + 1 >= text.length() || isTabOrSpace(text[ix+1]) ) {
-			if( ix + 1 >= text.length() ) {
+		while( ix + 1 >= EOLIndex || isTabOrSpace(text[ix+1]) ) {
+			if( ix + 1 >= EOLIndex ) {
 				block = block.next();
 				if( !block.isValid() ) {
 					cur.setPosition(blockPos);
@@ -145,16 +149,17 @@ bool gotoNextWordEnd(ViewCursor &cur, int n, bool cdy)
 				}
 				blockPos = block.position();
 				text = block.text();
+				EOLIndex = getEOLOffset(text);
 				ix = 0;
-				if( ix < text.length() && !isTabOrSpace(text[ix]) )
+				if( ix < EOLIndex && !isTabOrSpace(text[ix]) )
 					break;
 			} else
 				++ix;
 		}
 		//	次の文字が空白類になるまで or 行末まで読み飛ばす
-		if( ix + 1 < text.length() && !isTabOrSpace(text[ix+1]) ) {
+		if( ix + 1 < EOLIndex && !isTabOrSpace(text[ix+1]) ) {
 			uchar cat = getCharType(text[++ix]);
-			while( ix + 1 < text.length() && !isTabOrSpace(text[ix+1]) && getCharType(text[ix+1]) == cat )
+			while( ix + 1 < EOLIndex && !isTabOrSpace(text[ix+1]) && getCharType(text[ix+1]) == cat )
 				++ix;
 		}
 	}
@@ -162,6 +167,7 @@ bool gotoNextWordEnd(ViewCursor &cur, int n, bool cdy)
 	cur.setPosition(blockPos + ix);
 	return true;
 }
+#endif
 bool gotoNextSSWord(ViewCursor &cur, int n, bool cdy)
 {
 	ViewBlock block = cur.block();
@@ -488,12 +494,14 @@ bool moveCursor(ViewCursor &cur, //int &x,
 		cur.setX(INT_MAX);
 		return true;
 	}
+#if 0
 	case ViMoveOperation::NextWord:
 		return gotoNextWord(cur, n, cdy);
 	case ViMoveOperation::PrevWord:
 		return gotoPrevWord(cur, n);
 	case ViMoveOperation::NextWordEnd:
 		return gotoNextWordEnd(cur, n, cdy);
+#endif
 	case ViMoveOperation::NextSSWord:
 		return gotoNextSSWord(cur, n, cdy);
 	case ViMoveOperation::PrevSSWord:

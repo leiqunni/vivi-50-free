@@ -219,6 +219,7 @@ uchar getCharType(QChar ch)
 //----------------------------------------------------------------------
 bool gotoNextWord(DocCursor &cur, int n = 1 , bool vi = false, bool cdy = false);
 bool gotoPrevWord(DocCursor &cur, int n = 1, bool vi = false);
+bool gotoNextWordEnd(DocCursor &cur, int n, bool cdy);
 bool gotoStartOfWord(DocCursor &cur);
 bool gotoEndOfWord(DocCursor &cur);
 inline bool isTabOrSpace(const QChar ch)
@@ -312,6 +313,52 @@ bool gotoPrevWord(DocCursor &cur, int n, bool vi)
 				do { } while( !isUTF8FirstChar((*doc)[--pos]) );
 			}
 		}
+	}
+	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
+	return true;
+}
+bool gotoNextWordEnd(DocCursor &cur, int n, bool cdy)
+{
+	const TextDocument *doc = cur.document();
+	DocBlock block = cur.block();
+	index_t pos = cur.position();
+	index_t blockPos = block.position();
+	QString text = block.text();
+	int ix = cur.prevCharsCount();
+	int EOLIndex = getEOLOffset(text);
+	while( --n >= 0 ) {
+		//	ŽŸ‚Ì•¶Žš‚ª‹ó”’—Þ or s––‚È‚ç•¶‘––”ö•ûŒü‚ÉˆÚ“®
+		while( ix + 1 >= EOLIndex || isTabOrSpace(text[ix+1]) ) {
+			if( ix + 1 >= EOLIndex ) {
+				block = block.next();
+				if( !block.isValid() ) {
+					cur.setPosition(blockPos);
+					return true;
+				}
+				pos = blockPos = block.position();
+				text = block.text();
+				EOLIndex = getEOLOffset(text);
+				ix = 0;
+				if( ix < EOLIndex && !isTabOrSpace(text[ix]) )
+					break;
+			} else {
+				++ix;
+				pos += UTF8CharSize((*doc)[pos]);
+			}
+		}
+		//	ŽŸ‚Ì•¶Žš‚ª‹ó”’—Þ‚É‚È‚é‚Ü‚Å or s––‚Ü‚Å“Ç‚Ý”ò‚Î‚·
+		if( ix + 1 < EOLIndex && !isTabOrSpace(text[ix+1]) ) {
+			uchar cat = getCharType(text[++ix]);
+			pos += UTF8CharSize((*doc)[pos]);
+			while( ix + 1 < EOLIndex && !isTabOrSpace(text[ix+1]) && getCharType(text[ix+1]) == cat ) {
+				++ix;
+				pos += UTF8CharSize((*doc)[pos]);
+			}
+		}
+	}
+	if( cdy ) {
+		++ix;
+		pos += UTF8CharSize((*doc)[pos]);
 	}
 	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
@@ -483,6 +530,10 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		vi = true;
 	case PrevWord:
 		gotoPrevWord(*this, n, vi);
+		m_offset = m_position - m_blockData.position();
+		break;
+	case ViMoveOperation::NextWordEnd:
+		gotoNextWordEnd(*this, n, cdy);
 		m_offset = m_position - m_blockData.position();
 		break;
 	case StartOfBlock:
