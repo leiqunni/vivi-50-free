@@ -12,6 +12,7 @@
 #include "TextDocument.h"
 
 size_t UTF8CharSize(uchar ch);
+int getEOLOffset(const QString text);
 
 size_t DocBlock::size() const
 {
@@ -598,7 +599,7 @@ void layoutText(std::vector<size_t> &v, QFontMetrics &fm, const DocBlock &block,
 	index_t blockPos = pos;
 	QString text = block.text();
 	const size_t nlLength = block.newlineLength();
-	index_t ixEOL = text.length() - nlLength;		//	改行コードは１バイトと仮定
+	index_t ixEOL = getEOLOffset(text);
 	if( !ixEOL ) {
 		v.push_back(block.size());
 	} else {

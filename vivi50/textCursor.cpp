@@ -291,7 +291,7 @@ bool gotoPrevWord(DocCursor &cur, int n)
 				block = pb;
 				//blockPos = block.position();
 				text = block.text();
-				ix = text.length();
+				ix = getEOLOffset(text);
 			} else {
 				--ix;
 				do { } while( !isUTF8FirstChar((*doc)[--pos]) );
@@ -471,10 +471,9 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		m_offset = m_position - m_blockData.position();
 		break;
 	case PrevWord:
-		gotoPrevWord(*this);
-#if TEXT_CURSOR_BLOCK
+	case ViMoveOperation::PrevWord:
+		gotoPrevWord(*this, n);
 		m_offset = m_position - m_blockData.position();
-#endif
 		break;
 	case StartOfBlock:
 		m_position = m_blockData.position();
