@@ -217,8 +217,8 @@ uchar getCharType(QChar ch)
 }
 
 //----------------------------------------------------------------------
-bool gotoNextWord(DocCursor &cur, int n = 1 , bool cdy = false);
-bool gotoPrevWord(DocCursor &cur, int n = 1);
+bool gotoNextWord(DocCursor &cur, int n = 1 , bool vi = false, bool cdy = false);
+bool gotoPrevWord(DocCursor &cur, int n = 1, bool vi = false);
 bool gotoStartOfWord(DocCursor &cur);
 bool gotoEndOfWord(DocCursor &cur);
 inline bool isTabOrSpace(const QChar ch)
@@ -226,29 +226,29 @@ inline bool isTabOrSpace(const QChar ch)
 	return ch == '\t' || ch == ' ';
 }
 
-bool gotoNextWord(DocCursor &cur, int n , bool cdy)
+bool gotoNextWord(DocCursor &cur, int n , bool vi, bool cdy)
 {
 	const TextDocument *doc = cur.document();
 	DocBlock block = cur.block();
 	//int blockPos = block.position();
 	QString text = block.text();
-	int EOLIndex = getEOLOffset(text);
+	int limitIndex = vi ? getEOLOffset(text) : text.length();
 	int pos = cur.position();
 	int ix = cur.prevCharsCount();
 	while( --n >= 0 ) {
 		//	同タイプ文字を読み飛ばす
-		if( ix < EOLIndex && !isTabOrSpace(text[ix]) ) {
+		if( ix < limitIndex && !isTabOrSpace(text[ix]) ) {
 			uchar cat = getCharType(text[ix++]);
 			pos += UTF8CharSize((*doc)[pos]);
 			//QChar::Category cat = text[ix++].category();
-			while( ix < EOLIndex && !isTabOrSpace(text[ix]) && getCharType(text[ix]) == cat ) {
+			while( ix < limitIndex && !isTabOrSpace(text[ix]) && getCharType(text[ix]) == cat ) {
 				++ix;
 				pos += UTF8CharSize((*doc)[pos]);
 			}
 		}
 		//	空白類を読み飛ばす
-		while( ix == EOLIndex || isTabOrSpace(text[ix]) ) {
-			if( ix == EOLIndex ) {
+		while( ix == limitIndex || isTabOrSpace(text[ix]) ) {
+			if( ix == limitIndex ) {
 				if( cdy && !n )	//	cdy が前置されている場合は、最後の改行はスキップしない
 					break;
 				DocBlock nb = block.next();
@@ -260,7 +260,7 @@ bool gotoNextWord(DocCursor &cur, int n , bool cdy)
 				//blockPos = block.position();
 				pos = block.position();
 				text = block.text();
-				EOLIndex = getEOLOffset(text);
+				limitIndex = vi ? getEOLOffset(text) : text.length();
 				ix = 0;
 			} else {
 				++ix;
@@ -271,7 +271,7 @@ bool gotoNextWord(DocCursor &cur, int n , bool cdy)
 	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
-bool gotoPrevWord(DocCursor &cur, int n)
+bool gotoPrevWord(DocCursor &cur, int n, bool vi)
 {
 	const TextDocument *doc = cur.document();
 	DocBlock block = cur.block();
@@ -290,6 +290,12 @@ bool gotoPrevWord(DocCursor &cur, int n)
 				}
 				block = pb;
 				//blockPos = block.position();
+				pos = block.position() + block.EOLOffset();
+				if( !vi ) {
+					//	非viモードでは n は無視とする
+					cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
+					return true;
+				}
 				text = block.text();
 				ix = getEOLOffset(text);
 			} else {
@@ -372,6 +378,7 @@ void DocCursor::moveLeftIfEndOfLine()
 bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 {
 	if( isNull() ) return false;
+	bool vi = false;
 	DocBlock b = block();
 	index_t blockPosition = b.position();
 	switch( move ) {
@@ -465,14 +472,17 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		m_offset = m_position - m_blockData.position();
 #endif
 		break;
-	case NextWord:
 	case ViMoveOperation::NextWord:
-		gotoNextWord(*this, n, cdy);
+		vi = true;
+		//	下にスルー
+	case NextWord:
+		gotoNextWord(*this, n, vi, cdy);
 		m_offset = m_position - m_blockData.position();
 		break;
-	case PrevWord:
 	case ViMoveOperation::PrevWord:
-		gotoPrevWord(*this, n);
+		vi = true;
+	case PrevWord:
+		gotoPrevWord(*this, n, vi);
 		m_offset = m_position - m_blockData.position();
 		break;
 	case StartOfBlock:
@@ -749,9 +759,11 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		move = DocCursor::Right;
 		goto moveDocCursor;
 	}
+#if 0
 	case ViMoveOperation::PrevWord:
 		gotoPrevWord(*this);
 		break;
+#endif
 	case StartOfBlock:
 		m_position = m_viewBlockData.position();
 		m_offset = 0;

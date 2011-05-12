@@ -503,12 +503,12 @@ gotoMatchParen	.\viCursor.cpp	/^bool gotoMatchParen(ViewCursor &cur)$/;"	f
 gotoNextBlankLine	.\viCursor.cpp	/^bool gotoNextBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoNextSSWord	.\viCursor.cpp	/^bool gotoNextSSWord(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoNextSSWordEnd	.\viCursor.cpp	/^bool gotoNextSSWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
-gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n , bool cdy)$/;"	f
+gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n , bool vi, bool cdy)$/;"	f
 gotoNextWord	.\viCursor.cpp	/^bool gotoNextWord(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoNextWordEnd	.\viCursor.cpp	/^bool gotoNextWordEnd(ViewCursor &cur, int n, bool cdy)$/;"	f
 gotoPrevBlankLine	.\viCursor.cpp	/^bool gotoPrevBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoPrevSSWord	.\viCursor.cpp	/^bool gotoPrevSSWord(ViewCursor &cur, int n)$/;"	f
-gotoPrevWord	.\textCursor.cpp	/^bool gotoPrevWord(DocCursor &cur, int n)$/;"	f
+gotoPrevWord	.\textCursor.cpp	/^bool gotoPrevWord(DocCursor &cur, int n, bool vi)$/;"	f
 gotoPrevWord	.\viCursor.cpp	/^bool gotoPrevWord(ViewCursor &cur, int n)$/;"	f
 gotoStartOfWord	.\textCursor.cpp	/^bool gotoStartOfWord(DocCursor &cur)$/;"	f
 hasMultiCursor	.\TextView.h	/^	bool	hasMultiCursor() const { return !m_multiCursor.empty(); }$/;"	f	class:TextView
@@ -834,8 +834,8 @@ operator --	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator--()$/;"	f	class:Vie
 operator <	.\textCursor.h	/^	bool	operator<(const DocCursor &x) const { return position() < x.position(); }$/;"	f	class:DocCursor
 operator <	.\textBlock.h	/^	bool	operator<(const DocBlock &x) const$/;"	f	class:DocBlock
 operator <	.\textBlock.h	/^	bool	operator<(const ViewBlock &x) const$/;"	f	class:ViewBlock
-operator =	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator=(const DocBlock &docBlock)$/;"	f	class:ViewBlock
 operator =	.\textCursor.cpp	/^ViewCursor &ViewCursor::operator=(const DocCursor &x)$/;"	f	class:ViewCursor
+operator =	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator=(const DocBlock &docBlock)$/;"	f	class:ViewBlock
 operator =	.\textBlock.h	/^	LaidoutChunk	&operator=(const LaidoutChunk &x)$/;"	f	struct:LaidoutChunk
 operator =	.\TextDocument.h	/^	GVUndoItem &operator=(const GVUndoItem &x)$/;"	f	struct:GVUndoItem
 operator =	.\gap_vector.h	/^	gap_vector &operator=(const gap_vector &x)$/;"	f	class:std::gap_vector
