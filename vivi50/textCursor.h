@@ -122,7 +122,7 @@ public:
 	void	swapPositionAnchor();
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
 	void	setPosition(index_t position, BlockData, uchar mode = MoveAnchor);
-	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
+	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1, bool = false);
 	void	move(int);
 	void	moveLeftIfEndOfLine();
 
@@ -191,7 +191,7 @@ public:
 	//void	assign(const DocCursor &);
 	void	setPosition(index_t position, uchar mode = MoveAnchor);
 	void	setPosition(index_t position, BlockData, uchar mode = MoveAnchor);
-	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1);
+	bool	movePosition(uchar move, uchar mode = MoveAnchor, uint n = 1, bool = false);
 	void	setViewBlockData(BlockData d) { m_viewBlockData = d; }
 	void	setViewAnchorBlockData(BlockData d) { m_viewAnchorBlockData = d; }
 	void	move(int);

@@ -217,7 +217,7 @@ uchar getCharType(QChar ch)
 }
 
 //----------------------------------------------------------------------
-bool gotoNextWord(DocCursor &cur, int n = 1, bool cdy = false);
+bool gotoNextWord(DocCursor &cur, int n = 1 , bool cdy = false);
 bool gotoPrevWord(DocCursor &cur, int n = 1);
 bool gotoStartOfWord(DocCursor &cur);
 bool gotoEndOfWord(DocCursor &cur);
@@ -226,28 +226,29 @@ inline bool isTabOrSpace(const QChar ch)
 	return ch == '\t' || ch == ' ';
 }
 
-bool gotoNextWord(DocCursor &cur, int n, bool cdy)
+bool gotoNextWord(DocCursor &cur, int n , bool cdy)
 {
 	const TextDocument *doc = cur.document();
 	DocBlock block = cur.block();
 	//int blockPos = block.position();
 	QString text = block.text();
+	int EOLIndex = getEOLOffset(text);
 	int pos = cur.position();
 	int ix = cur.prevCharsCount();
 	while( --n >= 0 ) {
 		//	同タイプ文字を読み飛ばす
-		if( ix < text.length() && !isTabOrSpace(text[ix]) ) {
+		if( ix < EOLIndex && !isTabOrSpace(text[ix]) ) {
 			uchar cat = getCharType(text[ix++]);
 			pos += UTF8CharSize((*doc)[pos]);
 			//QChar::Category cat = text[ix++].category();
-			while( ix < text.length() && !isTabOrSpace(text[ix]) && getCharType(text[ix]) == cat ) {
+			while( ix < EOLIndex && !isTabOrSpace(text[ix]) && getCharType(text[ix]) == cat ) {
 				++ix;
 				pos += UTF8CharSize((*doc)[pos]);
 			}
 		}
 		//	空白類を読み飛ばす
-		while( ix == text.length() || isTabOrSpace(text[ix]) ) {
-			if( ix == text.length() ) {
+		while( ix == EOLIndex || isTabOrSpace(text[ix]) ) {
+			if( ix == EOLIndex ) {
 				if( cdy && !n )	//	cdy が前置されている場合は、最後の改行はスキップしない
 					break;
 				DocBlock nb = block.next();
@@ -257,7 +258,9 @@ bool gotoNextWord(DocCursor &cur, int n, bool cdy)
 				}
 				block = nb;
 				//blockPos = block.position();
+				pos = block.position();
 				text = block.text();
+				EOLIndex = getEOLOffset(text);
 				ix = 0;
 			} else {
 				++ix;
@@ -365,7 +368,8 @@ void DocCursor::moveLeftIfEndOfLine()
 //	それだと判定箇所が多数になってしまう
 //	そこで、movePosition() は常に改行まで移動することにし、
 //	movePosition() を呼び出す部分で、単なる <move> の場合は、改行からひとつ戻すことにする
-bool DocCursor::movePosition(uchar move, uchar mode, uint n)
+
+bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 {
 	if( isNull() ) return false;
 	DocBlock b = block();
@@ -462,10 +466,9 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n)
 #endif
 		break;
 	case NextWord:
-		gotoNextWord(*this);
-#if TEXT_CURSOR_BLOCK
+	case ViMoveOperation::NextWord:
+		gotoNextWord(*this, n, cdy);
 		m_offset = m_position - m_blockData.position();
-#endif
 		break;
 	case PrevWord:
 		gotoPrevWord(*this);
@@ -701,7 +704,7 @@ void ViewCursor::swapPositionAnchor()
 	b = m_viewBlockData; m_viewBlockData = m_viewAnchorBlockData; m_viewAnchorBlockData = b;
 }
 int firstNonBlankCharPos(const QString &text);
-bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
+bool ViewCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 {
 	if( isNull() || !n ) return false;
 	ViewBlock vb = block();
@@ -774,7 +777,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n)
 	}
 moveDocCursor:
 	default:
-		if( !DocCursor::movePosition(move, mode, n) )
+		if( !DocCursor::movePosition(move, mode, n, cdy) )
 			return false;
 		//if( !m_view->isLayoutedDocBlock(blockIndex()) )
 		//	m_viewBlockData = blockData();
