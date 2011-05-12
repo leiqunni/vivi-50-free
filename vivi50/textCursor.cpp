@@ -364,6 +364,47 @@ bool gotoNextWordEnd(DocCursor &cur, int n, bool cdy)
 	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
+bool gotoNextSSWord(DocCursor &cur, int n, bool cdy)
+{
+	const TextDocument *doc = cur.document();
+	DocBlock block = cur.block();
+	index_t pos = cur.position();
+	index_t blockPos = block.position();
+	QString text = block.text();
+	int EOLIndex = getEOLOffset(text);
+	int ix = cur.position() - blockPos;
+	while( --n >= 0 ) {
+		//	空白類まで読み飛ばす
+		while( ix < EOLIndex && !isTabOrSpace(text[ix]) ) {
+			++ix;
+			pos += UTF8CharSize((*doc)[pos]);
+		}
+		//	空白類を読み飛ばす
+		while( ix == EOLIndex || isTabOrSpace(text[ix]) ) {
+			if( ix == EOLIndex ) {
+				if( cdy && !n )	//	cdy が前置されている場合は、最後の改行はスキップしない
+					break;
+				do {
+					block = block.next();
+					if( !block.isValid() ) {
+						cur.setPosition(pos);
+						return true;
+					}
+					pos = block.position();
+					blockPos = block.position();
+					text = block.text();
+					EOLIndex = getEOLOffset(text);
+				} while( !EOLIndex );
+				ix = 0;
+			} else {
+				++ix;
+				pos += UTF8CharSize((*doc)[pos]);
+			}
+		}
+	}
+	cur.setPosition(pos);
+	return true;
+}
 bool gotoStartOfWord(DocCursor &cur)
 {
 	const TextDocument *doc = cur.document();
@@ -510,15 +551,11 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		break;
 	case StartOfWord:
 		gotoStartOfWord(*this);
-#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
-#endif
 		break;
 	case EndOfWord:
 		gotoEndOfWord(*this);
-#if TEXT_CURSOR_BLOCK
 		m_offset = m_position - m_blockData.position();
-#endif
 		break;
 	case ViMoveOperation::NextWord:
 		vi = true;
@@ -537,11 +574,13 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		gotoNextWordEnd(*this, n, cdy);
 		m_offset = m_position - m_blockData.position();
 		break;
+	case ViMoveOperation::NextSSWord:
+		gotoNextSSWord(*this, n, cdy);
+		m_offset = m_position - m_blockData.position();
+		break;
 	case StartOfBlock:
 		m_position = m_blockData.position();
-#if TEXT_CURSOR_BLOCK
 		m_offset = 0;
-#endif
 		break;
 	case ViMoveOperation::LastChar: {		//	ブロックの最後の文字に移動
 		index_t ix = b.EOLOffset();

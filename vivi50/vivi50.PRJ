@@ -55,14 +55,14 @@ memFileColumnWd = 320
   ViEngine.h	(219,-62)
   vi.h	(373,-83)
 * viCursor.cpp	(-180,296)
-  viCursor.h	(-180,263)
+* viCursor.h	(-180,263)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 78 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 809 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
-  "textCursor.cpp" 439 'B: ' '' undone 暫定コード
-  "textCursor.cpp" 450 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 524 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 535 'B: ' '' undone 暫定コード
   "TextView.cpp" 716 'B: ' '' undone 矢印表示に変更する
   "TextView.cpp" 991 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 1135 'B: ' '' undone 暫定コード
