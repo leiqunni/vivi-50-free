@@ -252,16 +252,17 @@ bool gotoNextWord(DocCursor &cur, int n , bool vi, bool cdy)
 			if( ix == limitIndex ) {
 				if( cdy && !n )	//	cdy が前置されている場合は、最後の改行はスキップしない
 					break;
-				DocBlock nb = block.next();
-				if( !nb.isValid() ) {
-					cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
-					return true;
-				}
-				block = nb;
-				//blockPos = block.position();
-				pos = block.position();
-				text = block.text();
-				limitIndex = vi ? getEOLOffset(text) : text.length();
+				do {
+					DocBlock nb = block.next();
+					if( !nb.isValid() ) {
+						cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
+						return true;
+					}
+					block = nb;
+					pos = block.position();
+					text = block.text();
+					limitIndex = vi ? getEOLOffset(text) : text.length();
+				} while( vi && !limitIndex );
 				ix = 0;
 			} else {
 				++ix;
