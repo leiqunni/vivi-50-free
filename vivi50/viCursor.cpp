@@ -197,7 +197,6 @@ bool gotoNextSSWord(ViewCursor &cur, int n, bool cdy)
 	cur.setPosition(blockPos + ix);
 	return true;
 }
-#endif
 bool gotoPrevSSWord(ViewCursor &cur, int n)
 {
 	ViewBlock block = cur.block();
@@ -226,6 +225,7 @@ bool gotoPrevSSWord(ViewCursor &cur, int n)
 	cur.setPosition(blockPos + ix);
 	return true;
 }
+#endif
 /**
 	NextSSWord Ç∆ PrevSSWord Ç™ëŒèÃìIÇ≈ÇÕÇ»Ç≠ÅA
 	é¿ÇÕ PrevSSWord Ç∆ NextSSWordEnd Ç™ëŒèÃìI
@@ -503,9 +503,9 @@ bool moveCursor(ViewCursor &cur, //int &x,
 		return gotoNextWordEnd(cur, n, cdy);
 	case ViMoveOperation::NextSSWord:
 		return gotoNextSSWord(cur, n, cdy);
-#endif
 	case ViMoveOperation::PrevSSWord:
 		return gotoPrevSSWord(cur, n);
+#endif
 	case ViMoveOperation::NextSSWordEnd:
 		return gotoNextSSWordEnd(cur, n, cdy);
 	case ViMoveOperation::NextLine:

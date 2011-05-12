@@ -627,13 +627,13 @@ bool ViEngine::doViCommand(const QChar &qch)
 			cursorMoved = cur.movePosition(ViMoveOperation::NextWord, DocCursor::MoveAnchor, repeatCount(), cdy);
 			break;
 		case 'B':
-			cursorMoved = moveCursor(cur, ViMoveOperation::PrevSSWord, repeatCount());
+			cursorMoved = cur.movePosition(ViMoveOperation::PrevSSWord, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case 'E':
 			cursorMoved = moveCursor(cur, ViMoveOperation::NextSSWordEnd, repeatCount(), cdy);
 			break;
 		case 'W':
-			cursorMoved = moveCursor(cur, ViMoveOperation::NextSSWord, repeatCount(), cdy);
+			cursorMoved = cur.movePosition(ViMoveOperation::NextSSWord, DocCursor::MoveAnchor, repeatCount(), cdy);
 			break;
 		case '\r':		//	Enter
 		case '+':

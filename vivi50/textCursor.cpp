@@ -372,7 +372,7 @@ bool gotoNextSSWord(DocCursor &cur, int n, bool cdy)
 	index_t blockPos = block.position();
 	QString text = block.text();
 	int EOLIndex = getEOLOffset(text);
-	int ix = cur.position() - blockPos;
+	int ix = cur.prevCharsCount();
 	while( --n >= 0 ) {
 		//	空白類まで読み飛ばす
 		while( ix < EOLIndex && !isTabOrSpace(text[ix]) ) {
@@ -402,7 +402,44 @@ bool gotoNextSSWord(DocCursor &cur, int n, bool cdy)
 			}
 		}
 	}
-	cur.setPosition(pos);
+	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
+	return true;
+}
+bool gotoPrevSSWord(DocCursor &cur, int n)
+{
+	const TextDocument *doc = cur.document();
+	index_t pos = cur.position();
+	DocBlock block = cur.block();
+	int blockPos = block.position();
+	QString text = block.text();
+	int ix = cur.prevCharsCount();
+	while( --n >= 0 ) {
+		//	ひとつ前の文字が空白類 or 行頭なら文書先頭方向に移動
+		while( !ix || isTabOrSpace(text[ix-1]) ) {
+			if( !ix ) {
+				while( !ix ) {
+					block = block.prev();
+					if( !block.isValid() ) {
+						cur.setPosition(blockPos);
+						return true;
+					}
+					blockPos = block.position();
+					pos = block.position() + block.EOLOffset();
+					text = block.text();
+					ix = getEOLOffset(text);
+				}
+			} else {
+				--ix;
+				do { } while( !isUTF8FirstChar((*doc)[--pos]) );
+			}
+		}
+		//	ひとつ前の文字が空白類になるまで or 行頭まで読み飛ばす
+		while( ix > 0 && !isTabOrSpace(text[ix-1]) ) {
+			--ix;
+			do { } while( !isUTF8FirstChar((*doc)[--pos]) );
+		}
+	}
+	cur.setPosition(pos, block.data(), DocCursor::KeepAnchor);
 	return true;
 }
 bool gotoStartOfWord(DocCursor &cur)
@@ -578,6 +615,9 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		gotoNextSSWord(*this, n, cdy);
 		m_offset = m_position - m_blockData.position();
 		break;
+	case ViMoveOperation::PrevSSWord:
+		return gotoPrevSSWord(*this, n);
+		m_offset = m_position - m_blockData.position();
 	case StartOfBlock:
 		m_position = m_blockData.position();
 		m_offset = 0;
