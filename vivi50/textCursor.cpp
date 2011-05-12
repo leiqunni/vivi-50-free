@@ -681,6 +681,8 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		break;
 	}
 	case EndOfBlock:		//	‰üsˆÊ’u‚ÉˆÚ“®
+		m_position = b.position() + b.EOLOffset();
+#if 0
 		m_position = m_blockData.position() + m_document->blockSize(m_blockData.index());
 		if( m_position > m_blockData.position() ) {
 			uchar uch = (*m_document)[m_position - 1];
@@ -692,6 +694,7 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 					--m_position;
 			}
 		}
+#endif
 		m_offset = 0xffffffff;
 		break;
 	
@@ -944,6 +947,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		gotoPrevWord(*this);
 		break;
 #endif
+#if 0
 	case StartOfBlock:
 		m_position = m_viewBlockData.position();
 		m_offset = 0;
@@ -954,6 +958,7 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		m_offset = 0xffffffff;
 		m_x = -1;
 		break;
+#endif
 	case ViMoveOperation::FirstNonBlankChar:
 		setPosition(blockPos + firstNonBlankCharPos(blockText));
 		break;

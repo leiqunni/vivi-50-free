@@ -552,7 +552,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			toInsertMode = true;
 			break;
 		case 'A':
-			cursorMoved = moveCursor(cur, DocCursor::EndOfBlock);
+			cursorMoved = cur.movePosition(DocCursor::EndOfBlock);
 			toInsertMode = true;
 			break;
 		case 'I':
@@ -790,7 +790,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 			}
 			break;
 		default:
-			cur.moveLeftIfEndOfLine();
+			if( !toInsertMode )
+				cur.moveLeftIfEndOfLine();
 			m_editor->setTextCursor(cur);
 			//qDebug() << "cur.position() = " << cur.position();
 		}
