@@ -200,12 +200,31 @@ TextDocument::~TextDocument()
 void TextDocument::init()
 {
 	m_modified = false;
+	m_EOLCode = EOL_UNKNOWN;
 	m_buffer.clear();
 	m_blocks.clear();
 	m_blocks.push_back(DocBlockItem(0));
 	m_cacheBlockData = BlockData(0, 0);
 	//m_blockIndex = m_blockPosition = 0;
 	emit blockCountChanged();
+}
+//	最初にみつけた改行コードをデフォルトとする
+void TextDocument::setEOLCode()
+{
+	index_t limit = qMin(size(), (index_t)0x10000);	//	最大64Kバイトチェック
+	for(index_t pos = 0; pos < limit; ++pos) {
+		uchar uch = m_buffer[pos++];
+		if( uch == '\n' ) {
+			m_EOLCode = EOL_LF;
+			return;
+		} else if( uch == '\r' ) {
+			if( pos < limit && m_buffer[pos] == '\n' )
+				break;
+			m_EOLCode = EOL_CR;
+			return;
+		}
+	}
+	m_EOLCode = EOL_CRLF;
 }
 QChar TextDocument::charAt(index_t ix) const
 {
@@ -219,6 +238,16 @@ QChar TextDocument::charAt(index_t ix) const
 	}
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	return codec->toUnicode(ba)[0];
+}
+QString TextDocument::EOLText() const
+{
+	switch( m_EOLCode ) {
+	case EOL_CR:	return QString("\r");
+	case EOL_LF:	return QString("\n");
+	//case EOL_UNKNOWN:
+	//case EOL_CRLF:	
+	}
+	return QString("\r\n");
 }
 size_t TextDocument::blockSize(index_t ix) const
 {
@@ -552,6 +581,7 @@ void TextDocument::setPlainText(const QString &text)
 	const uchar *ptr = (const uchar *)(ba.data());
 	m_buffer.clear();
 	m_buffer.insert(0, ptr, ptr + sz);
+	setEOLCode();
 	buildBlocks();
 	//appendBlocks();
 }

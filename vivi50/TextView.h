@@ -194,6 +194,7 @@ protected:
 	void	drawCursor(QPainter &painter, const ViewCursor &, ViewBlock &,
 						const QString &text, int y, const QColor &color);
 	void	doPaint();
+	void	drawNewline(QPainter &, int x, int y, const QString &, int ix);
 	void	updateLineNumberAreaSize();
 	void	updateScrollBarData();
 	void	drawLineNumbers();

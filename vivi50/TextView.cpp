@@ -712,17 +712,25 @@ void TextView::doPaint()
 			}
 		}
 		if( ix < text.length() ) {
+#if 0
+			drawNewline(painter, x, y, text, ix);
+#else
 			//	改行マーク表示
 			//	undone B 矢印表示に変更する
 			painter.setPen(Qt::lightGray);
 			QString nl;
-			if( text[ix] == '\n' )
-				nl = QChar(0x266a);		//	♪
-			else if( ix + 1 < text.length() )
-				nl = QChar(0x266c);		//	音符
-			else
-				nl = QChar(0x2669);		//	音符
+			if( text[ix] == '\n' ) {
+				nl = QChar(0x2193);		//	↓
+				//nl = QChar(0x266a);		//	♪
+			} else if( ix + 1 < text.length() ) {
+				nl = QChar(0x21b5);		//	←↓
+				//nl = QChar(0x266c);		//	音符
+			} else {
+				nl = QChar(0x2190);		//	←
+				//nl = QChar(0x2669);		//	音符
+			}
 			painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), nl);
+#endif
 		}
 		if( block.blockNumber() == lastBlockNumber ) {
 			painter.setPen(Qt::blue);
@@ -746,6 +754,9 @@ void TextView::doPaint()
 	//qDebug() << m_preeditPosCursor->block().index() << " '" << m_preeditString << "'";
 	m_lineNumberArea->update();
 	//qDebug() << "blockData.index = " << m_document->blockData().index();
+}
+void TextView::drawNewline(QPainter &painter, int x, int y, const QString &, int ix)
+{
 }
 
 void TextView::drawCursor(QPainter &painter,
@@ -1169,7 +1180,7 @@ void TextView::doOpenLine(bool next)
 		}
 	} else
 		cur.movePosition(DocCursor::StartOfBlock);
-	cur.insertText("\n");
+	cur.insertText(document()->EOLText());
 	if( !bEOFLine )
 		cur.movePosition(DocCursor::Left);
 	setTextCursor(cur);

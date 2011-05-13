@@ -80,6 +80,8 @@
 + 2011/05/08 "TextView.cpp" B:   undone 暫定コード
 # 2011/05/11 07:24:52
 + 2011/05/11 "TextView.cpp" B:   undone 矢印表示に変更する
+# 2011/05/12 22:10:10
++ 2011/05/12 "ViEngine.cpp" B:   undone 文書の改行コードを挿入
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
@@ -101,6 +103,7 @@
 2011/04/24 "TextView.cpp" B:   undone 垂直スクロールバー位置更新
 2011/04/24 "TextView.cpp" B:   undone 未コーディング
 2011/04/29 "textBlock.cpp" B:   undone チャンクが連続している場合等
+2011/05/12 "ViEngine.cpp" B:   undone 文書の改行コードを挿入
 2011/05/06 "ViEngine.cpp" R:   undone delete の場合と処理を共通化する
 2011/05/06 "ViEngine.cpp" B:   undone 未コーディング
 2011/05/06 "ViEngine.cpp" B:   undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える

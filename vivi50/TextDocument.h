@@ -64,6 +64,13 @@ enum {
 class TextDocument;
 class DocBlock;
 
+enum {
+	EOL_UNKNOWN = 0,
+	EOL_CRLF,
+	EOL_CR,
+	EOL_LF,
+};
+
 //----------------------------------------------------------------------
 //	undo/redo 文字列の格納にヒープを用い、undoItem クラスは継承をやめ、type でディスパッチする
 //#define		UNDOMGR_USE_HEAP			1
@@ -278,6 +285,7 @@ public:
 	uchar	at(index_t ix) const { return m_buffer[ix]; }
 	QChar	charAt(index_t ix) const;
 	QString	toPlainText() const;
+	QString	EOLText() const;
 	bool	isMatch(index_t, cuchar *, cuchar *, ushort) const;		//	単純比較関数
 	bool	isMatch(index_t, cuchar *, cuchar *) const;		//	単純比較関数
 	bool	isMatchIgnoreCase(index_t, cuchar *, cuchar *) const;		//	単純比較関数
@@ -308,7 +316,7 @@ public:
 public:
 	void	init();
 	void	clear() { init(); }
-
+	void	setEOLCode();
 	void	setModified(bool b) { m_modified = b; }
 	void	setFullPath(const QString &fullPath) { m_fullPath = fullPath; }
 	void	openUndoBlock() { m_undoMgr.openUndoBlock(); }
@@ -385,6 +393,7 @@ private:
 	uchar	m_charEncoding;
 	bool	m_withBOM;
 	bool	m_modified;
+	uchar	m_EOLCode;
 	mutable std::gap_vector<uchar>	m_buffer;
 	//mutable std::gap_vector<size_t>	m_blocks;		//	ブロックサイズ配列
 	mutable std::gap_vector<DocBlockItem>	m_blocks;		//	ブロック配列
