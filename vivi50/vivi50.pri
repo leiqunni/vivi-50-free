@@ -20,7 +20,8 @@ HEADERS += ./charEncoding.h \
     ./TextDocument.h \
     ./TextView.h \
     ./unit_test.h \
-    ./ViEngine.h
+    ./ViEngine.h \
+    ./WinApplication.h
 SOURCES += ./charEncoding.cpp \
     ./FindDlg.cpp \
     ./LayoutThread.cpp \
@@ -36,7 +37,8 @@ SOURCES += ./charEncoding.cpp \
     ./TextView.cpp \
     ./unit_test.cpp \
     ./viCursor.cpp \
-    ./ViEngine.cpp
+    ./ViEngine.cpp \
+    ./WinApplication.cpp
 FORMS += ./mainwindow.ui
 TRANSLATIONS += ./vivi50_ja.ts
 RESOURCES += ./mainwindow.qrc

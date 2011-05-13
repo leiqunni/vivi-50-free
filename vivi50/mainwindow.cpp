@@ -20,12 +20,19 @@
 
 */
 
+#ifdef	WIN32
+#include <windows.h>
+#endif	//	WIN32
 #include <QtGui>
 #include "mainwindow.h"
 #include "TextView.h"
 #include "TextDocument.h"
 #include "charEncoding.h"
 #include "ViEngine.h"
+
+#ifdef	WIN32
+#pragma comment(lib, "Imm32.lib")
+#endif	//WIN32
 
 #define	VERSION_STR			"5.0.018 Dev"
 
@@ -820,6 +827,11 @@ void MainWindow::testViCommands(QString fileName)
 		::testViCommands(other, other->m_viEngine, fileName);
 	}
 }
+void MainWindow::onImeOpenStatusChanged()
+{
+	//qDebug() << "MainWindow::onImeOpenStatusChanged()";
+	m_viEngine->onImeOpenStatusChanged();
+}
 void MainWindow::onModeChanged(Mode mode, ushort subMode)
 {
 	//qDebug() << "mode = " << mode;
@@ -830,7 +842,7 @@ void MainWindow::onModeChanged(Mode mode, ushort subMode)
 		findAct->setShortcut(0);
 	switch( mode ) {
 	case CMD: {
-#if	0	///def	WIN32
+#ifdef	WIN32
 		HWND hwnd = window()->winId();
 		HIMC hC = ImmGetContext(hwnd);
 		ImmSetOpenStatus(hC, FALSE);		//	IME OFF

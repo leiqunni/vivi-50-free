@@ -25,9 +25,9 @@ memFileColumnWd = 320
 [globalMarks]
 [files]
   gap_vector.h	(-84.078,377.793)
-  main.cpp	(-178.304,-339.84)
+* main.cpp	(-178.304,-339.84)
 * mainwindow.cpp	(-128.265,-196.142)
-  mainwindow.h	(-128.265,-229.142)
+* mainwindow.h	(-128.265,-229.142)
 * TextDocument.cpp	(-152.875,65.766)
 * TextDocument.h	(-152.875,32.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(0.782122,-320.336)
@@ -37,7 +37,7 @@ memFileColumnWd = 320
   mainwindowTest.cpp	(-128.265,-130.142)
   charEncoding.cpp	(133.416,-154.123)
   charEncoding.h	(133.416,-187.123)
-  textCursor.cpp	(-335.316,-33.0248)
+* textCursor.cpp	(-335.316,-33.0248)
   textCursor.h	(-335.316,-66.0248)
 * TextView.cpp	(44.6123,-31.8647)
 * TextView.h	(44.6123,-64.8647)
@@ -52,7 +52,7 @@ memFileColumnWd = 320
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
 * ViEngine.cpp	(219,-29)
-  ViEngine.h	(219,-62)
+* ViEngine.h	(219,-62)
   vi.h	(373,-83)
 * viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
@@ -78,8 +78,8 @@ memFileColumnWd = 320
   "TextView.cpp" 1860 'B: ' '' undone 未コーディング
   "textBlock.cpp" 588 'B: ' '' undone チャンクが連続している場合等
   "ViEngine.cpp" 329 'B: ' '' undone 文書の改行コードを挿入
-  "ViEngine.cpp" 821 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 895 'B: ' '' undone 未コーディング
-  "ViEngine.cpp" 1017 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1115 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 820 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 894 'B: ' '' undone 未コーディング
+  "ViEngine.cpp" 1016 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1114 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
   "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

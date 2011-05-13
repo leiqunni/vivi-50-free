@@ -74,6 +74,7 @@ private:
     void writeSettings();
 
 private slots:
+	void	onImeOpenStatusChanged();
 	void	onModeChanged(Mode, ushort=0);
     void	documentWasModified();
 	void	newFile();

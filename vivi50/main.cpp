@@ -34,6 +34,7 @@
 #include <QTextCodec>
 #include <QTranslator>
 #include <QDebug>
+#include "WinApplication.h"
 
 #if	0	//def	MSVC
 #include	<windows.h>
@@ -58,7 +59,7 @@ int MyFilter( PEXCEPTION_POINTERS pep )
 int main(int argc, char *argv[])
 {
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Shift-JIS"));
-	QApplication app(argc, argv);
+	WinApplication app(argc, argv);
 	app.setOrganizationName("N.Tsuda");
 	app.setApplicationName("vivi5");
 	QString locale = QLocale::system().name();
@@ -70,6 +71,9 @@ int main(int argc, char *argv[])
 	app.installTranslator(&translator);
 	MainWindow w;
 	w.show();
+#ifdef	WIN32
+	QObject::connect(&app, SIGNAL(imeOpenStatusChanged()), &w, SLOT(onImeOpenStatusChanged()));
+#endif	//WIN32
 #if	0	//def	MSVC
 	__try {
 		return app.exec();
