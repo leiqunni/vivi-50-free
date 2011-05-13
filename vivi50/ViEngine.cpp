@@ -388,6 +388,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 				cur.insertText(QString(ch));
 			else
 				cur.insertText(t);
+			m_redoCmd = QString("r") + qch;
+			m_redoRepeatCount = repeatCount();
 			break;
 		}
 		case '>':
