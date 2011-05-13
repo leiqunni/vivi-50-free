@@ -327,10 +327,9 @@ bool ViEngine::doViCommand(const QChar &qch)
 				//cur.insertText(qch);
 				if( qch == '\n' || qch == '\r' ) {
 					//	undone B 文書の改行コードを挿入
-					m_editor->insertText(document()->EOLText());
+					cur.insertText(document()->EOLText());
 				} else
-					m_editor->insertText(qch);
-				return true;
+					cur.insertText(qch);
 			}
 			m_editor->setTextCursor(cur);
 		}

@@ -725,7 +725,10 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 }
 bool DocCursor::atBlockEnd() const
 {
-	return false;
+	if( position() >= document()->size() )		//	EOF ˆÊ’u
+		return true;
+	uchar uch = document()->at(position());
+	return uch == '\r' || uch == '\n';
 }
 bool DocCursor::atEnd() const
 {

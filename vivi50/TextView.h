@@ -237,6 +237,7 @@ signals:
 	void	showMessage(const QString &);
 
 private:
+	bool	m_overwriteMode;				//	ã‘‚«ƒ‚[ƒh
 	bool	m_mouseCaptured;
 	bool	m_toDeleteIMEPreeditText;
 	bool	m_drawCursor;

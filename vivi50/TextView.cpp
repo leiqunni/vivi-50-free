@@ -65,6 +65,7 @@ TextView::TextView(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
 	m_viEngine = 0;
+	m_overwriteMode = false;
 	m_mouseCaptured = false;
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
@@ -123,8 +124,9 @@ void TextView::setViEngine(ViEngine *viEngine)
 {
 	m_viEngine = viEngine;
 }
-void TextView::setOverwriteMode(bool)
+void TextView::setOverwriteMode(bool b)
 {
+	m_overwriteMode = b;
 }
 void TextView::resetCursorBlink()
 {
