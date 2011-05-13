@@ -982,6 +982,10 @@ bool ViEngine::processKeyPressEvent( QKeyEvent * event )
 	return false;
 }
 
+bool isMatch(const QString &cmdText, const QString &pat)
+{
+	return pat.startsWith(cmdText);
+}
 void ViEngine::doExCommand(const QString &text)
 {
 	if( text.isEmpty() ) return;
@@ -1012,26 +1016,26 @@ void ViEngine::doExCommand(const QString &text)
 	//	undone B if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
 	if( cmdText == "set" ) {
 		doSet(param);
-	} else if( cmdText == "delete" || cmdText == "del" || cmdText == "d" ) {
+	} else if( isMatch(cmdText, "delete") ) {
 		doDelete();
-	} else if( cmdText == "s" || cmdText == "subst" || cmdText == "substitute" ) {
+	} else if( isMatch(cmdText, "substitute") ) {
 		if( !m_nLineNum )	//	範囲指定無しの場合
 			doSubst(param, m_curLineNum, m_curLineNum);
 		else if( m_nLineNum == 1 )
 			doSubst(param, m_lineNum2, m_lineNum2);
 		else
 			doSubst(param, m_lineNum1, m_lineNum2);
-	} else if( cmdText == "quit" || cmdText == "q" ) {
+	} else if( isMatch(cmdText, "quit") ) {
 		//if( exclamation )	//	!付きの場合は強制クローズ
 		//	m_editor->document()->setModified(false);
 		emit closeView(m_editor, exclamation);
-	} else if( cmdText == "QUIT" || cmdText == "Q" ) {
+	} else if( isMatch(cmdText, "QUIT") ) {
 		emit closeAllViews(exclamation);
-	} else if( cmdText == "edit" || cmdText == "e" ) {
+	} else if( isMatch(cmdText, "edit") ) {
 		emit open(param);
-	} else if( cmdText == "write" || cmdText == "w" ) {
+	} else if( isMatch(cmdText, "write") ) {
 		emit save(param);
-	} else if( cmdText == "writequit" || cmdText == "wq" ) {
+	} else if( isMatch(cmdText, "writequit") || isMatch(cmdText, "wquit") ) {
 		emit save(param);
 		emit closeView(m_editor);
 	} else if( cmdText == "pwd" ) {

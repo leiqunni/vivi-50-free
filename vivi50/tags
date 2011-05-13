@@ -558,6 +558,7 @@ isLayouted	.\textBlock.cpp	/^bool LaidoutBlock::isLayouted() const$/;"	f	class:L
 isLayouted	.\textBlock.cpp	/^bool ViewBlock::isLayouted() const$/;"	f	class:ViewBlock
 isLayoutedDocBlock	.\TextView.cpp	/^bool TextView::isLayoutedDocBlock(index_t ix) const$/;"	f	class:TextView
 isLayoutedViewBlock	.\TextView.cpp	/^bool TextView::isLayoutedViewBlock(index_t ix) const$/;"	f	class:TextView
+isMatch	.\ViEngine.cpp	/^bool isMatch(const QString &cmdText, const QString &pat)$/;"	f
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last, ushort options) const$/;"	f	class:TextDocument
 isMatchIgnoreCase	.\TextDocument.cpp	/^bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
