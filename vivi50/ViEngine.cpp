@@ -852,7 +852,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 		} else {
 			cur.deleteChar();
 		}
-		cur.moveLeftIfEndOfLine();		//	改行位置にいる場合はカーソルを左移動
+		if( !toInsertMode )
+			cur.moveLeftIfEndOfLine();		//	改行位置にいる場合はカーソルを左移動
 		m_editor->setTextCursor(cur);
 		//	削除後に改行位置にいる場合はカーソルを左移動
 #if 0
