@@ -44,7 +44,7 @@ public:
 	~MainWindow();
 
 public:
-	const QStringList &findStrings() const { return m_findStrings; }
+	QStringList findStrings() const;		//{ return m_findStrings; }
 
 public:
     void doOutput(const QString &);

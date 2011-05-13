@@ -431,6 +431,11 @@ QString MainWindow::findCommand(const QStringList cmds, const QString text, bool
 			return firstChar + cmds[m_exCmdsIx];
 	}
 }
+QStringList MainWindow::findStrings() const
+{
+    QSettings settings;
+    return settings.value("findStringHist").toStringList();
+}
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
 	if( obj == m_cmdLineEdit && event->type() == QEvent::KeyPress &&
