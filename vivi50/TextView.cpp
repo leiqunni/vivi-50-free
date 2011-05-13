@@ -770,15 +770,17 @@ void TextView::drawCursor(QPainter &painter,
 	const int offset = qMin(block.charsCount(cur.position()),
 								text.length());
 	int x = charCountToX(text, offset);
-	int wd = 2;
+	int wd = 3;
 	int ht = fm.height();
 	switch( m_viEngine->mode() ) {
-	case CMD: {
+	case CMD:
+		y += ht / 2;
+		ht -= ht / 2;
+		//	‰º‚ÉƒXƒ‹[
+	case REPLACE: {
 		QChar ch = document()->charAt(cur.position());
 		if( ch.unicode() < 0x20 ) ch = QChar('[');
 		wd = fm.width(ch);
-		y += ht / 2;
-		ht -= ht / 2;
 		break;
 	}
 	case INSERT:

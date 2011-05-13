@@ -47,14 +47,14 @@ memFileColumnWd = 320
   ReplaceDlg.cpp	(236,78)
   ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(139,-320)
-  textBlock.cpp	(-363,293)
+* textBlock.cpp	(-363,293)
   textBlock.h	(-363,260)
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
 * ViEngine.cpp	(219,-29)
   ViEngine.h	(219,-62)
   vi.h	(373,-83)
-  viCursor.cpp	(-180,296)
+* viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
@@ -67,15 +67,15 @@ memFileColumnWd = 320
   "TextView.cpp" 1002 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 1146 'B: ' '' undone 暫定コード
   "TextView.cpp" 1153 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1205 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1206 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1225 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1226 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1477 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1500 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1529 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1828 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1853 'B: ' '' undone 未コーディング
+  "TextView.cpp" 1208 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1209 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1228 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1229 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1480 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1503 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1532 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1831 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1856 'B: ' '' undone 未コーディング
   "textBlock.cpp" 588 'B: ' '' undone チャンクが連続している場合等
   "ViEngine.cpp" 329 'B: ' '' undone 文書の改行コードを挿入
   "ViEngine.cpp" 821 'R: ' '' undone delete の場合と処理を共通化する
