@@ -509,13 +509,13 @@ gotoMatchParen	.\viCursor.cpp	/^bool gotoMatchParen(ViewCursor &cur)$/;"	f
 gotoNextBlankLine	.\viCursor.cpp	/^bool gotoNextBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoNextSSWord	.\textCursor.cpp	/^bool gotoNextSSWord(DocCursor &cur, int n, bool cdy)$/;"	f
 gotoNextSSWordEnd	.\textCursor.cpp	/^bool gotoNextSSWordEnd(DocCursor &cur, int n, bool cdy)$/;"	f
-gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n , bool vi, bool cdy)$/;"	f
 gotoNextWord	.\viCursor.cpp	/^bool gotoNextWord(ViewCursor &cur, int n, bool cdy)$/;"	f
+gotoNextWord	.\textCursor.cpp	/^bool gotoNextWord(DocCursor &cur, int n , bool vi, bool cdy)$/;"	f
 gotoNextWordEnd	.\textCursor.cpp	/^bool gotoNextWordEnd(DocCursor &cur, int n, bool cdy)$/;"	f
 gotoPrevBlankLine	.\viCursor.cpp	/^bool gotoPrevBlankLine(ViewCursor &cur, int n)$/;"	f
 gotoPrevSSWord	.\textCursor.cpp	/^bool gotoPrevSSWord(DocCursor &cur, int n)$/;"	f
-gotoPrevWord	.\textCursor.cpp	/^bool gotoPrevWord(DocCursor &cur, int n, bool vi)$/;"	f
 gotoPrevWord	.\viCursor.cpp	/^bool gotoPrevWord(ViewCursor &cur, int n)$/;"	f
+gotoPrevWord	.\textCursor.cpp	/^bool gotoPrevWord(DocCursor &cur, int n, bool vi)$/;"	f
 gotoStartOfWord	.\textCursor.cpp	/^bool gotoStartOfWord(DocCursor &cur)$/;"	f
 hasMultiCursor	.\TextView.h	/^	bool	hasMultiCursor() const { return !m_multiCursor.empty(); }$/;"	f	class:TextView
 hasSelection	.\TextView.cpp	/^bool hasSelection(const std::vector<ViewCursor*> &v)$/;"	f
@@ -570,8 +570,8 @@ isModified	.\TextView.cpp	/^bool TextView::isModified() const$/;"	f	class:TextVi
 isModified	.\TextDocument.h	/^	bool	isModified() const { return m_modified; }$/;"	f	class:TextDocument
 isNull	.\textCursor.h	/^	bool	isNull() const { return m_document == 0; }$/;"	f	class:DocCursor
 isOverlapped	.\textCursor.cpp	/^bool DocCursor::isOverlapped(const DocCursor &x) const$/;"	f	class:DocCursor
-isTabOrSpace	.\textCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isTabOrSpace	.\viCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
+isTabOrSpace	.\textCursor.cpp	/^inline bool isTabOrSpace(const QChar ch)$/;"	f
 isUTF16beBom	.\charEncoding.cpp	/^inline bool isUTF16beBom(cuchar *ptr, cuchar *endptr)$/;"	f
 isUTF16leBom	.\charEncoding.cpp	/^inline bool isUTF16leBom(cuchar *ptr, cuchar *endptr)$/;"	f
 isUTF8Bom	.\charEncoding.cpp	/^inline bool isUTF8Bom(cuchar *ptr, cuchar *endptr)$/;"	f
@@ -781,8 +781,8 @@ move	.\textCursor.cpp	/^void DocCursor::move(int d)$/;"	f	class:DocCursor
 move	.\textCursor.cpp	/^void ViewCursor::move(int d)$/;"	f	class:ViewCursor
 moveCursor	.\viCursor.cpp	/^bool moveCursor(ViewCursor &cur, \/\/int &x,$/;"	f
 moveCursorFind	.\viCursor.cpp	/^bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth)$/;"	f
-moveCursorFindBackward	.\viCursor.cpp	/^int moveCursorFindBackward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)$/;"	f
-moveCursorFindForward	.\viCursor.cpp	/^int moveCursorFindForward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)$/;"	f
+moveCursorFindBackward	.\viCursor.cpp	/^index_t moveCursorFindBackward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)$/;"	f
+moveCursorFindForward	.\viCursor.cpp	/^index_t moveCursorFindForward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)$/;"	f
 moveCursorFindInLine	.\viCursor.cpp	/^bool moveCursorFindInLine(ViewCursor &cur, ushort cmd, const QChar &qch, int n)$/;"	f
 moveLeftIfEndOfLine	.\textCursor.cpp	/^void DocCursor::moveLeftIfEndOfLine()$/;"	f	class:DocCursor
 movePosition	.\textCursor.cpp	/^bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)$/;"	f	class:DocCursor

@@ -27,6 +27,7 @@
 #include "textBlock.h"
 
 int getEOLOffset(const QString text);
+size_t UTF8CharSize(uchar ch);
 
 #if 0
 //	末尾改行（CR/LF/CRLF）位置を返す
@@ -595,17 +596,20 @@ bool moveCursorFindInLine(ViewCursor &cur, ushort cmd, const QChar &qch, int n)
 	return true;
 }
 
-int moveCursorFindForward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)
+index_t moveCursorFindForward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)
 {
 	for(;;) {
 		int i = rex.indexIn(block.text(), ix);
 		if( i >= 0 ) {
 			if( !--nth ) {
-				int pos = i + block.position();
+				index_t pos = block.position();
+				const TextDocument *doc = block.document();
+				while( --i >= 0 )
+					pos += UTF8CharSize((*doc)[pos]);
 				if( limit < 0 || pos <= limit ) {		//	初期カーソル位置に一周して戻ってきた場合もOK
 					return pos;
 				} else
-					return -1;
+					return (index_t)-1;
 			}
 			ix = i + 1;
 		} else {
@@ -616,13 +620,16 @@ int moveCursorFindForward(const QRegExp &rex, ViewBlock &block, int ix, int &nth
 		}
 	}
 }
-int moveCursorFindBackward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)
+index_t moveCursorFindBackward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)
 {
 	int i;
 	for(;;) {
 		if( ix >= 0 && (i = rex.lastIndexIn(block.text(), ix)) >= 0 ) {	//	ix = -1 を指定すると最後から検索してしまう
 			if( !--nth ) {
-				int pos = i + block.position();
+				index_t pos = block.position();
+				const TextDocument *doc = block.document();
+				while( --i >= 0 )
+					pos += UTF8CharSize((*doc)[pos]);
 				if( limit < 0 || pos >= limit ) {		//	初期カーソル位置に一周して戻ってきた場合もOK
 					return pos;
 				} else
