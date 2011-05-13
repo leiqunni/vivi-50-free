@@ -208,9 +208,9 @@ int ViEngine::repeatCount() const
 	return m_repeatCount * rc2;
 }
 //	block ‚©‚ç n s‰º‚Ìæ“ªˆÊ’u‚ð•Ô‚·
-int nLinesPosition(ViewCursor cur, int n)
+int nLinesPosition(DocCursor cur, int n)
 {
-	ViewBlock block = cur.block();
+	DocBlock block = cur.block();
 	while( --n >= 0 ) {
 		block = block.next();
 		if( !block.isValid() ) {

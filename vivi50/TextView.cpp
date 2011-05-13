@@ -1163,8 +1163,11 @@ const ViewBlock *TextView::lastVisibleBlockPtr() const
 	}
 	return &block;
 }
-void TextView::doDelete(int, int)
+void TextView::doDelete(int first, int last)
 {
+	m_textCursor->setPosition(last);
+	m_textCursor->setPosition(first, DocCursor::KeepAnchor);
+	deleteChar();
 }
 void TextView::doOpenLine(bool next)
 {
