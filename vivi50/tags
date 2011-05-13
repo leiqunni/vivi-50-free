@@ -100,9 +100,9 @@ LayoutThread	.\LayoutThread.h	/^class LayoutThread : public QThread$/;"	c
 Left	.\textCursor.h	/^		Left,$/;"	e	enum:DocCursor::__anon2
 MAINWINDOW_H	.\mainwindow.h	24;"	d
 MARGIN_LEFT	.\TextView.cpp	61;"	d	file:
-MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
+MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^    class MainWindowClass: public Ui_MainWindowClass {};$/;"	c	namespace:Ui
 MatchCase	.\findOpt.h	/^	MatchCase = 0x01,$/;"	e	enum:__anon4
 MaxRecentFiles	.\mainwindow.h	/^    enum { MaxRecentFiles = 10 };$/;"	e	enum:MainWindow::__anon1
@@ -449,7 +449,7 @@ findNext	.\TextView.cpp	/^void TextView::findNext()$/;"	f	class:TextView
 findNextAct	.\mainwindow.h	/^    QAction *findNextAct;$/;"	m	class:MainWindow
 findPrev	.\TextView.cpp	/^void TextView::findPrev()$/;"	f	class:TextView
 findPrevAct	.\mainwindow.h	/^    QAction *findPrevAct;$/;"	m	class:MainWindow
-findStrings	.\mainwindow.cpp	/^QStringList findStrings() const$/;"	f
+findStrings	.\mainwindow.cpp	/^QStringList MainWindow::findStrings() const$/;"	f	class:MainWindow
 firstBlock	.\TextView.cpp	/^ViewBlock TextView::firstBlock() const$/;"	f	class:TextView
 firstBlock	.\TextDocument.h	/^	DocBlock	firstBlock() { return DocBlock(this, 0); }$/;"	f	class:TextDocument
 firstBlock	.\TextDocument.h	/^	DocBlock	firstBlock() { return DocBlock(this, 0, 0); }$/;"	f	class:TextDocument
