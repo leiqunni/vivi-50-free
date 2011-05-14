@@ -85,9 +85,14 @@
 # 2011/05/14 19:19:27
 - 2011/05/08 "TextView.cpp" B:   undone 暫定コード
 - 2011/05/08 "TextView.cpp" B:   undone 暫定コード
+# 2011/05/14 22:05:51
++ 2011/05/14 "TextDocument.cpp" B:   undone 行単位の場合は改行チェック
++ 2011/05/14 "TextDocument.cpp" B:   undone マージ可能であれば直前アイテムとマージ
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
+2011/05/14 "TextDocument.cpp" B:   undone 行単位の場合は改行チェック
 2011/04/05 "TextDocument.cpp" M:   undone 不要なヒープの解放
+2011/05/14 "TextDocument.cpp" B:   undone マージ可能であれば直前アイテムとマージ
 2011/04/10 "TextDocument.cpp" M:   undone 不要なヒープの解放
 2011/04/19 "TextDocument.cpp" P:   undone 置換テキストもUTF8にあらかじめ変換しておく
 2011/04/12 "textCursor.cpp" B:   undone 暫定コード

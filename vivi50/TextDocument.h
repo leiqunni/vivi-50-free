@@ -159,11 +159,13 @@ class GVUndoMgr
 							//	通常は m_item.size() と同値だが、undo が実行されるとデクリメントされる
 	uint	m_undoBlockLevel;
 	bool	m_toSetBlockFlag;			//	次の push_back で block フラグを立てる
+	TextDocument	*m_document;
 	std::vector<GVUndoItem>	m_items;
 	std::vector<uchar>	m_heap;			//	undo のための文字列を格納するヒープ
 	std::vector<uchar>	m_redoHeap;		//	redo のための文字列を格納するヒープ
 public:
-	GVUndoMgr() : m_current(0)
+	GVUndoMgr(TextDocument *document)
+		: m_document(document), m_current(0)
 	{
 		m_undoBlockLevel = 0;
 		m_toSetBlockFlag = false;
@@ -179,6 +181,7 @@ public:
 	bool	canRedo() const { return m_current < m_items.size(); };
 	//bool	canMerge(const GVUndoItem &) const;
 public:
+	TextDocument	*document()	{ return m_document; }
 	void	openUndoBlock();		//	undo block レベル += 1
 	void	closeUndoBlock();		//	undo block レベル -= 1
 	void	resetUndoBlock();		//	undo block レベル = 0
@@ -202,8 +205,8 @@ public:
 		return sz;
 	}
 	void	resetModifiedFlags();	//	ドキュメントが保存された時にコールされる
-	bool	doUndo(TextDocument*, index_t&, index_t&);
-	bool	doRedo(TextDocument*, index_t&, index_t&);
+	bool	doUndo(/*TextDocument*,*/ index_t&, index_t&);
+	bool	doRedo(/*TextDocument*,*/ index_t&, index_t&);
 };
 //----------------------------------------------------------------------
 
@@ -312,8 +315,8 @@ public:
 	}
 
 public:
-	bool	canUndo() const { return m_undoMgr.canUndo(); };
-	bool	canRedo() const { return m_undoMgr.canRedo(); };
+	bool	canUndo() const { return m_undoMgr->canUndo(); };
+	bool	canRedo() const { return m_undoMgr->canRedo(); };
 
 public:
 	void	init();
@@ -321,8 +324,8 @@ public:
 	void	setEOLCode();
 	void	setModified(bool b) { m_modified = b; }
 	void	setFullPath(const QString &fullPath) { m_fullPath = fullPath; }
-	void	openUndoBlock() { m_undoMgr.openUndoBlock(); }
-	void	closeUndoBlock() { m_undoMgr.closeUndoBlock(); }
+	void	openUndoBlock() { m_undoMgr->openUndoBlock(); }
+	void	closeUndoBlock() { m_undoMgr->closeUndoBlock(); }
 
 #if BLOCK_HAS_SIZE
 	DocBlock	firstBlock() { return DocBlock(this, 0, 0); }
@@ -403,7 +406,7 @@ private:
 	//index_t		m_blockIndex;		//	カレントブロック情報
 	//index_t		m_blockPosition;	//	カレントブロック情報
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ
-	GVUndoMgr	m_undoMgr;
+	GVUndoMgr	*m_undoMgr;
 	//boost::object_pool<GVUndoItem>	m_pool_undoItem;
 
 	friend void test_TextDocument();

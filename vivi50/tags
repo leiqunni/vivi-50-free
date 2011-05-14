@@ -73,7 +73,7 @@ GVUNDOITEM_UNDO_MF_OFF	.\TextDocument.h	/^	GVUNDOITEM_UNDO_MF_OFF = 0x0001,	\/\/
 GVUndoItem	.\TextDocument.h	/^	GVUndoItem()$/;"	f	struct:GVUndoItem
 GVUndoItem	.\TextDocument.h	/^	GVUndoItem(uchar type,$/;"	f	struct:GVUndoItem
 GVUndoItem	.\TextDocument.h	/^struct GVUndoItem$/;"	s
-GVUndoMgr	.\TextDocument.h	/^	GVUndoMgr() : m_current(0)$/;"	f	class:GVUndoMgr
+GVUndoMgr	.\TextDocument.h	/^	GVUndoMgr(TextDocument *document)$/;"	f	class:GVUndoMgr
 GVUndoMgr	.\TextDocument.h	/^class GVUndoMgr$/;"	c
 GV_USE_ITR_FACADE	.\gap_vector.h	25;"	d
 HIST_LIMIT	.\FindDlg.cpp	26;"	d	file:
@@ -246,9 +246,9 @@ cacheBlock	.\textBlock.h	/^	const LaidoutBlock	*cacheBlock() const { return m_ca
 cacheBlockData	.\TextDocument.h	/^	BlockData cacheBlockData() const { return m_cacheBlockData; }$/;"	f	class:TextDocument
 cacheBlockData	.\TextView.h	/^	BlockData cacheBlockData() const { return m_cacheBlockData; }$/;"	f	class:TextView
 canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_current < m_items.size(); };$/;"	f	class:GVUndoMgr
-canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_undoMgr.canRedo(); };$/;"	f	class:TextDocument
+canRedo	.\TextDocument.h	/^	bool	canRedo() const { return m_undoMgr->canRedo(); };$/;"	f	class:TextDocument
 canUndo	.\TextDocument.h	/^	bool	canUndo() const { return m_current != 0; };$/;"	f	class:GVUndoMgr
-canUndo	.\TextDocument.h	/^	bool	canUndo() const { return m_undoMgr.canUndo(); };$/;"	f	class:TextDocument
+canUndo	.\TextDocument.h	/^	bool	canUndo() const { return m_undoMgr->canUndo(); };$/;"	f	class:TextDocument
 capacity	.\gap_vector.h	/^	size_type	capacity() const { return \/*!m_first ? 0 :*\/ m_last - m_first; }$/;"	f	class:std::gap_vector
 cbegin	.\gap_vector.h	/^	const_iterator cbegin() const { return const_iterator(m_first != m_gapBegin ? m_first : m_gapEnd, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
 cchar	.\charEncoding.h	/^typedef const char cchar;$/;"	t
@@ -277,7 +277,7 @@ closeAllAct	.\mainwindow.h	/^	QAction *closeAllAct;$/;"	m	class:MainWindow
 closeAllViews	.\mainwindow.cpp	/^void MainWindow::closeAllViews(bool noSaveDlg)$/;"	f	class:MainWindow
 closeEvent	.\mainwindow.cpp	/^void MainWindow::closeEvent(QCloseEvent *event)$/;"	f	class:MainWindow
 closeUndoBlock	.\TextDocument.cpp	/^void GVUndoMgr::closeUndoBlock()$/;"	f	class:GVUndoMgr
-closeUndoBlock	.\TextDocument.h	/^	void	closeUndoBlock() { m_undoMgr.closeUndoBlock(); }$/;"	f	class:TextDocument
+closeUndoBlock	.\TextDocument.h	/^	void	closeUndoBlock() { m_undoMgr->closeUndoBlock(); }$/;"	f	class:TextDocument
 closeView	.\mainwindow.cpp	/^void MainWindow::closeView(TextView *view, bool noSaveDlg)$/;"	f	class:MainWindow
 cmdLineCursorPositionChanged	.\mainwindow.cpp	/^void MainWindow::cmdLineCursorPositionChanged(int oldPos, int newPos)$/;"	f	class:MainWindow
 cmdLineReturnPressed	.\mainwindow.cpp	/^void MainWindow::cmdLineReturnPressed()$/;"	f	class:MainWindow
@@ -349,7 +349,7 @@ doMergeIfPossible	.\TextDocument.cpp	/^bool GVUndoMgr::doMergeIfPossible(const G
 doOpenLine	.\TextView.cpp	/^void TextView::doOpenLine(bool next)$/;"	f	class:TextView
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
 doPaint	.\TextView.cpp	/^void TextView::doPaint()$/;"	f	class:TextView
-doRedo	.\TextDocument.cpp	/^bool GVUndoMgr::doRedo(TextDocument *bb, index_t& pos, index_t& anchor)$/;"	f	class:GVUndoMgr
+doRedo	.\TextDocument.cpp	/^bool GVUndoMgr::doRedo(\/*TextDocument *bb,*\/ index_t& pos, index_t& anchor)$/;"	f	class:GVUndoMgr
 doRedo	.\TextDocument.cpp	/^void TextDocument::doRedo(index_t &pos, index_t &anchor)$/;"	f	class:TextDocument
 doRedo	.\TextView.cpp	/^void TextView::doRedo(int n)$/;"	f	class:TextView
 doRedo	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doRedo()$/;"	f	class:ReplaceDlg
@@ -367,7 +367,7 @@ doShiftLeft	.\ViEngine.cpp	/^bool ViEngine::doShiftLeft(ViewCursor &cur, int n)$
 doShiftRight	.\ViEngine.cpp	/^bool ViEngine::doShiftRight(ViewCursor &cur, int n)$/;"	f	class:ViEngine
 doSubst	.\ViEngine.cpp	/^void ViEngine::doSubst(const QString &param, int first, int last)$/;"	f	class:ViEngine
 doTest	.\TestViCommands.cpp	/^void TestViCommands::doTest()$/;"	f	class:TestViCommands
-doUndo	.\TextDocument.cpp	/^bool GVUndoMgr::doUndo(TextDocument *bb, index_t& pos, index_t& anchor)$/;"	f	class:GVUndoMgr
+doUndo	.\TextDocument.cpp	/^bool GVUndoMgr::doUndo(\/*TextDocument *bb,*\/ index_t& pos, index_t& anchor)$/;"	f	class:GVUndoMgr
 doUndo	.\TextDocument.cpp	/^void TextDocument::doUndo(index_t &pos, index_t &anchor)$/;"	f	class:TextDocument
 doUndo	.\TextView.cpp	/^void TextView::doUndo(int n)$/;"	f	class:TextView
 doUndo	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doUndo()$/;"	f	class:ReplaceDlg
@@ -396,6 +396,7 @@ docIndex	.\textBlock.h	/^	index_t		docIndex() const { return DocBlock::index(); 
 docIndex	.\textBlock.h	/^	index_t	docIndex() const { return m_docBlockData.m_index; }$/;"	f	class:LaidoutBlock
 docPosition	.\textBlock.h	/^	index_t		docPosition() const { return DocBlock::position(); };$/;"	f	class:ViewBlock
 docPosition	.\textBlock.h	/^	index_t	docPosition() const { return m_docBlockData.m_position; }$/;"	f	class:LaidoutBlock
+document	.\TextDocument.h	/^	TextDocument	*document()	{ return m_document; }$/;"	f	class:GVUndoMgr
 document	.\ViEngine.cpp	/^TextDocument *ViEngine::document()$/;"	f	class:ViEngine
 document	.\TextView.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:TextView
 document	.\TextView.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:TextView
@@ -647,6 +648,7 @@ m_current	.\TextDocument.h	/^	uint	m_current;		\/\/	オブジェクトを次に入れる位置
 m_data	.\textBlock.h	/^	BlockData	m_data;$/;"	m	class:DocBlock
 m_dirGroup	.\FindDlg.h	/^	QGroupBox	*m_dirGroup;$/;"	m	class:FindDlg
 m_docBlockData	.\textBlock.h	/^	BlockData	m_docBlockData;$/;"	m	class:LaidoutBlock
+m_document	.\TextDocument.h	/^	TextDocument	*m_document;$/;"	m	class:GVUndoMgr
 m_document	.\TextView.h	/^	TextDocument	*m_document;$/;"	m	class:TextView
 m_document	.\textCursor.h	/^	TextDocument	*m_document;$/;"	m	class:DocCursor
 m_document	.\textBlock.h	/^	TextDocument	*m_document;$/;"	m	class:DocBlock
@@ -757,7 +759,7 @@ m_toTerminate	.\LayoutThread.h	/^	bool		m_toTerminate;		\/\/	処理中断フラグ$/;"	
 m_type	.\TextDocument.h	/^	uchar	m_type;$/;"	m	struct:GVUndoItem
 m_unLaidoutDocBlockCount	.\textBlock.h	/^	size_t	m_unLaidoutDocBlockCount;	\/\/	先行する未レイアウトブロック数$/;"	m	struct:LaidoutChunk
 m_undoBlockLevel	.\TextDocument.h	/^	uint	m_undoBlockLevel;$/;"	m	class:GVUndoMgr
-m_undoMgr	.\TextDocument.h	/^	GVUndoMgr	m_undoMgr;$/;"	m	class:TextDocument
+m_undoMgr	.\TextDocument.h	/^	GVUndoMgr	*m_undoMgr;$/;"	m	class:TextDocument
 m_unitName	.\unit_test.h	/^	QString	m_unitName;$/;"	m	class:CUnitTest
 m_unitTestDoc	.\mainwindow.h	/^	bool	m_unitTestDoc;$/;"	m	class:MainWindow
 m_unitTestLaidoutBlocksMgr	.\mainwindow.h	/^	bool	m_unitTestLaidoutBlocksMgr;$/;"	m	class:MainWindow
@@ -858,7 +860,7 @@ open	.\mainwindow.cpp	/^void MainWindow::open(const QString &fileName)$/;"	f	cla
 openAct	.\mainwindow.h	/^	QAction *openAct;$/;"	m	class:MainWindow
 openRecentFile	.\mainwindow.cpp	/^void MainWindow::openRecentFile()$/;"	f	class:MainWindow
 openUndoBlock	.\TextDocument.cpp	/^void GVUndoMgr::openUndoBlock()$/;"	f	class:GVUndoMgr
-openUndoBlock	.\TextDocument.h	/^	void	openUndoBlock() { m_undoMgr.openUndoBlock(); }$/;"	f	class:TextDocument
+openUndoBlock	.\TextDocument.h	/^	void	openUndoBlock() { m_undoMgr->openUndoBlock(); }$/;"	f	class:TextDocument
 operator !=	.\textBlock.h	/^	bool	operator!=(const DocBlock &x) const$/;"	f	class:DocBlock
 operator !=	.\textBlock.h	/^	bool	operator!=(const ViewBlock &x) const$/;"	f	class:ViewBlock
 operator ++	.\textBlock.cpp	/^DocBlock &DocBlock::operator++()$/;"	f	class:DocBlock
