@@ -28,6 +28,7 @@
 #include "viCursor.h"
 
 bool hasSelection(const std::vector<ViewCursor*> &v);
+int getEOLOffset(const QString text);
 
 #if 1
 ViEngine::ViEngine(QObject *parent)
@@ -128,12 +129,14 @@ void ViEngine::doJoin(int n)
 		ViewBlock block = cur.block();
 		ViewBlock next = block.next();
 		if( !next.isValid() ) break;
-		cur.setPosition(pos = block.position() + block.EOLOffset());
-		cur.setPosition(next.position(), DocCursor::KeepAnchor);
-		cur.movePosition(ViMoveOperation::FirstNonBlankChar, DocCursor::KeepAnchor);
+		index_t eo = block.EOLOffset();
+		cur.movePosition(DocCursor::EndOfBlock);
+		cur.movePosition(ViMoveOperation::NextLine, DocCursor::KeepAnchor);
 		QChar lastChar;
-		if( !block.text().isEmpty() )
-			lastChar = block.text().at(block.text().length() - 1);
+		if( eo != 0 ) {
+			const QString text = block.text();
+			lastChar = text.at(getEOLOffset(text) - 1);
+		}
 		if( lastChar == ' ' || lastChar == '\t' )
 			cur.deleteChar();
 		else
@@ -142,8 +145,8 @@ void ViEngine::doJoin(int n)
 	} while( --n > 1 );		//	2J ‚Ü‚Å‚Í‚P‰ñ‚¾‚¯join
 	document()->closeUndoBlock();
 	//cur.endEditBlock();
-	cur.setPosition(pos);	//	ÅŒã‚Ì‹ó”’ˆÊ’u‚ÉˆÚ“®
-	m_editor->setTextCursor(cur);
+	//cur.setPosition(pos);	//	ÅŒã‚Ì‹ó”’ˆÊ’u‚ÉˆÚ“®
+	//m_editor->textCursor().setPosition(cur.position());
 }
 bool ViEngine::doShiftRight(ViewCursor &cur, int n)
 {
@@ -642,10 +645,10 @@ bool ViEngine::doViCommand(const QChar &qch)
 			break;
 		case '\r':		//	Enter
 		case '+':
-			cursorMoved = moveCursor(cur, ViMoveOperation::NextLine, repeatCount());
+			cursorMoved = cur.movePosition(ViMoveOperation::NextLine, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case '-':
-			cursorMoved = moveCursor(cur, ViMoveOperation::PrevLine, repeatCount());
+			cursorMoved = cur.movePosition(ViMoveOperation::PrevLine, DocCursor::MoveAnchor, repeatCount());
 			break;
 		case 'n':
 			cursorMoved = doFindNext(cur, repeatCount());

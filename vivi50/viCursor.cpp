@@ -508,7 +508,6 @@ bool moveCursor(ViewCursor &cur, //int &x,
 		return gotoPrevSSWord(cur, n);
 	case ViMoveOperation::NextSSWordEnd:
 		return gotoNextSSWordEnd(cur, n, cdy);
-#endif
 	case ViMoveOperation::NextLine:
 		cur.movePosition(DocCursor::NextBlock, DocCursor::MoveAnchor, n);
 		moveToFirstNonBlankChar(cur);
@@ -517,6 +516,7 @@ bool moveCursor(ViewCursor &cur, //int &x,
 		cur.movePosition(DocCursor::PrevBlock, DocCursor::MoveAnchor, n);
 		moveToFirstNonBlankChar(cur);
 		return true;
+#endif
 	case ViMoveOperation::MatchParen:
 		return gotoMatchParen(cur);
 	case ViMoveOperation::NextBlankLine:

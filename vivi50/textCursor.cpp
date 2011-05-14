@@ -13,6 +13,14 @@
 #include	"viCursor.h"
 
 int firstNonBlankCharPos(const QString &text);
+void moveToFirstNonBlankChar(DocCursor &cur, uchar mode)
+{
+	DocBlock block = cur.block();
+	const int blockPos = block.position();
+	const QString blockText = block.text();
+	if( !blockText.isEmpty() )
+		cur.setPosition(blockPos + firstNonBlankCharPos(blockText), mode);
+}
 inline bool isUTF8FirstChar(uchar ch)
 {
 	return !(ch & 0x80) || (ch & 0x40) != 0;
@@ -714,7 +722,14 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 #endif
 		m_offset = 0xffffffff;
 		break;
-	
+	case ViMoveOperation::NextLine:
+		movePosition(DocCursor::NextBlock, mode, n);
+		moveToFirstNonBlankChar(*this, mode);
+		break;
+	case ViMoveOperation::PrevLine:
+		movePosition(DocCursor::PrevBlock, mode, n);
+		moveToFirstNonBlankChar(*this, mode);
+		break;
 	case StartOfDocument:
 		m_position = 0;
 #if TEXT_CURSOR_BLOCK
