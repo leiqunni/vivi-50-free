@@ -26,7 +26,7 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-84.078,377.793)
   main.cpp	(-105.304,-403.84)
-  mainwindow.cpp	(-113.265,-203.142)
+* mainwindow.cpp	(-113.265,-203.142)
   mainwindow.h	(-113.265,-236.142)
 * TextDocument.cpp	(-152.875,65.766)
 * TextDocument.h	(-152.875,32.766)
@@ -51,10 +51,10 @@ memFileColumnWd = 320
   textBlock.h	(-363,260)
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
-  ViEngine.cpp	(219,-29)
+* ViEngine.cpp	(219,-29)
   ViEngine.h	(219,-62)
   vi.h	(373,-83)
-  viCursor.cpp	(-180,296)
+* viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
 * TestViCommands.cpp	(127,-243)
   TestViCommands.h	(127,-276)
@@ -65,25 +65,23 @@ memFileColumnWd = 320
   "TextDocument.cpp" 61 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 78 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 841 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
-  "textCursor.cpp" 616 'B: ' '' undone 暫定コード
-  "textCursor.cpp" 627 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 626 'B: ' '' undone 暫定コード
+  "textCursor.cpp" 637 'B: ' '' undone 暫定コード
   "TextView.cpp" 727 'B: ' '' undone 矢印表示に変更する
   "TextView.cpp" 1012 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1156 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1163 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1218 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1219 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1238 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1239 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1490 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1513 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1542 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1841 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1866 'B: ' '' undone 未コーディング
+  "TextView.cpp" 1224 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1225 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1244 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1245 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1496 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1519 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1548 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1847 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1872 'B: ' '' undone 未コーディング
   "textBlock.cpp" 588 'B: ' '' undone チャンクが連続している場合等
-  "ViEngine.cpp" 329 'B: ' '' undone 文書の改行コードを挿入
-  "ViEngine.cpp" 820 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 894 'B: ' '' undone 未コーディング
-  "ViEngine.cpp" 1016 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1114 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 332 'B: ' '' undone 文書の改行コードを挿入
+  "ViEngine.cpp" 835 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 911 'B: ' '' undone 未コーディング
+  "ViEngine.cpp" 1033 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1131 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
   "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ
