@@ -1153,21 +1153,27 @@ void TextView::paste()
 }
 const ViewBlock *TextView::firstVisibleBlockPtr() const
 {
-	//	undone B 暫定コード
 	static ViewBlock block = firstBlock();
 	block = firstVisibleBlock();
 	return &block;
 }
 const ViewBlock *TextView::lastVisibleBlockPtr() const
 {
-	//	undone B 暫定コード
 	static ViewBlock block = firstBlock();
+	ViewBlock lb = lastBlock();
 	block = firstVisibleBlock();
 	const int ht = viewport()->rect().height();
 	QFontMetrics fm = fontMetrics();
 	const int lineHeight = fm.lineSpacing();
 	int y = lineHeight;
 	while( y + lineHeight < ht ) {
+		if( !block.isValid() )
+			block = lb;
+		if( block == lb ) {
+			if( block.position() != 0 )
+				--block;
+			break;
+		}
 		y += lineHeight;
 		++block;
 	}
