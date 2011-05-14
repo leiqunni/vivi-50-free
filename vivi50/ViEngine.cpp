@@ -475,14 +475,19 @@ bool ViEngine::doViCommand(const QChar &qch)
 			return true;
 		case 'c':
 		case 'd':
+		case 'y':
 			if( cur.hasSelection() ) {
+				if( ch == 'y' ) {
+					yankFrom = qMin(cur.anchor(), cur.position());
+					yankTo = qMax(cur.anchor(), cur.position());
+					break;
+				}
 				if( ch == 'c' )
 					toInsertMode = true;
 				delFrom = qMin(cur.anchor(), cur.position());
 				delTo = qMax(cur.anchor(), cur.position());
 				break;
 			}
-		case 'y':
 			m_cdyCmd = ch;
 			m_cdyPos = cur.position();
 			emit showMessage(m_cmdString);
@@ -829,9 +834,11 @@ bool ViEngine::doViCommand(const QChar &qch)
 	if( yankFrom >= 0 && yankFrom < yankTo ) {
 		//	undone R delete ‚Ìê‡‚Æˆ—‚ð‹¤’Ê‰»‚·‚é
 		cur.setPosition(yankFrom);
+		m_editor->setTextCursor(cur);
 		cur.setPosition(yankTo, DocCursor::KeepAnchor);
 		m_yankByLine = m_moveByLine || toYankByLine;
 		m_yankBuffer = cur.selectedText();
+		//m_editor->textCursor().setPosition(yankFrom);
 	}
 	if( delFrom >= 0 && delFrom < delTo ) {
 		m_editor->clearSelection();
