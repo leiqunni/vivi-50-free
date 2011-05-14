@@ -671,10 +671,15 @@ bool ViEngine::doViCommand(const QChar &qch)
 			break;
 		}
 		case 's':
+			if( cur.hasSelection() ) {
+				delFrom = qMin(cur.anchor(), cur.position());
+				delTo = qMax(cur.anchor(), cur.position());
+			} else {
+				delFrom = cur.position();
+				moveCursor(cur, ViMoveOperation::RightForA, repeatCount());
+				delTo = cur.position();
+			}
 			toInsertMode = true;
-			delFrom = cur.position();
-			moveCursor(cur, ViMoveOperation::RightForA, repeatCount());
-			delTo = cur.position();
 			m_repeatCount = 1;		//	<êîíl>s text Esc Ç≈ text ÇêîílâÒêîë}ì¸ÇµÇ‹ÇπÇÒÇÊÇ§Ç…
 			break;
 		case 'x':
