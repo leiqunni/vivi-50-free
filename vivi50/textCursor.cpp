@@ -12,6 +12,7 @@
 #include	"TextView.h"
 #include	"viCursor.h"
 
+int firstNonBlankCharPos(const QString &text);
 inline bool isUTF8FirstChar(uchar ch)
 {
 	return !(ch & 0x80) || (ch & 0x40) != 0;
@@ -550,7 +551,8 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 	if( isNull() ) return false;
 	bool vi = false;
 	DocBlock b = block();
-	index_t blockPosition = b.position();
+	index_t blockPos = b.position();
+	QString blockText = b.text();
 	switch( move ) {
 	case Right:
 		if( m_document->size() - m_position <= n ) {
@@ -674,12 +676,27 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 	case ViMoveOperation::LastChar: {		//	ブロックの最後の文字に移動
 		index_t ix = b.EOLOffset();
 		if( ix != 0 ) {
-			do { } while( !isUTF8FirstChar((*m_document)[blockPosition + --ix]) );
+			do { } while( !isUTF8FirstChar((*m_document)[blockPos + --ix]) );
 		}
-		m_position = blockPosition + ix;
+		m_position = blockPos + ix;
 		m_offset = 0xffffffff;
 		break;
 	}
+	case ViMoveOperation::JumpLine: {
+		DocBlock d = document()->findBlockByNumber(n - 1);
+		blockPos = d.position();
+		blockText = d.text();
+		//m_position = d.position();
+		//m_offset = 0;
+		//m_x = 0;
+		//m_blockData = d.data();
+		//m_viewBlockData = m_view->findBlockData(m_position);
+		//break;
+	}
+	//	下にスルー
+	case ViMoveOperation::FirstNonBlankChar:
+		setPosition(blockPos + firstNonBlankCharPos(blockText));
+		break;
 	case EndOfBlock:		//	改行位置に移動
 		m_position = b.position() + b.EOLOffset();
 #if 0
@@ -962,18 +979,6 @@ bool ViewCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		m_x = -1;
 		break;
 #endif
-	case ViMoveOperation::FirstNonBlankChar:
-		setPosition(blockPos + firstNonBlankCharPos(blockText));
-		break;
-	case ViMoveOperation::JumpLine: {
-		DocBlock d = document()->findBlockByNumber(n - 1);
-		m_position = d.position();
-		m_offset = 0;
-		m_x = 0;
-		m_blockData = d.data();
-		m_viewBlockData = m_view->findBlockData(m_position);
-		break;
-	}
 moveDocCursor:
 	default:
 		if( !DocCursor::movePosition(move, mode, n, cdy) )

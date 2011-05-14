@@ -215,7 +215,7 @@ void TestViCommands::checkCursor()
 	int offset = getNumber();
 	TextView *editor = m_viEngine->editor();
 	ViewCursor cur = editor->textCursor();
-	if( line == cur.blockNumber() + 1 && offset == cur.positionInBlock() )
+	if( line == cur.blockNumber() + 1 && offset == cur.prevCharsCount() )
 		m_mainWindow->doOutput(".");
 	else {
 		qDebug() << "failed at checkCursor()";
