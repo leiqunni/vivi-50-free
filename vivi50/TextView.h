@@ -121,6 +121,7 @@ public:
 
 public:
 	TextDocument	*document() { return m_document; }
+	void	clear();
 	void	setViEngine(ViEngine *);
 	void	doJump(int lineNum);
 	void	doVertScroll(int);

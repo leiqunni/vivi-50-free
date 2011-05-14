@@ -120,6 +120,12 @@ TextView::~TextView()
 	delete m_document;
 	delete m_textCursor;
 }
+void TextView::clear()
+{
+	m_lbMgr->clear();
+	m_cacheBlockData = BlockData(0, 0);
+	m_textCursor->setPosition(0);
+}
 void TextView::setViEngine(ViEngine *viEngine)
 {
 	m_viEngine = viEngine;
