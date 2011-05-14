@@ -473,13 +473,15 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_cmdPrefix = ch;
 			emit showMessage(m_cmdString);
 			return true;
+		case 'c':
 		case 'd':
 			if( cur.hasSelection() ) {
+				if( ch == 'c' )
+					toInsertMode = true;
 				delFrom = qMin(cur.anchor(), cur.position());
 				delTo = qMax(cur.anchor(), cur.position());
 				break;
 			}
-		case 'c':
 		case 'y':
 			m_cdyCmd = ch;
 			m_cdyPos = cur.position();
