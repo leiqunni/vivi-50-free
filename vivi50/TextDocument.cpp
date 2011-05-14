@@ -54,6 +54,30 @@ void GVUndoMgr::resetUndoBlock()
 	if( !m_toSetBlockFlag && !m_items.empty() )
 		m_items[m_items.size() - 1].m_flags ^= GVUNDOITEM_BLOCK;
 }
+bool GVUndoMgr::doMergeIfPossible(const GVUndoItem &item)
+{
+	if( m_items.empty() || item.m_type != GVUNDOITEM_TYPE_INSERT )
+		return false;
+	GVUndoItem &last = m_items[m_items.size() - 1];
+	//	undone B 行単位の場合は改行チェック
+	if( last.m_type != GVUNDOITEM_TYPE_INSERT || last.m_last != item.m_first )
+		return false;
+	last.m_last = item.m_last;
+	return true;
+}
+#if 0
+bool GVUndoMgr::canMerge(const GVUndoItem &item) const
+{
+	if( m_items.empty() || item.m_type != GVUNDOITEM_TYPE_INSERT )
+		return false;
+	const GVUndoItem &last = m_items[m_items.size() - 1];
+	return last.m_type == GVUNDOITEM_TYPE_INSERT &&
+			last.m_last == item.m_first;
+}
+void GVUndoMgr::doMerge(const GVUndoItem &item)
+{
+}
+#endif
 #if 1
 void GVUndoMgr::push_back(const GVUndoItem &item, bool modified)
 {
@@ -61,7 +85,9 @@ void GVUndoMgr::push_back(const GVUndoItem &item, bool modified)
 		//	undone M 不要なヒープの解放
 		m_items.erase(m_items.begin() + m_current, m_items.end());
 	}
-	m_items.push_back(item);
+	//	undone B マージ可能であれば直前アイテムとマージ
+	if( !doMergeIfPossible(item) )
+		m_items.push_back(item);
 	GVUndoItem *ptr = &m_items[m_items.size() - 1];
 	if( !modified )
 		ptr->m_flags |= GVUNDOITEM_UNDO_MF_OFF;

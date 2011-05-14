@@ -177,12 +177,14 @@ public:
 public:
 	bool	canUndo() const { return m_current != 0; };
 	bool	canRedo() const { return m_current < m_items.size(); };
+	//bool	canMerge(const GVUndoItem &) const;
 public:
 	void	openUndoBlock();		//	undo block レベル += 1
 	void	closeUndoBlock();		//	undo block レベル -= 1
 	void	resetUndoBlock();		//	undo block レベル = 0
 	//void	push_back(GVUndoItem *ptr, bool = false);
 	void	push_back(const GVUndoItem &, bool = false);
+	bool	doMergeIfPossible(const GVUndoItem &);
 
 	//	データをヒープに追加
 	template<typename InputIterator>
