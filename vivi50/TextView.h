@@ -124,7 +124,7 @@ public:
 	void	clear();
 	void	setViEngine(ViEngine *);
 	void	doJump(int lineNum);
-	void	doVertScroll(int);
+	void	doVertScroll(int, int = 0);
 	void	setOverwriteMode(bool);
 	void	onFontChanged();
 	void	clearSelection() { m_textCursor->clearSelection(); }

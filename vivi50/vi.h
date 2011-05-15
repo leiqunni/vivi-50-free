@@ -42,6 +42,7 @@ namespace ViScrollOperation {
 		PrevHalfPage,			//	^U
 		ExposeTop,				//	^Y
 		ExposeBottom,			//	^E
+		Set,
 	};
 }
 #if 0

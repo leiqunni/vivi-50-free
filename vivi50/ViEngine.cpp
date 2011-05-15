@@ -427,6 +427,12 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_lastFTChar = qch;
 			cursorMoved = moveCursorFindInLine(cur, m_cmdPrefix, qch, repeatCount());
 			break;
+		case 'z':
+			if( ch == '\r' || ch == '\n' ) {
+				cur = m_editor->textCursor();
+				m_editor->doVertScroll(ViScrollOperation::Set, cur.blockNumber());
+			}
+			break;
 		case 'Z':
 			if( ch == 'Z' ) {
 				emit save(QString());
@@ -468,6 +474,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case '[':
 		case 'g':
 		case 'r':
+		case 'z':
 		case 'Z':
 			m_noRepeatCount = true;
 			//	â∫Ç…ÉXÉãÅ[
