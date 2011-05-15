@@ -620,6 +620,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 #endif
 		case 'S':
 			//	done C “¯‚Éundo‰Â”\‚É‚·‚é
+			document()->openUndoBlock();
 			m_editor->doDelete(cur.block().position(), nLinesPosition(cur, repeatCount()));
 			m_editor->doOpenLine(/*next = */false);
 			cur = m_editor->textCursor();
@@ -698,6 +699,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 				moveCursor(cur, ViMoveOperation::RightForA, repeatCount());
 				delTo = cur.position();
 			}
+			document()->openUndoBlock();
 			toInsertMode = true;
 			m_repeatCount = 1;		//	<”’l>s text Esc ‚Å text ‚ğ”’l‰ñ”‘}“ü‚µ‚Ü‚¹‚ñ‚æ‚¤‚É
 			break;
