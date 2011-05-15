@@ -1082,6 +1082,11 @@ void ViEngine::doSet(const QString &text)
 	int ix = text.indexOf('=');
 	if( ix >= 0 ) {
 		doSet(text.left(ix), text.mid(ix+1));
+	} else {
+		const bool no = text.startsWith("no");
+		const QString t = text.mid(no ? 2 : 0);
+		if( t == "linebreak" )
+			m_editor->setLineBreakMode(!no);
 	}
 }
 void ViEngine::doSet(const QString &key, const QString &value)
