@@ -1233,6 +1233,7 @@ void ViEngine::printSettings()
 	QFont font = m_editor->font();
 	doOutput("fontFamily=\"" + font.family() + "\"\n");
 	doOutput(QString("fontSize=%1pt\n").arg(font.pointSize()));
+	doOutput(QString("%1linebreak\n").arg(m_editor->lineBreakMode() ? "  " : "no"));
 }
 
 QString ViEngine::getExCommand(const QString &text, int &ix, bool &exclamation)

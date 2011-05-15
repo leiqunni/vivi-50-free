@@ -46,7 +46,7 @@ public:
 public:
 	QStringList findStrings() const;		//{ return m_findStrings; }
 
-public:
+public slots:
     void doOutput(const QString &);
 
 protected:
