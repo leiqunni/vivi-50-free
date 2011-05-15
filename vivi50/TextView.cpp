@@ -1207,17 +1207,17 @@ void TextView::doOpenLine(bool next)
 		cur.movePosition(DocCursor::Left);
 	setTextCursor(cur);
 }
-void TextView::doUndo(int n)
+void TextView::doUndo(int n, bool vi)
 {
 	for(int i = 0; i < n; ++i)
-		undo();
+		undo(vi);
 }
 void TextView::doRedo(int n)
 {
 	for(int i = 0; i < n; ++i)
 		redo();
 }
-void TextView::undo()
+void TextView::undo(bool vi)
 {
 	if( !m_document->canUndo() ) return;
 	clearMultiCursor();
@@ -1228,7 +1228,9 @@ void TextView::undo()
 		buildBlocks(firstBlock());		//	undone B Žb’èƒR[ƒh
 		m_cacheBlockData = BlockData(0, 0);
 	}
-	if( pos == anchor )
+	if( vi )
+		m_textCursor->setPosition(anchor);
+	else if( pos == anchor )
 		m_textCursor->setPosition(pos);
 	else {
 		m_textCursor->setPosition(anchor);
@@ -1237,7 +1239,7 @@ void TextView::undo()
 	ensureCursorVisible();
 	viewport()->update();
 }
-void TextView::redo()
+void TextView::redo(/*bool select*/)
 {
 	if( !m_document->canRedo() ) return;
 	clearMultiCursor();

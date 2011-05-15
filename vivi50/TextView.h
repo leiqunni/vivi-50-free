@@ -142,7 +142,7 @@ public:
 
 	void	doDelete(int, int);
 	void	doOpenLine(bool next = true);		//	next = false ならば、直前に行オープン
-	void	doUndo(int n = 1);
+	void	doUndo(int n = 1, bool vi = false);
 	void	doRedo(int n = 1);
 
 	void	deleteChar();
@@ -157,7 +157,7 @@ public slots:
 	void	copy();
 	void	cut();
 	void	paste();
-	void	undo();
+	void	undo(bool vi = false);
 	void	redo();
 	void	selectAll();
 	void	replace();

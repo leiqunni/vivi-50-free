@@ -716,12 +716,14 @@ bool ViEngine::doViCommand(const QChar &qch)
 			break;
 		case 'X':
 			if( cur.hasSelection() ) {
-				delFrom = qMin(cur.anchor(), cur.position());
-				delTo = qMax(cur.anchor(), cur.position());
-			} else {
+				delFrom = cur.anchor();
 				delTo = cur.position();
-				moveCursor(cur, ViMoveOperation::Left, repeatCount());
+				//delFrom = qMin(cur.anchor(), cur.position());
+				//delTo = qMax(cur.anchor(), cur.position());
+			} else {
 				delFrom = cur.position();
+				moveCursor(cur, ViMoveOperation::Left, repeatCount());
+				delTo = cur.position();
 			}
 			break;
 		case 'Y':		//	行ヤンク
@@ -771,7 +773,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			}
 			break;
 		case 'u':
-			m_editor->doUndo(repeatCount());
+			m_editor->doUndo(repeatCount(), true);
 			break;
 		case 'U':
 			m_editor->doRedo(repeatCount());
@@ -832,7 +834,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			//qDebug() << "cur.position() = " << cur.position();
 		}
 	}
-	if( (delFrom >= 0 && delFrom < delTo || toUpdateRedoCmd || toInsertMode)
+	if( (delFrom >= 0 && delFrom != delTo || toUpdateRedoCmd || toInsertMode)
 		&& !m_redoing )
 	{
 		//	.(repeat command) の為に編集コマンド文字列を記録
@@ -856,7 +858,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		m_yankBuffer = cur.selectedText();
 		//m_editor->textCursor().setPosition(yankFrom);
 	}
-	if( delFrom >= 0 && delFrom < delTo ) {
+	if( delFrom >= 0 && delFrom != delTo ) {
 		m_editor->clearSelection();
 		if( m_moveByLine ) {
 			//ViewCursor cur = m_editor->textCursor();
