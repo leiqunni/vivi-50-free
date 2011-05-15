@@ -695,7 +695,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 				delTo = qMax(cur.anchor(), cur.position());
 			} else {
 				delFrom = cur.position();
-				moveCursor(cur, ViMoveOperation::RightForA, repeatCount());
+				cur.movePosition(ViMoveOperation::RightForA, DocCursor::KeepAnchor, repeatCount());
+				//moveCursor(cur, ViMoveOperation::RightForA, repeatCount());
 				delTo = cur.position();
 			}
 			break;

@@ -467,6 +467,7 @@ bool moveCursor(ViewCursor &cur, //int &x,
 		mv = DocCursor::Right;
 		break;
 	}
+#if 1
 	case ViMoveOperation::RightForA: {			//	右移動 for a コマンド
 		if( blockText.isEmpty() ) return false;		//	改行 or EOF オンリー行の場合
 		const int endpos = blockPos + blockText.length();
@@ -481,6 +482,7 @@ bool moveCursor(ViewCursor &cur, //int &x,
 		return true;
 #endif
 	}
+#endif
 #if 0
 	case ViMoveOperation::FirstNonBlankChar:
 		cur.setPosition(blockPos + firstNonBlankCharPos(blockText));

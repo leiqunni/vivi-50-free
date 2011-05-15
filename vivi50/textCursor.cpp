@@ -690,6 +690,13 @@ bool DocCursor::movePosition(uchar move, uchar mode, uint n, bool cdy)
 		m_offset = 0xffffffff;
 		break;
 	}
+	case ViMoveOperation::RightForA: {			//	右移動 for a コマンド
+		if( blockText.isEmpty() ) return false;		//	改行 or EOF オンリー行の場合
+		const int endpos = blockPos + b.EOLOffset();
+		if( position() >= endpos ) return false;
+		n = qMin(n, endpos - position());
+		return movePosition(Right, mode, n);
+	}
 	case ViMoveOperation::JumpLine: {
 		DocBlock d = document()->findBlockByNumber(n - 1);
 		blockPos = d.position();
