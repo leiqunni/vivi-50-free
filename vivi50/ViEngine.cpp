@@ -271,6 +271,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 	if( qch.unicode() == 0x1b ) {	//	Esc
 		m_editor->clearMultiCursor();
 		m_editor->clearSelection();
+		document()->closeUndoBlock();
 	}
 	if( mode() == INSERT || mode() == REPLACE ) {
 		//	done A insModeKeyPressEvent() の部分と処理を共通化する
@@ -321,19 +322,21 @@ bool ViEngine::doViCommand(const QChar &qch)
 			ViewCursor cur = m_editor->textCursor();
 			if( mode() == REPLACE && !cur.atBlockEnd() )
 				cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor);
+#if 0
 			if( m_joinPrevEditBlock ) {
 				///cur.joinPreviousEditBlock();
 				cur.insertText(qch);
 				document()->closeUndoBlock();
 				//cur.endEditBlock();
 			} else {
+#endif
 				//cur.insertText(qch);
 				if( qch == '\n' || qch == '\r' ) {
 					//	undone B 文書の改行コードを挿入
 					cur.insertText(document()->EOLText());
 				} else
 					cur.insertText(qch);
-			}
+			//}
 			m_editor->setTextCursor(cur);
 		}
 		return true;
@@ -482,8 +485,10 @@ bool ViEngine::doViCommand(const QChar &qch)
 					yankTo = qMax(cur.anchor(), cur.position());
 					break;
 				}
-				if( ch == 'c' )
+				if( ch == 'c' ) {
+					document()->openUndoBlock();
 					toInsertMode = true;
+				}
 				delFrom = qMin(cur.anchor(), cur.position());
 				delTo = qMax(cur.anchor(), cur.position());
 				break;
@@ -785,6 +790,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		//	cur.movePosition(DocCursor::Right);
 		switch( m_cdyCmd ) {
 		case 'c':
+			document()->openUndoBlock();
 			m_joinPrevEditBlock = true;
 			toInsertMode = true;
 			//	下にスルー
@@ -860,6 +866,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 		cur.setPosition(delTo, DocCursor::KeepAnchor);
 		m_yankByLine = m_moveByLine || toYankByLine;
 		m_yankBuffer = cur.selectedText();
+		cur.deleteChar();
+#if 0
 		if( m_joinPrevEditBlock ) {
 			document()->openUndoBlock();
 			//cur.beginEditBlock();
@@ -869,6 +877,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		} else {
 			cur.deleteChar();
 		}
+#endif
 		if( !toInsertMode )
 			cur.moveLeftIfEndOfLine();		//	改行位置にいる場合はカーソルを左移動
 		m_editor->setTextCursor(cur);
