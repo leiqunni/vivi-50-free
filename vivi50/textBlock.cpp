@@ -601,6 +601,7 @@ void layoutText(std::vector<size_t> &v, QFontMetrics &fm, const DocBlock &block,
 	const size_t nlLength = block.newlineLength();
 	index_t ixEOL = getEOLOffset(text);
 	if( !ixEOL ) {
+		Q_ASSERT( block == ((TextDocument*)block.document())->lastBlock() || block.size() != 0 );
 		v.push_back(block.size());
 	} else {
 		//layoutText(v, text, ixEOL, wdLimit, tabWidth);
@@ -622,6 +623,7 @@ void layoutText(std::vector<size_t> &v, QFontMetrics &fm, const DocBlock &block,
 				}
 				++ix;
 			}
+			Q_ASSERT( pos - blockPos != 0 );
 			v.push_back(pos - blockPos);
 			blockPos = pos;
 		}
