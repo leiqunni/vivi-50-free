@@ -214,7 +214,7 @@ void TestViCommands::checkCursor()
 	int line = getNumber();
 	int offset = getNumber();
 	TextView *editor = m_viEngine->editor();
-	ViewCursor cur = editor->textCursor();
+	DocCursor cur = editor->textCursor();
 	if( line == cur.blockNumber() + 1 && offset == cur.prevCharsCount() )
 		m_mainWindow->doOutput(".");
 	else {
