@@ -237,7 +237,7 @@ void TestViCommands::readToBuffer(QTextStream &in)
 	ViewCursor cur = editor->textCursor();
 	for(;;) {
 		cur.insertText(m_buffer.mid(1) + "\n");
-		m_mainWindow->printBuffer();
+		//m_mainWindow->printBuffer();
 		if( in.atEnd() ) {
 			m_buffer.clear();
 			break;

@@ -991,11 +991,12 @@ bool viCtrlCmd[] =
 };
 bool ViEngine::processKeyPressEvent( QKeyEvent * event )
 {
+	const int key = event->key();
 	const QString text = event->text();
 	//	カーソル移動キー、Home, End, PageUP, PageDown には文字コードは割り振られていないので、
 	//	text は空になる
 	if( !text.isEmpty() ) {
-		if( event->key() == Qt::Key_Delete )	//	Delete キーには文字コードが割り振られている
+		if( key == Qt::Key_Delete )	//	Delete キーには文字コードが割り振られている
 			return false;		
 		ushort code = text[0].unicode();
 		qDebug() << "code = " << code;
@@ -1013,7 +1014,10 @@ bool ViEngine::processKeyPressEvent( QKeyEvent * event )
 		}
 		return doViCommand(text[0]);
 		//return true;
-	} else if( m_redoRecording ) {
+	} else if( m_redoRecording &&
+				(key == Qt::Key_Up || key == Qt::Key_Down ||
+				key == Qt::Key_Left || key == Qt::Key_Right) )
+	{
 		m_redoRecording = false;
 		m_joinPrevEditBlock = false;
 	}
