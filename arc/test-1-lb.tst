@@ -28,6 +28,7 @@
 <{
 <	printf("hello, world.\n");
 <}
+.end
 =1 0
 >main()
 >{

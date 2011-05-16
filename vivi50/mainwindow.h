@@ -47,7 +47,8 @@ public:
 	QStringList findStrings() const;		//{ return m_findStrings; }
 
 public slots:
-    void doOutput(const QString &);
+    void	doOutput(const QString &);
+	void	printBuffer();
 
 protected:
 	bool	eventFilter(QObject *obj, QEvent *event);
@@ -92,7 +93,6 @@ private slots:
 	void	cmdLineCursorPositionChanged(int, int);
 	void	setFocusToCmdLine();
 	void	showMessage(const QString & text);
-	void	printBuffer();
 	void	font();
 	void	doUnitTest();
 	void	onUnitTestDoc(bool);

@@ -205,7 +205,7 @@ protected:
 	void	ensureBlockLayout();
 	void	updateBlocks();
 	void	clearBlocks();
-	void	eraseBlocks(index_t, index_t, size_t);
+	void	eraseBlocks(index_t, index_t /*, size_t*/);
 	void	buildBlocks(ViewBlock, int ht = 0, index_t = 0);
 	//void	reLayoutBlocks(DocBlock, index_t lastPosition, index_t vbIndex);
 	void	reLayoutBlocksUntillDocBlockNumber(DocBlock, index_t lastBlockNumber, index_t vbIndex);

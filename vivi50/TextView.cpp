@@ -1606,7 +1606,7 @@ void TextView::getReLayoutRangeByBlockNumber(
 		++loBlock;
 	} while( loBlock.docBlockNumber() == dbn );		//	次の論理行まで移動
 	lastBlockNumber = loBlock.docBlockNumber();
-	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber(), lastBlockNumber - block.blockNumber());
+	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber() /*, lastBlockNumber - block.blockNumber()*/);
 }
 void TextView::getReLayoutRange(ViewCursor cur,
 								DocBlock &block,		//	再レイアウト開始ブロック
@@ -1626,7 +1626,7 @@ void TextView::getReLayoutRange(ViewCursor cur,
 		++loBlock;
 	} while( loBlock.docBlockNumber() == dbn );		//	次の論理行まで移動
 	lastPosition = loBlock.docPosition();
-	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber(), loBlock.index() - block.index());
+	eraseBlocks(firstViewBlockNumber, loBlock.blockNumber() /*, loBlock.index() - block.index()*/);
 #if 0
 	BlockData lastBlockData = document()->nextBlockData(lastBlock.data());	//	次のブロック
 	lastPosition = lastBlockData.position();
@@ -1732,10 +1732,10 @@ void TextView::clearBlocks()
 	m_layoutedDocBlockCount = 0;
 #endif
 }
-void TextView::eraseBlocks(index_t first, index_t last, size_t delDocBlockCount)
+void TextView::eraseBlocks(index_t first, index_t last /*, size_t delDocBlockCount*/)
 {
 #if LAIDOUT_BLOCKS_MGR
-	m_lbMgr->erase(first, last, delDocBlockCount);
+	m_lbMgr->erase(first, last /*, delDocBlockCount*/);
 #else
 	m_blockSize.erase(first - m_firstUnlayoutedBlockCount, last - m_firstUnlayoutedBlockCount);
 	//m_layoutedDocBlockCount -= last - first;		//	undone D [first, last) はレイアウト済みと仮定

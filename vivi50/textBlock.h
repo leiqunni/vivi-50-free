@@ -219,10 +219,17 @@ public:
 	const LaidoutBlock	*cacheBlock() const { return m_cacheBlock; }
 
 public:
-	void	erase(index_t first, index_t last, size_t delDocBlockCount)
+	void	erase(index_t first, index_t last /*, size_t delDocBlockCount*/)
 	{
+		if( first < m_blockSize.size() ) {
+			last = qMin(m_blockSize.size(), last);
+			m_laidoutDocBlockCount -= last - first;
+			m_blockSize.erase(first, last);
+		}
+#if 0
 		m_laidoutDocBlockCount -= delDocBlockCount;
 		m_blockSize.erase(first, last);
+#endif
 		//size_t sz = m_blockSize.size();
 	}
 #if 0
