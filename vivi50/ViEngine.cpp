@@ -272,6 +272,25 @@ bool ViEngine::doViCommand(const QChar &qch)
 		m_editor->clearMultiCursor();
 		m_editor->clearSelection();
 		document()->closeUndoBlock();
+#ifdef	_DEBUG
+		const ViewCursor cur = m_editor->textCursor();
+		const LaidoutBlock *lb = m_editor->lbMgr()->cacheBlock();
+		QString mess = QString("%1 cur=(p=%2 d.i=%3 d.p=%4 v.i=%5 v.p=%6 x=%7) blockData=(%8 %9) cache=(d.i=%10 d.p=%11 v.i=%12 v.p=%13)\n")
+							.arg(QDir::currentPath())
+							.arg(cur.position())
+							.arg(cur.blockData().index())
+							.arg(cur.blockData().position())
+							.arg(cur.viewBlockData().index())
+							.arg(cur.viewBlockData().position())
+							.arg(cur.x())
+							.arg(document()->cacheBlockData().index())
+							.arg(document()->cacheBlockData().position())
+							.arg(lb->docIndex())
+							.arg(lb->docPosition())
+							.arg(lb->index())
+							.arg(lb->position());
+		doOutput(mess);
+#endif
 	}
 	if( mode() == INSERT || mode() == REPLACE ) {
 		//	done A insModeKeyPressEvent() の部分と処理を共通化する
@@ -1176,6 +1195,36 @@ void ViEngine::doDelete()
 	cur.deleteChar();
 }
 
+//
+//		src に含まれるエスケープ文字列を置換文字列に変換する
+//		undone B 部分一致
+//
+QString replaceEscapeChars(const QString &src)
+{
+	QString dst;
+	for(int ix = 0; ix < src.length(); ++ix) {
+		const ushort ch = src[ix].unicode();
+		if( ch == '\\' && ix + 1 < src.length() ) {
+			switch( src[++ix].unicode() ) {
+			case 't':
+				dst += '\t';
+				break;
+			case 'r':
+				dst += '\r';
+				break;
+			case 'n':
+				dst += '\n';
+				break;
+			case '\\':
+			default:
+				dst += '\\';
+				break;
+			}
+		} else
+			dst += src[ix];
+	}
+	return dst;
+}
 //	置換範囲：[first, last]
 void ViEngine::doSubst(const QString &param, int first, int last)
 {
@@ -1232,6 +1281,7 @@ bool ViEngine::parseSubstCmd(const QString &text,
 				return false;
 		}
 	}
+	after = replaceEscapeChars(after);
 	return true;
 }
 void ViEngine::doFind(const QString &regexpText, bool forward)

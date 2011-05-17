@@ -989,6 +989,7 @@ removeOverlappedCursor	.\TextView.cpp	/^void TextView::removeOverlappedCursor()$
 repeatCount	.\ViEngine.cpp	/^int ViEngine::repeatCount() const$/;"	f	class:ViEngine
 replace	.\TextView.cpp	/^void TextView::replace()$/;"	f	class:TextView
 replaceAct	.\mainwindow.h	/^    QAction *replaceAct;$/;"	m	class:MainWindow
+replaceEscapeChars	.\ViEngine.cpp	/^QString replaceEscapeChars(const QString &src)$/;"	f
 reserve	.\gap_vector.h	/^	void reserve(size_type n)$/;"	f	class:std::gap_vector
 resetCursorBlink	.\TextView.cpp	/^void TextView::resetCursorBlink()$/;"	f	class:TextView
 resetModifiedFlags	.\TextDocument.cpp	/^void GVUndoMgr::resetModifiedFlags()$/;"	f	class:GVUndoMgr

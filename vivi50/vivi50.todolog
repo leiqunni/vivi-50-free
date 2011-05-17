@@ -88,6 +88,8 @@
 # 2011/05/14 22:05:51
 + 2011/05/14 "TextDocument.cpp" B:   undone 行単位の場合は改行チェック
 + 2011/05/14 "TextDocument.cpp" B:   undone マージ可能であれば直前アイテムとマージ
+# 2011/05/17 10:36:16
+- 2011/05/06 "ViEngine.cpp" B:   undone 未コーディング
 # latest
 2011/04/14 "TextDocument.cpp" R:   undone 検索オプションだけのファイル作った方がいいかも
 2011/05/14 "TextDocument.cpp" B:   undone 行単位の場合は改行チェック
@@ -111,7 +113,6 @@
 2011/04/29 "textBlock.cpp" B:   undone チャンクが連続している場合等
 2011/05/12 "ViEngine.cpp" B:   undone 文書の改行コードを挿入
 2011/05/06 "ViEngine.cpp" R:   undone delete の場合と処理を共通化する
-2011/05/06 "ViEngine.cpp" B:   undone 未コーディング
 2011/05/06 "ViEngine.cpp" B:   undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
 2011/05/06 "ViEngine.cpp" C:   undone "[a-z] ヤンクバッファ指定対応
 2011/05/06 "ViEngine.h" C:   undone 行番号関係は独立した構造体にした方がよさげ

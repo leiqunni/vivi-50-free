@@ -704,10 +704,10 @@ void TextView::doPaint()
 		int ix = 0;
 		int EOLOffset = getEOLOffset(text);
 		while( ix < EOLOffset ) {
-			if( text[ix] == ' ' ) {
+			if( text[ix] == ' ' ) {		//	”¼Šp‹ó”’
 				x += spaceWidth;
 				++ix;
-			} else if( text[ix] == '\t' ) {
+			} else if( text[ix] == '\t' ) {		//	Tab ‹L†•\Ž¦
 				painter.setPen(Qt::lightGray);
 				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), ">");
 				++ix;
