@@ -629,6 +629,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_repeatCount = 1;		//	繰り返し回数は削除行数
 			break;
 		case 'R':
+			m_redoCmd = "R";
 			toReplaceMode = true;
 			break;
 		case 0x08:		//	BackSpace
@@ -928,10 +929,21 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_redoRecording = true;
 			m_insertedText.clear();
 			m_editor->setOverwriteMode(true);
+			setMode(REPLACE);
 		} else {
-			//	undone B 未コーディング
+			if( !m_insertedText.isEmpty() ) {
+				//m_editor->setOverwriteMode(true);
+				document()->openUndoBlock();
+				for(int c = repeatCount(); c > 0; --c) {
+					cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, m_insertedText.length());
+					cur.insertText(m_insertedText);
+				}
+				document()->closeUndoBlock();
+				//m_editor->setOverwriteMode(false);
+			}
+			moveCursor(cur, ViMoveOperation::Left);
+			m_editor->setTextCursor(cur);
 		}
-		setMode(REPLACE);
 		m_editor->viewport()->update();		//	画面乱れを無くすため
 	}
 	m_noRepeatCount = false;
