@@ -86,4 +86,5 @@ memFileColumnWd = 320
   "ViEngine.cpp" 873 'R: ' '' undone delete の場合と処理を共通化する
   "ViEngine.cpp" 1089 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
   "ViEngine.cpp" 1192 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 1200 'B: ' '' undone 部分一致
   "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

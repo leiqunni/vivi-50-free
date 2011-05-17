@@ -56,17 +56,26 @@ void GVUndoMgr::resetUndoBlock()
 }
 bool GVUndoMgr::doMergeIfPossible(const GVUndoItem &item)
 {
-	if( m_items.empty() || item.m_type != GVUNDOITEM_TYPE_INSERT )
+	if( m_items.empty() ||
+		(item.m_type != GVUNDOITEM_TYPE_INSERT && item.m_type != GVUNDOITEM_TYPE_REPLACE) )
+	{
 		return false;
+	}
 	GVUndoItem &last = m_items[m_items.size() - 1];
 	//	undone B 行単位の場合は改行チェック
 	uchar uch;
-	if( last.m_type != GVUNDOITEM_TYPE_INSERT || last.m_last != item.m_first ||
+	if( last.m_type != item.m_type ||
+		last.m_last != item.m_first ||
 		(uch = document()->at(last.m_last - 1)) == '\r' || uch == '\n' )
 	{
 		return false;
 	}
 	last.m_last = item.m_last;
+	if( item.m_type == GVUNDOITEM_TYPE_REPLACE ) {
+		last.m_last2 = item.m_last2;
+		//	置換文字列を格納しているヒープは連続しているはずなので、
+		//	ヒープアドレスについては何も処理する必要は無いはず
+	}
 	return true;
 }
 #if 0
