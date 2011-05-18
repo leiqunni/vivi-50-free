@@ -34,7 +34,7 @@
 #pragma comment(lib, "Imm32.lib")
 #endif	//WIN32
 
-#define	VERSION_STR			"5.0.021 Dev"
+#define	VERSION_STR			"5.0.022 Dev"
 
 MainWindow *pMainWindow;
 

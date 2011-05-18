@@ -102,9 +102,9 @@ LayoutThread	.\LayoutThread.h	/^class LayoutThread : public QThread$/;"	c
 Left	.\textCursor.h	/^		Left,$/;"	e	enum:DocCursor::__anon2
 MAINWINDOW_H	.\mainwindow.h	24;"	d
 MARGIN_LEFT	.\TextView.cpp	61;"	d	file:
-MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
 MainWindow	.\mainwindow.cpp	/^MainWindow::MainWindow(const QString &fileName, QWidget *parent, Qt::WFlags flags)$/;"	f	class:MainWindow
+MainWindow	.\mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
 MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^    class MainWindowClass: public Ui_MainWindowClass {};$/;"	c	namespace:Ui
 MatchCase	.\findOpt.h	/^	MatchCase = 0x01,$/;"	e	enum:__anon4
 MaxRecentFiles	.\mainwindow.h	/^    enum { MaxRecentFiles = 10 };$/;"	e	enum:MainWindow::__anon1
@@ -354,8 +354,8 @@ doFindNext	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNe
 doFindNext	.\GeneratedFiles\Release\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg
 doFindNext	.\GeneratedFiles\Release\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:ReplaceDlg
 doJoin	.\ViEngine.cpp	/^void ViEngine::doJoin(int n)$/;"	f	class:ViEngine
-doJump	.\TextView.cpp	/^void TextView::doJump(int lineNum)$/;"	f	class:TextView
 doJump	.\mainwindow.cpp	/^void MainWindow::doJump(int lineNum)$/;"	f	class:MainWindow
+doJump	.\TextView.cpp	/^void TextView::doJump(int lineNum)$/;"	f	class:TextView
 doMergeIfPossible	.\TextDocument.cpp	/^bool GVUndoMgr::doMergeIfPossible(const GVUndoItem &item)$/;"	f	class:GVUndoMgr
 doOpenLine	.\TextView.cpp	/^void TextView::doOpenLine(bool next)$/;"	f	class:TextView
 doOutput	.\mainwindow.cpp	/^void MainWindow::doOutput(const QString &text)$/;"	f	class:MainWindow
@@ -441,9 +441,9 @@ erase	.\gap_vector.h	/^	void erase(index_type first, index_type last)$/;"	f	clas
 erase	.\gap_vector.h	/^	void erase(index_type ix)$/;"	f	class:std::gap_vector
 eraseBlocks	.\TextView.cpp	/^void TextView::eraseBlocks(index_t first, index_t last \/*, size_t delDocBlockCount*\/)$/;"	f	class:TextView
 event	.\TextView.cpp	/^bool TextView::event ( QEvent * event )$/;"	f	class:TextView
+eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
 eventFilter	.\ViEngine.cpp	/^bool ViEngine::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:ViEngine
 eventFilter	.\TextView.cpp	/^bool TextView::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:TextView
-eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
 exCommands	.\ViEngine.h	/^	const QStringList &exCommands() const { return m_exCommands; }$/;"	f	class:ViEngine
 expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector
 fileMenu	.\mainwindow.h	/^    QMenu	*fileMenu;$/;"	m	class:MainWindow
@@ -554,8 +554,8 @@ index_t	.\textBlock.h	/^typedef size_t index_t;$/;"	t
 index_t	.\textCursor.h	/^typedef size_t index_t;$/;"	t
 index_t	.\gap_vector.h	/^typedef size_t index_t;$/;"	t
 index_type	.\gap_vector.h	/^	typedef uint index_type;			\/\/	バッファインデックス [0, size()]$/;"	t	class:std::gap_vector
-init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
 init	.\mainwindow.cpp	/^void MainWindow::init()$/;"	f	class:MainWindow
+init	.\TextDocument.cpp	/^void TextDocument::init()$/;"	f	class:TextDocument
 inputMethodEvent	.\TextView.cpp	/^void TextView::inputMethodEvent ( QInputMethodEvent * event )$/;"	f	class:TextView
 inputMethodQuery	.\TextView.cpp	/^QVariant TextView::inputMethodQuery ( Qt::InputMethodQuery query ) const$/;"	f	class:TextView
 insert	.\TextDocument.cpp	/^void TextDocument::insert(index_t ix, BlockData d,$/;"	f	class:TextDocument
@@ -857,8 +857,8 @@ onFindNext	.\ReplaceDlg.cpp	/^void ReplaceDlg::onFindNext()$/;"	f	class:ReplaceD
 onFindPrev	.\FindDlg.cpp	/^void FindDlg::onFindPrev()$/;"	f	class:FindDlg
 onFindPrev	.\ReplaceDlg.cpp	/^void ReplaceDlg::onFindPrev()$/;"	f	class:ReplaceDlg
 onFontChanged	.\TextView.cpp	/^void TextView::onFontChanged()$/;"	f	class:TextView
-onImeOpenStatusChanged	.\ViEngine.cpp	/^void ViEngine::onImeOpenStatusChanged()$/;"	f	class:ViEngine
 onImeOpenStatusChanged	.\mainwindow.cpp	/^void MainWindow::onImeOpenStatusChanged()$/;"	f	class:MainWindow
+onImeOpenStatusChanged	.\ViEngine.cpp	/^void ViEngine::onImeOpenStatusChanged()$/;"	f	class:ViEngine
 onLineBreak	.\TextView.cpp	/^void TextView::onLineBreak(bool b)$/;"	f	class:TextView
 onModeChanged	.\mainwindow.cpp	/^void MainWindow::onModeChanged(Mode mode, ushort subMode)$/;"	f	class:MainWindow
 onRedo	.\ReplaceDlg.h	/^	void	onRedo() { doRedo(); }$/;"	f	class:ReplaceDlg
@@ -1064,8 +1064,8 @@ std	.\gap_vector.h	/^namespace std {$/;"	n
 strippedName	.\mainwindow.cpp	/^QString MainWindow::strippedName(const QString &fullFileName)$/;"	f	class:MainWindow
 swapPositionAnchor	.\textCursor.cpp	/^void DocCursor::swapPositionAnchor()$/;"	f	class:DocCursor
 swapPositionAnchor	.\textCursor.cpp	/^void ViewCursor::swapPositionAnchor()$/;"	f	class:ViewCursor
-testViCommands	.\TestViCommands.cpp	/^void testViCommands(MainWindow *mainWindow, ViEngine *viEngine, const QString &fileName)$/;"	f
 testViCommands	.\mainwindow.cpp	/^void MainWindow::testViCommands(QString fileName)$/;"	f	class:MainWindow
+testViCommands	.\TestViCommands.cpp	/^void testViCommands(MainWindow *mainWindow, ViEngine *viEngine, const QString &fileName)$/;"	f
 testViCommands	.\TestViCommands.cpp	/^void testViCommands(MainWindow *mainWindow, ViEngine *viEngine, const QString &fileName)$/;"	f
 test_LaidoutBlock	.\mainwindowTest.cpp	/^void test_LaidoutBlock()$/;"	f
 test_LaidoutBlocksMgr	.\mainwindowTest.cpp	/^void test_LaidoutBlocksMgr()$/;"	f
