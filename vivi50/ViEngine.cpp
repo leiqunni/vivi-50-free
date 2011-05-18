@@ -272,7 +272,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		m_editor->clearMultiCursor();
 		m_editor->clearSelection();
 		document()->closeUndoBlock();
-#ifdef	_DEBUG
+#if	0	//def	_DEBUG
 		const ViewCursor cur = m_editor->textCursor();
 		const LaidoutBlock *lb = m_editor->lbMgr()->cacheBlock();
 		QString mess = QString("%1 cur=(p=%2 d.i=%3 d.p=%4 v.i=%5 v.p=%6 x=%7) blockData=(%8 %9) cache=(d.i=%10 d.p=%11 v.i=%12 v.p=%13)\n")
@@ -327,6 +327,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_joinPrevEditBlock = false;
 			m_redoRecording = false;
 			m_insCount = 0;
+			document()->setDoNotMergeUndoItem();
 			setMode(CMD);
 		} else {
 			if( ch == 0x08 ) {		//	BackSpace

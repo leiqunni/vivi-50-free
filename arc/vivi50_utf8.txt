@@ -1,0 +1,16 @@
+                         ViVi version 5.0.021
+                             15-May-2011
+                    Copyright (C) 2011 by N.Tsuda
+                  mailto: ntsuda@master.email.ne.jp
+                  http://http://twitter.com/vivisuke
+                       http://vivi.dyndns.org/
+
+
+■ What is ViVi 5.0 Free
+
+ViVi is a Text Editor, which supports vi commands, for Windows/Mac/Linux.
+
+Although It's key bindings are basicaly compatible with the (n)vi,
+Windows key bingings have a first priority, e.g. Ctrl + V...
+
+

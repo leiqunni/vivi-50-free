@@ -54,6 +54,12 @@ void GVUndoMgr::resetUndoBlock()
 	if( !m_toSetBlockFlag && !m_items.empty() )
 		m_items[m_items.size() - 1].m_flags ^= GVUNDOITEM_BLOCK;
 }
+void GVUndoMgr::setDoNotMerge()
+{
+	if( m_items.empty() || !m_current )
+		return;
+	m_items[m_current - 1].m_flags |= GVUNDOITEM_DO_NOT_MERGE;
+}
 bool GVUndoMgr::doMergeIfPossible(const GVUndoItem &item)
 {
 	if( m_items.empty() ||
@@ -62,9 +68,12 @@ bool GVUndoMgr::doMergeIfPossible(const GVUndoItem &item)
 		return false;
 	}
 	GVUndoItem &last = m_items[m_items.size() - 1];
+	if( (last.m_flags & GVUNDOITEM_DO_NOT_MERGE) != 0 )
+		return false;
 	//	undone B 行単位の場合は改行チェック
 	uchar uch;
-	if( last.m_type != item.m_type ||
+	//	置換に挿入が続く場合もマージ
+	if( last.m_type != item.m_type && item.m_type != GVUNDOITEM_TYPE_INSERT ||
 		last.m_last != item.m_first ||
 		(uch = document()->at(last.m_last - 1)) == '\r' || uch == '\n' )
 	{
@@ -169,14 +178,14 @@ bool GVUndoMgr::doUndo(/*TextDocument *bb,*/ index_t& pos, index_t& anchor)
 			break;
 		case GVUNDOITEM_TYPE_REPLACE: {
 			if( ptr->m_rhp_ix == 0 )
-				ptr->m_rhp_ix = addToRedoHeap(document()->begin() + ptr->m_first, document()->begin() + ptr->m_last2);
-			document()->erase(ptr->m_first, ptr->m_last2);
+				ptr->m_rhp_ix = addToRedoHeap(document()->begin() + ptr->m_first, document()->begin() + ptr->m_last);
+			document()->erase(ptr->m_first, ptr->m_last);
 			cuchar *heap = &m_heap[ptr->m_hp_ix];
-			document()->insert(ptr->m_first, heap, heap + ptr->data_size());
+			document()->insert(ptr->m_first, heap, heap + ptr->data_size2());
 			if( (ptr->m_flags & GVUNDOITEM_CUR_TAIL) != 0 )
-				pos = (anchor = ptr->m_first) + ptr->data_size();
+				pos = (anchor = ptr->m_first) + ptr->data_size2();
 			else
-				anchor = (pos = ptr->m_first) + ptr->data_size();
+				anchor = (pos = ptr->m_first) + ptr->data_size2();
 			//pos = ptr->m_first + ptr->data_size();
 			break;
 		}
@@ -209,10 +218,10 @@ bool GVUndoMgr::doRedo(/*TextDocument *bb,*/ index_t& pos, index_t& anchor)
 			break;
 		}
 		case GVUNDOITEM_TYPE_REPLACE: {
-			document()->erase(ptr->m_first, ptr->m_last);
+			document()->erase(ptr->m_first, ptr->m_last2);
 			cuchar *heap = &m_redoHeap[ptr->m_rhp_ix];
-			document()->insert(ptr->m_first, heap, heap + ptr->data_size2());
-			pos = (anchor = ptr->m_first) + ptr->data_size2();
+			document()->insert(ptr->m_first, heap, heap + ptr->data_size());
+			pos = (anchor = ptr->m_first) + ptr->data_size();
 			break;
 		}
 		}
@@ -703,7 +712,7 @@ int TextDocument::insertText(DocCursor &cur, const QString &text,
 		erase(first, cur.blockData(), last);
 		m_buffer.insert(first, ptr, ptr + sz);
 		updateBlocksAtInsert(first, cur.blockData(), sz);
-		m_undoMgr->push_back(GVUndoItem(GVUNDOITEM_TYPE_REPLACE, first, last, hp_ix, first + sz),
+		m_undoMgr->push_back(GVUndoItem(GVUNDOITEM_TYPE_REPLACE, first, first + sz, hp_ix, last),
 							isModified());
 		delSz = last - first;
 	}
@@ -767,7 +776,7 @@ void TextDocument::do_replace(index_t first, index_t last, const QString &text)
 	m_buffer.insert(first, ptr, ptr + sz);
 	updateBlocksAtInsert(first, d, sz);
 #if 1
-	m_undoMgr->push_back(GVUndoItem(GVUNDOITEM_TYPE_REPLACE, first, last, hp_ix, first + sz),
+	m_undoMgr->push_back(GVUndoItem(GVUNDOITEM_TYPE_REPLACE, first, first + sz, hp_ix, last),
 						isModified());
 #else
 	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_REPLACE,
@@ -787,6 +796,10 @@ void TextDocument::doRedo(index_t &pos, index_t &anchor)
 	if( !m_undoMgr->canRedo() ) return;
 	setModified(m_undoMgr->doRedo(/*this,*/ pos, anchor));
 	emit contentsChanged();
+}
+void TextDocument::setDoNotMergeUndoItem()
+{
+	m_undoMgr->setDoNotMerge();
 }
 
 //	単純線形検索アルゴリズム

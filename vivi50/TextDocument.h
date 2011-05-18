@@ -78,12 +78,13 @@ enum {
 enum {
 	GVUNDOITEM_UNDO_MF_OFF = 0x0001,	//	Undo でモディファイフラグがＯＮからＯＦＦに
 	GVUNDOITEM_REDO_MF_OFF = 0x0002,	//	Redo でモディファイフラグがＯＮからＯＦＦに
-	GVUNDOITEM_MADELINE = 0x0004,
+	GVUNDOITEM_DO_NOT_MERGE = 0x0004,	//	マージ不可
+	//GVUNDOITEM_MADELINE = 0x0004,
 	GVUNDOITEM_CUR_TAIL = 0x0008,		//	削除の時、カーソルが最後にあった
 	GVUNDOITEM_SHIFT_LEFT = 0x0010,
 	GVUNDOITEM_SHIFT_RIGHT = 0x0000,
-	GVUNDOITEM_CONCAT_LINE = 0x0020,	//	挿入文字列連結可能
-	GVUNDOITEM_CONCAT_ALL = 0x0040,		//	挿入文字列連結可能
+	//GVUNDOITEM_CONCAT_LINE = 0x0020,	//	挿入文字列連結可能
+	//GVUNDOITEM_CONCAT_ALL = 0x0040,		//	挿入文字列連結可能
 	GVUNDOITEM_DELETE = 0x0080,			//	or BackSpace
 	GVUNDOITEM_MARK_POS = 0x0100,		//	CUndoItemMarkPos かどうか
 	GVUNDOITEM_BLOCK = 0x0200,			//	CUndoItemBlock かどうか
@@ -92,7 +93,7 @@ enum {
 	GVUNDOITEM_REPTEXT = 0x1000,		//	文字列の置換を行った
 	GVUNDOITEM_TRANSLATE = 0x2000,		//	コード変換の場合
 	GVUNDOITEM_REDRAW = 0x4000,			//	:m の場合の様に強制的にリドローする
-	GVUNDOITEM_INSTEXT = 0x8000,		//	文字列の挿入を行った
+	//GVUNDOITEM_INSTEXT = 0x8000,		//	文字列の挿入を行った
 };
 
 enum {
@@ -110,8 +111,8 @@ public:
 	bool	m_beforeSave:1;		//	保存前の undo/redo item
 	short	m_flags;
 	index_t	m_first;
-	index_t	m_last;				//	挿入・削除・置換前範囲
-	index_t	m_last2;			//	置換後の範囲
+	index_t	m_last;				//	挿入・削除・置換後範囲
+	index_t	m_last2;			//	置換前の範囲
 	index_t	m_hp_ix;
 	index_t	m_rhp_ix;			//	redo 用ヒープインデックス
 	//size_t	m_hpSize;			//	ヒープに格納されているデータサイズ（バイト数）
@@ -188,6 +189,7 @@ public:
 	//void	push_back(GVUndoItem *ptr, bool = false);
 	void	push_back(const GVUndoItem &, bool = false);
 	bool	doMergeIfPossible(const GVUndoItem &);
+	void	setDoNotMerge();		//	マージ不可フラグON
 
 	//	データをヒープに追加
 	template<typename InputIterator>
@@ -366,6 +368,7 @@ public:
 
 	void	doUndo(index_t &pos, index_t &); //{ m_undoMgr.doUndo(this, pos); }
 	void	doRedo(index_t &pos, index_t &); //{ m_undoMgr.doRedo(this, pos); }
+	void	setDoNotMergeUndoItem();
 
 	DocCursor	find(const QString &, index_t = 0, ushort=0);
 	DocCursor	find(const QString &, const DocCursor &, ushort=0);

@@ -10,37 +10,37 @@ extList = cpp,h
 todoKeyWord = todo,undone
 memFileColumnWd = 320
 [symbols]
-#define HIST_LIMIT 30
 #define SIMPLE_LAIDOUT_BLOCKS 1
+#define HIST_LIMIT 30
 #define MARGIN_LEFT 4
 #define INVALID_INDEX 0
-#define PTR_ALLOCATOR 0
 #define TEXT_CURSOR_BLOCK 1
+#define PTR_ALLOCATOR 0
 #define BLOCK_HAS_OFFSET 0
 #define LAIDOUT_BLOCKS_MGR 1
-#define USE_EVENT_FILTER 1
-#define LAZY_LAIDOUT 0
 #define LINE_HEIGHT 20
-#define GV_USE_ITR_FACADE 1
+#define LAZY_LAIDOUT 0
+#define USE_EVENT_FILTER 1
 #define BLOCK_HAS_SIZE 1
+#define GV_USE_ITR_FACADE 1
 [globalMarks]
 [files]
   gap_vector.h	(-84.078,377.793)
   main.cpp	(-105.304,-403.84)
   mainwindow.cpp	(-113.265,-203.142)
   mainwindow.h	(-113.265,-236.142)
-  TextDocument.cpp	(-152.875,66.766)
-  TextDocument.h	(-152.875,33.766)
+* TextDocument.cpp	(-152.875,66.766)
+* TextDocument.h	(-152.875,33.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(17.7821,-394.336)
   mainwindowBench.cpp	(-113.265,-170.142)
   unit_test.cpp	(-353.896,-154.746)
   unit_test.h	(-353.896,-187.746)
-  mainwindowTest.cpp	(-113.265,-137.142)
+* mainwindowTest.cpp	(-113.265,-137.142)
   charEncoding.cpp	(138.416,-135.123)
   charEncoding.h	(138.416,-168.123)
   textCursor.cpp	(-335.316,-33.0248)
   textCursor.h	(-335.316,-66.0248)
-* TextView.cpp	(44.6123,-31.8647)
+  TextView.cpp	(44.6123,-31.8647)
   TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
   FindDlg.h	(49.637,166.277)
@@ -57,17 +57,17 @@ memFileColumnWd = 320
   vi.h	(373,-83)
   viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
-  TestViCommands.cpp	(127,-243)
+* TestViCommands.cpp	(127,-243)
   TestViCommands.h	(127,-276)
   WinApplication.cpp	(-309,-303)
   WinApplication.h	(-309,-336)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
-  "TextDocument.cpp" 62 'B: ' '' undone 行単位の場合は改行チェック
-  "TextDocument.cpp" 89 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 92 'B: ' '' undone マージ可能であれば直前アイテムとマージ
-  "TextDocument.cpp" 108 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 872 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
+  "TextDocument.cpp" 71 'B: ' '' undone 行単位の場合は改行チェック
+  "TextDocument.cpp" 105 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 108 'B: ' '' undone マージ可能であれば直前アイテムとマージ
+  "TextDocument.cpp" 124 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 892 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 626 'B: ' '' undone 暫定コード
   "textCursor.cpp" 637 'B: ' '' undone 暫定コード
   "TextView.cpp" 730 'B: ' '' undone 矢印表示に変更する
@@ -82,9 +82,9 @@ memFileColumnWd = 320
   "TextView.cpp" 1852 'B: ' '' undone 垂直スクロールバー位置更新
   "TextView.cpp" 1877 'B: ' '' undone 未コーディング
   "textBlock.cpp" 588 'B: ' '' undone チャンクが連続している場合等
-  "ViEngine.cpp" 354 'B: ' '' undone 文書の改行コードを挿入
-  "ViEngine.cpp" 873 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 1089 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1192 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
-  "ViEngine.cpp" 1200 'B: ' '' undone 部分一致
+  "ViEngine.cpp" 355 'B: ' '' undone 文書の改行コードを挿入
+  "ViEngine.cpp" 874 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 1090 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1193 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 1201 'B: ' '' undone 部分一致
   "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ
