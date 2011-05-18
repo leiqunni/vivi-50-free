@@ -27,8 +27,8 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-84.078,377.793)
   main.cpp	(-105.304,-403.84)
-  mainwindow.cpp	(-113.265,-203.142)
-  mainwindow.h	(-113.265,-236.142)
+* mainwindow.cpp	(-113.265,-203.142)
+* mainwindow.h	(-113.265,-236.142)
 * TextDocument.cpp	(-152.875,66.766)
 * TextDocument.h	(-152.875,33.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(17.7821,-394.336)
@@ -53,7 +53,7 @@ memFileColumnWd = 320
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
 * ViEngine.cpp	(219,-29)
-  ViEngine.h	(219,-62)
+* ViEngine.h	(219,-62)
   vi.h	(373,-83)
   viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
@@ -63,11 +63,11 @@ memFileColumnWd = 320
   WinApplication.h	(-309,-336)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
-  "TextDocument.cpp" 71 'B: ' '' undone 行単位の場合は改行チェック
-  "TextDocument.cpp" 105 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 108 'B: ' '' undone マージ可能であれば直前アイテムとマージ
-  "TextDocument.cpp" 124 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 892 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
+  "TextDocument.cpp" 73 'B: ' '' undone 行単位の場合は改行チェック
+  "TextDocument.cpp" 107 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 110 'B: ' '' undone マージ可能であれば直前アイテムとマージ
+  "TextDocument.cpp" 126 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 894 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 626 'B: ' '' undone 暫定コード
   "textCursor.cpp" 637 'B: ' '' undone 暫定コード
   "TextView.cpp" 730 'B: ' '' undone 矢印表示に変更する
@@ -85,6 +85,6 @@ memFileColumnWd = 320
   "ViEngine.cpp" 355 'B: ' '' undone 文書の改行コードを挿入
   "ViEngine.cpp" 874 'R: ' '' undone delete の場合と処理を共通化する
   "ViEngine.cpp" 1090 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1193 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
-  "ViEngine.cpp" 1201 'B: ' '' undone 部分一致
-  "ViEngine.h" 138 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ
+  "ViEngine.cpp" 1196 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 1204 'B: ' '' undone 部分一致
+  "ViEngine.h" 139 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

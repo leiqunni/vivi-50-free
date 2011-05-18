@@ -196,12 +196,18 @@ ViewBlock &ViewBlock::operator=(const DocBlock &docBlock)
 ViewBlock &ViewBlock::operator++()
 {
 #if LAIDOUT_BLOCKS_MGR
-	LaidoutBlock lb = view()->lbMgr()->findBlockByNumber(m_viewBlock.m_index);
-	++lb;
-	m_viewBlock.m_index = lb.blockNumber();
-	m_viewBlock.m_position = lb.position();
-	m_data.m_index = lb.docBlockNumber();
-	m_data.m_position = lb.docPosition();
+	if( !view()->lineBreakMode() ) {
+		DocBlock::operator++();
+		m_viewBlock.m_index = docBlockNumber();
+		m_viewBlock.m_position = position();
+	} else {
+		LaidoutBlock lb = view()->lbMgr()->findBlockByNumber(m_viewBlock.m_index);
+		++lb;
+		m_viewBlock.m_index = lb.blockNumber();
+		m_viewBlock.m_position = lb.position();
+		m_data.m_index = lb.docBlockNumber();
+		m_data.m_position = lb.docPosition();
+	}
 #else
 	const index_t dbIndex = DocBlock::index();
 	if( dbIndex >= m_view->firstUnlayoutedBlockCount() &&

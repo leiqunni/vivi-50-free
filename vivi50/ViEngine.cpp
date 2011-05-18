@@ -32,7 +32,7 @@ int getEOLOffset(const QString text);
 
 #if 1
 ViEngine::ViEngine(QObject *parent)
-	: m_noInsModeAtImeOpenStatus(false), m_mode(CMD), m_editor(0)
+	: m_noInsModeAtImeOpenStatus(false), m_mode(CMD), m_view(0)
 	, m_redoRecording(false), m_redoing(false), m_redoRepeatCount(0)
 	, m_noRepeatCount(false), m_joinPrevEditBlock(false)
 	, m_moveByLine(false)
@@ -53,9 +53,9 @@ TextDocument *ViEngine::document()
 }
 void ViEngine::setEditor(TextView *editor)
 {
-	m_editor = editor;
+	m_view = editor;
 #if USE_EVENT_FILTER
-	m_editor->installEventFilter(this);
+	m_view->installEventFilter(this);
 #endif
 }
 void ViEngine::setMode(Mode mode, ushort subMode)
@@ -67,13 +67,13 @@ void ViEngine::setMode(Mode mode, ushort subMode)
 		emit modeChanged(mode, subMode);
 		m_noInsModeAtImeOpenStatus = false;
 		if( fromCMDLINE )
-			m_editor->setFocus();
+			m_view->setFocus();
 	}
 }
 #if 1
 bool ViEngine::eventFilter(QObject *obj, QEvent *event)
 {
-	if( obj == m_editor ) {
+	if( obj == m_view ) {
 		if( event->type() == QEvent::KeyPress ) {
 			return processKeyPressEvent(static_cast<QKeyEvent *>(event));
 #if 0
@@ -107,7 +107,7 @@ bool ViEngine::processKeyPressEvent( QKeyEvent * event )
 void ViEngine::printCursorPosition()
 {
 	QString mess;
-	ViewCursor cur = m_editor->textCursor();
+	ViewCursor cur = m_view->textCursor();
 	ViewBlock block = cur.block();
 	if( block.isValid() ) {
 		mess = QString(tr("pos = %1 block.length() = %2 textLen = %3"))
@@ -121,7 +121,7 @@ void ViEngine::printCursorPosition()
 //	前行末尾に空白類が無い場合のみ、半角空白を挿入
 void ViEngine::doJoin(int n)
 {
-	ViewCursor cur = m_editor->textCursor();
+	ViewCursor cur = m_view->textCursor();
 	int pos = cur.position();
 	document()->openUndoBlock();
 	//cur.beginEditBlock();
@@ -146,7 +146,7 @@ void ViEngine::doJoin(int n)
 	document()->closeUndoBlock();
 	//cur.endEditBlock();
 	//cur.setPosition(pos);	//	最後の空白位置に移動
-	//m_editor->textCursor().setPosition(cur.position());
+	//m_view->textCursor().setPosition(cur.position());
 }
 bool ViEngine::doShiftRight(ViewCursor &cur, int n)
 {
@@ -162,10 +162,10 @@ bool ViEngine::doShiftRight(ViewCursor &cur, int n)
 	} while( block.isValid() );
 	cur.setPosition(pos);
 	cur.movePosition(ViMoveOperation::FirstNonBlankChar);
-	m_editor->setTextCursor(cur);
+	m_view->setTextCursor(cur);
 	document()->closeUndoBlock();
 	//cur.endEditBlock();
-	m_editor->viewport()->update();
+	m_view->viewport()->update();
 	return true;
 }
 bool ViEngine::doShiftLeft(ViewCursor &cur, int n)
@@ -193,10 +193,10 @@ bool ViEngine::doShiftLeft(ViewCursor &cur, int n)
 	} while( block.isValid() );
 	cur.setPosition(pos);
 	cur.movePosition(ViMoveOperation::FirstNonBlankChar);
-	m_editor->setTextCursor(cur);
+	m_view->setTextCursor(cur);
 	document()->closeUndoBlock();
 	//cur.endEditBlock();
-	m_editor->viewport()->update();
+	m_view->viewport()->update();
 	return true;
 }
 
@@ -256,25 +256,25 @@ bool ViEngine::doViCommand(const QChar &qch)
 		break;
 	}
 	if( op != 0 ) {
-		m_editor->doVertScroll(op);
+		m_view->doVertScroll(op);
 		return true;
 	}
 	std::vector<ViewCursor*> v;			//	メインカーソルも含めたカーソル一覧（昇順ソート済み）
-	m_editor->getAllCursor(v);
-	if( qch == '\t' && m_editor->hasMultiCursor() && hasSelection(v) ) {
+	m_view->getAllCursor(v);
+	if( qch == '\t' && m_view->hasMultiCursor() && hasSelection(v) ) {
 		//	選択領域がある場合はローテイト
 		document()->openUndoBlock();
-		m_editor->rotateSelectedText(v);
+		m_view->rotateSelectedText(v);
 		document()->closeUndoBlock();
 		return true;
 	}
 	if( qch.unicode() == 0x1b ) {	//	Esc
-		m_editor->clearMultiCursor();
-		m_editor->clearSelection();
+		m_view->clearMultiCursor();
+		m_view->clearSelection();
 		document()->closeUndoBlock();
 #if	0	//def	_DEBUG
-		const ViewCursor cur = m_editor->textCursor();
-		const LaidoutBlock *lb = m_editor->lbMgr()->cacheBlock();
+		const ViewCursor cur = m_view->textCursor();
+		const LaidoutBlock *lb = m_view->lbMgr()->cacheBlock();
 		QString mess = QString("%1 cur=(p=%2 d.i=%3 d.p=%4 v.i=%5 v.p=%6 x=%7) blockData=(%8 %9) cache=(d.i=%10 d.p=%11 v.i=%12 v.p=%13)\n")
 							.arg(QDir::currentPath())
 							.arg(cur.position())
@@ -295,7 +295,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 	if( mode() == INSERT || mode() == REPLACE ) {
 		//	done A insModeKeyPressEvent() の部分と処理を共通化する
 		if( qch.unicode() == 0x1b ) {	//	Esc
-			ViewCursor cur = m_editor->textCursor();
+			ViewCursor cur = m_view->textCursor();
 			if( m_redoRecording ) {
 				//	挿入中にカーソル移動していない＆繰り返し回数指定がある場合は、残り回数分の文字挿入
 #if 1
@@ -322,8 +322,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 #endif
 			}
 			moveCursor(cur, ViMoveOperation::Left);
-			m_editor->setTextCursor(cur);
-			m_editor->setOverwriteMode(false);
+			m_view->setTextCursor(cur);
+			m_view->setOverwriteMode(false);
 			m_joinPrevEditBlock = false;
 			m_redoRecording = false;
 			m_insCount = 0;
@@ -339,7 +339,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 				m_joinPrevEditBlock = false;
 			} else
 				m_insertedText += qch;
-			ViewCursor cur = m_editor->textCursor();
+			ViewCursor cur = m_view->textCursor();
 			if( mode() == REPLACE && !cur.atBlockEnd() )
 				cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor);
 #if 0
@@ -357,7 +357,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 				} else
 					cur.insertText(qch);
 			//}
-			m_editor->setTextCursor(cur);
+			m_view->setTextCursor(cur);
 		}
 		return true;
 	}
@@ -379,8 +379,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 		}
 	}
 	//bool rc = true;
-	ViewCursor cur = m_editor->textCursor();
-	///ViewCursor cur = m_editor->viCursor();
+	ViewCursor cur = m_view->textCursor();
+	///ViewCursor cur = m_view->viCursor();
 	ViewBlock block = cur.block();
 	bool toUpdateRedoCmd = false;
 	bool cursorMoved = false;
@@ -449,23 +449,23 @@ bool ViEngine::doViCommand(const QChar &qch)
 			break;
 		case 'z':
 			if( ch == '\r' || ch == '\n' ) {
-				cur = m_editor->textCursor();
-				m_editor->doVertScroll(ViScrollOperation::Set, cur.blockNumber());
+				cur = m_view->textCursor();
+				m_view->doVertScroll(ViScrollOperation::Set, cur.blockNumber());
 			}
 			break;
 		case 'Z':
 			if( ch == 'Z' ) {
 				emit save(QString());
-				emit closeView(m_editor);
+				emit closeView(m_view);
 			}
 			break;
 		}
 	} else if( m_cdyCmd != 0 && m_cdyCmd == ch ) {
 		switch( ch ) {
 		case 'c':		//	cc
-			m_editor->doDelete(cur.block().position(), nLinesPosition(cur, repeatCount()));
-			m_editor->doOpenLine(/*next = */false);
-			cur = m_editor->textCursor();
+			m_view->doDelete(cur.block().position(), nLinesPosition(cur, repeatCount()));
+			m_view->doOpenLine(/*next = */false);
+			cur = m_view->textCursor();
 			toInsertMode = true;
 			toUpdateRedoCmd = true;
 			m_repeatCount = 1;		//	繰り返し回数は削除行数
@@ -562,17 +562,17 @@ bool ViEngine::doViCommand(const QChar &qch)
 			break;
 		case 'H': 
 			cursorMoved = moveCursor(cur, ViMoveOperation::TopOfView, repeatCount(),
-										cdy, m_editor->firstVisibleBlockPtr());
+										cdy, m_view->firstVisibleBlockPtr());
 			m_moveByLine = true;
 			break;
 		case 'L': 
 			cursorMoved = moveCursor(cur, ViMoveOperation::BottomOfView, repeatCount(),
-										cdy, m_editor->lastVisibleBlockPtr());
+										cdy, m_view->lastVisibleBlockPtr());
 			m_moveByLine = true;
 			break;
 		case 'M': {
-			const int n = (m_editor->firstVisibleBlockPtr()->blockNumber() + 
-							m_editor->lastVisibleBlockPtr()->blockNumber()) / 2 + 1;
+			const int n = (m_view->firstVisibleBlockPtr()->blockNumber() + 
+							m_view->lastVisibleBlockPtr()->blockNumber()) / 2 + 1;
 			cursorMoved = cur.movePosition(ViMoveOperation::JumpLine, DocCursor::MoveAnchor, n);
 			m_moveByLine = true;
 			break;
@@ -611,8 +611,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case 'O':
 			//cur.beginEditBlock();
 			m_joinPrevEditBlock = true;
-			m_editor->doOpenLine(/*next=*/ch == 'o');
-			cur = m_editor->textCursor();
+			m_view->doOpenLine(/*next=*/ch == 'o');
+			cur = m_view->textCursor();
 			//cur.endEditBlock();
 			toInsertMode = true;
 			break;
@@ -620,11 +620,11 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case 'o':
 			//	done C 同時にundo可能にする
 			cur.beginEditBlock();
-			//m_editor->setTextCursor(cur);
+			//m_view->setTextCursor(cur);
 			m_joinPrevEditBlock = true;
-			m_editor->doOpenLine();
-			//m_editor->viewport()->update();
-			cur = m_editor->textCursor();
+			m_view->doOpenLine();
+			//m_view->viewport()->update();
+			cur = m_view->textCursor();
 			cur.endEditBlock();
 			toInsertMode = true;
 			break;
@@ -632,8 +632,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 			//	done C 同時にundo可能にする
 			cur.beginEditBlock();
 			m_joinPrevEditBlock = true;
-			m_editor->doOpenLine(/*next = */false);
-			cur = m_editor->textCursor();
+			m_view->doOpenLine(/*next = */false);
+			cur = m_view->textCursor();
 			cur.endEditBlock();
 			toInsertMode = true;
 			break;
@@ -641,9 +641,9 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case 'S':
 			//	done C 同時にundo可能にする
 			document()->openUndoBlock();
-			m_editor->doDelete(cur.block().position(), nLinesPosition(cur, repeatCount()));
-			m_editor->doOpenLine(/*next = */false);
-			cur = m_editor->textCursor();
+			m_view->doDelete(cur.block().position(), nLinesPosition(cur, repeatCount()));
+			m_view->doOpenLine(/*next = */false);
+			cur = m_view->textCursor();
 			toInsertMode = true;
 			toUpdateRedoCmd = true;
 			m_repeatCount = 1;		//	繰り返し回数は削除行数
@@ -769,7 +769,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			toMovePos = cur.position();
 			cur.insertText(yankText());
 			cur.setPosition(toMovePos);
-			m_editor->setTextCursor(cur);
+			m_view->setTextCursor(cur);
 			break;
 		case 'P':		//	カーソル位置・行直前にペースト
 			if( m_yankBuffer.isEmpty() ) break;
@@ -778,7 +778,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 			toMovePos = cur.position();
 			cur.insertText(yankText());
 			cur.setPosition(toMovePos);
-			m_editor->setTextCursor(cur);
+			m_view->setTextCursor(cur);
 			break;
 		case '~':		//	英大文字小文字置換
 			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, repeatCount());
@@ -794,10 +794,10 @@ bool ViEngine::doViCommand(const QChar &qch)
 			}
 			break;
 		case 'u':
-			m_editor->doUndo(repeatCount(), true);
+			m_view->doUndo(repeatCount(), true);
 			break;
 		case 'U':
-			m_editor->doRedo(repeatCount());
+			m_view->doRedo(repeatCount());
 			break;
 		case '.':
 			if( !m_redoCmd.isEmpty() ) {
@@ -851,7 +851,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		default:
 			if( !toInsertMode )
 				cur.moveLeftIfEndOfLine();
-			m_editor->setTextCursor(cur);
+			m_view->setTextCursor(cur);
 			//qDebug() << "cur.position() = " << cur.position();
 		}
 	}
@@ -873,16 +873,16 @@ bool ViEngine::doViCommand(const QChar &qch)
 	if( yankFrom >= 0 && yankFrom < yankTo ) {
 		//	undone R delete の場合と処理を共通化する
 		cur.setPosition(yankFrom);
-		m_editor->setTextCursor(cur);
+		m_view->setTextCursor(cur);
 		cur.setPosition(yankTo, DocCursor::KeepAnchor);
 		m_yankByLine = m_moveByLine || toYankByLine;
 		m_yankBuffer = cur.selectedText();
-		//m_editor->textCursor().setPosition(yankFrom);
+		//m_view->textCursor().setPosition(yankFrom);
 	}
 	if( delFrom >= 0 && delFrom != delTo ) {
-		m_editor->clearSelection();
+		m_view->clearSelection();
 		if( m_moveByLine ) {
-			//ViewCursor cur = m_editor->textCursor();
+			//ViewCursor cur = m_view->textCursor();
 			cur.setPosition(delFrom);
 			delFrom = cur.block().position();
 			cur.setPosition(delTo);
@@ -912,16 +912,16 @@ bool ViEngine::doViCommand(const QChar &qch)
 #endif
 		if( !toInsertMode )
 			cur.moveLeftIfEndOfLine();		//	改行位置にいる場合はカーソルを左移動
-		m_editor->setTextCursor(cur);
+		m_view->setTextCursor(cur);
 		//	削除後に改行位置にいる場合はカーソルを左移動
 #if 0
-		ViewCursor cur = m_editor->textCursor();
+		ViewCursor cur = m_view->textCursor();
 		const ViewBlock block = cur.block();
 		if( !toInsertMode && block.text().length() != 0 &&
 			cur.position() == block.position() + block.text().length() )
 		{
 			cur.setPosition(cur.position() - 1);
-			m_editor->setTextCursor(cur);
+			m_view->setTextCursor(cur);
 		}
 #endif
 	}
@@ -933,14 +933,14 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_redoRecording = true;
 			m_insertedText.clear();
 			setMode(INSERT);
-			m_editor->viewport()->update();		//	画面乱れを無くすため
+			m_view->viewport()->update();		//	画面乱れを無くすため
 		} else {
 			if( !m_insertedText.isEmpty() ) {
 				for(int c = ch != 's' ? repeatCount() : 1; c > 0; --c)
 					cur.insertText(m_insertedText);
 			}
 			moveCursor(cur, ViMoveOperation::Left);
-			m_editor->setTextCursor(cur);
+			m_view->setTextCursor(cur);
 		}
 	}
 	if( toReplaceMode ) {
@@ -948,23 +948,23 @@ bool ViEngine::doViCommand(const QChar &qch)
 		if( !m_redoing ) {
 			m_redoRecording = true;
 			m_insertedText.clear();
-			m_editor->setOverwriteMode(true);
+			m_view->setOverwriteMode(true);
 			setMode(REPLACE);
 		} else {
 			if( !m_insertedText.isEmpty() ) {
-				//m_editor->setOverwriteMode(true);
+				//m_view->setOverwriteMode(true);
 				document()->openUndoBlock();
 				for(int c = repeatCount(); c > 0; --c) {
 					cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, m_insertedText.length());
 					cur.insertText(m_insertedText);
 				}
 				document()->closeUndoBlock();
-				//m_editor->setOverwriteMode(false);
+				//m_view->setOverwriteMode(false);
 			}
 			moveCursor(cur, ViMoveOperation::Left);
-			m_editor->setTextCursor(cur);
+			m_view->setTextCursor(cur);
 		}
-		m_editor->viewport()->update();		//	画面乱れを無くすため
+		m_view->viewport()->update();		//	画面乱れを無くすため
 	}
 	m_noRepeatCount = false;
 	m_moveByLine = false;
@@ -1076,15 +1076,15 @@ void ViEngine::doExCommand(const QString &text)
 	QString param = text.mid(ix);
 	if( cmdText.isEmpty() ) {	//	指定行にジャンプ
 		if( m_lineNum2 < 0 ||
-			m_lineNum2 > m_editor->document()->lastBlock().blockNumber() + 1)
+			m_lineNum2 > m_view->document()->lastBlock().blockNumber() + 1)
 		{
 			return;		//	行番号が範囲外の場合
 		}
 		if( !m_lineNum2 )		//	:0 は最初の行にジャンプ
 			m_lineNum2 = 1;
-		ViewCursor cur = m_editor->textCursor();
+		ViewCursor cur = m_view->textCursor();
 		cur.movePosition(ViMoveOperation::JumpLine, DocCursor::MoveAnchor, m_lineNum2);
-		m_editor->setTextCursor(cur);
+		m_view->setTextCursor(cur);
 		return;
 	}
 	//	undone B if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
@@ -1101,8 +1101,8 @@ void ViEngine::doExCommand(const QString &text)
 			doSubst(param, m_lineNum1, m_lineNum2);
 	} else if( isMatch(cmdText, "quit") ) {
 		//if( exclamation )	//	!付きの場合は強制クローズ
-		//	m_editor->document()->setModified(false);
-		emit closeView(m_editor, exclamation);
+		//	m_view->document()->setModified(false);
+		emit closeView(m_view, exclamation);
 	} else if( isMatch(cmdText, "QUIT") ) {
 		emit closeAllViews(exclamation);
 	} else if( isMatch(cmdText, "edit") ) {
@@ -1114,7 +1114,7 @@ void ViEngine::doExCommand(const QString &text)
 		emit save(param);
 	} else if( isMatch(cmdText, "writequit") || isMatch(cmdText, "wquit") ) {
 		emit save(param);
-		emit closeView(m_editor);
+		emit closeView(m_view);
 	} else if( cmdText == "pwd" ) {
 		emit showMessage(m_message = QDir::currentPath());
 	} else if( cmdText == "cd" ) {
@@ -1145,7 +1145,7 @@ void ViEngine::doSet(const QString &text)
 		const bool no = text.startsWith("no");
 		const QString t = text.mid(no ? 2 : 0);
 		if( t == "linebreak" )
-			m_editor->setLineBreakMode(!no);
+			m_view->setLineBreakMode(!no);
 	}
 }
 void ViEngine::doSet(const QString &key, const QString &value)
@@ -1154,23 +1154,23 @@ void ViEngine::doSet(const QString &key, const QString &value)
 	if( value.length() >= 2 && value[0] == '"' && value[value.length() - 1] == '"' )
 		v = value.mid(1, value.length() - 2);
 	//bool fontChanged = false;
-	//QFont font = m_editor->font();
+	//QFont font = m_view->font();
 	if( !key.compare("fontSize", Qt::CaseInsensitive) ||
 		!key.compare("font", Qt::CaseInsensitive) && v.toInt() != 0 )
 	{
-		m_editor->setFontPointSize(v.toInt());
+		m_view->setFontPointSize(v.toInt());
 		//fontChanged = true;
 	} else if( !key.compare("fontFamily", Qt::CaseInsensitive) ||
 				!key.compare("fontName", Qt::CaseInsensitive) ||
 				!key.compare("font", Qt::CaseInsensitive) )
 	{
-		m_editor->setFontFamily(v);
+		m_view->setFontFamily(v);
 		//fontChanged = true;
 	}
 #if 0
 	if( fontChanged ) {
-		m_editor->setFont(font);
-		//m_editor->
+		m_view->setFont(font);
+		//m_view->
 	}
 #endif
 }
@@ -1183,11 +1183,11 @@ void ViEngine::doDelete()
 		m_lineNum1 = m_lineNum2;
 	if( !m_lineNum1 ) m_lineNum1 = 1;
 	if( m_lineNum1 > m_lineNum2 ) return;
-	ViewCursor cur = m_editor->textCursor();
-	DocBlock block1 = m_editor->document()->findBlockByNumber(m_lineNum1 - 1);
+	ViewCursor cur = m_view->textCursor();
+	DocBlock block1 = m_view->document()->findBlockByNumber(m_lineNum1 - 1);
 	cur.setPosition(block1.position());
 	int pos;
-	DocBlock block2 = m_editor->document()->findBlockByNumber(m_lineNum2 - 1);
+	DocBlock block2 = m_view->document()->findBlockByNumber(m_lineNum2 - 1);
 	if( block2.next().isValid() )
 		pos = block2.next().position();
 	else
@@ -1243,11 +1243,11 @@ void ViEngine::doSubst(const QString &param, int first, int last)
 		return;
 	}
 	//qDebug() << QString("before = '%1', after = '%2'").arg(before).arg(after);
-	ViewCursor cur = m_editor->textCursor();
+	ViewCursor cur = m_view->textCursor();
 	document()->openUndoBlock();
 	//cur.beginEditBlock();
 	QRegExp rex(before);
-	DocBlock block = m_editor->document()->findBlockByNumber(first - 1);
+	DocBlock block = m_view->document()->findBlockByNumber(first - 1);
 	while( first <= last && block.isValid() ) {
 		for(int k = 0;;) {
 			int ix = rex.indexIn(block.text(), k);
@@ -1263,7 +1263,7 @@ void ViEngine::doSubst(const QString &param, int first, int last)
 	}
 	document()->closeUndoBlock();
 	//cur.endEditBlock();
-	m_editor->setTextCursor(cur);
+	m_view->setTextCursor(cur);
 }
 bool ViEngine::parseSubstCmd(const QString &text,
 								QString &before, QString &after, bool &bGlobal)
@@ -1296,11 +1296,11 @@ void ViEngine::doFind(const QString &regexpText, bool forward)
 		emit showMessage(tr("invalid regexp."));
 		return;
 	}
-	ViewCursor cur = m_editor->textCursor();
+	ViewCursor cur = m_view->textCursor();
 	if( moveCursorFind(cur, rex, forward) ) {
 		m_findString = regexpText;
 		m_findForward = forward;
-		m_editor->setTextCursor(cur);
+		m_view->setTextCursor(cur);
 	}
 	emit regexpSearched(regexpText);
 }
@@ -1325,10 +1325,10 @@ void ViEngine::onImeOpenStatusChanged()
 
 void ViEngine::printSettings()
 {
-	QFont font = m_editor->font();
+	QFont font = m_view->font();
 	doOutput("fontFamily=\"" + font.family() + "\"\n");
 	doOutput(QString("fontSize=%1pt\n").arg(font.pointSize()));
-	doOutput(QString("%1linebreak\n").arg(m_editor->lineBreakMode() ? "  " : "no"));
+	doOutput(QString("%1linebreak\n").arg(m_view->lineBreakMode() ? "  " : "no"));
 }
 
 QString ViEngine::getExCommand(const QString &text, int &ix, bool &exclamation)
@@ -1351,10 +1351,10 @@ QString ViEngine::getExCommand(const QString &text, int &ix, bool &exclamation)
 */
 void ViEngine::getLineNumbers(const QString &text, int &ix)
 {
-	if( m_editor == 0 )
+	if( m_view == 0 )
 		m_curLineNum = 1;
 	else {
-		const ViewCursor cur = m_editor->textCursor();
+		const ViewCursor cur = m_view->textCursor();
 		const ViewBlock block = cur.block();
 		m_curLineNum = block.blockNumber() + 1;
 	}
@@ -1362,7 +1362,7 @@ void ViEngine::getLineNumbers(const QString &text, int &ix)
 		++ix;
 		m_nLineNum = 2;
 		m_lineNum1 = 1;
-		DocBlock block = m_editor->document()->lastBlock();
+		DocBlock block = m_view->document()->lastBlock();
 		m_lineNum2 = block.blockNumber() + 1;
 		if( m_lineNum2 > 1 && block.text().isEmpty() )
 			--m_lineNum2;
@@ -1415,8 +1415,8 @@ bool ViEngine::getLineNumber(const QString &text, int &ix, int &lineNumber)
 	}
 	if( text[ix] == '$' ) {
 		++ix;
-		if( m_editor == 0 ) return 1;
-		DocBlock block = m_editor->document()->lastBlock();
+		if( m_view == 0 ) return 1;
+		DocBlock block = m_view->document()->lastBlock();
 		lineNumber = block.blockNumber() + 1;
 		if( lineNumber > 1 && block.text().isEmpty() )
 			--lineNumber;

@@ -60,8 +60,8 @@ public:
 	bool	doViCommand(const QChar &);
 	void	onImeOpenStatusChanged();
 	void	setMode(Mode mode, ushort=0);
-	void	setEditor(TextView *editor);	//{ m_editor = editor; }
-	TextView *editor() { return m_editor; }
+	void	setEditor(TextView *editor);	//{ m_view = editor; }
+	TextView *editor() { return m_view; }
 	TextDocument	*document();
 	void	doExCommand(const QString &);			//	引数には、先頭の : を含まない文字列が渡る
 	void	doSet(const QString &);
@@ -134,7 +134,7 @@ private:
 	bool	m_yankByLine;			//	ヤンクバッファ：行単位
 	QString	m_yankBuffer;			//	無名ヤンクバッファ
 	QStringList	m_exCommands;		//	入力された ex-command 文字列
-	TextView	*m_editor;
+	TextView	*m_view;
 
 	//	undone C 行番号関係は独立した構造体にした方がよさげ
 	int		m_nLineNum;				//	指定された行番号数

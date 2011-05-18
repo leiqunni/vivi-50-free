@@ -704,6 +704,7 @@ void TextView::doPaint()
 		int ix = 0;
 		int EOLOffset = getEOLOffset(text);
 		while( ix < EOLOffset ) {
+			const ushort uc = text[ix].unicode();
 			if( text[ix] == ' ' ) {		//	”¼Šp‹ó”’
 				x += spaceWidth;
 				++ix;
