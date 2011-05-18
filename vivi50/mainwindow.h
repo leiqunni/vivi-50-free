@@ -83,6 +83,7 @@ private slots:
 	bool	save();
 	bool	saveAs();
 	//void	closeAll();
+	void	reOpen();
 	void	open(const QString &);
 	void	save(const QString &);
     void	openRecentFile();

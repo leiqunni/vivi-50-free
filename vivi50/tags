@@ -164,8 +164,8 @@ Ui_MainWindowClass	.\GeneratedFiles\ui_mainwindow.h	/^class Ui_MainWindowClass$/
 Up	.\textCursor.h	/^		Up,$/;"	e	enum:DocCursor::__anon2
 VERSION_STR	.\mainwindow.cpp	37;"	d	file:
 VIENGINE_H	.\ViEngine.h	26;"	d
-ViEngine	.\ViEngine.cpp	/^ViEngine::ViEngine(QObject *parent)$/;"	f	class:ViEngine
 ViEngine	.\ViEngine.h	/^class ViEngine : public QObject$/;"	c
+ViEngine	.\ViEngine.cpp	/^ViEngine::ViEngine(QObject *parent)$/;"	f	class:ViEngine
 ViScrollOperation	.\vi.h	/^namespace ViScrollOperation {$/;"	n
 ViewBlock	.\textBlock.h	/^class ViewBlock : public DocBlock$/;"	c
 ViewBlock	.\textBlock.cpp	/^ViewBlock::ViewBlock(TextView *view, const DocBlock &block, BlockData d)$/;"	f	class:ViewBlock
@@ -724,8 +724,8 @@ m_lineNumberAreaWidth	.\TextView.h	/^	int		m_lineNumberAreaWidth;$/;"	m	class:Te
 m_lineNumberWidth	.\TextView.h	/^	int		m_lineNumberWidth;$/;"	m	class:TextView
 m_logs	.\unit_test.h	/^	std::vector<SFailedInfo>	m_logs;$/;"	m	class:CUnitTest
 m_mainWindow	.\TestViCommands.cpp	/^	MainWindow	*m_mainWindow;$/;"	m	class:TestViCommands	file:
-m_message	.\TestViCommands.cpp	/^	QString	m_message;$/;"	m	struct:TestFailedItem	file:
 m_message	.\ViEngine.h	/^	QString	m_message;$/;"	m	class:ViEngine
+m_message	.\TestViCommands.cpp	/^	QString	m_message;$/;"	m	struct:TestFailedItem	file:
 m_message	.\unit_test.h	/^	QString		m_message;$/;"	m	struct:SFailedInfo
 m_mode	.\ViEngine.h	/^	Mode	m_mode;$/;"	m	class:ViEngine
 m_modified	.\TextDocument.h	/^	bool	m_modified;$/;"	m	class:TextDocument
@@ -777,11 +777,11 @@ m_unitTestLaidoutBlocksMgr	.\mainwindow.h	/^	bool	m_unitTestLaidoutBlocksMgr;$/;
 m_unitTestView	.\mainwindow.h	/^	bool	m_unitTestView;$/;"	m	class:MainWindow
 m_vSize	.\LayoutThread.h	/^	std::vector<size_t>		m_vSize;	\/\/	レイアウトされた行長$/;"	m	class:LayoutThread
 m_validFirstVisibleBlock	.\TextView.h	/^	mutable bool		m_validFirstVisibleBlock;		\/\/	m_firstVisibleBlock 有効$/;"	m	class:TextView
+m_viEngine	.\mainwindow.h	/^	ViEngine	*m_viEngine;$/;"	m	class:MainWindow
 m_viEngine	.\TestViCommands.cpp	/^	ViEngine	*m_viEngine;$/;"	m	class:TestViCommands	file:
 m_viEngine	.\TextView.h	/^	ViEngine	*m_viEngine;$/;"	m	class:TextView
-m_viEngine	.\mainwindow.h	/^	ViEngine	*m_viEngine;$/;"	m	class:MainWindow
-m_view	.\textBlock.h	/^	TextView	*m_view;$/;"	m	class:ViewBlock
 m_view	.\mainwindow.h	/^	TextView	*m_view;$/;"	m	class:MainWindow
+m_view	.\textBlock.h	/^	TextView	*m_view;$/;"	m	class:ViewBlock
 m_view	.\textCursor.h	/^	TextView	*m_view;$/;"	m	class:ViewCursor
 m_viewAnchorBlockData	.\textCursor.h	/^	BlockData	m_viewAnchorBlockData;$/;"	m	class:ViewCursor
 m_viewBlock	.\textBlock.h	/^	BlockData	m_viewBlock;		\/\/	m_position	行頭文字位置$/;"	m	class:ViewBlock
@@ -976,6 +976,7 @@ qt_resource_data	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned cha
 qt_resource_name	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned char qt_resource_name[] = {$/;"	v	file:
 qt_resource_struct	.\GeneratedFiles\qrc_mainwindow.cpp	/^static const unsigned char qt_resource_struct[] = {$/;"	v	file:
 reLayoutBlocksUntillDocBlockNumber	.\TextView.cpp	/^void TextView::reLayoutBlocksUntillDocBlockNumber(DocBlock block,$/;"	f	class:TextView
+reOpen	.\mainwindow.cpp	/^void MainWindow::reOpen()$/;"	f	class:MainWindow
 readSettings	.\mainwindow.cpp	/^void MainWindow::readSettings()$/;"	f	class:MainWindow
 readToBuffer	.\TestViCommands.cpp	/^void TestViCommands::readToBuffer(QTextStream &in)$/;"	f	class:TestViCommands
 recentFileActs	.\mainwindow.h	/^    QAction *recentFileActs[MaxRecentFiles];$/;"	m	class:MainWindow

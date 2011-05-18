@@ -71,6 +71,7 @@ public:
 
 signals:
 	void	modeChanged(Mode, ushort=0);
+	void	reOpen();
 	void	open(const QString &);
 	void	save(const QString &);
 	void	regexpSearched(const QString &);

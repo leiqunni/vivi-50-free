@@ -71,6 +71,7 @@ void MainWindow::init()
 	connect(m_viEngine, SIGNAL(modeChanged(Mode)), m_view, SLOT(setMode(Mode)));
 	connect(m_viEngine, SIGNAL(closeView(TextView *, bool)), this, SLOT(closeView(TextView *, bool)));
 	connect(m_viEngine, SIGNAL(closeAllViews(bool)), this, SLOT(closeAllViews(bool)));
+	connect(m_viEngine, SIGNAL(reOpen()), this, SLOT(reOpen()));
 	connect(m_viEngine, SIGNAL(open(const QString &)), this, SLOT(open(const QString &)));
 	connect(m_viEngine, SIGNAL(save(const QString &)), this, SLOT(save(const QString &)));
 	connect(m_viEngine, SIGNAL(testViCommands(QString)), this, SLOT(testViCommands(QString)));
@@ -599,6 +600,14 @@ void MainWindow::newFile()
 	MainWindow *other = new MainWindow;
 	other->move(x() + 40, y() + 40);
 	other->show();
+}
+void MainWindow::reOpen()
+{
+	m_view->clear();
+	m_view->document()->clear();
+	if( !m_curFile.isEmpty() ) {
+		loadFile(m_curFile);
+	}
 }
 void MainWindow::open(const QString &fileName)
 {

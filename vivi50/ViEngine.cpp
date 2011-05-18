@@ -1106,7 +1106,10 @@ void ViEngine::doExCommand(const QString &text)
 	} else if( isMatch(cmdText, "QUIT") ) {
 		emit closeAllViews(exclamation);
 	} else if( isMatch(cmdText, "edit") ) {
-		emit open(param);
+		if( exclamation && param.isEmpty() )
+			emit reOpen();
+		else
+			emit open(param);
 	} else if( isMatch(cmdText, "write") ) {
 		emit save(param);
 	} else if( isMatch(cmdText, "writequit") || isMatch(cmdText, "wquit") ) {
