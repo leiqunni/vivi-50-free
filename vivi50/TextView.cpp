@@ -912,6 +912,7 @@ void TextView::inputMethodEvent ( QInputMethodEvent * event )
 		//qDebug() << "  start = " << event->replacementStart () <<
 		//			", len = " << event->replacementLength ();
 		//qDebug() << "  insertText " << peText;
+		document()->setDoNotMergeUndoItem();
 		m_preeditPosCursor->setAnchor(m_textCursor->position());
 		insertText(*m_textCursor, m_preeditString);
 		m_preeditPosCursor->setPosition(m_textCursor->position(), DocCursor::KeepAnchor);
