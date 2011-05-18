@@ -705,18 +705,26 @@ void TextView::doPaint()
 		int EOLOffset = getEOLOffset(text);
 		while( ix < EOLOffset ) {
 			const ushort uc = text[ix].unicode();
-			if( text[ix] == ' ' ) {		//	”¼Šp‹ó”’
+			if( uc == ' ' ) {		//	”¼Šp‹ó”’
 				x += spaceWidth;
 				++ix;
-			} else if( text[ix] == '\t' ) {		//	Tab ‹L†•\Ž¦
+			} else if( uc == '\t' ) {		//	Tab ‹L†•\Ž¦
 				painter.setPen(Qt::lightGray);
 				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), ">");
 				++ix;
 				x = (x / tabWidth + 1) * tabWidth;
+			} else if( uc == 0x3000 ) {		//	‘SŠp‹ó”’
+				int wd = fm.width(text[ix++]);
+				painter.setPen(Qt::lightGray);
+				painter.drawRect(x + MARGIN_LEFT + 1, y + 1, wd - 4, fm.ascent() - 2);
+				x += wd;
 			} else {
 				int first = ix;
-				while( ix < EOLOffset && text[ix] != ' ' && text[ix] != '\t' )
+				while( ix < EOLOffset && text[ix] != ' ' &&
+					text[ix] != '\t' && text[ix].unicode() != 0x3000 )
+				{
 					++ix;
+				}
 				const QString buf = text.mid(first, ix - first);
 				painter.setPen(Qt::black);
 				painter.drawText(x + MARGIN_LEFT, y + fm.ascent(), buf);

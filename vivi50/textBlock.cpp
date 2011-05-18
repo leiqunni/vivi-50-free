@@ -138,6 +138,12 @@ DocBlock DocBlock::next() const
 #endif
 #endif
 }
+DocBlock &DocBlock::operator--()
+{
+	if( !isValid() ) return *this;
+	m_data = m_document->prevBlockData(m_data);
+	return *this;
+}
 DocBlock DocBlock::prev() const
 {
 	if( !isValid() ) return *this;

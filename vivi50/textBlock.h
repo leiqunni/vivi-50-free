@@ -87,6 +87,7 @@ public:
 	DocBlock	prev() const;
 
 	DocBlock	&operator++();
+	DocBlock	&operator--();
 
 protected:
 	TextDocument	*m_document;
