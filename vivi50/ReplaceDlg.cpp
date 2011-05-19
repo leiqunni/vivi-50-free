@@ -22,6 +22,9 @@
 
 #include <QtGui>
 #include "ReplaceDlg.h"
+#include "RadioButtonGroup.h"
+
+bool isLowerText(const QString &text);
 
 ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 	: QDialog(parent)
@@ -34,6 +37,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 		QHBoxLayout *hBoxLayout = new QHBoxLayout();
 			hBoxLayout->addWidget(new QLabel(tr("Find String:")));
 			(m_findStringCB = new QComboBox)->setEditable(true);
+			m_findStringCB->setCompleter(0);	//	コンプリータ無し
 			QFontMetrics fm = m_findStringCB->fontMetrics();
 			m_findStringCB->setMinimumWidth(fm.width('8')*32);
 			m_findStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
@@ -60,6 +64,13 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayoutLeft->addWidget(m_caseComboBox);
 #endif
+		m_caseGroup = new RadioButtonGroup(tr("Upper Lower Case"));
+			m_caseGroup->addRadioButton(tr("Ignore Case"));
+			m_caseGroup->addRadioButton(tr("Ignore Case if Lower Text"));
+			m_caseGroup->addRadioButton(tr("Case Sensitive"));
+			m_caseGroup->setSelectedIndex(0);
+			vBoxLayoutLeft->addWidget(m_caseGroup);
+#if 0
 		m_caseGroup = new QGroupBox(tr("Upper Lower Case"));
 		{
 			QVBoxLayout *boxLayout = new QVBoxLayout();
@@ -72,6 +83,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			m_caseGroup->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayoutLeft->addWidget(m_caseGroup);
 		}
+#endif
 #if 0
 		m_dirGroup = new QGroupBox(tr("direction"));
 		{
@@ -129,6 +141,9 @@ void ReplaceDlg::doFind(bool backward)
 	//const QString findString = m_findStringEdit->text();
 	if( findString.isEmpty() ) return;
 	ushort options = 0;
+	const int ix = m_caseGroup->selectedIndex();
+	if( !(!ix || ix == 1 && isLowerText(findString)) )
+		options |= MatchCase;
 #if 0
 	if( m_caseComboBox->currentIndex() == 1 )
 		options |= MatchCase;
@@ -151,6 +166,9 @@ void ReplaceDlg::onReplaceFind()
 	bool b = false;
 	const QString findString = m_findStringCB->currentText();
 	ushort options = 0;
+	const int ix = m_caseGroup->selectedIndex();
+	if( !(!ix || ix == 1 && isLowerText(findString)) )
+		options |= MatchCase;
 #if 0
 	if( m_caseComboBox->currentIndex() == 1 )
 		options |= MatchCase;
@@ -164,11 +182,15 @@ void ReplaceDlg::onReplaceFind()
 void ReplaceDlg::onReplaceAll()
 {
 	ushort options = 0;
+	const QString findString = m_findStringCB->currentText();
+	const int ix = m_caseGroup->selectedIndex();
+	if( !(!ix || ix == 1 && isLowerText(findString)) )
+		options |= MatchCase;
 #if 0
 	if( m_caseComboBox->currentIndex() == 1 )
 		options |= MatchCase;
 #endif
-	emit doReplaceAll(m_findStringCB->currentText(), options,
+	emit doReplaceAll(findString, options,
 						m_replaceStringCB->currentText());
 	addStringToHist("replaceStringHist", m_replaceStringCB->currentText());
 }

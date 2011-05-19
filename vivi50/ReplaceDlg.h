@@ -32,6 +32,7 @@ class QLineEdit;
 class QComboBox;
 class QGroupBox;
 class QRadioButton;
+class RadioButtonGroup;
 
 class ReplaceDlg : public QDialog
 {
@@ -64,7 +65,8 @@ private:
 	QComboBox	*m_findStringCB;
 	QComboBox	*m_replaceStringCB;
 	QComboBox	*m_caseComboBox;
-	QGroupBox	*m_caseGroup;
+	RadioButtonGroup	*m_caseGroup;
+	//QGroupBox	*m_caseGroup;
 	//QGroupBox	*m_dirGroup;
 	QRadioButton	*m_findBackWard;
 	
