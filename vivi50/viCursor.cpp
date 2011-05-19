@@ -460,7 +460,7 @@ bool moveCursor(ViewCursor &cur, //int &x,
 		break;
 	case ViMoveOperation::Right: {
 		if( blockText.isEmpty() ) return false;		//	改行 or EOF オンリー行の場合
-		const int endpos = blockPos + blockText.length() - 1;
+		const int endpos = blockPos + block.size() - block.newlineLength();
 		//const int endpos = blockPos + EOLOffset(blockText) - 1;
 		if( pos >= endpos ) return false;
 		n = qMin(n, endpos - pos);
@@ -470,7 +470,7 @@ bool moveCursor(ViewCursor &cur, //int &x,
 #if 1
 	case ViMoveOperation::RightForA: {			//	右移動 for a コマンド
 		if( blockText.isEmpty() ) return false;		//	改行 or EOF オンリー行の場合
-		const int endpos = blockPos + blockText.length();
+		const int endpos = blockPos + block.size() - block.newlineLength();
 		//const int endpos = blockPos + EOLOffset(blockText);
 		if( pos >= endpos ) return false;
 		n = qMin(n, endpos - pos);

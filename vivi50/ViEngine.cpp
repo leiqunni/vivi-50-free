@@ -592,7 +592,9 @@ bool ViEngine::doViCommand(const QChar &qch)
 			setMode(CMDLINE, ch);	//	: Ç™âüÇ≥ÇÍÇΩÇÁexÉÇÅ[ÉhÇ÷
 			break;
 		case 'a':
-			cursorMoved = moveCursor(cur, ViMoveOperation::RightForA);
+			if( !cur.atBlockEnd() )
+				cursorMoved = moveCursor(cur, DocCursor::Right);
+			//cursorMoved = moveCursor(cur, ViMoveOperation::RightForA);
 			toInsertMode = true;
 			break;
 		case 'i':
