@@ -31,6 +31,7 @@ class QLineEdit;
 class QComboBox;
 class QGroupBox;
 class QRadioButton;
+class RadioButtonGroup;
 
 
 void getStringFromHist(const QString &key, QString &text);
@@ -60,6 +61,8 @@ private:
 	//QLineEdit	*m_findStringEdit;
 	QComboBox	*m_findStringCB;
 	QComboBox	*m_caseComboBox;
+	RadioButtonGroup	*m_caseGroup;
+	//QGroupBox	*m_caseGroup;
 	QGroupBox	*m_dirGroup;
 	QRadioButton	*m_findBackWard;
 };

@@ -873,7 +873,7 @@ DocCursor TextDocument::find(const QByteArray &ba, index_t position, ushort opti
 	} else {
 		while( position > 0 ) {
 			--position;
-			if( isMatchIgnoreCase(position, ptr, ptr + sz) ) {
+			if( isMatch(position, ptr, ptr + sz, options) ) {
 				DocCursor c(this, position);
 				c.setPosition(position + sz, DocCursor::KeepAnchor);
 				return c;

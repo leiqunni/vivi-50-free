@@ -22,7 +22,16 @@
 
 #include <QtGui>
 #include "FindDlg.h"
+#include "RadioButtonGroup.h"
 
+//	‘S•”‚Ì•¶š‚ª‰p¬•¶š‚©H
+bool isLowerText(const QString &text)
+{
+	for(int ix = 0; ix < text.length(); ++ix) {
+		if( !text[ix].isLower() ) return false;
+	}
+	return true;
+}
 #define		HIST_LIMIT		30
 
 void getStringFromHist(const QString &key, QString &text)
@@ -83,12 +92,34 @@ FindDlg::FindDlg(const QString &text, QWidget *parent, ushort matchCase)
 		hBoxLayout->addWidget(m_findStringCB);
 	QHBoxLayout *hBoxLayout2 = new QHBoxLayout();
 		QVBoxLayout *vBoxLayout2 = new QVBoxLayout();
+#if 0
 		m_caseComboBox = new QComboBox();
 			m_caseComboBox->addItem(tr("Ignore Case"));
 			m_caseComboBox->addItem(tr("Match Case"));
 			m_caseComboBox->setCurrentIndex(matchCase);
 			m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayout2->addWidget(m_caseComboBox);
+#endif
+		m_caseGroup = new RadioButtonGroup(tr("Upper Lower Case"));
+			m_caseGroup->addRadioButton(tr("Ignore Case"));
+			m_caseGroup->addRadioButton(tr("Ignore Case if Lower Text"));
+			m_caseGroup->addRadioButton(tr("Case Sensitive"));
+			m_caseGroup->setSelectedIndex(0);
+			vBoxLayout2->addWidget(m_caseGroup);
+#if 0
+		m_caseGroup = new QGroupBox(tr("Upper Lower Case"));
+		{
+			QVBoxLayout *boxLayout = new QVBoxLayout();
+			QRadioButton *ptr;
+			boxLayout->addWidget(ptr = new QRadioButton(tr("Ignore Case")));
+			boxLayout->addWidget(new QRadioButton(tr("Ignore Case if Lower Pat")));
+			boxLayout->addWidget(new QRadioButton(tr("Case Sensitive")));
+			ptr->setChecked(true);
+			m_caseGroup->setLayout(boxLayout);
+			m_caseGroup->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
+			vBoxLayout2->addWidget(m_caseGroup);
+		}
+#endif
 #if 0
 		m_dirGroup = new QGroupBox(tr("direction"));
 			QHBoxLayout *hBoxLayout3 = new QHBoxLayout();
@@ -144,8 +175,13 @@ void FindDlg::onFindPrev()
 	const QString findString = m_findStringCB->currentText();
 	if( !findString.isEmpty() ) {
 		ushort options = 0;
+		const int ix = m_caseGroup->selectedIndex();
+		if( !(!ix || ix == 1 && isLowerText(findString)) )
+			options |= MatchCase;
+#if 0
 		if( m_caseComboBox->currentIndex() == 1 )
 			options |= MatchCase;
+#endif
 		emit doFindNext(findString, options | FindBackWard);
 		addFindStringHist(findString);
 	}
@@ -155,8 +191,13 @@ void FindDlg::onFindNext()
 	const QString findString = m_findStringCB->currentText();
 	if( !findString.isEmpty() ) {
 		ushort options = 0;
+		const int ix = m_caseGroup->selectedIndex();
+		if( !(!ix || ix == 1 && isLowerText(findString)) )
+			options |= MatchCase;
+#if 0
 		if( m_caseComboBox->currentIndex() == 1 )
 			options |= MatchCase;
+#endif
 #if 0
 		if( m_findBackWard->isChecked() != 0 )
 			options |= FindBackWard;

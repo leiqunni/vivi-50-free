@@ -14,3 +14,10 @@ Although It's key bindings are basicaly compatible with the (n)vi,
 Windows key bingings have a first priority, e.g. Ctrl + V...
 
 
+■ Schedule
+
+2011/04/01	project started
+2011/07/End	FF(Featuer Freeze) release
+2011/08/End RC(Release Candidate) release
+2011/09/End GOLD release
+

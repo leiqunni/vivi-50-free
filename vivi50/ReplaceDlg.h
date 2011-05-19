@@ -64,6 +64,7 @@ private:
 	QComboBox	*m_findStringCB;
 	QComboBox	*m_replaceStringCB;
 	QComboBox	*m_caseComboBox;
+	QGroupBox	*m_caseGroup;
 	//QGroupBox	*m_dirGroup;
 	QRadioButton	*m_findBackWard;
 	

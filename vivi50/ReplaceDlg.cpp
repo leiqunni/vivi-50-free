@@ -52,12 +52,26 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 		    	m_replaceStringCB->addItem(hist2[--ix]);
 			hBoxLayout2->addWidget(m_replaceStringCB);
 			vBoxLayoutLeft->addLayout(hBoxLayout2);
+#if 0
 		m_caseComboBox = new QComboBox();
 			m_caseComboBox->addItem(tr("Ignore Case"));
 			m_caseComboBox->addItem(tr("Match Case"));
 			m_caseComboBox->setCurrentIndex(matchCase);
 			m_caseComboBox->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
 			vBoxLayoutLeft->addWidget(m_caseComboBox);
+#endif
+		m_caseGroup = new QGroupBox(tr("Upper Lower Case"));
+		{
+			QVBoxLayout *boxLayout = new QVBoxLayout();
+			QRadioButton *ptr;
+			boxLayout->addWidget(ptr = new QRadioButton(tr("Ignore Case")));
+			boxLayout->addWidget(new QRadioButton(tr("Ignore Case if Lower Pat")));
+			boxLayout->addWidget(new QRadioButton(tr("Case Sensitive")));
+			ptr->setChecked(true);
+			m_caseGroup->setLayout(boxLayout);
+			m_caseGroup->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum) );
+			vBoxLayoutLeft->addWidget(m_caseGroup);
+		}
 #if 0
 		m_dirGroup = new QGroupBox(tr("direction"));
 		{
@@ -115,8 +129,10 @@ void ReplaceDlg::doFind(bool backward)
 	//const QString findString = m_findStringEdit->text();
 	if( findString.isEmpty() ) return;
 	ushort options = 0;
+#if 0
 	if( m_caseComboBox->currentIndex() == 1 )
 		options |= MatchCase;
+#endif
 	if( backward )
 		options |= FindBackWard;
 	emit doFindNext(findString, options);
@@ -135,8 +151,10 @@ void ReplaceDlg::onReplaceFind()
 	bool b = false;
 	const QString findString = m_findStringCB->currentText();
 	ushort options = 0;
+#if 0
 	if( m_caseComboBox->currentIndex() == 1 )
 		options |= MatchCase;
+#endif
 	emit isMatched(b, findString, options);
 	if( !b ) return;
 	emit doReplace(m_replaceStringCB->currentText());
@@ -146,8 +164,10 @@ void ReplaceDlg::onReplaceFind()
 void ReplaceDlg::onReplaceAll()
 {
 	ushort options = 0;
+#if 0
 	if( m_caseComboBox->currentIndex() == 1 )
 		options |= MatchCase;
+#endif
 	emit doReplaceAll(m_findStringCB->currentText(), options,
 						m_replaceStringCB->currentText());
 	addStringToHist("replaceStringHist", m_replaceStringCB->currentText());
