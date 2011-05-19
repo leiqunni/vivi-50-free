@@ -29,6 +29,7 @@
 
 bool hasSelection(const std::vector<ViewCursor*> &v);
 int getEOLOffset(const QString text);
+void addStringToHist(const QString &key, const QString &text);
 
 #if 1
 ViEngine::ViEngine(QObject *parent)
@@ -1295,6 +1296,7 @@ bool ViEngine::parseSubstCmd(const QString &text,
 void ViEngine::doFind(const QString &regexpText, bool forward)
 {
 	setMode(CMD);
+	addStringToHist("findStringHist", regexpText);
 	QRegExp rex(regexpText);
 	if( !rex.isValid() ) {
 		emit showMessage(tr("invalid regexp."));

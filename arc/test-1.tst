@@ -493,7 +493,10 @@
 "04A8" 0x1b		# 8 を 4回挿入
 >	hogexyz8888
 >
-"u"		# xyz と 8888 は一度に undo される
+"u"		# xyz と 8888 は一度に undo されない
+>	hogexyz
+>
+"u"		# xyz と 8888 は一度に undo されない
 >	hoge
 >
 "."		# repeat A command
@@ -769,8 +772,8 @@
 "RXY" 0x1b =1 1
 >XYin()
 >
-"u03R=" 0x1b =1 2
->===ain()
+"u03R-=" 0x1b =1 5	# R の繰り返し：上書きされるのは実際に入力した文字数まで
+>-=-=-=in()
 >
 <hoge
 <fuga
