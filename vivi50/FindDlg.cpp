@@ -72,7 +72,7 @@ FindDlg::FindDlg(const QString &text, QWidget *parent, ushort matchCase)
 	: QDialog(parent)
 {
 	setWindowTitle(tr("Find Dialog"));
-
+    QSettings settings;
 	QHBoxLayout *hBoxLayout = new QHBoxLayout();
 		QLabel *findStringLabel = new QLabel(tr("FindString:"));
 		//findStringLabel->setBuddy(m_findStringEdit = new QLineEdit);
@@ -85,7 +85,6 @@ FindDlg::FindDlg(const QString &text, QWidget *parent, ushort matchCase)
 		m_findStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
 		if( !text.isEmpty() )
 			m_findStringCB->addItem(text);
-	    QSettings settings;
 	    QStringList hist = settings.value("findStringHist").toStringList();
 	    for(int ix = hist.size(); ix != 0; )
 	    	m_findStringCB->addItem(hist[--ix]);
@@ -105,7 +104,7 @@ FindDlg::FindDlg(const QString &text, QWidget *parent, ushort matchCase)
 			m_caseGroup->addRadioButton(tr("Ignore Case"));
 			m_caseGroup->addRadioButton(tr("Ignore Case if Lower Text"));
 			m_caseGroup->addRadioButton(tr("Case Sensitive"));
-			m_caseGroup->setSelectedIndex(0);
+			m_caseGroup->setSelectedIndex(settings.value("findCaseOption", 0).toInt());
 			vBoxLayout2->addWidget(m_caseGroup);
 #if 0
 		m_caseGroup = new QGroupBox(tr("Upper Lower Case"));
@@ -164,7 +163,8 @@ FindDlg::FindDlg(const QString &text, QWidget *parent, ushort matchCase)
 
 FindDlg::~FindDlg()
 {
-
+    QSettings settings;
+    settings.setValue("findCaseOption", m_caseGroup->selectedIndex());
 }
 void FindDlg::onFindClose()
 {

@@ -345,8 +345,8 @@ doBenchmark	.\mainwindowBench.cpp	/^void MainWindow::doBenchmark()$/;"	f	class:M
 doDelete	.\ViEngine.cpp	/^void ViEngine::doDelete()$/;"	f	class:ViEngine
 doDelete	.\TextView.cpp	/^void TextView::doDelete(int first, int last)$/;"	f	class:TextView
 doExCommand	.\ViEngine.cpp	/^void ViEngine::doExCommand(const QString &text)$/;"	f	class:ViEngine
-doFind	.\ViEngine.cpp	/^void ViEngine::doFind(const QString &regexpText, bool forward)$/;"	f	class:ViEngine
 doFind	.\ReplaceDlg.cpp	/^void ReplaceDlg::doFind(bool backward)$/;"	f	class:ReplaceDlg
+doFind	.\ViEngine.cpp	/^void ViEngine::doFind(const QString &regexpText, bool forward)$/;"	f	class:ViEngine
 doFindNext	.\ViEngine.cpp	/^bool ViEngine::doFindNext(ViewCursor &cur, int nth, bool revers)$/;"	f	class:ViEngine
 doFindNext	.\TextView.cpp	/^void TextView::doFindNext(const QString &text, ushort options)$/;"	f	class:TextView
 doFindNext	.\GeneratedFiles\Debug\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg

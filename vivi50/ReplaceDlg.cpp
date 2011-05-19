@@ -30,7 +30,6 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 	: QDialog(parent)
 {
 	setWindowTitle(tr("Replace Dialog"));
-
     QSettings settings;
 	QVBoxLayout *vBoxLayoutLeft = new QVBoxLayout();
 	{
@@ -68,7 +67,7 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			m_caseGroup->addRadioButton(tr("Ignore Case"));
 			m_caseGroup->addRadioButton(tr("Ignore Case if Lower Text"));
 			m_caseGroup->addRadioButton(tr("Case Sensitive"));
-			m_caseGroup->setSelectedIndex(0);
+			m_caseGroup->setSelectedIndex(settings.value("findCaseOption", 0).toInt());
 			vBoxLayoutLeft->addWidget(m_caseGroup);
 #if 0
 		m_caseGroup = new QGroupBox(tr("Upper Lower Case"));
@@ -133,7 +132,8 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 
 ReplaceDlg::~ReplaceDlg()
 {
-
+    QSettings settings;
+    settings.setValue("findCaseOption", m_caseGroup->selectedIndex());
 }
 void ReplaceDlg::doFind(bool backward)
 {
