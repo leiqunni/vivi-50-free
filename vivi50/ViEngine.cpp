@@ -1252,8 +1252,10 @@ void ViEngine::doSubst(const QString &param, int first, int last)
 		for(int k = 0;;) {
 			int ix = rex.indexIn(block.text(), k);
 			if( ix < 0 ) break;
-			cur.setPosition(block.position() + ix);
-			cur.setPosition(block.position() + ix + rex.matchedLength(), DocCursor::KeepAnchor);
+			cur.setPosition(block.position());
+			if( ix != 0 )
+				cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, ix);
+			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, rex.matchedLength());
 			cur.insertText(after);
 			if( !global ) break;
 			k = ix + after.length();

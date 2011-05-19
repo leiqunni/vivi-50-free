@@ -256,7 +256,9 @@ void TestViCommands::checkBuffer(QTextStream &in)
 	TextView *editor = m_viEngine->editor();
 	DocBlock block = editor->document()->firstBlock();
 	while( !m_buffer.isEmpty() && m_buffer[0] == '>' ) {
-		if( block.isValid() && block.text().left(block.EOLOffset()) == m_buffer.mid(1) )
+		const QString text = block.text();
+		const size_t len = text.length() - block.newlineLength();
+		if( block.isValid() && text.left(len) == m_buffer.mid(1, len) )
 			m_mainWindow->doOutput(".");
 		else {
 			m_mainWindow->doOutput("F");
