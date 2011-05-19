@@ -79,6 +79,7 @@ FindDlg::FindDlg(const QString &text, QWidget *parent, ushort matchCase)
 		hBoxLayout->addWidget(findStringLabel);
 		//hBoxLayout->addWidget(m_findStringEdit);
 		(m_findStringCB = new QComboBox)->setEditable(true);
+		m_findStringCB->setCompleter(0);	//	コンプリータ無し
 		QFontMetrics fm = m_findStringCB->fontMetrics();
 		m_findStringCB->setMinimumWidth(fm.width('8')*32);
 		m_findStringCB->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum) );
