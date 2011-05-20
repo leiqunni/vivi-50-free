@@ -96,6 +96,8 @@ ReplaceDlg::ReplaceDlg(QWidget *parent, ushort matchCase)
 			vBoxLayoutLeft->addWidget(m_dirGroup);
 		}
 #endif
+		m_regexp = new QCheckBox("regexp");
+			vBoxLayoutLeft->addWidget(m_regexp);
 		vBoxLayoutLeft->addStretch();
 	}
 	QVBoxLayout *vBoxLayoutRight = new QVBoxLayout();	//	ボタン配置用
@@ -144,10 +146,8 @@ void ReplaceDlg::doFind(bool backward)
 	const int ix = m_caseGroup->selectedIndex();
 	if( !(!ix || ix == 1 && isLowerText(findString)) )
 		options |= MatchCase;
-#if 0
-	if( m_caseComboBox->currentIndex() == 1 )
-		options |= MatchCase;
-#endif
+	if( m_regexp->isChecked() )
+		options |= RegExp;
 	if( backward )
 		options |= FindBackWard;
 	emit doFindNext(findString, options);
@@ -169,10 +169,8 @@ void ReplaceDlg::onReplaceFind()
 	const int ix = m_caseGroup->selectedIndex();
 	if( !(!ix || ix == 1 && isLowerText(findString)) )
 		options |= MatchCase;
-#if 0
-	if( m_caseComboBox->currentIndex() == 1 )
-		options |= MatchCase;
-#endif
+	if( m_regexp->isChecked() )
+		options |= RegExp;
 	emit isMatched(b, findString, options);
 	if( !b ) return;
 	emit doReplace(m_replaceStringCB->currentText());
@@ -186,10 +184,8 @@ void ReplaceDlg::onReplaceAll()
 	const int ix = m_caseGroup->selectedIndex();
 	if( !(!ix || ix == 1 && isLowerText(findString)) )
 		options |= MatchCase;
-#if 0
-	if( m_caseComboBox->currentIndex() == 1 )
-		options |= MatchCase;
-#endif
+	if( m_regexp->isChecked() )
+		options |= RegExp;
 	emit doReplaceAll(findString, options,
 						m_replaceStringCB->currentText());
 	addStringToHist("replaceStringHist", m_replaceStringCB->currentText());

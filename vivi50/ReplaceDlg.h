@@ -33,6 +33,7 @@ class QComboBox;
 class QGroupBox;
 class QRadioButton;
 class RadioButtonGroup;
+class QCheckBox;
 
 class ReplaceDlg : public QDialog
 {
@@ -68,6 +69,7 @@ private:
 	RadioButtonGroup	*m_caseGroup;
 	//QGroupBox	*m_caseGroup;
 	//QGroupBox	*m_dirGroup;
+	QCheckBox	*m_regexp;
 	QRadioButton	*m_findBackWard;
 	
 };

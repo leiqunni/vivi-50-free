@@ -685,10 +685,10 @@ m_buffer	.\TextDocument.h	/^	mutable std::gap_vector<uchar>	m_buffer;$/;"	m	clas
 m_cacheBlock	.\textBlock.h	/^	mutable LaidoutBlock	*m_cacheBlock;$/;"	m	class:LaidoutBlocksMgr
 m_cacheBlockData	.\TextDocument.h	/^	mutable BlockData	m_cacheBlockData;			\/\/	ƒJƒŒƒ“ƒgƒuƒƒbƒNî•ñ$/;"	m	class:TextDocument
 m_cacheBlockData	.\TextView.h	/^	mutable BlockData	m_cacheBlockData;			\/\/	ƒJƒŒƒ“ƒgƒuƒƒbƒNî•ñ$/;"	m	class:TextView
-m_caseComboBox	.\FindDlg.h	/^	QComboBox	*m_caseComboBox;$/;"	m	class:FindDlg
 m_caseComboBox	.\ReplaceDlg.h	/^	QComboBox	*m_caseComboBox;$/;"	m	class:ReplaceDlg
-m_caseGroup	.\FindDlg.h	/^	RadioButtonGroup	*m_caseGroup;$/;"	m	class:FindDlg
+m_caseComboBox	.\FindDlg.h	/^	QComboBox	*m_caseComboBox;$/;"	m	class:FindDlg
 m_caseGroup	.\ReplaceDlg.h	/^	RadioButtonGroup	*m_caseGroup;$/;"	m	class:ReplaceDlg
+m_caseGroup	.\FindDlg.h	/^	RadioButtonGroup	*m_caseGroup;$/;"	m	class:FindDlg
 m_cdyCmd	.\ViEngine.h	/^	ushort	m_cdyCmd;				\/\/	c | d | y ƒRƒ}ƒ“ƒh$/;"	m	class:ViEngine
 m_cdyPos	.\ViEngine.h	/^	int		m_cdyPos;				\/\/	c|d|y ‚ª‰Ÿ‚³‚ê‚½‚ÌƒJ[ƒ\ƒ‹ˆÊ’u$/;"	m	class:ViEngine
 m_charEncoding	.\TextDocument.h	/^	uchar	m_charEncoding;$/;"	m	class:TextDocument
@@ -715,12 +715,12 @@ m_exCommands	.\ViEngine.h	/^	QStringList	m_exCommands;		\/\/	“ü—Í‚³‚ê‚½ ex-comma
 m_failCount	.\unit_test.h	/^	int		m_failCount;		\/\/	¸”s‰ñ”$/;"	m	class:CUnitTest
 m_failedPos	.\TestViCommands.cpp	/^	QVector<TestFailedItem>	m_failedPos;$/;"	m	class:TestViCommands	file:
 m_fileName	.\unit_test.h	/^	QString		m_fileName;$/;"	m	struct:SFailedInfo
-m_findBackWard	.\FindDlg.h	/^	QRadioButton	*m_findBackWard;$/;"	m	class:FindDlg
 m_findBackWard	.\ReplaceDlg.h	/^	QRadioButton	*m_findBackWard;$/;"	m	class:ReplaceDlg
+m_findBackWard	.\FindDlg.h	/^	QRadioButton	*m_findBackWard;$/;"	m	class:FindDlg
 m_findForward	.\ViEngine.h	/^	bool	m_findForward;			\/\/	‡•ûŒüŒŸõ$/;"	m	class:ViEngine
 m_findString	.\ViEngine.h	/^	QString	m_findString;			\/\/	ŒŸõ³‹K•\Œ»•¶š—ñ$/;"	m	class:ViEngine
-m_findStringCB	.\FindDlg.h	/^	QComboBox	*m_findStringCB;$/;"	m	class:FindDlg
 m_findStringCB	.\ReplaceDlg.h	/^	QComboBox	*m_findStringCB;$/;"	m	class:ReplaceDlg
+m_findStringCB	.\FindDlg.h	/^	QComboBox	*m_findStringCB;$/;"	m	class:FindDlg
 m_findStrings	.\mainwindow.h	/^	QStringList	m_findStrings;		\/\/	ŒŸõi³‹K•\Œ»j•¶š—ñ—š—ğ$/;"	m	class:MainWindow
 m_first	.\TextDocument.h	/^	index_t	m_first;$/;"	m	struct:GVUndoItem
 m_first	.\gap_vector.h	/^	pointer	m_first;		\/\/   «first   «gapBegi n   «gapEnd        «m_last$/;"	m	class:std::gap_vector
@@ -798,6 +798,7 @@ m_redoHeap	.\TextDocument.h	/^	std::vector<uchar>	m_redoHeap;		\/\/	redo ‚Ì‚½‚ß‚
 m_redoRecording	.\ViEngine.h	/^	bool	m_redoRecording;		\/\/	.(redo) ‚Ì‚½‚ß‚É‘}“ü•¶š—ñ‹L˜^’†$/;"	m	class:ViEngine
 m_redoRepeatCount	.\ViEngine.h	/^	int		m_redoRepeatCount;$/;"	m	class:ViEngine
 m_redoing	.\ViEngine.h	/^	bool	m_redoing;				\/\/	.(redo) Às’†$/;"	m	class:ViEngine
+m_regexp	.\ReplaceDlg.h	/^	QCheckBox	*m_regexp;$/;"	m	class:ReplaceDlg
 m_regexp	.\FindDlg.h	/^	QCheckBox	*m_regexp;$/;"	m	class:FindDlg
 m_repeatCount	.\ViEngine.h	/^	int		m_repeatCount;$/;"	m	class:ViEngine
 m_repeatCount2	.\ViEngine.h	/^	int		m_repeatCount2;			\/\/	c2w ‚Ì‚æ‚¤‚ÉƒRƒ}ƒ“ƒh‚ÌŠÔ‚Éw’è‚³‚ê‚½ŒJ‚è•Ô‚µ‰ñ”$/;"	m	class:ViEngine
@@ -898,10 +899,10 @@ nextBlockPosition	.\textBlock.h	/^	index_t		nextBlockPosition() const { return p
 onBenchmarkReplace	.\mainwindow.cpp	/^void MainWindow::onBenchmarkReplace(bool b)$/;"	f	class:MainWindow
 onBlockCountChanged	.\TextView.cpp	/^void TextView::onBlockCountChanged()$/;"	f	class:TextView
 onFindClose	.\FindDlg.cpp	/^void FindDlg::onFindClose()$/;"	f	class:FindDlg
-onFindNext	.\FindDlg.cpp	/^void FindDlg::onFindNext()$/;"	f	class:FindDlg
 onFindNext	.\ReplaceDlg.cpp	/^void ReplaceDlg::onFindNext()$/;"	f	class:ReplaceDlg
-onFindPrev	.\FindDlg.cpp	/^void FindDlg::onFindPrev()$/;"	f	class:FindDlg
+onFindNext	.\FindDlg.cpp	/^void FindDlg::onFindNext()$/;"	f	class:FindDlg
 onFindPrev	.\ReplaceDlg.cpp	/^void ReplaceDlg::onFindPrev()$/;"	f	class:ReplaceDlg
+onFindPrev	.\FindDlg.cpp	/^void FindDlg::onFindPrev()$/;"	f	class:FindDlg
 onFontChanged	.\TextView.cpp	/^void TextView::onFontChanged()$/;"	f	class:TextView
 onImeOpenStatusChanged	.\ViEngine.cpp	/^void ViEngine::onImeOpenStatusChanged()$/;"	f	class:ViEngine
 onImeOpenStatusChanged	.\mainwindow.cpp	/^void MainWindow::onImeOpenStatusChanged()$/;"	f	class:MainWindow
