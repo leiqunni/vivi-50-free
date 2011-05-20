@@ -333,7 +333,7 @@ public:
 	DocBlock	firstBlock() { return DocBlock(this, 0, 0); }
 	DocBlock	lastBlock()
 	{
-		return DocBlock(this, blockCount() - 1,
+		return DocBlock((TextDocument*)this, blockCount() - 1,
 						size() - m_blocks[blockCount() - 1].m_size);
 	}
 #else
@@ -389,6 +389,7 @@ signals:
 	void contentsChange( index_t position, size_t charsRemoved, size_t charsAdded );
 	void contentsChanged();
 	void blockCountChanged();
+	void showMessage(const QString &);
 
 protected:
 	void	buildBlocks();

@@ -13,6 +13,7 @@ HEADERS += ./charEncoding.h \
     ./gap_vector.h \
     ./LayoutThread.h \
     ./mainwindow.h \
+    ./RadioButtonGroup.h \
     ./ReplaceDlg.h \
     ./TestViCommands.h \
     ./textBlock.h \
@@ -29,6 +30,7 @@ SOURCES += ./charEncoding.cpp \
     ./mainwindow.cpp \
     ./mainwindowBench.cpp \
     ./mainwindowTest.cpp \
+    ./RadioButtonGroup.cpp \
     ./ReplaceDlg.cpp \
     ./TestViCommands.cpp \
     ./textBlock.cpp \

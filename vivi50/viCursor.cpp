@@ -570,9 +570,9 @@ bool moveCursor(ViewCursor &cur, //int &x,
 	return true;
 }
 
-bool moveCursorFindInLine(ViewCursor &cur, ushort cmd, const QChar &qch, int n)
+bool moveCursorFindInLine(DocCursor &cur, ushort cmd, const QChar &qch, int n)
 {
-	ViewBlock block = cur.block();
+	DocBlock block = cur.block();
 	QString text = block.text();
 	int ix = cur.position() - block.position();
 	while( --n >= 0 ) {
@@ -598,7 +598,7 @@ bool moveCursorFindInLine(ViewCursor &cur, ushort cmd, const QChar &qch, int n)
 	return true;
 }
 
-index_t moveCursorFindForward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)
+index_t moveCursorFindForward(const QRegExp &rex, DocBlock &block, int ix, int &nth, int limit)
 {
 	for(;;) {
 		int i = rex.indexIn(block.text(), ix);
@@ -622,7 +622,7 @@ index_t moveCursorFindForward(const QRegExp &rex, ViewBlock &block, int ix, int 
 		}
 	}
 }
-index_t moveCursorFindBackward(const QRegExp &rex, ViewBlock &block, int ix, int &nth, int limit)
+index_t moveCursorFindBackward(const QRegExp &rex, DocBlock &block, int ix, int &nth, int limit)
 {
 	int i;
 	for(;;) {
@@ -646,9 +646,9 @@ index_t moveCursorFindBackward(const QRegExp &rex, ViewBlock &block, int ix, int
 		}
 	}
 }
-bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth, bool loop)
+bool moveCursorFind(DocCursor &cur, const QRegExp &rex, bool forward, int nth, bool loop)
 {
-	ViewBlock block = cur.block();
+	DocBlock block = cur.block();
 	int curPos = cur.position();
 	int ix = curPos - block.position();
 	int pos;
@@ -660,7 +660,7 @@ bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth, 
 		}
 		if( !loop ) return false;
 		//	•¶Í––”ö‚Ü‚Å‚ÉŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚çA•¶‘æ“ª‚©‚çŒŸõ
-		block = cur.view()->firstBlock();
+		block = cur.document()->firstBlock();
 		ix = 0;
 		if( (pos = moveCursorFindForward(rex, block, ix, nth, curPos)) >= 0 ) {
 			cur.setPosition(pos);
@@ -674,7 +674,7 @@ bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth, 
 		}
 		if( !loop ) return false;
 		//	•¶Íæ“ª‚Ü‚Å‚ÉŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚çA•¶‘––”ö‚©‚çŒŸõ
-		block = block.view()->lastBlock();
+		block = block.document()->lastBlock();
 		ix = block.text().length();
 		if( (pos = moveCursorFindBackward(rex, block, ix, nth, curPos)) >= 0 ) {
 			cur.setPosition(pos);
@@ -683,7 +683,14 @@ bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth, 
 	}
 	return false;
 }
-
+bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth, bool loop)
+{
+	DocCursor dc(cur);
+	if( !moveCursorFind(dc, rex, forward, nth, loop) )
+		return false;
+	cur = dc;
+	return true;
+}
 //----------------------------------------------------------------------
 #if 0
 static uchar sbCharTypeTbl[] = {

@@ -25,6 +25,7 @@
 #include "textCursor.h"
 #include	"FindDlg.h"		//	for 検索オプション
 							//	undone R 検索オプションだけのファイル作った方がいいかも
+#include "viCursor.h"
 
 static inline bool isUTF8FirstChar(uchar ch)
 {
@@ -834,11 +835,21 @@ bool TextDocument::isMatched(const QString &text, const DocCursor &cur, ushort o
 {
 	if( text.isEmpty() ) return false;
 	if( !cur.hasSelection() ) return false;		//	とりあえず選択領域とのみ比較する
+	QRegExp rex(text,
+				(options & MatchCase) ? Qt::CaseSensitive : Qt::CaseInsensitive,
+				(options & RegExp) ? QRegExp::RegExp : QRegExp::FixedString);
+	if( !rex.isValid() ) {
+		emit showMessage(tr("invalid regexp."));
+		return false;
+	}
 	const QString buf = cur.selectedText();
+	return rex.exactMatch(buf);
+#if 0
 	if( (options & MatchCase) != 0 )
 		return text == buf;
 	else
 		return 0 == text.compare(buf, Qt::CaseInsensitive);
+#endif
 }
 DocCursor TextDocument::find(const QString &text, const DocCursor &cur, ushort options)
 {
@@ -885,9 +896,19 @@ DocCursor TextDocument::find(const QByteArray &ba, index_t position, ushort opti
 void TextDocument::doReplaceAll(const QString &findText, ushort options,
 							const QString &replaceText)
 {
+	QRegExp rex(findText,
+				(options & MatchCase) ? Qt::CaseSensitive : Qt::CaseInsensitive,
+				(options & RegExp) ? QRegExp::RegExp : QRegExp::FixedString);
+	if( !rex.isValid() ) {
+		emit showMessage(tr("invalid regexp."));
+		return;
+	}
+	openUndoBlock();
+#if 1
+	DocCursor cur(this);
+#else
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QByteArray ba = codec->fromUnicode(findText);
-	openUndoBlock();
 	for(index_t position = 0;;) {
 		DocCursor cur = find(ba, position, options);
 		if( cur.isNull() ) break;
@@ -895,5 +916,6 @@ void TextDocument::doReplaceAll(const QString &findText, ushort options,
 		insertText(cur, replaceText);
 		position = cur.position();
 	}
+#endif
 	closeUndoBlock();
 }

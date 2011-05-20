@@ -74,7 +74,8 @@ enum {
 };
 uchar getCharType(QChar);
 bool moveCursor(ViewCursor &cur, /*int &x,*/ int mv, int n=1, bool=false, const ViewBlock *block=0);
-bool moveCursorFindInLine(ViewCursor &cur, ushort, const QChar &, int n=1);
+bool moveCursorFindInLine(DocCursor &cur, ushort, const QChar &, int n=1);
+bool moveCursorFind(DocCursor &cur, const QRegExp &, bool forward, int n=1, bool loop=true);
 bool moveCursorFind(ViewCursor &cur, const QRegExp &, bool forward, int n=1, bool loop=true);
 
 typedef uchar MoveMode;

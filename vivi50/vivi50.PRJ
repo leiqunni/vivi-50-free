@@ -27,9 +27,9 @@ memFileColumnWd = 320
 [files]
   gap_vector.h	(-84.078,377.793)
   main.cpp	(-105.304,-403.84)
-  mainwindow.cpp	(-113.265,-203.142)
+* mainwindow.cpp	(-113.265,-203.142)
   mainwindow.h	(-113.265,-236.142)
-  TextDocument.cpp	(-152.875,66.766)
+* TextDocument.cpp	(-152.875,66.766)
   TextDocument.h	(-152.875,33.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(17.7821,-394.336)
   mainwindowBench.cpp	(-113.265,-170.142)
@@ -40,23 +40,23 @@ memFileColumnWd = 320
   charEncoding.h	(138.416,-168.123)
   textCursor.cpp	(-335.316,-33.0248)
   textCursor.h	(-335.316,-66.0248)
-  TextView.cpp	(44.6123,-31.8647)
+* TextView.cpp	(44.6123,-31.8647)
   TextView.h	(44.6123,-64.8647)
-  FindDlg.cpp	(49.637,199.277)
-  FindDlg.h	(49.637,166.277)
-  findOpt.h	(241,304)
-  ReplaceDlg.cpp	(236,78)
-  ReplaceDlg.h	(236,45)
+* FindDlg.cpp	(49.637,199.277)
+* FindDlg.h	(49.637,166.277)
+* findOpt.h	(241,304)
+* ReplaceDlg.cpp	(236,78)
+* ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(170,-392)
   textBlock.cpp	(-363,293)
   textBlock.h	(-363,260)
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
-  ViEngine.cpp	(219,-29)
+* ViEngine.cpp	(219,-29)
   ViEngine.h	(219,-62)
   vi.h	(373,-83)
-  viCursor.cpp	(-180,296)
-  viCursor.h	(-180,263)
+* viCursor.cpp	(-180,296)
+* viCursor.h	(-180,263)
   TestViCommands.cpp	(127,-243)
   TestViCommands.h	(127,-276)
   WinApplication.cpp	(-309,-303)
@@ -69,24 +69,24 @@ memFileColumnWd = 320
   "TextDocument.cpp" 107 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 110 'B: ' '' undone マージ可能であれば直前アイテムとマージ
   "TextDocument.cpp" 126 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 894 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
+  "TextDocument.cpp" 914 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 626 'B: ' '' undone 暫定コード
   "textCursor.cpp" 637 'B: ' '' undone 暫定コード
-  "TextView.cpp" 739 'B: ' '' undone 矢印表示に変更する
-  "TextView.cpp" 1025 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1237 'B: ' '' undone 暫定コード
+  "TextView.cpp" 740 'B: ' '' undone 矢印表示に変更する
+  "TextView.cpp" 1026 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
   "TextView.cpp" 1238 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1259 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1239 'B: ' '' undone 暫定コード
   "TextView.cpp" 1260 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1511 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1534 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1563 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1862 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1887 'B: ' '' undone 未コーディング
+  "TextView.cpp" 1261 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1527 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1550 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1579 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1878 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1903 'B: ' '' undone 未コーディング
   "textBlock.cpp" 606 'B: ' '' undone チャンクが連続している場合等
-  "ViEngine.cpp" 355 'B: ' '' undone 文書の改行コードを挿入
-  "ViEngine.cpp" 876 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 1092 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1198 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
-  "ViEngine.cpp" 1206 'B: ' '' undone 部分一致
+  "ViEngine.cpp" 356 'B: ' '' undone 文書の改行コードを挿入
+  "ViEngine.cpp" 877 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 1093 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1199 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 1207 'B: ' '' undone 部分一致
   "ViEngine.h" 139 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

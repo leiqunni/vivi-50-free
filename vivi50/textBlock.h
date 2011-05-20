@@ -74,6 +74,7 @@ public:
 	QString		text() const;
 	int			charsCount(index_t) const;		//	s“ª‚©‚çw’èˆÊ’u‚Ü‚Å‚Ì•¶š”‚ğ•Ô‚·
 	const TextDocument	*document() const { return m_document; }
+	TextDocument	*document() { return m_document; }
 
 	bool	operator==(const DocBlock &x) const
 	{ return m_document == x.m_document && blockNumber() == x.blockNumber(); }
