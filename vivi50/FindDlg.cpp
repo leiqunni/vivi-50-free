@@ -130,6 +130,8 @@ FindDlg::FindDlg(const QString &text, QWidget *parent, ushort matchCase)
 			m_dirGroup->setLayout(hBoxLayout3);
 			vBoxLayout2->addWidget(m_dirGroup);
 #endif
+		m_regexp = new QCheckBox("regexp");
+			vBoxLayout2->addWidget(m_regexp);
 		hBoxLayout2->addLayout(vBoxLayout2);
 		hBoxLayout2->addStretch();
 	QVBoxLayout *vBoxLayoutLeft = new QVBoxLayout();
@@ -179,10 +181,8 @@ void FindDlg::onFindPrev()
 		const int ix = m_caseGroup->selectedIndex();
 		if( !(!ix || ix == 1 && isLowerText(findString)) )
 			options |= MatchCase;
-#if 0
-		if( m_caseComboBox->currentIndex() == 1 )
-			options |= MatchCase;
-#endif
+		if( m_regexp->isChecked() )
+			options |= RegExp;
 		emit doFindNext(findString, options | FindBackWard);
 		addFindStringHist(findString);
 	}
@@ -195,14 +195,8 @@ void FindDlg::onFindNext()
 		const int ix = m_caseGroup->selectedIndex();
 		if( !(!ix || ix == 1 && isLowerText(findString)) )
 			options |= MatchCase;
-#if 0
-		if( m_caseComboBox->currentIndex() == 1 )
-			options |= MatchCase;
-#endif
-#if 0
-		if( m_findBackWard->isChecked() != 0 )
-			options |= FindBackWard;
-#endif
+		if( m_regexp->isChecked() )
+			options |= RegExp;
 		emit doFindNext(findString, options);
 		addFindStringHist(findString);
 	}

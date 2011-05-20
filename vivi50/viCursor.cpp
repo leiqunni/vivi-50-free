@@ -646,7 +646,7 @@ index_t moveCursorFindBackward(const QRegExp &rex, ViewBlock &block, int ix, int
 		}
 	}
 }
-bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth)
+bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth, bool loop)
 {
 	ViewBlock block = cur.block();
 	int curPos = cur.position();
@@ -658,6 +658,7 @@ bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth)
 			cur.setPosition(pos);
 			return true;
 		}
+		if( !loop ) return false;
 		//	•¶Í––”ö‚Ü‚Å‚ÉŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚çA•¶‘æ“ª‚©‚çŒŸõ
 		block = cur.view()->firstBlock();
 		ix = 0;
@@ -671,6 +672,7 @@ bool moveCursorFind(ViewCursor &cur, const QRegExp &rex, bool forward, int nth)
 			cur.setPosition(pos);
 			return true;
 		}
+		if( !loop ) return false;
 		//	•¶Íæ“ª‚Ü‚Å‚ÉŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚çA•¶‘––”ö‚©‚çŒŸõ
 		block = block.view()->lastBlock();
 		ix = block.text().length();

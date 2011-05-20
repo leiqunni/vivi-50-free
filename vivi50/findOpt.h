@@ -17,6 +17,7 @@ enum {
 	MatchCase = 0x01,
 	IgnoreLowerCase = 0x02,		//	¬•¶š‚Ì‚İŒŸõF‘å•¶š¬•¶š“¯ˆê‹
 	FindBackWard = 0x04,
+	RegExp = 0x08,				//	³‹K•\Œ»ŒŸõ
 };
 
 

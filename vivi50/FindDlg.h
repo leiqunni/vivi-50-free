@@ -32,7 +32,7 @@ class QComboBox;
 class QGroupBox;
 class QRadioButton;
 class RadioButtonGroup;
-
+class QCheckBox;
 
 void getStringFromHist(const QString &key, QString &text);
 void addStringToHist(const QString &key, const QString &text);
@@ -63,6 +63,7 @@ private:
 	QComboBox	*m_caseComboBox;
 	RadioButtonGroup	*m_caseGroup;
 	//QGroupBox	*m_caseGroup;
+	QCheckBox	*m_regexp;
 	QGroupBox	*m_dirGroup;
 	QRadioButton	*m_findBackWard;
 };

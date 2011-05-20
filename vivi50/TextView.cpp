@@ -27,6 +27,7 @@
 #include	"FindDlg.h"
 #include	"ReplaceDlg.h"
 #include	"ViEngine.h"
+#include	"viCursor.h"
 #include	<math.h>
 #include	<QDebug>
 
@@ -1296,12 +1297,27 @@ void TextView::find()
 void TextView::doFindNext(const QString &text, ushort options)
 {
 	if( text.isEmpty() ) return;
+	QRegExp rex(text,
+				(options & MatchCase) ? Qt::CaseSensitive : Qt::CaseInsensitive,
+				(options & RegExp) ? QRegExp::RegExp : QRegExp::FixedString);
+	if( !rex.isValid() ) {
+		emit showMessage(tr("invalid regexp."));
+		return;
+	}
+	if( moveCursorFind(*m_textCursor, rex,
+						(options & FindBackWard) == 0, 1, /*loop = */false) )
+	{
+		ensureCursorVisible();
+		viewport()->update();
+	}
+#if 0
 	DocCursor c = document()->find(text, *m_textCursor, options);
 	if( !c.isNull() ) {
 		*m_textCursor = c;
 		ensureCursorVisible();
 		viewport()->update();
 	}
+#endif
 }
 void TextView::isMatched(bool &b, const QString &text, ushort options)
 {
