@@ -122,7 +122,7 @@ public:
 			unit_test::n_failed += 1;
 			g_ut_output("F");
 
-			QString temp = QString("%1 ‚ğŠú‘Ò‚µ‚Ü‚µ‚½‚ª %2 ‚Å‚µ‚½B").arg(exp).arg(v);
+			QString temp = QString("'%1' expected, but '%2'.").arg(exp).arg(v);
 			qDebug() << temp;
 #if 0
 			std::string temp;
@@ -145,7 +145,7 @@ public:
 			unit_test::n_failed += 1;
 			g_ut_output("F");
 
-			QString temp = QString("'%1' ‚ğŠú‘Ò‚µ‚Ü‚µ‚½‚ª '%2' ‚Å‚µ‚½B").arg(exp).arg(v);
+			QString temp = QString("'%1' expected, but '%2'.").arg(exp).arg(v);
 			m_logs.push_back(SFailedInfo(fileName, lineNum, temp));
 		}
 	}
@@ -160,7 +160,7 @@ public:
 			unit_test::n_failed += 1;
 			g_ut_output("F");
 
-			QString temp = QString("%1 ‚ğŠú‘Ò‚µ‚Ü‚µ‚½‚ª %2 ‚Å‚µ‚½B").arg(exp).arg(v);
+			QString temp = QString("'%1' expected, but '%2'.").arg(exp).arg(v);
 			m_logs.push_back(SFailedInfo(fileName, lineNum, temp));
 		}
 	}

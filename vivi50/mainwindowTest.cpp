@@ -103,11 +103,11 @@ void MainWindow::doUnitTest()
 		test_TextView();
 	QString temp;
 	if( !g_total_fail_count ) {
-		temp = QString("おめでとぉ、テスト失敗がひとつもありませんでした。(%1 tested)\n")
+		temp = QString("Congratulations! no test-failed. (%1 tested)\n")
 						.arg(g_total_test_count);
 		//soundFile = theApp.getGlobSettings()->getTextValue(GLOBSTG_UT_SUCCESS_SOUND);
 	} else {
-		temp = QString("%1件のテスト失敗がありました。(%2 tested)\n")
+		temp = QString("%1 test-failed. (%2 tested)\n")
 						.arg(g_total_fail_count).arg(g_total_test_count);
 		//soundFile = theApp.getGlobSettings()->getTextValue(GLOBSTG_UT_FAILURE_SOUND);
 	}

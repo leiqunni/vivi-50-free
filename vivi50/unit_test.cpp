@@ -87,7 +87,7 @@ void CUnitTest::_test(bool b, cchar *fileName, int lineNum)
 		unit_test::n_failed += 1;
 		g_ut_output("F");
 
-		m_logs.push_back(SFailedInfo(fileName, lineNum, "true ‚ðŠú‘Ò‚µ‚Ü‚µ‚½‚ª false ‚Å‚µ‚½"));
+		m_logs.push_back(SFailedInfo(fileName, lineNum, "true expected, but false."));
 	}
 #endif
 }

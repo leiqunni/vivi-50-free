@@ -30,7 +30,7 @@ memFileColumnWd = 320
 * mainwindow.cpp	(-113.265,-203.142)
   mainwindow.h	(-113.265,-236.142)
 * TextDocument.cpp	(-152.875,66.766)
-  TextDocument.h	(-152.875,33.766)
+* TextDocument.h	(-152.875,33.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(17.7821,-394.336)
   mainwindowBench.cpp	(-113.265,-170.142)
   unit_test.cpp	(-353.896,-154.746)
@@ -49,7 +49,7 @@ memFileColumnWd = 320
 * ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(170,-392)
   textBlock.cpp	(-363,293)
-  textBlock.h	(-363,260)
+* textBlock.h	(-363,260)
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
 * ViEngine.cpp	(219,-29)
@@ -65,11 +65,11 @@ memFileColumnWd = 320
   RadioButtonGroup.h	(71,301)
 [ToDo]
   "TextDocument.cpp" 27 'R: ' '' undone 検索オプションだけのファイル作った方がいいかも
-  "TextDocument.cpp" 73 'B: ' '' undone 行単位の場合は改行チェック
-  "TextDocument.cpp" 107 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 110 'B: ' '' undone マージ可能であれば直前アイテムとマージ
-  "TextDocument.cpp" 126 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 914 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
+  "TextDocument.cpp" 74 'B: ' '' undone 行単位の場合は改行チェック
+  "TextDocument.cpp" 108 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 111 'B: ' '' undone マージ可能であれば直前アイテムとマージ
+  "TextDocument.cpp" 127 'M: ' '' undone 不要なヒープの解放
+  "TextDocument.cpp" 915 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 626 'B: ' '' undone 暫定コード
   "textCursor.cpp" 637 'B: ' '' undone 暫定コード
   "TextView.cpp" 740 'B: ' '' undone 矢印表示に変更する

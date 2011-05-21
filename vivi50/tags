@@ -32,8 +32,8 @@ CT_NEWLINE	.\viCursor.h	/^	CT_NEWLINE,$/;"	e	enum:__anon2
 CT_OTHER	.\viCursor.h	/^	CT_OTHER,		\/\/	その他文字$/;"	e	enum:__anon2
 CT_SPACE	.\viCursor.h	/^	CT_SPACE,$/;"	e	enum:__anon2
 CT_SYM	.\viCursor.h	/^	CT_SYM,			\/\/	半角シンボル$/;"	e	enum:__anon2
-CUnitTest	.\unit_test.cpp	/^CUnitTest::CUnitTest(cchar *unitName \/*, CVOStream *out*\/)$/;"	f	class:CUnitTest
 CUnitTest	.\unit_test.h	/^class CUnitTest$/;"	c
+CUnitTest	.\unit_test.cpp	/^CUnitTest::CUnitTest(cchar *unitName \/*, CVOStream *out*\/)$/;"	f	class:CUnitTest
 CharEncoding	.\charEncoding.h	/^namespace CharEncoding {$/;"	n
 DBCSsizeTable	.\charEncoding.cpp	/^uchar const DBCSsizeTable[0x100] = {$/;"	v
 DBCStable1	.\charEncoding.cpp	/^bool const DBCStable1[0x100] = {		\/\/	ＤＢ文字のファーストバイトかどうか$/;"	v
@@ -304,8 +304,8 @@ canUndo	.\TextDocument.h	/^	bool	canUndo() const { return m_current != 0; };$/;"
 canUndo	.\TextDocument.h	/^	bool	canUndo() const { return m_undoMgr->canUndo(); };$/;"	f	class:TextDocument
 capacity	.\gap_vector.h	/^	size_type	capacity() const { return \/*!m_first ? 0 :*\/ m_last - m_first; }$/;"	f	class:std::gap_vector
 cbegin	.\gap_vector.h	/^	const_iterator cbegin() const { return const_iterator(m_first != m_gapBegin ? m_first : m_gapEnd, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
-cchar	.\charEncoding.h	/^typedef const char cchar;$/;"	t
 cchar	.\unit_test.h	/^typedef const char cchar;$/;"	t
+cchar	.\charEncoding.h	/^typedef const char cchar;$/;"	t
 cend	.\gap_vector.h	/^	const_iterator cend() const { return const_iterator(m_last, \/*m_first,*\/ m_gapBegin, m_gapEnd \/*, m_last*\/); }$/;"	f	class:std::gap_vector
 centralWidget	.\GeneratedFiles\ui_mainwindow.h	/^    QWidget *centralWidget;$/;"	m	class:Ui_MainWindowClass
 charAt	.\TextDocument.cpp	/^QChar TextDocument::charAt(index_t ix) const$/;"	f	class:TextDocument
@@ -759,9 +759,9 @@ m_lbMgr	.\textBlock.h	/^	LaidoutBlocksMgr	*m_lbMgr;$/;"	m	class:LaidoutBlock
 m_lbMgr	.\TextView.h	/^	mutable LaidoutBlocksMgr	*m_lbMgr;$/;"	m	class:TextView
 m_lineBreakMode	.\TextView.h	/^	bool	m_lineBreakMode;					\/\/	右端で折り返し$/;"	m	class:TextView
 m_lineBreaking	.\TextView.h	/^	bool	m_lineBreaking;						\/\/	折り返し処理中$/;"	m	class:TextView
+m_lineNum	.\unit_test.h	/^	int				m_lineNum;$/;"	m	struct:SFailedInfo
 m_lineNum	.\TestViCommands.cpp	/^	int			m_lineNum;$/;"	m	class:TestViCommands	file:
 m_lineNum	.\TestViCommands.cpp	/^	int		m_lineNum;$/;"	m	struct:TestFailedItem	file:
-m_lineNum	.\unit_test.h	/^	int				m_lineNum;$/;"	m	struct:SFailedInfo
 m_lineNum1	.\ViEngine.h	/^	int		m_lineNum1;				\/\/	ex command range from$/;"	m	class:ViEngine
 m_lineNum2	.\ViEngine.h	/^	int		m_lineNum2;				\/\/	ex command range to$/;"	m	class:ViEngine
 m_lineNumberArea	.\TextView.h	/^	QWidget	*m_lineNumberArea;$/;"	m	class:TextView
@@ -769,9 +769,9 @@ m_lineNumberAreaWidth	.\TextView.h	/^	int		m_lineNumberAreaWidth;$/;"	m	class:Te
 m_lineNumberWidth	.\TextView.h	/^	int		m_lineNumberWidth;$/;"	m	class:TextView
 m_logs	.\unit_test.h	/^	std::vector<SFailedInfo>	m_logs;$/;"	m	class:CUnitTest
 m_mainWindow	.\TestViCommands.cpp	/^	MainWindow	*m_mainWindow;$/;"	m	class:TestViCommands	file:
+m_message	.\unit_test.h	/^	QString		m_message;$/;"	m	struct:SFailedInfo
 m_message	.\TestViCommands.cpp	/^	QString	m_message;$/;"	m	struct:TestFailedItem	file:
 m_message	.\ViEngine.h	/^	QString	m_message;$/;"	m	class:ViEngine
-m_message	.\unit_test.h	/^	QString		m_message;$/;"	m	struct:SFailedInfo
 m_mode	.\ViEngine.h	/^	Mode	m_mode;$/;"	m	class:ViEngine
 m_modified	.\TextDocument.h	/^	bool	m_modified;$/;"	m	class:TextDocument
 m_mouseCaptured	.\TextView.h	/^	bool	m_mouseCaptured;$/;"	m	class:TextView
@@ -934,12 +934,12 @@ operator --	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator--()$/;"	f	class:Vie
 operator <	.\textBlock.h	/^	bool	operator<(const DocBlock &x) const$/;"	f	class:DocBlock
 operator <	.\textBlock.h	/^	bool	operator<(const ViewBlock &x) const$/;"	f	class:ViewBlock
 operator <	.\textCursor.h	/^	bool	operator<(const DocCursor &x) const { return position() < x.position(); }$/;"	f	class:DocCursor
+operator =	.\unit_test.h	/^	const SFailedInfo &operator=(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
 operator =	.\textBlock.h	/^	LaidoutChunk	&operator=(const LaidoutChunk &x)$/;"	f	struct:LaidoutChunk
 operator =	.\TextDocument.h	/^	GVUndoItem &operator=(const GVUndoItem &x)$/;"	f	struct:GVUndoItem
 operator =	.\textBlock.cpp	/^ViewBlock &ViewBlock::operator=(const DocBlock &docBlock)$/;"	f	class:ViewBlock
 operator =	.\textCursor.cpp	/^ViewCursor &ViewCursor::operator=(const DocCursor &x)$/;"	f	class:ViewCursor
 operator =	.\gap_vector.h	/^	gap_vector &operator=(const gap_vector &x)$/;"	f	class:std::gap_vector
-operator =	.\unit_test.h	/^	const SFailedInfo &operator=(const SFailedInfo &src)$/;"	f	struct:SFailedInfo
 operator ==	.\textBlock.h	/^	bool	operator==(const DocBlock &x) const$/;"	f	class:DocBlock
 operator ==	.\textBlock.h	/^	bool	operator==(const LaidoutBlock &x) const { return index() == x.index(); }$/;"	f	class:LaidoutBlock
 operator ==	.\textBlock.h	/^	bool	operator==(const ViewBlock &x) const$/;"	f	class:ViewBlock
@@ -1133,15 +1133,15 @@ toPlainText	.\TextDocument.cpp	/^QString TextDocument::toPlainText() const$/;"	f
 toPlainText	.\TextView.cpp	/^QString TextView::toPlainText() const$/;"	f	class:TextView
 uchar	.\TextDocument.h	/^typedef unsigned char uchar;$/;"	t
 uchar	.\charEncoding.h	/^typedef unsigned char uchar;$/;"	t
-uint	.\gap_vector.h	/^typedef unsigned int uint;$/;"	t
 uint	.\unit_test.h	/^typedef unsigned int uint;$/;"	t
+uint	.\gap_vector.h	/^typedef unsigned int uint;$/;"	t
 undo	.\TextView.cpp	/^void TextView::undo(bool vi)$/;"	f	class:TextView
 undoAct	.\mainwindow.h	/^    QAction *undoAct;$/;"	m	class:MainWindow
 unitTestAct	.\mainwindow.h	/^    QAction	*unitTestAct;$/;"	m	class:MainWindow
 unitTestDocAct	.\mainwindow.h	/^    QAction	*unitTestDocAct;$/;"	m	class:MainWindow
 unitTestViewAct	.\mainwindow.h	/^    QAction	*unitTestViewAct;$/;"	m	class:MainWindow
-unit_test	.\unit_test.cpp	/^namespace unit_test {$/;"	n	file:
 unit_test	.\unit_test.h	/^namespace unit_test {$/;"	n
+unit_test	.\unit_test.cpp	/^namespace unit_test {$/;"	n	file:
 updateBlockData	.\textCursor.cpp	/^void DocCursor::updateBlockData(uchar mode)$/;"	f	class:DocCursor
 updateBlockData	.\textCursor.cpp	/^void ViewCursor::updateBlockData(uchar mode)$/;"	f	class:ViewCursor
 updateBlocks	.\TextView.cpp	/^void TextView::updateBlocks()$/;"	f	class:TextView
