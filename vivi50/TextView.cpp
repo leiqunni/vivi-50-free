@@ -700,6 +700,10 @@ void TextView::doPaint()
 				++mcitr;
 			}
 		}
+		if( m_textCursor->block() == block) {		//	カーソル行の場合
+			painter.setPen(Qt::red);
+			painter.drawLine(0, y + fm.ascent() + 1, vr.width(), y + fm.ascent() + 1);
+		} 
 		//painter.drawText(MARGIN_LEFT, y + fm.ascent(), text);
 		int x = 0;
 		int ix = 0;
