@@ -1432,10 +1432,11 @@ void TextView::drawLineNumbers()
 		y += fm.lineSpacing();
 	}
 }
-void TextView::doJump(int lineNum)
+void TextView::doJump(
+				int lineNum)	//	ドキュメント行番号（1..*）
 {
 	DocCursor cur(document());
-	if( cur.movePosition(DocCursor::Down, DocCursor::MoveAnchor, lineNum - 1) ) {
+	if( cur.movePosition(ViMoveOperation::JumpLine, DocCursor::MoveAnchor, lineNum) ) {
 		*m_textCursor = ViewCursor(this, cur);
 		ensureCursorVisible();
 		viewport()->update();
