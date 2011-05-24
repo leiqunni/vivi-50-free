@@ -650,7 +650,7 @@ bool moveCursorFind(DocCursor &cur, const QRegExp &rex, bool forward, int nth, b
 {
 	DocBlock block = cur.block();
 	int curPos = cur.position();
-	int ix = curPos - block.position();
+	int ix = cur.prevCharsCount();
 	int pos;
 	if( forward ) {
 		++ix;
