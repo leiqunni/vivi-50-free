@@ -640,7 +640,7 @@ index_t moveCursorFindBackward(const QRegExp &rex, DocBlock &block, int ix, int 
 			ix = i - 1;
 		} else {
 			block = block.prev();
-			if( !block.isValid() || limit >= 0 && block.position() < limit )
+			if( !block.isValid() || limit >= 0 && block.position() + block.size() < limit )
 				return -1;
 			ix = block.text().length();
 		}
