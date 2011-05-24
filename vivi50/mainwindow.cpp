@@ -323,6 +323,7 @@ void MainWindow::createToolBars()
 void MainWindow::createDockWindows()
 {
     m_outputDock = new QDockWidget(tr("Output"), this);
+    m_outputDock->setObjectName("Output");
     m_outputDock->setAllowedAreas(Qt::AllDockWidgetAreas);
     m_output = new QTextEdit(m_outputDock);
     m_output->setReadOnly(true);
@@ -349,11 +350,14 @@ void MainWindow::onBenchmarkReplace(bool b)
 void MainWindow::readSettings()
 {
     QSettings settings;
-    QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
-    QSize size = settings.value("size", QSize(400, 400)).toSize();
-    move(pos);
-    resize(size);
-    m_unitTestDoc = settings.value("unitTestDoc", true).toBool();
+    //QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
+    //QSize size = settings.value("size", QSize(400, 400)).toSize();
+    //move(pos);
+    //resize(size);
+	restoreGeometry(settings.value("geometry").toByteArray());
+	restoreState(settings.value("windowState").toByteArray());
+
+	m_unitTestDoc = settings.value("unitTestDoc", true).toBool();
     unitTestDocAct->setChecked(m_unitTestDoc);
     m_unitTestView = settings.value("unitTestView", true).toBool();
     unitTestViewAct->setChecked(m_unitTestView);
@@ -365,8 +369,10 @@ void MainWindow::readSettings()
 void MainWindow::writeSettings()
 {
     QSettings settings;
-    settings.setValue("pos", pos());
-    settings.setValue("size", size());
+    //settings.setValue("pos", pos());
+    //settings.setValue("size", size());
+	settings.setValue("geometry", saveGeometry());
+	settings.setValue("windowState", saveState());
     //settings.setValue("linebreak", m_view->lineBreakMode());
 }
 bool MainWindow::maybeSave()
