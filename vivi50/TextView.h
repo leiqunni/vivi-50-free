@@ -152,6 +152,7 @@ public:
 	size_t	deleteChar(ViewCursor &);
 	size_t	deletePreviousChar(ViewCursor &);
 	void	buildBlocks() { buildBlocks(firstBlock(), 0, 0); }
+	void	addToMultiCursor();
 
 public slots:
 	void	copy();
@@ -200,7 +201,6 @@ protected:
 	void	updateScrollBarData();
 	void	drawLineNumbers();
 	void	resetCursorBlinkTimer();
-	void	addToMultiCursor();
 	void	addToMultiCursor(const ViewCursor &cur) { m_multiCursor.push_back(cur); };
 	void	ensureBlockLayout();
 	void	updateBlocks();

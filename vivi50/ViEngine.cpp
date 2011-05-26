@@ -396,9 +396,28 @@ bool ViEngine::doViCommand(const QChar &qch)
 	if( m_cmdPrefix != 0 ) {
 		switch( m_cmdPrefix ) {
 		case 'g':
-			if( ch == 'g' ) {
+			switch( ch ) {
+			case 'g':
 				cursorMoved = cur.movePosition(ViMoveOperation::JumpLine);
 				m_moveByLine = true;
+				break;
+			case 'h':
+				cursorMoved = cur.movePosition(ViMoveOperation::Left, DocCursor::MoveAnchor, repeatCount());
+				break;
+			case 'j':
+				cursorMoved = cur.movePosition(ViMoveOperation::Down, DocCursor::MoveAnchor, repeatCount());
+				break;
+			case 'k':
+				cursorMoved = cur.movePosition(ViMoveOperation::Up, DocCursor::MoveAnchor, repeatCount());
+				break;
+			case 'l':
+				cursorMoved = cur.movePosition(ViMoveOperation::Right, DocCursor::MoveAnchor, repeatCount());
+				break;
+			}
+			if( cursorMoved && (ch == 'h' || ch == 'j' || ch == 'k' || ch == 'l') ) {
+				m_view->addToMultiCursor();
+				m_view->setTextCursor(cur);
+				cursorMoved = false;		//	{c|d|y}g{h|j|k|l} ‚Í•s‰Â‚Æ‚·‚é
 			}
 			break;
 		case 'r': {
