@@ -351,14 +351,12 @@ bool ViEngine::doViCommand(const QChar &qch)
 				//cur.endEditBlock();
 			} else {
 #endif
-				//cur.insertText(qch);
-				if( qch == '\n' || qch == '\r' ) {
-					//	undone B 文書の改行コードを挿入
-					cur.insertText(document()->EOLText());
-				} else
-					cur.insertText(qch);
-			//}
 			m_view->setTextCursor(cur);
+			if( qch == '\n' || qch == '\r' ) {
+				//	undone B 文書の改行コードを挿入
+				m_view->insertText(document()->EOLText());
+			} else
+				m_view->insertText(qch);
 		}
 		return true;
 	}
