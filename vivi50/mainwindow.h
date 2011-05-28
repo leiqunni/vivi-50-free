@@ -95,6 +95,7 @@ private slots:
 	void	setFocusToCmdLine();
 	void	showMessage(const QString & text);
 	void	font();
+	void	viSupported(bool);
 	void	doUnitTest();
 	void	onUnitTestDoc(bool);
 	void	onUnitTestView(bool);
@@ -149,6 +150,7 @@ private:
     QAction *replaceAct;
     QAction *linebreakAct;		//	右端で折り返し
     QAction *fontAct;			//	暫定的
+    QAction *viSupportedAct;			//	暫定的
     QAction *aboutAct;
 
 	QAction	*printBufferAct;

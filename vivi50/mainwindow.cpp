@@ -210,6 +210,10 @@ void MainWindow::createActions()
     linebreakAct->setChecked(false);
     connect(linebreakAct, SIGNAL(toggled(bool)), m_view, SLOT(onLineBreak(bool)));
 
+	viSupportedAct = new QAction(tr("&vi commands supported"), this);
+    viSupportedAct->setStatusTip(tr("select if vi commands supported"));
+    viSupportedAct->setCheckable(true);
+    connect(viSupportedAct, SIGNAL(toggled(bool)), this, SLOT(viSupported(bool)));
 	fontAct = new QAction(/*QIcon(":vivi/Resources/images/editredo.png"),*/ tr("&Font..."), this);
     fontAct->setStatusTip(tr("select Font family and/or size"));
     connect(fontAct, SIGNAL(triggered()), this, SLOT(font()));
@@ -277,6 +281,7 @@ void MainWindow::createMenus()
     viewMenu->addAction(linebreakAct);
 
     settingsMenu = menuBar()->addMenu(tr("&Settings"));
+	settingsMenu->addAction(viSupportedAct);
 	settingsMenu->addAction(fontAct);
 
     otherMenu = menuBar()->addMenu(tr("&Other"));
@@ -365,6 +370,9 @@ void MainWindow::readSettings()
     benchmarkReplaceAct->setChecked(m_benchmarkReplace);
     m_view->setLineBreakMode(settings.value("linebreak", false).toBool());
     linebreakAct->setChecked(m_view->lineBreakMode());
+    const bool b = settings.value("viSupported", true).toBool();
+    viSupportedAct->setChecked(b);
+    viSupported(b);
 }
 void MainWindow::writeSettings()
 {
@@ -374,6 +382,7 @@ void MainWindow::writeSettings()
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
     //settings.setValue("linebreak", m_view->lineBreakMode());
+	settings.setValue("viSupported", m_viEngine->viSupported());
 }
 bool MainWindow::maybeSave()
 {
@@ -586,6 +595,7 @@ void MainWindow::setCurrentFile(const QString &fileName)
     } else {
     	m_view->document()->setFullPath(fileName);
         m_curFile = QFileInfo(fileName).canonicalFilePath();
+        m_absFilePath = QFileInfo(fileName).absoluteFilePath();
     }
     setWindowModified(false);
     updateWindowTitle();
@@ -781,11 +791,16 @@ void MainWindow::loadFile(const QString &fileName, int lineNum)
 
 	setCurrentFile(fn);
 	statusBar()->showMessage(tr("File loaded"), 2000);
+	activateWindow();
 }
 void MainWindow::documentWasModified()
 {
     setWindowModified(m_view->document()->isModified());
     updateWindowTitle();
+}
+void MainWindow::viSupported(bool b)
+{
+	m_viEngine->setViSupported(b);
 }
 void MainWindow::font()
 {

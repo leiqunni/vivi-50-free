@@ -68,6 +68,7 @@ TextView::TextView(QWidget *parent)
 	m_viEngine = 0;
 	m_overwriteMode = false;
 	m_mouseCaptured = false;
+	m_mouseDoubleClicked = false;
 	m_toDeleteIMEPreeditText = false;
 	m_drawCursor = true;
 	m_lineBreakMode = false;
@@ -93,6 +94,7 @@ TextView::TextView(QWidget *parent)
 	m_lbMgr = new LaidoutBlocksMgr(m_document);
 #endif
 	m_textCursor = new ViewCursor(this);
+	m_wordSelCursor = new ViewCursor(this);
 	m_preeditPosCursor = new ViewCursor(this);
 	connect(m_document, SIGNAL(blockCountChanged()), this, SLOT(onBlockCountChanged()));
 
@@ -1484,27 +1486,48 @@ void TextView::mousePressEvent ( QMouseEvent * event )
 void TextView::mouseReleaseEvent ( QMouseEvent * event )
 {
 	m_mouseCaptured = false;
+	m_mouseDoubleClicked = false;
+	qDebug() << "mouseReleaseEvent()";
+}
+void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
+{
+	m_mouseDoubleClicked = true;
+	m_textCursor->movePosition(DocCursor::StartOfWord);
+	m_textCursor->movePosition(DocCursor::EndOfWord, DocCursor::KeepAnchor);
+	*m_wordSelCursor = *m_textCursor;
+	removeOverlappedCursor();
+	viewport()->update();
 }
 void TextView::mouseMoveEvent ( QMouseEvent * event )
 {
-	if( m_mouseCaptured ) {
+	if( m_mouseCaptured || m_mouseDoubleClicked ) {
 		ViewBlock block = yToTextBlock(event->y());
 		if( !block.isValid() )
 			block = lastBlock();
 		int offset = xToCharCount(block.text(), event->x());
-		m_textCursor->setPosition(block.position(), DocCursor::KeepAnchor);
-		if( offset != 0 )
-			m_textCursor->movePosition(DocCursor::Right, DocCursor::KeepAnchor, offset);
+		if( !m_mouseDoubleClicked ) {
+			//	通常選択時
+			m_textCursor->setPosition(block.position(), DocCursor::KeepAnchor);
+			if( offset != 0 )
+				m_textCursor->movePosition(DocCursor::Right, DocCursor::KeepAnchor, offset);
+		} else {
+			//	単語単位選択時
+			index_t pos = block.position() + offset;
+			if( pos < m_wordSelCursor->anchor() ) {
+				if( m_textCursor->anchor() < m_textCursor->position() )
+					m_textCursor->swapPositionAnchor();
+				m_textCursor->setPosition(pos, DocCursor::KeepAnchor);
+				m_textCursor->movePosition(DocCursor::StartOfWord, DocCursor::KeepAnchor);
+			} else if( pos >= m_wordSelCursor->position() ) {
+				if( m_textCursor->anchor() > m_textCursor->position() )
+					m_textCursor->swapPositionAnchor();
+				m_textCursor->setPosition(pos, DocCursor::KeepAnchor);
+				m_textCursor->movePosition(DocCursor::EndOfWord, DocCursor::KeepAnchor);
+			}
+		}
 		removeOverlappedCursor();
 		viewport()->update();
 	}
-}
-void TextView::mouseDoubleClickEvent ( QMouseEvent * event )
-{
-	m_textCursor->movePosition(DocCursor::StartOfWord);
-	m_textCursor->movePosition(DocCursor::EndOfWord, DocCursor::KeepAnchor);
-	removeOverlappedCursor();
-	viewport()->update();
 }
 void TextView::getAllCursor(std::vector<ViewCursor*> &v)
 {

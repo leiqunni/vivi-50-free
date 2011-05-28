@@ -51,11 +51,13 @@ public:
 	~ViEngine();
 
 public:
+	bool	viSupported() const { return m_viSupported; }
 	Mode	mode() const { return m_mode; }
 	const QString &message() const { return m_message; }
 	const QStringList &exCommands() const { return m_exCommands; }
 
 public:
+	void	setViSupported(bool);
 	void	doViCommand(const QString &);
 	bool	doViCommand(const QChar &);
 	void	onImeOpenStatusChanged();
@@ -108,6 +110,7 @@ protected:
 	QString	getExCommand(const QString &, int &, bool &exclamation);
 
 private:
+	bool	m_viSupported;			//	vi コマンド有効
 	bool	m_noRepeatCount;		//	繰り返し回数指定不可（for fFtT等）
 	bool	m_redoRecording;		//	.(redo) のために挿入文字列記録中
 	bool	m_redoing;				//	.(redo) 実行中

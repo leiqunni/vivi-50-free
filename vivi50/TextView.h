@@ -240,6 +240,7 @@ signals:
 private:
 	bool	m_overwriteMode;				//	上書きモード
 	bool	m_mouseCaptured;
+	bool	m_mouseDoubleClicked;
 	bool	m_toDeleteIMEPreeditText;
 	bool	m_drawCursor;
 	bool	m_lineBreakMode;					//	右端で折り返し
@@ -249,6 +250,7 @@ private:
 	std::vector<ViewCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる
 	ViewCursor	*m_preeditPosCursor;
+	ViewCursor	*m_wordSelCursor;				//	単語選択時初期選択範囲
 	QString	m_preeditString;
 	TextDocument	*m_document;
 	ViewCursor	*m_textCursor;					//	ビュー用カーソル

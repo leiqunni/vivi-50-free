@@ -36,7 +36,7 @@ ViEngine::ViEngine(QObject *parent)
 	: m_noInsModeAtImeOpenStatus(false), m_mode(CMD), m_view(0)
 	, m_redoRecording(false), m_redoing(false), m_redoRepeatCount(0)
 	, m_noRepeatCount(false), m_joinPrevEditBlock(false)
-	, m_moveByLine(false)
+	, m_moveByLine(false), m_viSupported(true)
 	, m_cmdPrefix(0), m_cdyCmd(0)	//(0)
 	, m_repeatCount(0), m_repeatCount2(0), QObject(parent)
 {
@@ -58,6 +58,12 @@ void ViEngine::setEditor(TextView *editor)
 #if USE_EVENT_FILTER
 	m_view->installEventFilter(this);
 #endif
+}
+void ViEngine::setViSupported(bool b)
+{
+	m_viSupported = b;
+	if( !m_viSupported )
+		setMode(INSERT);
 }
 void ViEngine::setMode(Mode mode, ushort subMode)
 {
@@ -322,14 +328,16 @@ bool ViEngine::doViCommand(const QChar &qch)
 				}
 #endif
 			}
-			moveCursor(cur, ViMoveOperation::Left);
-			m_view->setTextCursor(cur);
-			m_view->setOverwriteMode(false);
-			m_joinPrevEditBlock = false;
-			m_redoRecording = false;
-			m_insCount = 0;
+			if( viSupported() ) {
+				moveCursor(cur, ViMoveOperation::Left);
+				m_view->setTextCursor(cur);
+				m_view->setOverwriteMode(false);
+				m_joinPrevEditBlock = false;
+				m_redoRecording = false;
+				m_insCount = 0;
+				setMode(CMD);
+			}
 			document()->setDoNotMergeUndoItem();
-			setMode(CMD);
 		} else {
 			if( ch == 0x08 ) {		//	BackSpace
 				if( !m_insertedText.isEmpty() )
