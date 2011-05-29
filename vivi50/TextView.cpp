@@ -1512,16 +1512,19 @@ void TextView::mouseMoveEvent ( QMouseEvent * event )
 				m_textCursor->movePosition(DocCursor::Right, DocCursor::KeepAnchor, offset);
 		} else {
 			//	’PŒê’PˆÊ‘I‘ðŽž
-			index_t pos = block.position() + offset;
-			if( pos < m_wordSelCursor->anchor() ) {
+			DocCursor cur(document());
+			cur.setPosition(block.position(), DocCursor::KeepAnchor);
+			if( offset != 0 )
+				cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, offset);
+			if( cur.position() < m_wordSelCursor->anchor() ) {
 				if( m_textCursor->anchor() < m_textCursor->position() )
 					m_textCursor->swapPositionAnchor();
-				m_textCursor->setPosition(pos, DocCursor::KeepAnchor);
+				m_textCursor->setPosition(cur.position(), DocCursor::KeepAnchor);
 				m_textCursor->movePosition(DocCursor::StartOfWord, DocCursor::KeepAnchor);
-			} else if( pos >= m_wordSelCursor->position() ) {
+			} else if( cur.position() >= m_wordSelCursor->position() ) {
 				if( m_textCursor->anchor() > m_textCursor->position() )
 					m_textCursor->swapPositionAnchor();
-				m_textCursor->setPosition(pos, DocCursor::KeepAnchor);
+				m_textCursor->setPosition(cur.position(), DocCursor::KeepAnchor);
 				m_textCursor->movePosition(DocCursor::EndOfWord, DocCursor::KeepAnchor);
 			}
 		}
