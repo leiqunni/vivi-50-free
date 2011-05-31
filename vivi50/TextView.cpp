@@ -161,6 +161,13 @@ size_t TextView::blockCount() const
 #endif
 #endif
 }
+size_t TextView::laidoutDocBlockCount() const
+{
+	if( m_lineBreakMode )
+		return m_lbMgr->laidoutDocBlockCount();
+	else
+		return 0;
+}
 #if LAIDOUT_BLOCKS_MGR
 bool TextView::isLayoutedDocBlock(index_t ix) const
 {

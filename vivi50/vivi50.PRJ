@@ -49,7 +49,7 @@ memFileColumnWd = 320
   ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(170,-392)
   textBlock.cpp	(-363,293)
-  textBlock.h	(-363,260)
+* textBlock.h	(-363,260)
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
   ViEngine.cpp	(219,-29)
@@ -72,17 +72,17 @@ memFileColumnWd = 320
   "TextDocument.cpp" 915 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 626 'B: ' '' undone 暫定コード
   "textCursor.cpp" 637 'B: ' '' undone 暫定コード
-  "TextView.cpp" 746 'B: ' '' undone 矢印表示に変更する
-  "TextView.cpp" 1032 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
-  "TextView.cpp" 1244 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1245 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1266 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1267 'B: ' '' undone 暫定コード
-  "TextView.cpp" 1555 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1578 'R: ' '' undone insertText と処理を共通化
-  "TextView.cpp" 1607 'A: ' '' undone BlockData も要補正
-  "TextView.cpp" 1906 'B: ' '' undone 垂直スクロールバー位置更新
-  "TextView.cpp" 1931 'B: ' '' undone 未コーディング
+  "TextView.cpp" 753 'B: ' '' undone 矢印表示に変更する
+  "TextView.cpp" 1039 'C: ' '' undone 本当は設定で CRLF/CR/LF のいずれかを挿入
+  "TextView.cpp" 1251 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1252 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1273 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1274 'B: ' '' undone 暫定コード
+  "TextView.cpp" 1565 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1588 'R: ' '' undone insertText と処理を共通化
+  "TextView.cpp" 1617 'A: ' '' undone BlockData も要補正
+  "TextView.cpp" 1916 'B: ' '' undone 垂直スクロールバー位置更新
+  "TextView.cpp" 1941 'B: ' '' undone 未コーディング
   "textBlock.cpp" 606 'B: ' '' undone チャンクが連続している場合等
   "ViEngine.cpp" 364 'B: ' '' undone 文書の改行コードを挿入
   "ViEngine.cpp" 902 'R: ' '' undone delete の場合と処理を共通化する

@@ -225,7 +225,8 @@ public:
 	{
 		if( first < m_blockSize.size() ) {
 			last = qMin(m_blockSize.size(), last);
-			m_laidoutDocBlockCount -= last - first;
+			m_laidoutDocBlockCount -= docBlockNumberFromBlockNumber(last) -
+										docBlockNumberFromBlockNumber(first);
 			m_blockSize.erase(first, last);
 		}
 #if 0

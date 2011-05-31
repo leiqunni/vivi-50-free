@@ -124,6 +124,7 @@ private:
 	bool	m_benchmarkReplace;
 
 	QDockWidget	*m_outputDock;
+	QDockWidget	*m_telopDock;
 
     QMenu	*fileMenu;
     QMenu	*editMenu;

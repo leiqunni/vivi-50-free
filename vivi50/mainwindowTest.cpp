@@ -1048,17 +1048,20 @@ void test_TextView()
 		view.lbMgr()->setWidth(fm.width(QString("‚ ‚¢‚¤‚¦‚¨")));
 		view.onLineBreak(true);		//	‰E’[‚ÅÜ‚è•Ô‚µ
 		ut.ut_test_equal(1, view.blockCount());
+		ut.ut_test_equal(1, view.laidoutDocBlockCount());
 		ViewCursor cur(&view);
 		view.insertText(cur, "‚ ");
 		ut.ut_test_equal(3, view.size());
 		ut.ut_test_equal(1, doc->blockCount());
 		ut.ut_test_equal(1, view.blockCount());
+		ut.ut_test_equal(1, view.laidoutDocBlockCount());
 		ut.ut_test_equal(3, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 		view.insertText(cur, "‚ ‚¢‚¤‚¦‚¨");
 		ut.ut_test_equal(18, view.size());
 		ut.ut_test_equal(1, doc->blockCount());
 		ut.ut_test_equal(2, view.blockCount());
+		ut.ut_test_equal(1, view.laidoutDocBlockCount());
 		ut.ut_test_equal(18, cur.position());
 		ut.ut_test_equal(1, cur.viewBlockNumber());		//	‚Qs–Ú
 		cur.movePosition(DocCursor::StartOfDocument);
@@ -1069,6 +1072,7 @@ void test_TextView()
 		ut.ut_test_equal(19, view.size());
 		ut.ut_test_equal(1, doc->blockCount());
 		ut.ut_test_equal(2, view.blockCount());
+		ut.ut_test_equal(1, view.laidoutDocBlockCount());
 		ut.ut_test_equal(1, cur.position());
 		ut.ut_test_equal(0, cur.viewBlockNumber());
 	}

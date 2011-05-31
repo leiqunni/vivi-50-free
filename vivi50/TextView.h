@@ -101,6 +101,7 @@ public:
 	bool	isLayoutedViewBlock(index_t ix) const;
 	size_t	blockSize(index_t ix) const;	// { return m_blocks[ix].m_size; }
 	size_t	blockCount() const;
+	size_t	laidoutDocBlockCount() const;
 #if !LAIDOUT_BLOCKS_MGR
 	size_t	firstUnlayoutedBlockCount() const { return m_firstUnlayoutedBlockCount; }
 	size_t	layoutedDocBlockCount() const { return m_layoutedDocBlockCount; }
