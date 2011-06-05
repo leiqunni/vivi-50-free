@@ -586,6 +586,7 @@ void TextDocument::erase(index_t first, index_t last)
 	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
 	m_cacheBlockData = d;	//	キャッシュ更新
+	updateMarkedPos(first, (int)(first - last));
 }
 void TextDocument::erase(index_t first, BlockData d, index_t last)
 {
@@ -593,6 +594,7 @@ void TextDocument::erase(index_t first, BlockData d, index_t last)
 	updateBlocksAtErase(first, d, last);
 	m_buffer.erase(first, last);
 	m_cacheBlockData = d;	//	キャッシュ更新
+	updateMarkedPos(first, (int)(first - last));
 }
 void TextDocument::insert(index_t position, BlockData d, const QString &text)
 {
@@ -604,6 +606,7 @@ void TextDocument::insert(index_t position, BlockData d, const QString &text)
 	m_buffer.insert(position, ptr, ptr + sz);
 	m_cacheBlockData = d;	//	キャッシュ更新
 	updateBlocksAtInsert(position, d, sz);
+	updateMarkedPos(position, sz);
 }
 void TextDocument::insert(index_t position, const QString &text)
 {
@@ -617,6 +620,7 @@ void TextDocument::insert(index_t ix, BlockData d,
 	m_buffer.insert(ix, first, last);
 	m_cacheBlockData = d;	//	キャッシュ更新
 	updateBlocksAtInsert(ix, d, last - first);
+	updateMarkedPos(ix, last - first);
 }
 void TextDocument::insert(index_t ix, cuchar *first, cuchar *last)
 {
