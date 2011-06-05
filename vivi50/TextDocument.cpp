@@ -663,6 +663,7 @@ size_t TextDocument::deleteChar(DocCursor &cur)
 	do_erase(first, last, flags);
 	cur.copyAnchorToPosition();
 	m_cacheBlockData = cur.blockData();
+	//updateMarkedPos(first, (int)(first - last));
 	m_modified = true;
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
@@ -681,6 +682,7 @@ size_t TextDocument::deletePreviousChar(DocCursor &cur)
 	do_erase(first, last, GVUNDOITEM_CUR_TAIL);
 	cur.copyPositionToAnchor();
 	m_cacheBlockData = cur.blockData();
+	updateMarkedPos(first, (int)(first - last));
 	m_modified = true;
 	emit contentsChange(first, last - first, 0);
 	emit contentsChanged();
@@ -727,6 +729,7 @@ int TextDocument::insertText(DocCursor &cur, const QString &text,
 		cur.setPosition(cur.position() + sz);
 	//cur.movePosition(DocCursor::Right, DocCursor::MoveAnchor, text.length());
 	//m_cacheBlockData = cur.blockData();
+	updateMarkedPos(position, sz - delSz);
 	m_modified = true;
 	emit contentsChange(position, delSz, sz);
 	emit contentsChanged();
@@ -750,6 +753,7 @@ void TextDocument::do_insert(index_t position, const QString &text)
 	GVUndoItem *undoItem = new (m_pool_undoItem.malloc()) GVUndoItem(GVUNDOITEM_TYPE_INSERT, position, position + sz, 0);
 	m_undoMgr.push_back(undoItem, isModified());
 #endif
+	updateMarkedPos(position, sz);
 	m_modified = true;
 	emit contentsChange(position, 0, sz);
 	emit contentsChanged();
@@ -760,6 +764,7 @@ void TextDocument::do_erase(index_t first, index_t last, ushort flag)
 	erase(first, last);
 	m_undoMgr->push_back(GVUndoItem(GVUNDOITEM_TYPE_ERASE, first, last, hp_ix, 0, flag),
 						isModified());
+	updateMarkedPos(first, (int)(first - last));
 	emit contentsChange(first, last - first, 0);
 }
 void TextDocument::do_replace(index_t first, index_t last, const QString &text)
@@ -786,6 +791,7 @@ void TextDocument::do_replace(index_t first, index_t last, const QString &text)
 									first, last, hp_ix, first + sz);
 	m_undoMgr.push_back(undoItem, isModified());
 #endif
+	updateMarkedPos(first, sz - (last - first));
 	emit contentsChange(first, last - first, sz);
 }
 void TextDocument::doUndo(index_t &pos, index_t &anchor)
@@ -932,4 +938,15 @@ void TextDocument::setMarkedPos(uchar uch, index_t ix)
 {
 	if( (uch -= 'a') < 26 )
 		m_markedPos[uch] = ix;
+}
+void TextDocument::updateMarkedPos(index_t pos, int d)
+{
+	for(int ix = 0; ix < 26; ++ix) {
+		if( m_markedPos[ix] != INVALID_INDEX && m_markedPos[ix] >= pos ) {
+			if( d < 0 && m_markedPos[ix] < pos - d )		//	�폜�͈͂̏ꍇ
+				m_markedPos[ix] = INVALID_INDEX;
+			else
+				m_markedPos[ix] += d;
+		}
+	}
 }

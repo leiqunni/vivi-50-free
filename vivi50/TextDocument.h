@@ -379,6 +379,7 @@ public:
 	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }
 	void	setWithBOM(bool b) { m_withBOM = b; }
 
+	void	updateMarkedPos(index_t pos, int d);
 	void	setMarkedPos(uchar uch, index_t);		//	'a' <= uch <= 'z'
 
 public:

@@ -449,8 +449,8 @@ docIndex	.\textBlock.h	/^	index_t		docIndex() const { return DocBlock::index(); 
 docIndex	.\textBlock.h	/^	index_t	docIndex() const { return m_docBlockData.m_index; }$/;"	f	class:LaidoutBlock
 docPosition	.\textBlock.h	/^	index_t		docPosition() const { return DocBlock::position(); };$/;"	f	class:ViewBlock
 docPosition	.\textBlock.h	/^	index_t	docPosition() const { return m_docBlockData.m_position; }$/;"	f	class:LaidoutBlock
-document	.\ViEngine.cpp	/^TextDocument *ViEngine::document()$/;"	f	class:ViEngine
 document	.\TextDocument.h	/^	TextDocument	*document()	{ return m_document; }$/;"	f	class:GVUndoMgr
+document	.\ViEngine.cpp	/^TextDocument *ViEngine::document()$/;"	f	class:ViEngine
 document	.\textBlock.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:DocBlock
 document	.\textBlock.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:LaidoutBlocksMgr
 document	.\textBlock.h	/^	TextDocument	*document() { return m_lbMgr->m_document; }$/;"	f	class:LaidoutBlock
@@ -626,9 +626,9 @@ isLayouted	.\textBlock.cpp	/^bool ViewBlock::isLayouted() const$/;"	f	class:View
 isLayoutedDocBlock	.\TextView.cpp	/^bool TextView::isLayoutedDocBlock(index_t ix) const$/;"	f	class:TextView
 isLayoutedViewBlock	.\TextView.cpp	/^bool TextView::isLayoutedViewBlock(index_t ix) const$/;"	f	class:TextView
 isLowerText	.\FindDlg.cpp	/^bool isLowerText(const QString &text)$/;"	f
-isMatch	.\ViEngine.cpp	/^bool isMatch(const QString &cmdText, const QString &pat)$/;"	f
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last, ushort options) const$/;"	f	class:TextDocument
+isMatch	.\ViEngine.cpp	/^bool isMatch(const QString &cmdText, const QString &pat)$/;"	f
 isMatchIgnoreCase	.\TextDocument.cpp	/^bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
 isMatched	.\TextDocument.cpp	/^bool TextDocument::isMatched(const QString &text, const DocCursor &cur, ushort options)$/;"	f	class:TextDocument
 isMatched	.\TextView.cpp	/^void TextView::isMatched(bool &b, const QString &text, ushort options)$/;"	f	class:TextView
@@ -1158,6 +1158,7 @@ updateBlocksAtErase	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtErase(
 updateBlocksAtInsert	.\TextDocument.cpp	/^void TextDocument::updateBlocksAtInsert(index_t first,$/;"	f	class:TextDocument
 updateCurFile	.\mainwindow.cpp	/^void MainWindow::updateCurFile()$/;"	f	class:MainWindow
 updateLineNumberAreaSize	.\TextView.cpp	/^void TextView::updateLineNumberAreaSize()$/;"	f	class:TextView
+updateMarkedPos	.\TextDocument.cpp	/^void TextDocument::updateMarkedPos(index_t pos, int d)$/;"	f	class:TextDocument
 updateRecentFileActions	.\mainwindow.cpp	/^void MainWindow::updateRecentFileActions()$/;"	f	class:MainWindow
 updateScrollBarData	.\TextView.cpp	/^void TextView::updateScrollBarData()$/;"	f	class:TextView
 updateViewBlock	.\textCursor.cpp	/^void ViewCursor::updateViewBlock()$/;"	f	class:ViewCursor

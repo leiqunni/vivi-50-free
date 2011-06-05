@@ -29,8 +29,8 @@ memFileColumnWd = 320
   main.cpp	(-105.304,-403.84)
   mainwindow.cpp	(-113.265,-203.142)
   mainwindow.h	(-113.265,-236.142)
-  TextDocument.cpp	(-152.875,66.766)
-  TextDocument.h	(-152.875,33.766)
+* TextDocument.cpp	(-152.875,66.766)
+* TextDocument.h	(-152.875,33.766)
 * C:/user/vivi5.0/arc/vivi50_jp.txt	(17.7821,-394.336)
   mainwindowBench.cpp	(-113.265,-170.142)
   unit_test.cpp	(-353.896,-154.746)
@@ -40,7 +40,7 @@ memFileColumnWd = 320
   charEncoding.h	(138.416,-168.123)
   textCursor.cpp	(-335.316,-33.0248)
   textCursor.h	(-335.316,-66.0248)
-  TextView.cpp	(44.6123,-31.8647)
+* TextView.cpp	(44.6123,-31.8647)
   TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
   FindDlg.h	(49.637,166.277)
@@ -69,7 +69,7 @@ memFileColumnWd = 320
   "TextDocument.cpp" 108 'M: ' '' undone 不要なヒープの解放
   "TextDocument.cpp" 111 'B: ' '' undone マージ可能であれば直前アイテムとマージ
   "TextDocument.cpp" 127 'M: ' '' undone 不要なヒープの解放
-  "TextDocument.cpp" 915 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
+  "TextDocument.cpp" 923 'P: ' '' undone 置換テキストもUTF8にあらかじめ変換しておく
   "textCursor.cpp" 626 'B: ' '' undone 暫定コード
   "textCursor.cpp" 637 'B: ' '' undone 暫定コード
   "TextView.cpp" 753 'B: ' '' undone 矢印表示に変更する
@@ -85,8 +85,8 @@ memFileColumnWd = 320
   "TextView.cpp" 1941 'B: ' '' undone 未コーディング
   "textBlock.cpp" 606 'B: ' '' undone チャンクが連続している場合等
   "ViEngine.cpp" 364 'B: ' '' undone 文書の改行コードを挿入
-  "ViEngine.cpp" 907 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 1123 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1229 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
-  "ViEngine.cpp" 1237 'B: ' '' undone 部分一致
+  "ViEngine.cpp" 929 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 1145 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1251 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 1259 'B: ' '' undone 部分一致
   "ViEngine.h" 142 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ
