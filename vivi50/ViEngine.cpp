@@ -478,6 +478,25 @@ bool ViEngine::doViCommand(const QChar &qch)
 				document()->setMarkedPos((uchar)ch, cur.position());
 			}
 			break;
+		case '\'':
+			if( ch >= 'a' && ch <= 'z' ) {
+				index_t ix = document()->markedPos((uchar)ch);
+				if( ix != INVALID_INDEX ) {
+					cur.setPosition(ix);
+					cur.movePosition(ViMoveOperation::FirstNonBlankChar);
+					cursorMoved = true;
+				}
+			}
+			break;
+		case '`':
+			if( ch >= 'a' && ch <= 'z' ) {
+				index_t ix = document()->markedPos((uchar)ch);
+				if( ix != INVALID_INDEX ) {
+					cur.setPosition(ix);
+					cursorMoved = true;
+				}
+			}
+			break;
 		case 'z':
 			if( ch == '\r' || ch == '\n' ) {
 				cur = m_view->textCursor();
@@ -524,6 +543,8 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case ']':
 		case '[':
 		case 'm':
+		case '\'':
+		case '`':
 		case 'g':
 		case 'r':
 		case 'z':
