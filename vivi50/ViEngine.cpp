@@ -473,6 +473,11 @@ bool ViEngine::doViCommand(const QChar &qch)
 			m_lastFTChar = qch;
 			cursorMoved = moveCursorFindInLine(cur, m_cmdPrefix, qch, repeatCount());
 			break;
+		case 'm':
+			if( ch >= 'a' && ch <= 'z' ) {
+				document()->setMarkedPos((uchar)ch, cur.position());
+			}
+			break;
 		case 'z':
 			if( ch == '\r' || ch == '\n' ) {
 				cur = m_view->textCursor();
@@ -518,6 +523,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case 'T':
 		case ']':
 		case '[':
+		case 'm':
 		case 'g':
 		case 'r':
 		case 'z':

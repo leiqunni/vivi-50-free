@@ -10,19 +10,19 @@ extList = cpp,h
 todoKeyWord = todo,undone
 memFileColumnWd = 320
 [symbols]
-#define SIMPLE_LAIDOUT_BLOCKS 1
 #define HIST_LIMIT 30
+#define SIMPLE_LAIDOUT_BLOCKS 1
 #define MARGIN_LEFT 4
 #define INVALID_INDEX 0
-#define TEXT_CURSOR_BLOCK 1
 #define PTR_ALLOCATOR 0
+#define TEXT_CURSOR_BLOCK 1
 #define BLOCK_HAS_OFFSET 0
 #define LAIDOUT_BLOCKS_MGR 1
-#define LINE_HEIGHT 20
-#define LAZY_LAIDOUT 0
 #define USE_EVENT_FILTER 1
-#define BLOCK_HAS_SIZE 1
+#define LAZY_LAIDOUT 0
+#define LINE_HEIGHT 20
 #define GV_USE_ITR_FACADE 1
+#define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
   gap_vector.h	(-84.078,377.793)
@@ -40,8 +40,8 @@ memFileColumnWd = 320
   charEncoding.h	(138.416,-168.123)
   textCursor.cpp	(-335.316,-33.0248)
   textCursor.h	(-335.316,-66.0248)
-* TextView.cpp	(44.6123,-31.8647)
-* TextView.h	(44.6123,-64.8647)
+  TextView.cpp	(44.6123,-31.8647)
+  TextView.h	(44.6123,-64.8647)
   FindDlg.cpp	(49.637,199.277)
   FindDlg.h	(49.637,166.277)
   findOpt.h	(241,304)
@@ -49,10 +49,10 @@ memFileColumnWd = 320
   ReplaceDlg.h	(236,45)
   vivi50_ja.ts	(170,-392)
   textBlock.cpp	(-363,293)
-* textBlock.h	(-363,260)
+  textBlock.h	(-363,260)
   LayoutThread.cpp	(390,133)
   LayoutThread.h	(390,100)
-  ViEngine.cpp	(219,-29)
+* ViEngine.cpp	(219,-29)
   ViEngine.h	(219,-62)
   vi.h	(373,-83)
   viCursor.cpp	(-180,296)
@@ -85,8 +85,8 @@ memFileColumnWd = 320
   "TextView.cpp" 1941 'B: ' '' undone 未コーディング
   "textBlock.cpp" 606 'B: ' '' undone チャンクが連続している場合等
   "ViEngine.cpp" 364 'B: ' '' undone 文書の改行コードを挿入
-  "ViEngine.cpp" 902 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 1118 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1224 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
-  "ViEngine.cpp" 1232 'B: ' '' undone 部分一致
+  "ViEngine.cpp" 907 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 1123 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1229 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 1237 'B: ' '' undone 部分一致
   "ViEngine.h" 142 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

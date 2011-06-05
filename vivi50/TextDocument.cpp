@@ -256,6 +256,8 @@ void TextDocument::init()
 	m_blocks.push_back(DocBlockItem(0));
 	m_cacheBlockData = BlockData(0, 0);
 	//m_blockIndex = m_blockPosition = 0;
+	for(index_t ix = 0; ix < sizeof(m_markedPos)/sizeof(index_t); ++ix)
+		m_markedPos[ix] = INVALID_INDEX;
 	emit blockCountChanged();
 }
 //	最初にみつけた改行コードをデフォルトとする
@@ -918,4 +920,16 @@ void TextDocument::doReplaceAll(const QString &findText, ushort options,
 	}
 #endif
 	closeUndoBlock();
+}
+
+index_t TextDocument::markedPos(uchar uch) const
+{
+	if( (uch -= 'a') >= 26 )
+		return INVALID_INDEX;
+	return m_markedPos[uch];
+}
+void TextDocument::setMarkedPos(uchar uch, index_t ix)
+{
+	if( (uch -= 'a') < 26 )
+		m_markedPos[uch] = ix;
 }

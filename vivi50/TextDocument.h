@@ -315,6 +315,7 @@ public:
 			return BlockData(d.m_index - 1, d.m_position - m_blocks[d.m_index - 1].m_size);
 		}
 	}
+	index_t	markedPos(uchar uch) const;		//	'a' <= uch <= 'z' の場合のみ有効
 
 public:
 	bool	canUndo() const { return m_undoMgr->canUndo(); };
@@ -378,6 +379,8 @@ public:
 	void	setCharEncodeing(uchar ce) { m_charEncoding = ce; }
 	void	setWithBOM(bool b) { m_withBOM = b; }
 
+	void	setMarkedPos(uchar uch, index_t);		//	'a' <= uch <= 'z'
+
 public:
 	std::gap_vector<uchar>::iterator	begin() { return m_buffer.begin(); }
 	std::gap_vector<uchar>::iterator	end() { return m_buffer.end(); }
@@ -412,6 +415,7 @@ private:
 	//CBuffer_GV	m_buffer;		//	内部UTF-8なバッファ
 	GVUndoMgr	*m_undoMgr;
 	//boost::object_pool<GVUndoItem>	m_pool_undoItem;
+	index_t		m_markedPos[26];		//	a-z マーク位置
 
 	friend void test_TextDocument();
 };
