@@ -65,11 +65,12 @@ void MainWindow::init()
 	m_unitTestLaidoutBlocksMgr = true;
 	m_unitTestView = true;
 	m_viEngine = new ViEngine();
-	m_viEngine->setEditor(m_view = new TextView);
+	m_view = new TextView;
+	connect(m_viEngine, SIGNAL(modeChanged(uchar)), m_view, SLOT(setViMode(uchar)));
+	m_viEngine->setEditor(m_view);
 	connect(m_view, SIGNAL(doViCommand(const QString &)), m_viEngine, SLOT(doViCommand(const QString &)));
 	//m_view->setViEngine(m_viEngine);
 	connect(m_viEngine, SIGNAL(modeChanged(Mode, ushort)), this, SLOT(onModeChanged(Mode, ushort)));
-	connect(m_viEngine, SIGNAL(modeChanged(Mode)), m_view, SLOT(setViMode(Mode)));
 	connect(m_viEngine, SIGNAL(closeView(TextView *, bool)), this, SLOT(closeView(TextView *, bool)));
 	connect(m_viEngine, SIGNAL(closeAllViews(bool)), this, SLOT(closeAllViews(bool)));
 	connect(m_viEngine, SIGNAL(reOpen()), this, SLOT(reOpen()));

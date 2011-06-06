@@ -58,6 +58,7 @@ void ViEngine::setEditor(TextView *editor)
 #if USE_EVENT_FILTER
 	m_view->installEventFilter(this);
 #endif
+	modeChanged((uchar)mode());
 }
 void ViEngine::setViSupported(bool b)
 {
@@ -72,6 +73,7 @@ void ViEngine::setMode(Mode mode, ushort subMode)
 		m_mode = mode;
 		m_noInsModeAtImeOpenStatus = true;
 		emit modeChanged(mode, subMode);
+		emit modeChanged((uchar)mode);
 		m_noInsModeAtImeOpenStatus = false;
 		if( fromCMDLINE )
 			m_view->setFocus();

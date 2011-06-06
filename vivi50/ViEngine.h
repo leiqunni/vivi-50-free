@@ -75,6 +75,7 @@ public slots:
 
 signals:
 	void	modeChanged(Mode, ushort=0);
+	void	modeChanged(uchar);
 	void	reOpen();
 	void	open(const QString &);
 	void	save(const QString &);

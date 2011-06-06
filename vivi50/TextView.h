@@ -124,7 +124,6 @@ public:
 public:
 	TextDocument	*document() { return m_document; }
 	void	clear();
-	void	setViMode(uchar mode) { m_viMode = mode; }
 	//void	setViEngine(ViEngine *);
 	void	doJump(int lineNum);
 	void	doVertScroll(int, int = 0);
@@ -177,6 +176,7 @@ public slots:
 	void	setFontFamily(const QString &);
 	void	makeFontBigger(bool);
 	void	onLineBreak(bool);
+	void	setViMode(uchar mode) { m_viMode = mode; }
 
 protected:
 	ViewBlock	yToTextBlock(int) const;
