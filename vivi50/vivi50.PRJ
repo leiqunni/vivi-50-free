@@ -54,7 +54,7 @@ memFileColumnWd = 320
   LayoutThread.h	(390,100)
 * ViEngine.cpp	(219,-29)
 * ViEngine.h	(219,-62)
-* vi.h	(373,-83)
+* vi.h	(113,94)
   viCursor.cpp	(-180,296)
   viCursor.h	(-180,263)
   TestViCommands.cpp	(127,-243)
@@ -85,8 +85,8 @@ memFileColumnWd = 320
   "TextView.cpp" 1946 'B: ' '' undone 未コーディング
   "textBlock.cpp" 606 'B: ' '' undone チャンクが連続している場合等
   "ViEngine.cpp" 364 'B: ' '' undone 文書の改行コードを挿入
-  "ViEngine.cpp" 929 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 1145 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1251 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
-  "ViEngine.cpp" 1259 'B: ' '' undone 部分一致
-  "ViEngine.h" 144 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ
+  "ViEngine.cpp" 937 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 1162 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1268 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 1276 'B: ' '' undone 部分一致
+  "ViEngine.h" 148 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

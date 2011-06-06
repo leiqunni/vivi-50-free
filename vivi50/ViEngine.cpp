@@ -497,6 +497,11 @@ bool ViEngine::doViCommand(const QChar &qch)
 				}
 			}
 			break;
+		case '"':
+			if( ch >= 'a' && ch <= 'z' )
+				m_yankBufferName = (uchar)ch;
+			m_cmdPrefix = 0;
+			return true;
 		case 'z':
 			if( ch == '\r' || ch == '\n' ) {
 				cur = m_view->textCursor();
@@ -545,6 +550,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		case 'm':
 		case '\'':
 		case '`':
+		case '"':
 		case 'g':
 		case 'r':
 		case 'z':
@@ -807,8 +813,10 @@ bool ViEngine::doViCommand(const QChar &qch)
 			yankTo = nLinesPosition(cur, repeatCount());
 			toYankByLine = true;
 			break;
-		case 'p':		//	カーソル直後・次行にペースト
-			if( m_yankBuffer.isEmpty() ) break;
+		case 'p': {		//	カーソル直後・次行にペースト
+			bool byLine;
+			QString buf = yankText(byLine);
+			if( buf.isEmpty() ) break;
 			if( m_yankByLine ) {
 				if( block.next().isValid() )
 					cur.setPosition(block.next().position());
@@ -822,19 +830,23 @@ bool ViEngine::doViCommand(const QChar &qch)
 					cur.movePosition(DocCursor::Right);
 			}
 			toMovePos = cur.position();
-			cur.insertText(yankText());
+			cur.insertText(buf);
 			cur.setPosition(toMovePos);
 			m_view->setTextCursor(cur);
 			break;
-		case 'P':		//	カーソル位置・行直前にペースト
-			if( m_yankBuffer.isEmpty() ) break;
-			if( m_yankByLine )
+		}
+		case 'P': {		//	カーソル位置・行直前にペースト
+			bool byLine;
+			QString buf = yankText(byLine);
+			if( buf.isEmpty() ) break;
+			if( byLine )
 				cur.setPosition(block.position());
 			toMovePos = cur.position();
-			cur.insertText(yankText());
+			cur.insertText(buf);
 			cur.setPosition(toMovePos);
 			m_view->setTextCursor(cur);
 			break;
+		}
 		case '~':		//	英大文字小文字置換
 			cur.movePosition(DocCursor::Right, DocCursor::KeepAnchor, repeatCount());
 			if( cur.hasSelection() ) {
@@ -930,8 +942,12 @@ bool ViEngine::doViCommand(const QChar &qch)
 		cur.setPosition(yankFrom);
 		m_view->setTextCursor(cur);
 		cur.setPosition(yankTo, DocCursor::KeepAnchor);
+#if 1
+		copyToYankBuffer(m_moveByLine || toYankByLine, cur.selectedText());
+#else
 		m_yankByLine = m_moveByLine || toYankByLine;
 		m_yankBuffer = cur.selectedText();
+#endif
 		//m_view->textCursor().setPosition(yankFrom);
 	}
 	if( delFrom >= 0 && delFrom != delTo ) {
@@ -951,8 +967,12 @@ bool ViEngine::doViCommand(const QChar &qch)
 		}
 		cur.setPosition(delFrom);
 		cur.setPosition(delTo, DocCursor::KeepAnchor);
+#if 1
+		copyToYankBuffer(m_moveByLine || toYankByLine, cur.selectedText());
+#else
 		m_yankByLine = m_moveByLine || toYankByLine;
 		m_yankBuffer = cur.selectedText();
+#endif
 		cur.deleteChar();
 #if 0
 		if( m_joinPrevEditBlock ) {
@@ -1021,6 +1041,7 @@ bool ViEngine::doViCommand(const QChar &qch)
 		}
 		m_view->viewport()->update();		//	画面乱れを無くすため
 	}
+	m_yankBufferName = 0;
 	m_noRepeatCount = false;
 	m_moveByLine = false;
 	m_cmdPrefix = 0;
@@ -1034,11 +1055,31 @@ bool ViEngine::doViCommand(const QChar &qch)
 		emit showMessage(m_cmdString);
 	return true;
 }
-QString ViEngine::yankText() const
+void ViEngine::copyToYankBuffer(bool byLine, const QString &text)
 {
-	QString text = m_yankBuffer;
+	if( m_yankBufferName >= 'a' && m_yankBufferName <= 'z' ) {
+		const int ix = m_yankBufferName - 'a';
+		m_namedYankByLine[ix] = byLine;
+		m_namedYankBuffer[ix] = text;
+	} else {
+		m_yankByLine = byLine;
+		m_yankBuffer = text;
+	}
+}
+QString ViEngine::yankText(bool &byLine) const
+{
+	QString buf;
+	if( m_yankBufferName >= 'a' && m_yankBufferName <= 'z' ) {
+		const int ix = m_yankBufferName - 'a';
+		byLine = m_namedYankByLine[ix];
+		buf = m_namedYankBuffer[ix];
+	} else {
+		byLine = m_yankByLine;
+		buf = m_yankBuffer;
+	}
+	QString text = buf;
 	for(int i = repeatCount(); --i > 0; )
-		text += m_yankBuffer;
+		text += buf;
 	return text;
 }
 bool viCtrlCmd[] = 
@@ -1249,8 +1290,12 @@ void ViEngine::doDelete()
 		pos = block2.position() + block2.text().length();
 	cur.setPosition(pos, DocCursor::KeepAnchor);
 	//	undone C "[a-z] ヤンクバッファ指定対応
+#if 1
+	copyToYankBuffer(true, cur.selectedText());
+#else
 	m_yankBuffer = cur.selectedText();
 	m_yankByLine = true;
+#endif
 	cur.deleteChar();
 }
 

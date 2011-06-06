@@ -205,8 +205,8 @@ Up	.\viCursor.h	/^		Up,						\/\/	k$/;"	e	enum:ViMoveOperation::__anon1
 Up	.\textCursor.h	/^		Up,$/;"	e	enum:DocCursor::__anon2
 VERSION_STR	.\mainwindow.cpp	37;"	d	file:
 VIENGINE_H	.\ViEngine.h	26;"	d
-ViEngine	.\ViEngine.h	/^class ViEngine : public QObject$/;"	c
 ViEngine	.\ViEngine.cpp	/^ViEngine::ViEngine(QObject *parent)$/;"	f	class:ViEngine
+ViEngine	.\ViEngine.h	/^class ViEngine : public QObject$/;"	c
 ViMoveOperation	.\viCursor.h	/^namespace ViMoveOperation {$/;"	n
 ViScrollOperation	.\vi.h	/^namespace ViScrollOperation {$/;"	n
 ViewBlock	.\textBlock.h	/^class ViewBlock : public DocBlock$/;"	c
@@ -350,6 +350,7 @@ copyAnchorToPosition	.\textCursor.cpp	/^void DocCursor::copyAnchorToPosition()$/
 copyAnchorToPosition	.\textCursor.cpp	/^void ViewCursor::copyAnchorToPosition()$/;"	f	class:ViewCursor
 copyPositionToAnchor	.\textCursor.cpp	/^void DocCursor::copyPositionToAnchor()$/;"	f	class:DocCursor
 copyPositionToAnchor	.\textCursor.cpp	/^void ViewCursor::copyPositionToAnchor()$/;"	f	class:ViewCursor
+copyToYankBuffer	.\ViEngine.cpp	/^void ViEngine::copyToYankBuffer(bool byLine, const QString &text)$/;"	f	class:ViEngine
 copy_data	.\gap_vector.h	/^	OutputItearator copy_data(OutputItearator dst, InputIterator src, InputIterator last)$/;"	f	class:std::gap_vector
 createActions	.\mainwindow.cpp	/^void MainWindow::createActions()$/;"	f	class:MainWindow
 createDockWindows	.\mainwindow.cpp	/^void MainWindow::createDockWindows()$/;"	f	class:MainWindow
@@ -384,13 +385,13 @@ difference_type	.\gap_vector.h	/^	typedef int difference_type;		\/\/	ÉMÉÉÉbÉvÇ™ñ
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Const_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Const_Iterator
 distance_to	.\gap_vector.h	/^	int		distance_to(const _Gap_Vector_Iterator &x) const$/;"	f	class:std::_Gap_Vector_Iterator
 doBenchmark	.\mainwindowBench.cpp	/^void MainWindow::doBenchmark()$/;"	f	class:MainWindow
-doDelete	.\TextView.cpp	/^void TextView::doDelete(int first, int last)$/;"	f	class:TextView
 doDelete	.\ViEngine.cpp	/^void ViEngine::doDelete()$/;"	f	class:ViEngine
+doDelete	.\TextView.cpp	/^void TextView::doDelete(int first, int last)$/;"	f	class:TextView
 doExCommand	.\ViEngine.cpp	/^void ViEngine::doExCommand(const QString &text)$/;"	f	class:ViEngine
 doFind	.\ViEngine.cpp	/^void ViEngine::doFind(const QString &regexpText, bool forward)$/;"	f	class:ViEngine
 doFind	.\ReplaceDlg.cpp	/^void ReplaceDlg::doFind(bool backward)$/;"	f	class:ReplaceDlg
-doFindNext	.\TextView.cpp	/^void TextView::doFindNext(const QString &text, ushort options)$/;"	f	class:TextView
 doFindNext	.\ViEngine.cpp	/^bool ViEngine::doFindNext(ViewCursor &cur, int nth, bool revers)$/;"	f	class:ViEngine
+doFindNext	.\TextView.cpp	/^void TextView::doFindNext(const QString &text, ushort options)$/;"	f	class:TextView
 doFindNext	.\GeneratedFiles\Debug\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg
 doFindNext	.\GeneratedFiles\Debug\moc_ReplaceDlg.cpp	/^void ReplaceDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:ReplaceDlg
 doFindNext	.\GeneratedFiles\Release\moc_FindDlg.cpp	/^void FindDlg::doFindNext(const QString & _t1, ushort _t2)$/;"	f	class:FindDlg
@@ -449,10 +450,10 @@ docIndex	.\textBlock.h	/^	index_t		docIndex() const { return DocBlock::index(); 
 docIndex	.\textBlock.h	/^	index_t	docIndex() const { return m_docBlockData.m_index; }$/;"	f	class:LaidoutBlock
 docPosition	.\textBlock.h	/^	index_t		docPosition() const { return DocBlock::position(); };$/;"	f	class:ViewBlock
 docPosition	.\textBlock.h	/^	index_t	docPosition() const { return m_docBlockData.m_position; }$/;"	f	class:LaidoutBlock
+document	.\ViEngine.cpp	/^TextDocument *ViEngine::document()$/;"	f	class:ViEngine
 document	.\TextView.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:TextView
 document	.\TextView.h	/^	const TextDocument	*document() const { return m_document; }$/;"	f	class:TextView
 document	.\TextDocument.h	/^	TextDocument	*document()	{ return m_document; }$/;"	f	class:GVUndoMgr
-document	.\ViEngine.cpp	/^TextDocument *ViEngine::document()$/;"	f	class:ViEngine
 document	.\textBlock.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:DocBlock
 document	.\textBlock.h	/^	TextDocument	*document() { return m_document; }$/;"	f	class:LaidoutBlocksMgr
 document	.\textBlock.h	/^	TextDocument	*document() { return m_lbMgr->m_document; }$/;"	f	class:LaidoutBlock
@@ -484,9 +485,9 @@ erase	.\gap_vector.h	/^	void erase(index_type first, index_type last)$/;"	f	clas
 erase	.\gap_vector.h	/^	void erase(index_type ix)$/;"	f	class:std::gap_vector
 eraseBlocks	.\TextView.cpp	/^void TextView::eraseBlocks(index_t first, index_t last \/*, size_t delDocBlockCount*\/)$/;"	f	class:TextView
 event	.\TextView.cpp	/^bool TextView::event ( QEvent * event )$/;"	f	class:TextView
+eventFilter	.\ViEngine.cpp	/^bool ViEngine::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:ViEngine
 eventFilter	.\mainwindow.cpp	/^bool MainWindow::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:MainWindow
 eventFilter	.\TextView.cpp	/^bool TextView::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:TextView
-eventFilter	.\ViEngine.cpp	/^bool ViEngine::eventFilter(QObject *obj, QEvent *event)$/;"	f	class:ViEngine
 exCommands	.\ViEngine.h	/^	const QStringList &exCommands() const { return m_exCommands; }$/;"	f	class:ViEngine
 expand_buffer	.\gap_vector.h	/^	void expand_buffer()$/;"	f	class:std::gap_vector
 fileMenu	.\mainwindow.h	/^    QMenu	*fileMenu;$/;"	m	class:MainWindow
@@ -626,9 +627,9 @@ isLayouted	.\textBlock.cpp	/^bool ViewBlock::isLayouted() const$/;"	f	class:View
 isLayoutedDocBlock	.\TextView.cpp	/^bool TextView::isLayoutedDocBlock(index_t ix) const$/;"	f	class:TextView
 isLayoutedViewBlock	.\TextView.cpp	/^bool TextView::isLayoutedViewBlock(index_t ix) const$/;"	f	class:TextView
 isLowerText	.\FindDlg.cpp	/^bool isLowerText(const QString &text)$/;"	f
+isMatch	.\ViEngine.cpp	/^bool isMatch(const QString &cmdText, const QString &pat)$/;"	f
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
 isMatch	.\TextDocument.cpp	/^bool TextDocument::isMatch(index_t position, cuchar *first, cuchar *last, ushort options) const$/;"	f	class:TextDocument
-isMatch	.\ViEngine.cpp	/^bool isMatch(const QString &cmdText, const QString &pat)$/;"	f
 isMatchIgnoreCase	.\TextDocument.cpp	/^bool TextDocument::isMatchIgnoreCase(index_t position, cuchar *first, cuchar *last) const$/;"	f	class:TextDocument
 isMatched	.\TextView.cpp	/^void TextView::isMatched(bool &b, const QString &text, ushort options)$/;"	f	class:TextView
 isMatched	.\TextDocument.cpp	/^bool TextDocument::isMatched(const QString &text, const DocCursor &cur, ushort options)$/;"	f	class:TextDocument
@@ -783,6 +784,8 @@ m_multiCursor	.\TextView.h	/^	std::vector<ViewCursor>	m_multiCursor;		\/\/	ïõÉJÅ
 m_nFailed	.\TestViCommands.cpp	/^	int			m_nFailed;$/;"	m	class:TestViCommands	file:
 m_nLineNum	.\ViEngine.h	/^	int		m_nLineNum;				\/\/	éwíËÇ≥ÇÍÇΩçsî‘çÜêî$/;"	m	class:ViEngine
 m_nTested	.\TestViCommands.cpp	/^	int			m_nTested;$/;"	m	class:TestViCommands	file:
+m_namedYankBuffer	.\ViEngine.h	/^	QString	m_namedYankBuffer[26];	\/\/	ñºëOïtÇ´ÉÑÉìÉNÉoÉbÉtÉ@Åi'a'Å`'z'Åj$/;"	m	class:ViEngine
+m_namedYankByLine	.\ViEngine.h	/^	bool	m_namedYankByLine[26];	\/\/	ÉÑÉìÉNÉoÉbÉtÉ@ÅFçsíPà $/;"	m	class:ViEngine
 m_noInsModeAtImeOpenStatus	.\ViEngine.h	/^	bool	m_noInsModeAtImeOpenStatus;		\/\/	IME ONÅEOFFÇ™ïœÇÌÇ¡ÇƒÇ‡ë}ì¸ÉÇÅ[ÉhÇ…ëJà⁄ÇµÇ»Ç¢$/;"	m	class:ViEngine
 m_noRepeatCount	.\ViEngine.h	/^	bool	m_noRepeatCount;		\/\/	åJÇËï‘ÇµâÒêîéwíËïsâ¬Åifor fFtTìôÅj$/;"	m	class:ViEngine
 m_offset	.\textCursor.h	/^	index_t			m_offset;		\/\/	çsì™Ç©ÇÁÇÃÉIÉtÉZÉbÉgílÅiñ{óàÇÃílÅj$/;"	m	class:DocCursor
@@ -847,6 +850,7 @@ m_withBOM	.\TextDocument.h	/^	bool	m_withBOM;$/;"	m	class:TextDocument
 m_wordSelCursor	.\TextView.h	/^	ViewCursor	*m_wordSelCursor;				\/\/	íPåÍëIëéûèâä˙ëIëîÕàÕ$/;"	m	class:TextView
 m_x	.\textCursor.h	/^	int			m_x;$/;"	m	class:ViewCursor
 m_yankBuffer	.\ViEngine.h	/^	QString	m_yankBuffer;			\/\/	ñ≥ñºÉÑÉìÉNÉoÉbÉtÉ@$/;"	m	class:ViEngine
+m_yankBufferName	.\ViEngine.h	/^	uchar	m_yankBufferName;		\/\/	'a' Å` 'z'$/;"	m	class:ViEngine
 m_yankByLine	.\ViEngine.h	/^	bool	m_yankByLine;			\/\/	ÉÑÉìÉNÉoÉbÉtÉ@ÅFçsíPà $/;"	m	class:ViEngine
 main	.\main.cpp	/^int main(int argc, char *argv[])$/;"	f
 mainToolBar	.\GeneratedFiles\ui_mainwindow.h	/^    QToolBar *mainToolBar;$/;"	m	class:Ui_MainWindowClass
@@ -913,8 +917,8 @@ onFindNext	.\FindDlg.cpp	/^void FindDlg::onFindNext()$/;"	f	class:FindDlg
 onFindPrev	.\ReplaceDlg.cpp	/^void ReplaceDlg::onFindPrev()$/;"	f	class:ReplaceDlg
 onFindPrev	.\FindDlg.cpp	/^void FindDlg::onFindPrev()$/;"	f	class:FindDlg
 onFontChanged	.\TextView.cpp	/^void TextView::onFontChanged()$/;"	f	class:TextView
-onImeOpenStatusChanged	.\mainwindow.cpp	/^void MainWindow::onImeOpenStatusChanged()$/;"	f	class:MainWindow
 onImeOpenStatusChanged	.\ViEngine.cpp	/^void ViEngine::onImeOpenStatusChanged()$/;"	f	class:ViEngine
+onImeOpenStatusChanged	.\mainwindow.cpp	/^void MainWindow::onImeOpenStatusChanged()$/;"	f	class:MainWindow
 onLineBreak	.\TextView.cpp	/^void TextView::onLineBreak(bool b)$/;"	f	class:TextView
 onModeChanged	.\mainwindow.cpp	/^void MainWindow::onModeChanged(Mode mode, ushort subMode)$/;"	f	class:MainWindow
 onRedo	.\ReplaceDlg.h	/^	void	onRedo() { doRedo(); }$/;"	f	class:ReplaceDlg
@@ -1199,7 +1203,7 @@ writeSettings	.\mainwindow.cpp	/^void MainWindow::writeSettings()$/;"	f	class:Ma
 x	.\textCursor.h	/^	int		x() const { return m_x; }$/;"	f	class:ViewCursor
 xToCharCount	.\TextView.cpp	/^int TextView::xToCharCount(const QString &text, int x) const$/;"	f	class:TextView
 yToTextBlock	.\TextView.cpp	/^ViewBlock TextView::yToTextBlock(int py) const$/;"	f	class:TextView
-yankText	.\ViEngine.cpp	/^QString ViEngine::yankText() const$/;"	f	class:ViEngine
+yankText	.\ViEngine.cpp	/^QString ViEngine::yankText(bool &byLine) const$/;"	f	class:ViEngine
 ~CUnitTest	.\unit_test.cpp	/^CUnitTest::~CUnitTest(void)$/;"	f	class:CUnitTest
 ~DocBlock	.\textBlock.h	/^	~DocBlock() {}$/;"	f	class:DocBlock
 ~DocCursor	.\textCursor.h	/^	~DocCursor() {}$/;"	f	class:DocCursor

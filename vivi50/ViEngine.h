@@ -98,13 +98,15 @@ protected:
 	void	doSubst(const QString &, int, int);
 	bool	parseSubstCmd(const QString &, QString &, QString &, bool &);
 	void	doDelete();
+	void	copyToYankBuffer(bool, const QString &);
 
 	void	printSettings();
 	void	printCursorPosition();
 
 	int		repeatCount() const;
 	//{ return !m_repeatCount ? 1 : m_repeatCount; }
-	QString	yankText() const;
+	QString	yankText(bool &byLine) const;
+
 
 	void	getLineNumbers(const QString &, int &);		//	ex command の行番号範囲部分を解析
 	bool	getLineNumber(const QString &, int &, int &);	//	値部分
@@ -120,6 +122,7 @@ private:
 	bool	m_joinPrevEditBlock;		//	
 	bool	m_findForward;			//	順方向検索
 	bool	m_moveByLine;			//	行単位移動 } { H M L G
+	uchar	m_yankBufferName;		//	'a' ～ 'z'
 	Mode	m_mode;
 	int		m_repeatCount;
 	int		m_repeatCount2;			//	c2w のようにコマンドの間に指定された繰り返し回数
@@ -138,6 +141,8 @@ private:
 	QString	m_message;
 	bool	m_yankByLine;			//	ヤンクバッファ：行単位
 	QString	m_yankBuffer;			//	無名ヤンクバッファ
+	bool	m_namedYankByLine[26];	//	ヤンクバッファ：行単位
+	QString	m_namedYankBuffer[26];	//	名前付きヤンクバッファ（'a'～'z'）
 	QStringList	m_exCommands;		//	入力された ex-command 文字列
 	TextView	*m_view;
 
