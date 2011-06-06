@@ -26,7 +26,8 @@
 #include	"textCursor.h"
 #include	"FindDlg.h"
 #include	"ReplaceDlg.h"
-#include	"ViEngine.h"
+#include	"vi.h"
+//#include	"ViEngine.h"
 #include	"viCursor.h"
 #include	<math.h>
 #include	<QDebug>
@@ -65,7 +66,8 @@ void print(const std::vector<ViewCursor*> &v)
 TextView::TextView(QWidget *parent)
 	: QAbstractScrollArea(parent)
 {
-	m_viEngine = 0;
+	//m_viEngine = 0;
+	m_viMode = INSERT;
 	m_overwriteMode = false;
 	m_mouseCaptured = false;
 	m_mouseDoubleClicked = false;
@@ -129,10 +131,12 @@ void TextView::clear()
 	m_cacheBlockData = BlockData(0, 0);
 	m_textCursor->setPosition(0);
 }
+#if 0
 void TextView::setViEngine(ViEngine *viEngine)
 {
 	m_viEngine = viEngine;
 }
+#endif
 void TextView::setOverwriteMode(bool b)
 {
 	m_overwriteMode = b;
@@ -806,7 +810,7 @@ void TextView::drawCursor(QPainter &painter,
 	int x = charCountToX(text, offset);
 	int wd = 3;
 	int ht = fm.height();
-	switch( m_viEngine->mode() ) {
+	switch( viMode() ) {
 	case CMD:
 		y += ht / 2;
 		ht -= ht / 2;
@@ -1074,7 +1078,8 @@ void TextView::keyPressEvent ( QKeyEvent * keyEvent )
 	}
 	QString text = keyEvent->text();
 	if( !text.isEmpty() ) {
-		m_viEngine->doViCommand(text);
+		emit doViCommand(text);
+		//m_viEngine->doViCommand(text);
 #if 0
 		insertText(text);
 		ensureCursorVisible();

@@ -119,11 +119,13 @@ public:
 #endif
 	const ViewBlock *firstVisibleBlockPtr() const;
 	const ViewBlock *lastVisibleBlockPtr() const;
+	uchar	viMode() const { return m_viMode; }
 
 public:
 	TextDocument	*document() { return m_document; }
 	void	clear();
-	void	setViEngine(ViEngine *);
+	void	setViMode(uchar mode) { m_viMode = mode; }
+	//void	setViEngine(ViEngine *);
 	void	doJump(int lineNum);
 	void	doVertScroll(int, int = 0);
 	void	setOverwriteMode(bool);
@@ -237,6 +239,7 @@ signals:
 	void	doLayout100Blocks();			//	次の100行をレイアウト
 	void	printBuffer();
 	void	showMessage(const QString &);
+	void	doViCommand(const QString &);
 
 private:
 	bool	m_overwriteMode;				//	上書きモード
@@ -246,7 +249,8 @@ private:
 	bool	m_drawCursor;
 	bool	m_lineBreakMode;					//	右端で折り返し
 	bool	m_lineBreaking;						//	折り返し処理中
-	ViEngine	*m_viEngine;
+	uchar	m_viMode;							//	CMD | INSERT | REPLACE | CMDLINE
+	//ViEngine	*m_viEngine;
 	ViewCursor	m_viewTextCursor;
 	std::vector<ViewCursor>	m_multiCursor;		//	副カーソル、position をキーに昇順ソート済みとする
 													//	個数は少数と仮定して std::vector を用いる

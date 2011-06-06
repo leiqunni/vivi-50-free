@@ -58,7 +58,6 @@ public:
 
 public:
 	void	setViSupported(bool);
-	void	doViCommand(const QString &);
 	bool	doViCommand(const QChar &);
 	void	onImeOpenStatusChanged();
 	void	setMode(Mode mode, ushort=0);
@@ -70,6 +69,9 @@ public:
 	void	doSet(const QString &, const QString &);
 	void	doFind(const QString &, bool);			//	
 	bool	processKeyPressEvent( QKeyEvent * event );
+
+public slots:
+	void	doViCommand(const QString &);
 
 signals:
 	void	modeChanged(Mode, ushort=0);
