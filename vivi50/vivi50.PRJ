@@ -10,19 +10,19 @@ extList = cpp,h
 todoKeyWord = todo,undone
 memFileColumnWd = 320
 [symbols]
-#define SIMPLE_LAIDOUT_BLOCKS 1
 #define HIST_LIMIT 30
+#define SIMPLE_LAIDOUT_BLOCKS 1
 #define MARGIN_LEFT 4
 #define INVALID_INDEX 0
-#define TEXT_CURSOR_BLOCK 1
 #define PTR_ALLOCATOR 0
+#define TEXT_CURSOR_BLOCK 1
 #define BLOCK_HAS_OFFSET 0
 #define LAIDOUT_BLOCKS_MGR 1
-#define LINE_HEIGHT 20
-#define LAZY_LAIDOUT 0
 #define USE_EVENT_FILTER 1
-#define BLOCK_HAS_SIZE 1
+#define LAZY_LAIDOUT 0
+#define LINE_HEIGHT 20
 #define GV_USE_ITR_FACADE 1
+#define BLOCK_HAS_SIZE 1
 [globalMarks]
 [files]
   gap_vector.h	(-84.078,377.793)
@@ -84,9 +84,9 @@ memFileColumnWd = 320
   "TextView.cpp" 1921 'B: ' '' undone 垂直スクロールバー位置更新
   "TextView.cpp" 1946 'B: ' '' undone 未コーディング
   "textBlock.cpp" 606 'B: ' '' undone チャンクが連続している場合等
-  "ViEngine.cpp" 364 'B: ' '' undone 文書の改行コードを挿入
-  "ViEngine.cpp" 937 'R: ' '' undone delete の場合と処理を共通化する
-  "ViEngine.cpp" 1162 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
-  "ViEngine.cpp" 1268 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
-  "ViEngine.cpp" 1276 'B: ' '' undone 部分一致
-  "ViEngine.h" 148 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ
+  "ViEngine.cpp" 366 'B: ' '' undone 文書の改行コードを挿入
+  "ViEngine.cpp" 943 'R: ' '' undone delete の場合と処理を共通化する
+  "ViEngine.cpp" 1188 'B: ' '' undone if-elseif チェインがある程度長くなったら、テーブルドリブンに書き換える
+  "ViEngine.cpp" 1294 'C: ' '' undone "[a-z] ヤンクバッファ指定対応
+  "ViEngine.cpp" 1306 'B: ' '' undone 部分一致
+  "ViEngine.h" 150 'C: ' '' undone 行番号関係は独立した構造体にした方がよさげ

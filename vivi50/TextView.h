@@ -176,7 +176,7 @@ public slots:
 	void	setFontFamily(const QString &);
 	void	makeFontBigger(bool);
 	void	onLineBreak(bool);
-	void	setViMode(uchar mode) { m_viMode = mode; }
+	void	setViMode(uchar mode); //{ m_viMode = mode; }
 
 protected:
 	ViewBlock	yToTextBlock(int) const;

@@ -2099,3 +2099,10 @@ void TextView::buildBlocks(ViewBlock block, int ht,
 	//m_lastViewLine = blockIndex;
 #endif
 }
+void TextView::setViMode(uchar mode)
+{
+	qDebug() << "setViMode";
+	m_viMode = mode;
+	resetCursorBlink();
+	viewport()->update();
+}
